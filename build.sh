@@ -19,6 +19,21 @@ emcmake make
 emcmake make install
 popd
 
+# Build libpng.
+
+pushd third_party/libpng
+emconfigure ./configure \
+    --prefix=${build_dir}/libpng \
+    --with-zlib-prefix=${build_dir}/zlib \
+    --enable-static=yes \
+    --enable-shared=no
+INCLUDES="-I{build_dir}/zlib/include" \
+    emcmake make
+emcmake install
+cp third_party/libpng/png-fix-itxt.wasm ${build_dir}/libpng/bin
+cp third_party/libpng/pngfix.wasm ${build_dir}/libpng/bin
+popd
+
 # Build libpano13.
 
 if [ ! -d "/path/to/dir" ]; then
