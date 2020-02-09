@@ -5,14 +5,16 @@ build_dir="${PWD}/build"
 . /etc/profile.d/binaryen.sh
 . /etc/profile.d/emscripten.sh
 
-pushd third_party/lz4
-emcc -c src/lz4.c -o lz4.bc
-popd
+mkdir -p "${build_dir}/lz4"
+emcc -c -o build/lz4/lz4.bc \
+    third_party/lz4/src/lz4.c
 
 # Build zlib.
 
 pushd third_party/zlib
-emconfigure ./configure --static --prefix=${build_dir}
+emconfigure ./configure \
+    --prefix=${build_dir}/zlib \
+    --static
 emcmake make
 emcmake make install
 popd
