@@ -30,8 +30,6 @@ emconfigure ./configure \
 INCLUDES="-I{build_dir}/zlib/include" \
     emcmake make
 emcmake install
-cp third_party/libpng/png-fix-itxt.wasm ${build_dir}/libpng/bin
-cp third_party/libpng/pngfix.wasm ${build_dir}/libpng/bin
 popd
 
 # Build libpano13.
