@@ -18,3 +18,20 @@ emconfigure ./configure \
 emcmake make
 emcmake make install
 popd
+
+# Build libpano13.
+
+if [ ! -d "/path/to/dir" ]; then
+    pushd third_party
+    hg clone http://hg.code.sf.net/p/panotools/libpano13
+    popd
+fi
+
+pushd third_party/libpano13
+emconfigure ./bootstrap \
+    --prefix=${build_dir}/libpano13 \
+    --without-java \
+    --with-zlib=${build_dir}/zlib \
+    --enable-static=yes \
+    --enable-shared=no
+popd
