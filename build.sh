@@ -15,8 +15,7 @@ pushd third_party/zlib
 emconfigure ./configure \
     --prefix=${build_dir}/zlib \
     --static
-emcmake make
-emcmake make install
+emcmake make all install
 popd
 
 # Build libpng.
@@ -27,9 +26,23 @@ emconfigure ./configure \
     --with-zlib-prefix=${build_dir}/zlib \
     --enable-static=yes \
     --enable-shared=no
-INCLUDES="-I{build_dir}/zlib/include" \
-    emcmake make
-emcmake install
+INCLUDES="-I${build_dir}/zlib/include" \
+    emcmake make all install
+popd
+
+# Build libjpeg-turbo.
+
+pushd third_party/libjpeg-turbo
+mkdir build
+cd build
+emcmake cmake \
+    -DCMAKE_INSTALL_PREFIX:PATH="${build_dir}/libjpeg-turbo" \
+    -DWITH_JAVA=0 \
+    -DWITH_TURBOJPEG=0 \
+    -DENABLE_STATIC=1 \
+    -DENABLE_SHARED=0 \
+    ..
+emcmake make all install
 popd
 
 # Build libpano13.
@@ -43,8 +56,10 @@ fi
 pushd third_party/libpano13
 emconfigure ./bootstrap \
     --prefix=${build_dir}/libpano13 \
+    --with-jpeg=${build_dir}/libjpeg-turbo \
     --with-png=${build_dir}/libpng \
     --with-zlib=${build_dir}/zlib \
+    --without-tiff \
     --without-java \
     --enable-static=yes \
     --enable-shared=no
