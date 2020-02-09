@@ -58,6 +58,7 @@ emconfigure ./configure \
     --disable-x \
     --enable-static=yes \
     --enable-shared=no
+emcmake make all install
 popd
 
 # Build libpano13.
@@ -78,4 +79,5 @@ emconfigure ./bootstrap \
     --without-java \
     --enable-static=yes \
     --enable-shared=no
+emcmake make all install
 popd
