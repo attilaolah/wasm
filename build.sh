@@ -43,8 +43,9 @@ fi
 pushd third_party/libpano13
 emconfigure ./bootstrap \
     --prefix=${build_dir}/libpano13 \
-    --without-java \
+    --with-png=${build_dir}/libpng \
     --with-zlib=${build_dir}/zlib \
+    --without-java \
     --enable-static=yes \
     --enable-shared=no
 popd
