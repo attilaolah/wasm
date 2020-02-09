@@ -8,3 +8,4 @@ Scripts to compile libraries to [WebAssembly] using [Emscripten].
 The following libraries are included:
 
 - [LZ4](https://github.com/bwlewis/lz4)
+- [zlib](https://github.com/madler/zlib)
