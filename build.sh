@@ -45,6 +45,21 @@ emcmake cmake \
 emcmake make all install
 popd
 
+# Build libtiff.
+
+pushd third_party/libtiff
+./autogen.sh
+emconfigure ./configure \
+    --prefix=${build_dir}/libtiff \
+    --with-zlib-lib-dir=${build_dir}/zlib/lib \
+    --with-zlib-include-dir=${build_dir}/zlib/include \
+    --with-jpeg-lib-dir=${build_dir}/libjpeg-turbo/lib \
+    --with-jpeg-include-dir=${build_dir}/libjpeg-turbo/include \
+    --disable-x \
+    --enable-static=yes \
+    --enable-shared=no
+popd
+
 # Build libpano13.
 
 if [ ! -d "/path/to/dir" ]; then
@@ -58,8 +73,8 @@ emconfigure ./bootstrap \
     --prefix=${build_dir}/libpano13 \
     --with-jpeg=${build_dir}/libjpeg-turbo \
     --with-png=${build_dir}/libpng \
+    --with-tiff=${build_dir}/libtiff \
     --with-zlib=${build_dir}/zlib \
-    --without-tiff \
     --without-java \
     --enable-static=yes \
     --enable-shared=no
