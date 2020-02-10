@@ -4,20 +4,54 @@ PKGDIR := $(TMPDIR)/pkg
 DEPDIR := $(TMPDIR)/dep
 BUILDDIR := $(TMPDIR)/build
 
+include versions.mk
+
+libjpeg_turbo_pkg = pkg/libjpeg-turbo-$(libjpeg_turbo_version).pkg.tar.xz
+libjpeg_turbo_src = src/libjpeg-turbo-$(libjpeg_turbo_version).tar.gz
+libjpeg_turbo_url = "https://download.sourceforge.net/libjpeg-turbo/$(notdir $(libjpeg_turbo_src))"
+
+liblzma_pkg = pkg/liblzma-$(liblzma_version).pkg.tar.xz
+liblzma_src = src/liblzma-$(liblzma_version).tar.gz
+liblzma_url = "https://tukaani.org/xz/xz-$(liblzma_version).tar.gz"
+
+libpano13_pkg = pkg/libpano13-$(libpano13_version).pkg.tar.xz
+libpano13_src = src/libpano13-$(libpano13_version).tar.gz
+libpano13_url = "https://download.sourceforge.net/panotools/$(notdir $(libpano13_src))"
+
+libpng_pkg = pkg/libpng-$(libpng_version).pkg.tar.xz
+libpng_src = src/libpng-$(libpng_version).tar.xz
+libpng_url = "https://download.sourceforge.net/libpng/$(notdir $(libpng_src))"
+
+libtiff_pkg = pkg/libtiff-$(libtiff_version).pkg.tar.xz
+libtiff_src = src/libtiff-$(libtiff_version).tar.gz
+libtiff_url = "https://download.osgeo.org/libtiff/tiff-$(libtiff_version).tar.gz"
+
+lz4_pkg = pkg/lz4-$(lz4_version).pkg.tar.xz
+lz4_src = src/lz4-$(lz4_version).tar.gz
+lz4_url = "https://github.com/lz4/lz4/archive/v$(lz4_version).tar.gz"
+
+zlib_pkg = pkg/zlib-$(zlib_version).pkg.tar.xz
+zlib_src = src/zlib-$(zlib_version).tar.gz
+zlib_url = "http://downloads.sourceforge.net/libpng/$(notdir $(zlib_src))"
+
+zstd_pkg = pkg/zstd-$(zstd_version).pkg.tar.xz
+zstd_src = src/zstd-$(zstd_version).tar.zst
+zstd_url = "https://github.com/facebook/zstd/releases/download/v$(zstd_version)/$(notdir $(zstd_src))"
+
 pkgs := \
-	pkg/libjpeg-turbo-2.0.4.pkg.tar.xz \
-	pkg/liblzma-5.2.4.pkg.tar.xz \
-	pkg/libpano13-2.9.19.pkg.tar.xz \
-	pkg/libpng-1.6.37.pkg.tar.xz \
-	pkg/libtiff-4.1.0.pkg.tar.xz \
-	pkg/lz4-1.9.2.pkg.tar.xz \
-	pkg/zlib-1.2.11.pkg.tar.xz \
-	pkg/zstd-1.4.4.pkg.tar.xz
+	$(libjpeg_turbo_pkg) \
+	$(liblzma_pkg) \
+	$(libpano13_pkg) \
+	$(libpng_pkg) \
+	$(libtiff_pkg) \
+	$(lz4_pkg) \
+	$(zlib_pkg) \
+	$(zstd_pkg)
 
 all: $(pkgs)
 	@rmdir $(TMPDIR)
 
-pkg/libjpeg-turbo-2.0.4.pkg.tar.xz: src/libjpeg-turbo-2.0.4.tar.gz
+$(libjpeg_turbo_pkg): $(libjpeg_turbo_src)
 	mkdir -p "$(SRCDIR)" "$(BUILDDIR)"
 	tar --extract --file=$< --directory="$(SRCDIR)" --strip-components=1
 	emcmake cmake \
@@ -39,7 +73,7 @@ pkg/libjpeg-turbo-2.0.4.pkg.tar.xz: src/libjpeg-turbo-2.0.4.tar.gz
 		.
 	rm -rf "$(SRCDIR)" "$(BUILDDIR)" "$(PKGDIR)"
 
-pkg/liblzma-5.2.4.pkg.tar.xz: src/liblzma-5.2.4.tar.gz
+$(liblzma_pkg): $(liblzma_src)
 	mkdir -p "$(SRCDIR)"
 	tar --extract --file=$< --directory="$(SRCDIR)" --strip-components=1
 	cd "$(SRCDIR)" && ./autogen.sh
@@ -65,7 +99,7 @@ pkg/liblzma-5.2.4.pkg.tar.xz: src/liblzma-5.2.4.tar.gz
 		.
 	rm -rf "$(SRCDIR)" "$(PKGDIR)"
 
-pkg/libpano13-2.9.19.pkg.tar.xz: src/libpano13-2.9.19.tar.gz pkg/libjpeg-turbo-2.0.4.pkg.tar.xz pkg/libpng-1.6.37.pkg.tar.xz pkg/libtiff-4.1.0.pkg.tar.xz pkg/zlib-1.2.11.pkg.tar.xz
+$(libpano13_pkg): $(libpano13_src) $(libjpeg_turbo_pkg) $(libpng_pkg) $(libtiff_pkg) $(zlib_pkg)
 	mkdir -p "$(SRCDIR)" "$(DEPDIR)"
 	tar --extract --file=$< --directory="$(SRCDIR)" --strip-components=1
 	for dep in $(filter pkg/%,$^); do \
@@ -92,7 +126,7 @@ pkg/libpano13-2.9.19.pkg.tar.xz: src/libpano13-2.9.19.tar.gz pkg/libjpeg-turbo-2
 		.
 	rm -rf "$(SRCDIR)" "$(DEPDIR)" "$(PKGDIR)"
 
-pkg/libpng-1.6.37.pkg.tar.xz: src/libpng-1.6.37.tar.xz pkg/zlib-1.2.11.pkg.tar.xz
+$(libpng_pkg): $(libpng_src) $(zlib_pkg)
 	mkdir -p "$(SRCDIR)" "$(DEPDIR)"
 	tar --extract --file=$< --directory="$(SRCDIR)" --strip-components=1
 	for dep in $(filter pkg/%,$^); do \
@@ -115,7 +149,7 @@ pkg/libpng-1.6.37.pkg.tar.xz: src/libpng-1.6.37.tar.xz pkg/zlib-1.2.11.pkg.tar.x
 		.
 	rm -rf "$(SRCDIR)" "$(DEPDIR)" "$(PKGDIR)"
 
-pkg/libtiff-4.1.0.pkg.tar.xz: src/libtiff-4.1.0.tar.gz pkg/libjpeg-turbo-2.0.4.pkg.tar.xz pkg/liblzma-5.2.4.pkg.tar.xz pkg/zlib-1.2.11.pkg.tar.xz pkg/zstd-1.4.4.pkg.tar.xz
+$(libtiff_pkg): $(libtiff_src) $(libjpeg_turbo_pkg) $(liblzma_pkg) $(zlib_pkg) $(zstd_pkg)
 	mkdir -p "$(SRCDIR)" "$(DEPDIR)"
 	tar --extract --file=$< --directory="$(SRCDIR)" --strip-components=1
 	for dep in $(filter pkg/%,$^); do \
@@ -145,7 +179,7 @@ pkg/libtiff-4.1.0.pkg.tar.xz: src/libtiff-4.1.0.tar.gz pkg/libjpeg-turbo-2.0.4.p
 		.
 	rm -rf "$(SRCDIR)" "$(DEPDIR)" "$(PKGDIR)"
 
-pkg/lz4-1.9.2.pkg.tar.xz: src/lz4-1.9.2.tar.gz
+$(lz4_pkg): $(lz4_src)
 	mkdir -p "$(SRCDIR)"
 	tar --extract --file=$< --directory="$(SRCDIR)" --strip-components=1
 	emcmake $(MAKE) \
@@ -165,7 +199,7 @@ pkg/lz4-1.9.2.pkg.tar.xz: src/lz4-1.9.2.tar.gz
 		.
 	rm -rf "$(SRCDIR)" "$(PKGDIR)"
 
-pkg/zlib-1.2.11.pkg.tar.xz: src/zlib-1.2.11.tar.gz
+$(zlib_pkg): $(zlib_src)
 	mkdir -p "$(SRCDIR)"
 	tar --extract --file=$< --directory="$(SRCDIR)" --strip-components=1
 	cd "$(SRCDIR)" && emconfigure ./configure \
@@ -182,7 +216,7 @@ pkg/zlib-1.2.11.pkg.tar.xz: src/zlib-1.2.11.tar.gz
 		.
 	rm -rf "$(SRCDIR)" "$(PKGDIR)"
 
-pkg/zstd-1.4.4.pkg.tar.xz: src/zstd-1.4.4.tar.zst
+$(zstd_pkg): $(zstb_src)
 	mkdir -p "$(SRCDIR)" "$(BUILDDIR)"
 	tar --extract --file=$< --directory="$(SRCDIR)" --strip-components=1
 	emcmake cmake \
@@ -202,67 +236,51 @@ pkg/zstd-1.4.4.pkg.tar.xz: src/zstd-1.4.4.tar.zst
 		.
 	rm -rf "$(SRCDIR)" "$(BUILDDIR)" "$(PKGDIR)"
 
-src/libjpeg-turbo-2.0.4.tar.gz:
+$(libjpeg_turbo_src):
 	mkdir -p $(@D)
-	wget \
-		--output-document="$(TMPDIR)/$(@F)" \
-		"https://download.sourceforge.net/libjpeg-turbo/libjpeg-turbo-2.0.4.tar.gz"
+	wget --output-document="$(TMPDIR)/$(@F)" $(libjpeg_turbo_url)
 	cd "$(TMPDIR)" && sha256sum --check --strict --ignore-missing "${PWD}/sources.sum"
 	mv "$(TMPDIR)/$(@F)" $(@D)
 
-src/liblzma-5.2.4.tar.gz:
+$(liblzma_src):
 	mkdir -p $(@D)
-	wget \
-		--output-document="$(TMPDIR)/$(@F)" \
-		"https://tukaani.org/xz/xz-5.2.4.tar.gz"
+	wget --output-document="$(TMPDIR)/$(@F)" $(liblzma_url)
 	cd "$(TMPDIR)" && sha256sum --check --strict --ignore-missing "${PWD}/sources.sum"
 	mv "$(TMPDIR)/$(@F)" $(@D)
 
-src/libpano13-2.9.19.tar.gz:
+$(libpano13_src):
 	mkdir -p $(@D)
-	wget \
-		--output-document="$(TMPDIR)/$(@F)" \
-		"https://download.sourceforge.net/panotools/libpano13-2.9.19.tar.gz"
+	wget --output-document="$(TMPDIR)/$(@F)" $(libpano_url)
 	cd "$(TMPDIR)" && sha256sum --check --strict --ignore-missing "${PWD}/sources.sum"
 	mv "$(TMPDIR)/$(@F)" $(@D)
 
-src/libpng-1.6.37.tar.xz:
+$(libpng_src):
 	mkdir -p $(@D)
-	wget \
-		--output-document="$(TMPDIR)/$(@F)" \
-		"https://download.sourceforge.net/libpng/libpng-1.6.37.tar.xz"
+	wget --output-document="$(TMPDIR)/$(@F)" $(libpng_url)
 	cd "$(TMPDIR)" && sha256sum --check --strict --ignore-missing "${PWD}/sources.sum"
 	mv "$(TMPDIR)/$(@F)" $(@D)
 
-src/libtiff-4.1.0.tar.gz:
+$(libtiff_src):
 	mkdir -p $(@D)
-	wget \
-		--output-document="$(TMPDIR)/$(@F)" \
-		"https://download.osgeo.org/libtiff/tiff-4.1.0.tar.gz"
+	wget --output-document="$(TMPDIR)/$(@F)" $(libtiff_url)
 	cd "$(TMPDIR)" && sha256sum --check --strict --ignore-missing "${PWD}/sources.sum"
 	mv "$(TMPDIR)/$(@F)" $(@D)
 
-src/lz4-1.9.2.tar.gz:
+$(lz4_src):
 	mkdir -p $(@D)
-	wget \
-		--output-document="$(TMPDIR)/$(@F)" \
-		"https://github.com/lz4/lz4/archive/v1.9.2.tar.gz"
+	wget --output-document="$(TMPDIR)/$(@F)" $(lz4_url)
 	cd "$(TMPDIR)" && sha256sum --check --strict --ignore-missing "${PWD}/sources.sum"
 	mv "$(TMPDIR)/$(@F)" $(@D)
 
-src/zlib-1.2.11.tar.gz:
+$(zlib_src):
 	mkdir -p $(@D)
-	wget \
-		--output-document="$(TMPDIR)/$(@F)" \
-		"http://downloads.sourceforge.net/libpng/zlib-1.2.11.tar.gz"
+	wget --output-document="$(TMPDIR)/$(@F)" $(zlib_url)
 	cd "$(TMPDIR)" && sha256sum --check --strict --ignore-missing "${PWD}/sources.sum"
 	mv "$(TMPDIR)/$(@F)" $(@D)
 
-src/zstd-1.4.4.tar.zst:
+$(zstd_src):
 	mkdir -p $(@D)
-	wget \
-		--output-document="$(TMPDIR)/$(@F)" \
-		"https://github.com/facebook/zstd/releases/download/v1.4.4/zstd-1.4.4.tar.zst"
+	wget --output-document="$(TMPDIR)/$(@F)" $(zstd_url)
 	cd "$(TMPDIR)" && sha256sum --check --strict --ignore-missing "${PWD}/sources.sum"
 	mv "$(TMPDIR)/$(@F)" $(@D)
 
