@@ -5,6 +5,7 @@ DEPDIR := $(TMPDIR)/dep
 BUILDDIR := $(TMPDIR)/build
 
 pkgs := \
+	pkg/libjpeg-turbo-2.0.4.pkg.tar.xz \
 	pkg/libpng-1.6.37.pkg.tar.xz \
 	pkg/lz4-1.9.2.pkg.tar.xz \
 	pkg/zlib-1.2.11.pkg.tar.xz \
@@ -12,6 +13,31 @@ pkgs := \
 
 all: $(pkgs)
 	@rmdir $(TMPDIR)
+
+pkg/libjpeg-turbo-2.0.4.pkg.tar.xz: src/libjpeg-turbo-2.0.4.tar.gz
+	mkdir -p "$(SRCDIR)" "$(BUILDDIR)"
+	tar --extract \
+		--file=src/libjpeg-turbo-2.0.4.tar.gz \
+		--directory="$(SRCDIR)" \
+		--strip-components=1
+	emcmake cmake \
+		-DCMAKE_INSTALL_PREFIX:PATH="$(PKGDIR)" \
+		-DWITH_TURBOJPEG=0 \
+		-DWITH_JAVA=0 \
+		-DENABLE_STATIC=1 \
+		-DENABLE_SHARED=0 \
+		-S "$(SRCDIR)" \
+		-B "$(BUILDDIR)"
+	emcmake $(MAKE) \
+		--directory=$(BUILDDIR) \
+		all install
+	rm -rf "$(PKGDIR)/bin" "$(PKGDIR)/share"
+	tar --create \
+		--file=pkg/libjpeg-turbo-2.0.4.pkg.tar.xz \
+		--directory="$(PKGDIR)" \
+		--auto-compress \
+		.
+	rm -rf "$(SRCDIR)" "$(BUILDDIR)" "$(PKGDIR)"
 
 pkg/libpng-1.6.37.pkg.tar.xz: src/libpng-1.6.37.tar.xz pkg/zlib-1.2.11.pkg.tar.xz
 	mkdir -p "$(SRCDIR)" "$(DEPDIR)"
@@ -104,6 +130,15 @@ pkg/zstd-1.4.4.pkg.tar.xz: src/zstd-1.4.4.tar.zst
 		--auto-compress \
 		.
 	rm -rf "$(SRCDIR)" "$(BUILDDIR)" "$(PKGDIR)"
+
+src/libjpeg-turbo-2.0.4.tar.gz:
+	mkdir -p src
+	wget \
+		--output-document="$(TMPDIR)/libjpeg-turbo-2.0.4.tar.gz" \
+		"https://download.sourceforge.net/libjpeg-turbo/libjpeg-turbo-2.0.4.tar.gz"
+	cd "$(TMPDIR)" && sha256sum --strict --check \
+		"${PWD}/libjpeg-turbo.sum"
+	mv "$(TMPDIR)/libjpeg-turbo-2.0.4.tar.gz" src
 
 src/libpng-1.6.37.tar.xz:
 	mkdir -p src
