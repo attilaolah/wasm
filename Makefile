@@ -7,6 +7,7 @@ BUILDDIR := $(TMPDIR)/build
 pkgs := \
 	pkg/libjpeg-turbo-2.0.4.pkg.tar.xz \
 	pkg/libpng-1.6.37.pkg.tar.xz \
+	pkg/libtiff-4.1.0.pkg.tar.xz \
 	pkg/lz4-1.9.2.pkg.tar.xz \
 	pkg/zlib-1.2.11.pkg.tar.xz \
 	pkg/zstd-1.4.4.pkg.tar.xz
@@ -60,6 +61,43 @@ pkg/libpng-1.6.37.pkg.tar.xz: src/libpng-1.6.37.tar.xz pkg/zlib-1.2.11.pkg.tar.x
 	rm -rf "$(PKGDIR)/bin" "$(PKGDIR)/share"
 	tar --create \
 		--file=pkg/libpng-1.6.37.pkg.tar.xz \
+		--directory="$(PKGDIR)" \
+		--auto-compress \
+		.
+	rm -rf "$(SRCDIR)" "$(DEPDIR)" "$(PKGDIR)"
+
+pkg/libtiff-4.1.0.pkg.tar.xz: src/libtiff-4.1.0.tar.gz pkg/libjpeg-turbo-2.0.4.pkg.tar.xz pkg/zlib-1.2.11.pkg.tar.xz pkg/zstd-1.4.4.pkg.tar.xz
+	mkdir -p "$(SRCDIR)" "$(DEPDIR)"
+	tar --extract \
+		--file=src/libtiff-4.1.0.tar.gz \
+		--directory="$(SRCDIR)" \
+		--strip-components=1
+	tar --extract \
+		--file=pkg/libjpeg-turbo-2.0.4.pkg.tar.xz \
+		--directory="$(DEPDIR)"
+	tar --extract \
+		--file=pkg/zlib-1.2.11.pkg.tar.xz \
+		--directory="$(DEPDIR)"
+	tar --extract \
+		--file=pkg/zstd-1.4.4.pkg.tar.xz \
+		--directory="$(DEPDIR)"
+	cd "$(SRCDIR)" && ./autogen.sh
+	cd "$(SRCDIR)" && emconfigure ./configure \
+		--prefix="$(PKGDIR)" \
+		--with-jpeg-lib-dir="$(DEPDIR)/lib" \
+		--with-jpeg-include-dir="$(DEPDIR)/include" \
+		--with-zlib-lib-dir="$(DEPDIR)/lib" \
+		--with-zlib-include-dir="$(DEPDIR)/include" \
+		--with-zstd-lib-dir="$(DEPDIR)/lib" \
+		--with-zstd-include-dir="$(DEPDIR)/include" \
+		--enable-static=yes \
+		--enable-shared=no
+	emcmake $(MAKE) \
+		--directory=$(SRCDIR) \
+		all install
+	rm -rf "$(PKGDIR)/bin" "$(PKGDIR)/share"
+	tar --create \
+		--file=pkg/libtiff-4.1.0.pkg.tar.xz \
 		--directory="$(PKGDIR)" \
 		--auto-compress \
 		.
@@ -148,6 +186,15 @@ src/libpng-1.6.37.tar.xz:
 	cd "$(TMPDIR)" && sha256sum --strict --check \
 		"${PWD}/libpng.sum"
 	mv "$(TMPDIR)/libpng-1.6.37.tar.xz" src
+
+src/libtiff-4.1.0.tar.gz:
+	mkdir -p src
+	wget \
+		--output-document="$(TMPDIR)/libtiff-4.1.0.tar.gz" \
+		"https://download.osgeo.org/libtiff/tiff-4.1.0.tar.gz"
+	cd "$(TMPDIR)" && sha256sum --strict --check \
+		"${PWD}/libtiff.sum"
+	mv "$(TMPDIR)/libtiff-4.1.0.tar.gz" src
 
 src/lz4-1.9.2.tar.gz:
 	mkdir -p src
