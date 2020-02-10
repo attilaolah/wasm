@@ -247,65 +247,65 @@ pkg/zstd-1.4.4.pkg.tar.xz: src/zstd-1.4.4.tar.zst
 src/libjpeg-turbo-2.0.4.tar.gz:
 	mkdir -p src
 	wget \
-		--output-document="$(TMPDIR)/libjpeg-turbo-2.0.4.tar.gz" \
+		--output-document="$(TMPDIR)/$(notdir $@)" \
 		"https://download.sourceforge.net/libjpeg-turbo/libjpeg-turbo-2.0.4.tar.gz"
 	cd "$(TMPDIR)" && sha256sum --check --strict --ignore-missing "${PWD}/sources.sum"
-	mv "$(TMPDIR)/libjpeg-turbo-2.0.4.tar.gz" src
+	mv "$(TMPDIR)/$(notdir $@)" src
 
 src/liblzma-5.2.4.tar.gz:
 	mkdir -p src
 	wget \
-		--output-document="$(TMPDIR)/liblzma-5.2.4.tar.gz" \
+		--output-document="$(TMPDIR)/$(notdir $@)" \
 		"https://tukaani.org/xz/xz-5.2.4.tar.gz"
 	cd "$(TMPDIR)" && sha256sum --check --strict --ignore-missing "${PWD}/sources.sum"
-	mv "$(TMPDIR)/liblzma-5.2.4.tar.gz" src
+	mv "$(TMPDIR)/$(notdir $@)" src
 
 src/libpano13-2.9.19.tar.gz:
 	mkdir -p src
 	wget \
-		--output-document="$(TMPDIR)/libpano13-2.9.19.tar.gz" \
+		--output-document="$(TMPDIR)/$(notdir $@)" \
 		"https://download.sourceforge.net/panotools/libpano13-2.9.19.tar.gz"
 	cd "$(TMPDIR)" && sha256sum --check --strict --ignore-missing "${PWD}/sources.sum"
-	mv "$(TMPDIR)/libpano13-2.9.19.tar.gz" src
+	mv "$(TMPDIR)/$(notdir $@)" src
 
 src/libpng-1.6.37.tar.xz:
 	mkdir -p src
 	wget \
-		--output-document="$(TMPDIR)/libpng-1.6.37.tar.xz" \
+		--output-document="$(TMPDIR)/$(notdir $@)" \
 		"https://download.sourceforge.net/libpng/libpng-1.6.37.tar.xz"
 	cd "$(TMPDIR)" && sha256sum --check --strict --ignore-missing "${PWD}/sources.sum"
-	mv "$(TMPDIR)/libpng-1.6.37.tar.xz" src
+	mv "$(TMPDIR)/$(notdir $@)" src
 
 src/libtiff-4.1.0.tar.gz:
 	mkdir -p src
 	wget \
-		--output-document="$(TMPDIR)/libtiff-4.1.0.tar.gz" \
+		--output-document="$(TMPDIR)/$(notdir $@)" \
 		"https://download.osgeo.org/libtiff/tiff-4.1.0.tar.gz"
 	cd "$(TMPDIR)" && sha256sum --check --strict --ignore-missing "${PWD}/sources.sum"
-	mv "$(TMPDIR)/libtiff-4.1.0.tar.gz" src
+	mv "$(TMPDIR)/$(notdir $@)" src
 
 src/lz4-1.9.2.tar.gz:
 	mkdir -p src
 	wget \
-		--output-document="$(TMPDIR)/lz4-1.9.2.tar.gz" \
+		--output-document="$(TMPDIR)/$(notdir $@)" \
 		"https://github.com/lz4/lz4/archive/v1.9.2.tar.gz"
 	cd "$(TMPDIR)" && sha256sum --check --strict --ignore-missing "${PWD}/sources.sum"
-	mv "$(TMPDIR)/lz4-1.9.2.tar.gz" src
+	mv "$(TMPDIR)/$(notdir $@)" src
 
 src/zlib-1.2.11.tar.gz:
 	mkdir -p src
 	wget \
-		--output-document="$(TMPDIR)/zlib-1.2.11.tar.gz" \
+		--output-document="$(TMPDIR)/$(notdir $@)" \
 		"http://downloads.sourceforge.net/libpng/zlib-1.2.11.tar.gz"
 	cd "$(TMPDIR)" && sha256sum --check --strict --ignore-missing "${PWD}/sources.sum"
-	mv "$(TMPDIR)/zlib-1.2.11.tar.gz" src
+	mv "$(TMPDIR)/$(notdir $@)" src
 
 src/zstd-1.4.4.tar.zst:
 	mkdir -p src
 	wget \
-		--output-document="$(TMPDIR)/zstd-1.4.4.tar.zst" \
+		--output-document="$(TMPDIR)/$(notdir $@)" \
 		"https://github.com/facebook/zstd/releases/download/v1.4.4/zstd-1.4.4.tar.zst"
 	cd "$(TMPDIR)" && sha256sum --check --strict --ignore-missing "${PWD}/sources.sum"
-	mv "$(TMPDIR)/zstd-1.4.4.tar.zst" src
+	mv "$(TMPDIR)/$(notdir $@)" src
 
 .PHONY: all
