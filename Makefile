@@ -6,6 +6,7 @@ BUILDDIR := $(TMPDIR)/build
 
 pkgs := \
 	pkg/libjpeg-turbo-2.0.4.pkg.tar.xz \
+	pkg/liblzma-5.2.4.pkg.tar.xz \
 	pkg/libpng-1.6.37.pkg.tar.xz \
 	pkg/libtiff-4.1.0.pkg.tar.xz \
 	pkg/lz4-1.9.2.pkg.tar.xz \
@@ -39,6 +40,35 @@ pkg/libjpeg-turbo-2.0.4.pkg.tar.xz: src/libjpeg-turbo-2.0.4.tar.gz
 		--auto-compress \
 		.
 	rm -rf "$(SRCDIR)" "$(BUILDDIR)" "$(PKGDIR)"
+
+pkg/liblzma-5.2.4.pkg.tar.xz: src/liblzma-5.2.4.tar.gz
+	mkdir -p "$(SRCDIR)"
+	tar --extract \
+		--file=src/liblzma-5.2.4.tar.gz \
+		--directory="$(SRCDIR)" \
+		--strip-components=1
+	cd "$(SRCDIR)" && ./autogen.sh
+	cd "$(SRCDIR)" && emconfigure ./configure \
+		--prefix="$(PKGDIR)" \
+		--disable-doc \
+		--disable-lzma-links \
+		--disable-lzmadec \
+		--disable-lzmainfo \
+		--disable-scripts \
+		--disable-shared \
+		--disable-xz \
+		--disable-xzdec \
+		--enable-small
+	emcmake $(MAKE) \
+		--directory=$(SRCDIR) \
+		all install
+	rmdir "$(PKGDIR)/bin"
+	tar --create \
+		--file=pkg/liblzma-5.2.4.pkg.tar.xz \
+		--directory="$(PKGDIR)" \
+		--auto-compress \
+		.
+	rm -rf "$(SRCDIR)" "$(PKGDIR)"
 
 pkg/libpng-1.6.37.pkg.tar.xz: src/libpng-1.6.37.tar.xz pkg/zlib-1.2.11.pkg.tar.xz
 	mkdir -p "$(SRCDIR)" "$(DEPDIR)"
@@ -177,6 +207,15 @@ src/libjpeg-turbo-2.0.4.tar.gz:
 	cd "$(TMPDIR)" && sha256sum --strict --check \
 		"${PWD}/libjpeg-turbo.sum"
 	mv "$(TMPDIR)/libjpeg-turbo-2.0.4.tar.gz" src
+
+src/liblzma-5.2.4.tar.gz:
+	mkdir -p src
+	wget \
+		--output-document="$(TMPDIR)/liblzma-5.2.4.tar.gz" \
+		"https://tukaani.org/xz/xz-5.2.4.tar.gz"
+	cd "$(TMPDIR)" && sha256sum --strict --check \
+		"${PWD}/liblzma.sum"
+	mv "$(TMPDIR)/liblzma-5.2.4.tar.gz" src
 
 src/libpng-1.6.37.tar.xz:
 	mkdir -p src
