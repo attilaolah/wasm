@@ -96,7 +96,7 @@ pkg/libpng-1.6.37.pkg.tar.xz: src/libpng-1.6.37.tar.xz pkg/zlib-1.2.11.pkg.tar.x
 		.
 	rm -rf "$(SRCDIR)" "$(DEPDIR)" "$(PKGDIR)"
 
-pkg/libtiff-4.1.0.pkg.tar.xz: src/libtiff-4.1.0.tar.gz pkg/libjpeg-turbo-2.0.4.pkg.tar.xz pkg/zlib-1.2.11.pkg.tar.xz pkg/zstd-1.4.4.pkg.tar.xz
+pkg/libtiff-4.1.0.pkg.tar.xz: src/libtiff-4.1.0.tar.gz pkg/libjpeg-turbo-2.0.4.pkg.tar.xz pkg/liblzma-5.2.4.pkg.tar.xz pkg/zlib-1.2.11.pkg.tar.xz pkg/zstd-1.4.4.pkg.tar.xz
 	mkdir -p "$(SRCDIR)" "$(DEPDIR)"
 	tar --extract \
 		--file=src/libtiff-4.1.0.tar.gz \
@@ -104,6 +104,9 @@ pkg/libtiff-4.1.0.pkg.tar.xz: src/libtiff-4.1.0.tar.gz pkg/libjpeg-turbo-2.0.4.p
 		--strip-components=1
 	tar --extract \
 		--file=pkg/libjpeg-turbo-2.0.4.pkg.tar.xz \
+		--directory="$(DEPDIR)"
+	tar --extract \
+		--file=pkg/liblzma-5.2.4.pkg.tar.xz \
 		--directory="$(DEPDIR)"
 	tar --extract \
 		--file=pkg/zlib-1.2.11.pkg.tar.xz \
@@ -116,6 +119,8 @@ pkg/libtiff-4.1.0.pkg.tar.xz: src/libtiff-4.1.0.tar.gz pkg/libjpeg-turbo-2.0.4.p
 		--prefix="$(PKGDIR)" \
 		--with-jpeg-lib-dir="$(DEPDIR)/lib" \
 		--with-jpeg-include-dir="$(DEPDIR)/include" \
+		--with-lzma-lib-dir="$(DEPDIR)/lib" \
+		--with-lzma-include-dir="$(DEPDIR)/include" \
 		--with-zlib-lib-dir="$(DEPDIR)/lib" \
 		--with-zlib-include-dir="$(DEPDIR)/include" \
 		--with-zstd-lib-dir="$(DEPDIR)/lib" \
