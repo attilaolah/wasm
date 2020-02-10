@@ -249,8 +249,7 @@ src/libjpeg-turbo-2.0.4.tar.gz:
 	wget \
 		--output-document="$(TMPDIR)/libjpeg-turbo-2.0.4.tar.gz" \
 		"https://download.sourceforge.net/libjpeg-turbo/libjpeg-turbo-2.0.4.tar.gz"
-	cd "$(TMPDIR)" && sha256sum --strict --check \
-		"${PWD}/libjpeg-turbo.sum"
+	cd "$(TMPDIR)" && sha256sum --check --strict --ignore-missing "${PWD}/sources.sum"
 	mv "$(TMPDIR)/libjpeg-turbo-2.0.4.tar.gz" src
 
 src/liblzma-5.2.4.tar.gz:
@@ -258,8 +257,7 @@ src/liblzma-5.2.4.tar.gz:
 	wget \
 		--output-document="$(TMPDIR)/liblzma-5.2.4.tar.gz" \
 		"https://tukaani.org/xz/xz-5.2.4.tar.gz"
-	cd "$(TMPDIR)" && sha256sum --strict --check \
-		"${PWD}/liblzma.sum"
+	cd "$(TMPDIR)" && sha256sum --check --strict --ignore-missing "${PWD}/sources.sum"
 	mv "$(TMPDIR)/liblzma-5.2.4.tar.gz" src
 
 src/libpano13-2.9.19.tar.gz:
@@ -267,8 +265,7 @@ src/libpano13-2.9.19.tar.gz:
 	wget \
 		--output-document="$(TMPDIR)/libpano13-2.9.19.tar.gz" \
 		"https://download.sourceforge.net/panotools/libpano13-2.9.19.tar.gz"
-	cd "$(TMPDIR)" && sha256sum --strict --check \
-		"${PWD}/libpano13.sum"
+	cd "$(TMPDIR)" && sha256sum --check --strict --ignore-missing "${PWD}/sources.sum"
 	mv "$(TMPDIR)/libpano13-2.9.19.tar.gz" src
 
 src/libpng-1.6.37.tar.xz:
@@ -276,8 +273,7 @@ src/libpng-1.6.37.tar.xz:
 	wget \
 		--output-document="$(TMPDIR)/libpng-1.6.37.tar.xz" \
 		"https://download.sourceforge.net/libpng/libpng-1.6.37.tar.xz"
-	cd "$(TMPDIR)" && sha256sum --strict --check \
-		"${PWD}/libpng.sum"
+	cd "$(TMPDIR)" && sha256sum --check --strict --ignore-missing "${PWD}/sources.sum"
 	mv "$(TMPDIR)/libpng-1.6.37.tar.xz" src
 
 src/libtiff-4.1.0.tar.gz:
@@ -285,8 +281,7 @@ src/libtiff-4.1.0.tar.gz:
 	wget \
 		--output-document="$(TMPDIR)/libtiff-4.1.0.tar.gz" \
 		"https://download.osgeo.org/libtiff/tiff-4.1.0.tar.gz"
-	cd "$(TMPDIR)" && sha256sum --strict --check \
-		"${PWD}/libtiff.sum"
+	cd "$(TMPDIR)" && sha256sum --check --strict --ignore-missing "${PWD}/sources.sum"
 	mv "$(TMPDIR)/libtiff-4.1.0.tar.gz" src
 
 src/lz4-1.9.2.tar.gz:
@@ -294,8 +289,7 @@ src/lz4-1.9.2.tar.gz:
 	wget \
 		--output-document="$(TMPDIR)/lz4-1.9.2.tar.gz" \
 		"https://github.com/lz4/lz4/archive/v1.9.2.tar.gz"
-	cd "$(TMPDIR)" && sha256sum --strict --check \
-		"${PWD}/lz4.sum"
+	cd "$(TMPDIR)" && sha256sum --check --strict --ignore-missing "${PWD}/sources.sum"
 	mv "$(TMPDIR)/lz4-1.9.2.tar.gz" src
 
 src/zlib-1.2.11.tar.gz:
@@ -303,8 +297,7 @@ src/zlib-1.2.11.tar.gz:
 	wget \
 		--output-document="$(TMPDIR)/zlib-1.2.11.tar.gz" \
 		"http://downloads.sourceforge.net/libpng/zlib-1.2.11.tar.gz"
-	cd "$(TMPDIR)" && sha256sum --strict --check \
-		"${PWD}/zlib.sum"
+	cd "$(TMPDIR)" && sha256sum --check --strict --ignore-missing "${PWD}/sources.sum"
 	mv "$(TMPDIR)/zlib-1.2.11.tar.gz" src
 
 src/zstd-1.4.4.tar.zst:
@@ -312,8 +305,7 @@ src/zstd-1.4.4.tar.zst:
 	wget \
 		--output-document="$(TMPDIR)/zstd-1.4.4.tar.zst" \
 		"https://github.com/facebook/zstd/releases/download/v1.4.4/zstd-1.4.4.tar.zst"
-	cd "$(TMPDIR)" && sha256sum --strict --check \
-		"${PWD}/zstd.sum"
+	cd "$(TMPDIR)" && sha256sum --check --strict --ignore-missing "${PWD}/sources.sum"
 	mv "$(TMPDIR)/zstd-1.4.4.tar.zst" src
 
 .PHONY: all
