@@ -20,7 +20,7 @@ all: $(pkgs)
 pkg/libjpeg-turbo-2.0.4.pkg.tar.xz: src/libjpeg-turbo-2.0.4.tar.gz
 	mkdir -p "$(SRCDIR)" "$(BUILDDIR)"
 	tar --extract \
-		--file=src/libjpeg-turbo-2.0.4.tar.gz \
+		--file=$< \
 		--directory="$(SRCDIR)" \
 		--strip-components=1
 	emcmake cmake \
@@ -45,7 +45,7 @@ pkg/libjpeg-turbo-2.0.4.pkg.tar.xz: src/libjpeg-turbo-2.0.4.tar.gz
 pkg/liblzma-5.2.4.pkg.tar.xz: src/liblzma-5.2.4.tar.gz
 	mkdir -p "$(SRCDIR)"
 	tar --extract \
-		--file=src/liblzma-5.2.4.tar.gz \
+		--file=$< \
 		--directory="$(SRCDIR)" \
 		--strip-components=1
 	cd "$(SRCDIR)" && ./autogen.sh
@@ -74,7 +74,7 @@ pkg/liblzma-5.2.4.pkg.tar.xz: src/liblzma-5.2.4.tar.gz
 pkg/libpano13-2.9.19.pkg.tar.xz: src/libpano13-2.9.19.tar.gz pkg/libjpeg-turbo-2.0.4.pkg.tar.xz pkg/libpng-1.6.37.pkg.tar.xz pkg/libtiff-4.1.0.pkg.tar.xz pkg/zlib-1.2.11.pkg.tar.xz
 	mkdir -p "$(SRCDIR)" "$(DEPDIR)"
 	tar --extract \
-		--file=src/libpano13-2.9.19.tar.gz \
+		--file=$< \
 		--directory="$(SRCDIR)" \
 		--strip-components=1
 	tar --extract \
@@ -113,7 +113,7 @@ pkg/libpano13-2.9.19.pkg.tar.xz: src/libpano13-2.9.19.tar.gz pkg/libjpeg-turbo-2
 pkg/libpng-1.6.37.pkg.tar.xz: src/libpng-1.6.37.tar.xz pkg/zlib-1.2.11.pkg.tar.xz
 	mkdir -p "$(SRCDIR)" "$(DEPDIR)"
 	tar --extract \
-		--file=src/libpng-1.6.37.tar.xz \
+		--file=$< \
 		--directory="$(SRCDIR)" \
 		--strip-components=1
 	tar --extract \
@@ -139,7 +139,7 @@ pkg/libpng-1.6.37.pkg.tar.xz: src/libpng-1.6.37.tar.xz pkg/zlib-1.2.11.pkg.tar.x
 pkg/libtiff-4.1.0.pkg.tar.xz: src/libtiff-4.1.0.tar.gz pkg/libjpeg-turbo-2.0.4.pkg.tar.xz pkg/liblzma-5.2.4.pkg.tar.xz pkg/zlib-1.2.11.pkg.tar.xz pkg/zstd-1.4.4.pkg.tar.xz
 	mkdir -p "$(SRCDIR)" "$(DEPDIR)"
 	tar --extract \
-		--file=src/libtiff-4.1.0.tar.gz \
+		--file=$< \
 		--directory="$(SRCDIR)" \
 		--strip-components=1
 	tar --extract \
@@ -181,7 +181,7 @@ pkg/libtiff-4.1.0.pkg.tar.xz: src/libtiff-4.1.0.tar.gz pkg/libjpeg-turbo-2.0.4.p
 pkg/lz4-1.9.2.pkg.tar.xz: src/lz4-1.9.2.tar.gz
 	mkdir -p "$(SRCDIR)"
 	tar --extract \
-		--file=src/lz4-1.9.2.tar.gz \
+		--file=$< \
 		--directory="$(SRCDIR)" \
 		--strip-components=1
 	emcmake $(MAKE) \
@@ -204,7 +204,7 @@ pkg/lz4-1.9.2.pkg.tar.xz: src/lz4-1.9.2.tar.gz
 pkg/zlib-1.2.11.pkg.tar.xz: src/zlib-1.2.11.tar.gz
 	mkdir -p "$(SRCDIR)"
 	tar --extract \
-		--file=src/zlib-1.2.11.tar.gz \
+		--file=$< \
 		--directory="$(SRCDIR)" \
 		--strip-components=1
 	cd "$(SRCDIR)" && emconfigure ./configure \
@@ -224,7 +224,7 @@ pkg/zlib-1.2.11.pkg.tar.xz: src/zlib-1.2.11.tar.gz
 pkg/zstd-1.4.4.pkg.tar.xz: src/zstd-1.4.4.tar.zst
 	mkdir -p "$(SRCDIR)" "$(BUILDDIR)"
 	tar --extract \
-		--file=src/zstd-1.4.4.tar.zst \
+		--file=$< \
 		--directory="$(SRCDIR)" \
 		--strip-components=1
 	emcmake cmake \
