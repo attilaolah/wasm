@@ -5,12 +5,39 @@ DEPDIR := $(TMPDIR)/dep
 BUILDDIR := $(TMPDIR)/build
 
 pkgs := \
+	pkg/libpng-1.6.37.pkg.tar.xz \
 	pkg/lz4-1.9.2.pkg.tar.xz \
 	pkg/zlib-1.2.11.pkg.tar.xz \
 	pkg/zstd-1.4.4.pkg.tar.xz
 
 all: $(pkgs)
 	@rmdir $(TMPDIR)
+
+pkg/libpng-1.6.37.pkg.tar.xz: src/libpng-1.6.37.tar.xz pkg/zlib-1.2.11.pkg.tar.xz
+	mkdir -p "$(SRCDIR)" "$(DEPDIR)"
+	tar --extract \
+		--file=src/libpng-1.6.37.tar.xz \
+		--directory="$(SRCDIR)" \
+		--strip-components=1
+	tar --extract \
+		--file=pkg/zlib-1.2.11.pkg.tar.xz \
+		--directory="$(DEPDIR)"
+	cd "$(SRCDIR)" && emconfigure ./configure \
+		--prefix="$(PKGDIR)" \
+		--with-zlib-prefix="$(DEPDIR)" \
+		--enable-static=yes \
+		--enable-shared=no
+	emcmake $(MAKE) \
+		--directory=$(SRCDIR) \
+		INCLUDES="-I$(DEPDIR)/include" \
+		all install
+	rm -rf "$(PKGDIR)/bin" "$(PKGDIR)/share"
+	tar --create \
+		--file=pkg/libpng-1.6.37.pkg.tar.xz \
+		--directory="$(PKGDIR)" \
+		--auto-compress \
+		.
+	rm -rf "$(SRCDIR)" "$(DEPDIR)" "$(PKGDIR)"
 
 pkg/lz4-1.9.2.pkg.tar.xz: src/lz4-1.9.2.tar.gz
 	mkdir -p "$(SRCDIR)"
@@ -42,7 +69,7 @@ pkg/zlib-1.2.11.pkg.tar.xz: src/zlib-1.2.11.tar.gz
 		--directory="$(SRCDIR)" \
 		--strip-components=1
 	cd "$(SRCDIR)" && emconfigure ./configure \
-		--prefix=$(PKGDIR) \
+		--prefix="$(PKGDIR)" \
 		--static
 	emcmake $(MAKE) \
 		--directory="$(SRCDIR)" \
@@ -77,6 +104,15 @@ pkg/zstd-1.4.4.pkg.tar.xz: src/zstd-1.4.4.tar.zst
 		--auto-compress \
 		.
 	rm -rf "$(SRCDIR)" "$(BUILDDIR)" "$(PKGDIR)"
+
+src/libpng-1.6.37.tar.xz:
+	mkdir -p src
+	wget \
+		--output-document="$(TMPDIR)/libpng-1.6.37.tar.xz" \
+		"https://download.sourceforge.net/libpng/libpng-1.6.37.tar.xz"
+	cd "$(TMPDIR)" && sha256sum --strict --check \
+		"${PWD}/libpng.sum"
+	mv "$(TMPDIR)/libpng-1.6.37.tar.xz" src
 
 src/lz4-1.9.2.tar.gz:
 	mkdir -p src
