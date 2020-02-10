@@ -36,7 +36,7 @@ pkg/libjpeg-turbo-2.0.4.pkg.tar.xz: src/libjpeg-turbo-2.0.4.tar.gz
 		all install
 	rm -rf "$(PKGDIR)/bin" "$(PKGDIR)/share"
 	tar --create \
-		--file=pkg/libjpeg-turbo-2.0.4.pkg.tar.xz \
+		--file=$@ \
 		--directory="$(PKGDIR)" \
 		--auto-compress \
 		.
@@ -65,7 +65,7 @@ pkg/liblzma-5.2.4.pkg.tar.xz: src/liblzma-5.2.4.tar.gz
 		all install
 	rmdir "$(PKGDIR)/bin"
 	tar --create \
-		--file=pkg/liblzma-5.2.4.pkg.tar.xz \
+		--file=$@ \
 		--directory="$(PKGDIR)" \
 		--auto-compress \
 		.
@@ -104,7 +104,7 @@ pkg/libpano13-2.9.19.pkg.tar.xz: src/libpano13-2.9.19.tar.gz pkg/libjpeg-turbo-2
 		all install
 	rm -rf "$(PKGDIR)/bin" "$(PKGDIR)/share"
 	tar --create \
-		--file=pkg/libpano13-2.9.19.pkg.tar.xz \
+		--file=$@ \
 		--directory="$(PKGDIR)" \
 		--auto-compress \
 		.
@@ -130,7 +130,7 @@ pkg/libpng-1.6.37.pkg.tar.xz: src/libpng-1.6.37.tar.xz pkg/zlib-1.2.11.pkg.tar.x
 		all install
 	rm -rf "$(PKGDIR)/bin" "$(PKGDIR)/share"
 	tar --create \
-		--file=pkg/libpng-1.6.37.pkg.tar.xz \
+		--file=$@ \
 		--directory="$(PKGDIR)" \
 		--auto-compress \
 		.
@@ -172,7 +172,7 @@ pkg/libtiff-4.1.0.pkg.tar.xz: src/libtiff-4.1.0.tar.gz pkg/libjpeg-turbo-2.0.4.p
 		all install
 	rm -rf "$(PKGDIR)/bin" "$(PKGDIR)/share"
 	tar --create \
-		--file=pkg/libtiff-4.1.0.pkg.tar.xz \
+		--file=$@ \
 		--directory="$(PKGDIR)" \
 		--auto-compress \
 		.
@@ -195,7 +195,7 @@ pkg/lz4-1.9.2.pkg.tar.xz: src/lz4-1.9.2.tar.gz
 		"$(PKGDIR)/usr/local/share"
 	mkdir -p pkg
 	tar --create \
-		--file=pkg/lz4-1.9.2.pkg.tar.xz \
+		--file=$@ \
 		--directory="$(PKGDIR)/usr/local" \
 		--auto-compress \
 		.
@@ -215,7 +215,7 @@ pkg/zlib-1.2.11.pkg.tar.xz: src/zlib-1.2.11.tar.gz
 		all install
 	rm -rf "$(PKGDIR)/share"
 	tar --create \
-		--file=pkg/zlib-1.2.11.pkg.tar.xz \
+		--file=$@ \
 		--directory="$(PKGDIR)" \
 		--auto-compress \
 		.
@@ -238,7 +238,7 @@ pkg/zstd-1.4.4.pkg.tar.xz: src/zstd-1.4.4.tar.zst
 		--directory="$(BUILDDIR)" \
 		all install
 	tar --create \
-		--file=pkg/zstd-1.4.4.pkg.tar.xz \
+		--file=$@ \
 		--directory="$(PKGDIR)" \
 		--auto-compress \
 		.
