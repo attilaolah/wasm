@@ -127,7 +127,7 @@ src/zlib-1.2.11.tar.gz:
 	mkdir -p src
 	wget \
 		--output-document="$(TMPDIR)/zlib-1.2.11.tar.gz" \
-		"http://prdownloads.sourceforge.net/libpng/zlib-1.2.11.tar.gz"
+		"http://downloads.sourceforge.net/libpng/zlib-1.2.11.tar.gz"
 	cd "$(TMPDIR)" && sha256sum --strict --check \
 		"${PWD}/zlib.sum"
 	mv "$(TMPDIR)/zlib-1.2.11.tar.gz" src
