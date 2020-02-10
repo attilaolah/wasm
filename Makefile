@@ -7,6 +7,7 @@ BUILDDIR := $(TMPDIR)/build
 pkgs := \
 	pkg/libjpeg-turbo-2.0.4.pkg.tar.xz \
 	pkg/liblzma-5.2.4.pkg.tar.xz \
+	pkg/libpano13-2.9.19.pkg.tar.xz \
 	pkg/libpng-1.6.37.pkg.tar.xz \
 	pkg/libtiff-4.1.0.pkg.tar.xz \
 	pkg/lz4-1.9.2.pkg.tar.xz \
@@ -69,6 +70,45 @@ pkg/liblzma-5.2.4.pkg.tar.xz: src/liblzma-5.2.4.tar.gz
 		--auto-compress \
 		.
 	rm -rf "$(SRCDIR)" "$(PKGDIR)"
+
+pkg/libpano13-2.9.19.pkg.tar.xz: src/libpano13-2.9.19.tar.gz pkg/libjpeg-turbo-2.0.4.pkg.tar.xz pkg/libpng-1.6.37.pkg.tar.xz pkg/libtiff-4.1.0.pkg.tar.xz pkg/zlib-1.2.11.pkg.tar.xz
+	mkdir -p "$(SRCDIR)" "$(DEPDIR)"
+	tar --extract \
+		--file=src/libpano13-2.9.19.tar.gz \
+		--directory="$(SRCDIR)" \
+		--strip-components=1
+	tar --extract \
+		--file=pkg/libjpeg-turbo-2.0.4.pkg.tar.xz \
+		--directory="$(DEPDIR)"
+	tar --extract \
+		--file=pkg/libpng-1.6.37.pkg.tar.xz \
+		--directory="$(DEPDIR)"
+	tar --extract \
+		--file=pkg/libtiff-4.1.0.pkg.tar.xz \
+		--directory="$(DEPDIR)"
+	tar --extract \
+		--file=pkg/zlib-1.2.11.pkg.tar.xz \
+		--directory="$(DEPDIR)"
+	patch --directory="$(SRCDIR)" --strip=0 < libpano13.patch
+	cd "$(SRCDIR)" && emconfigure ./bootstrap \
+		--prefix="$(PKGDIR)" \
+		--with-jpeg="$(DEPDIR)" \
+		--with-png="$(DEPDIR)" \
+		--with-tiff="$(DEPDIR)" \
+		--with-zlib="$(DEPDIR)" \
+		--without-java \
+		--enable-static=yes \
+		--enable-shared=no
+	emcmake $(MAKE) \
+		--directory=$(SRCDIR) \
+		all install
+	rm -rf "$(PKGDIR)/bin" "$(PKGDIR)/share"
+	tar --create \
+		--file=pkg/libpano13-2.9.19.pkg.tar.xz \
+		--directory="$(PKGDIR)" \
+		--auto-compress \
+		.
+	rm -rf "$(SRCDIR)" "$(DEPDIR)" "$(PKGDIR)"
 
 pkg/libpng-1.6.37.pkg.tar.xz: src/libpng-1.6.37.tar.xz pkg/zlib-1.2.11.pkg.tar.xz
 	mkdir -p "$(SRCDIR)" "$(DEPDIR)"
@@ -221,6 +261,15 @@ src/liblzma-5.2.4.tar.gz:
 	cd "$(TMPDIR)" && sha256sum --strict --check \
 		"${PWD}/liblzma.sum"
 	mv "$(TMPDIR)/liblzma-5.2.4.tar.gz" src
+
+src/libpano13-2.9.19.tar.gz:
+	mkdir -p src
+	wget \
+		--output-document="$(TMPDIR)/libpano13-2.9.19.tar.gz" \
+		"https://download.sourceforge.net/panotools/libpano13-2.9.19.tar.gz"
+	cd "$(TMPDIR)" && sha256sum --strict --check \
+		"${PWD}/libpano13.sum"
+	mv "$(TMPDIR)/libpano13-2.9.19.tar.gz" src
 
 src/libpng-1.6.37.tar.xz:
 	mkdir -p src
