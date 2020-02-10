@@ -6,6 +6,7 @@ BUILDDIR := $(TMPDIR)/build
 
 pkgs := \
 	pkg/lz4-1.9.2.pkg.tar.xz \
+	pkg/zlib-1.2.11.pkg.tar.xz \
 	pkg/zstd-1.4.4.pkg.tar.xz
 
 all: $(pkgs)
@@ -14,7 +15,7 @@ all: $(pkgs)
 pkg/lz4-1.9.2.pkg.tar.xz: src/lz4-1.9.2.tar.gz
 	mkdir -p "$(SRCDIR)"
 	tar --extract \
-		--file src/lz4-1.9.2.tar.gz \
+		--file=src/lz4-1.9.2.tar.gz \
 		--directory="$(SRCDIR)" \
 		--strip-components=1
 	emcmake $(MAKE) \
@@ -28,8 +29,28 @@ pkg/lz4-1.9.2.pkg.tar.xz: src/lz4-1.9.2.tar.gz
 		"$(PKGDIR)/usr/local/share"
 	mkdir -p pkg
 	tar --create \
-		--file pkg/lz4-1.9.2.pkg.tar.xz \
+		--file=pkg/lz4-1.9.2.pkg.tar.xz \
 		--directory="$(PKGDIR)/usr/local" \
+		--auto-compress \
+		.
+	rm -rf "$(SRCDIR)" "$(PKGDIR)"
+
+pkg/zlib-1.2.11.pkg.tar.xz: src/zlib-1.2.11.tar.gz
+	mkdir -p "$(SRCDIR)"
+	tar --extract \
+		--file=src/zlib-1.2.11.tar.gz \
+		--directory="$(SRCDIR)" \
+		--strip-components=1
+	cd "$(SRCDIR)" && emconfigure ./configure \
+		--prefix=$(PKGDIR) \
+		--static
+	emcmake $(MAKE) \
+		--directory="$(SRCDIR)" \
+		all install
+	rm -rf "$(PKGDIR)/share"
+	tar --create \
+		--file=pkg/zlib-1.2.11.pkg.tar.xz \
+		--directory="$(PKGDIR)" \
 		--auto-compress \
 		.
 	rm -rf "$(SRCDIR)" "$(PKGDIR)"
@@ -37,7 +58,7 @@ pkg/lz4-1.9.2.pkg.tar.xz: src/lz4-1.9.2.tar.gz
 pkg/zstd-1.4.4.pkg.tar.xz: src/zstd-1.4.4.tar.zst
 	mkdir -p "$(SRCDIR)" "$(BUILDDIR)"
 	tar --extract \
-		--file src/zstd-1.4.4.tar.zst \
+		--file=src/zstd-1.4.4.tar.zst \
 		--directory="$(SRCDIR)" \
 		--strip-components=1
 	emcmake cmake \
@@ -51,7 +72,7 @@ pkg/zstd-1.4.4.pkg.tar.xz: src/zstd-1.4.4.tar.zst
 		--directory="$(BUILDDIR)" \
 		all install
 	tar --create \
-		--file pkg/zstd-1.4.4.pkg.tar.xz \
+		--file=pkg/zstd-1.4.4.pkg.tar.xz \
 		--directory="$(PKGDIR)" \
 		--auto-compress \
 		.
@@ -65,6 +86,15 @@ src/lz4-1.9.2.tar.gz:
 	cd "$(TMPDIR)" && sha256sum --strict --check \
 		"${PWD}/lz4.sum"
 	mv "$(TMPDIR)/lz4-1.9.2.tar.gz" src
+
+src/zlib-1.2.11.tar.gz:
+	mkdir -p src
+	wget \
+		--output-document="$(TMPDIR)/zlib-1.2.11.tar.gz" \
+		"http://prdownloads.sourceforge.net/libpng/zlib-1.2.11.tar.gz"
+	cd "$(TMPDIR)" && sha256sum --strict --check \
+		"${PWD}/zlib.sum"
+	mv "$(TMPDIR)/zlib-1.2.11.tar.gz" src
 
 src/zstd-1.4.4.tar.zst:
 	mkdir -p src

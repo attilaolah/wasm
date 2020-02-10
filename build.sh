@@ -3,15 +3,6 @@ build_dir="${PWD}/build"
 . /etc/profile.d/binaryen.sh
 . /etc/profile.d/emscripten.sh
 
-# Build zlib.
-
-pushd third_party/zlib
-emconfigure ./configure \
-    --prefix=${build_dir}/zlib \
-    --static
-emcmake make all install
-popd
-
 # Build libpng.
 
 pushd third_party/libpng
