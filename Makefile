@@ -23,6 +23,9 @@ pkg/lz4-1.9.2.pkg.tar.xz: src/lz4-1.9.2.tar.gz
 		BUILD_STATIC=yes \
 		BUILD_SHARED=no \
 		all install
+	rm -rf \
+		"$(PKGDIR)/usr/local/bin" \
+		"$(PKGDIR)/usr/local/share"
 	mkdir -p pkg
 	tar --create \
 		--file pkg/lz4-1.9.2.pkg.tar.xz \
