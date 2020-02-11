@@ -6,37 +6,41 @@ BUILDDIR := $(TMPDIR)/build
 
 include versions.mk
 
-libjpeg_turbo_pkg = pkg/libjpeg-turbo-$(libjpeg_turbo_version).pkg.tar.xz
-libjpeg_turbo_src = src/libjpeg-turbo-$(libjpeg_turbo_version).tar.gz
-libjpeg_turbo_url = "https://download.sourceforge.net/libjpeg-turbo/$(notdir $(libjpeg_turbo_src))"
+libjpeg_turbo_pkg := pkg/libjpeg-turbo-$(libjpeg_turbo_version).pkg.tar.xz
+libjpeg_turbo_src := src/libjpeg-turbo-$(libjpeg_turbo_version).tar.gz
+libjpeg_turbo_url := "https://download.sourceforge.net/libjpeg-turbo/$(notdir $(libjpeg_turbo_src))"
 
-liblzma_pkg = pkg/liblzma-$(liblzma_version).pkg.tar.xz
-liblzma_src = src/liblzma-$(liblzma_version).tar.gz
-liblzma_url = "https://tukaani.org/xz/xz-$(liblzma_version).tar.gz"
+liblzma_pkg := pkg/liblzma-$(liblzma_version).pkg.tar.xz
+liblzma_src := src/liblzma-$(liblzma_version).tar.gz
+liblzma_url := "https://tukaani.org/xz/xz-$(liblzma_version).tar.gz"
 
-libpano13_pkg = pkg/libpano13-$(libpano13_version).pkg.tar.xz
-libpano13_src = src/libpano13-$(libpano13_version).tar.gz
-libpano13_url = "https://download.sourceforge.net/panotools/$(notdir $(libpano13_src))"
+libpano13_pkg := pkg/libpano13-$(libpano13_version).pkg.tar.xz
+libpano13_src := src/libpano13-$(libpano13_version).tar.gz
+libpano13_url := "https://download.sourceforge.net/panotools/$(notdir $(libpano13_src))"
 
-libpng_pkg = pkg/libpng-$(libpng_version).pkg.tar.xz
-libpng_src = src/libpng-$(libpng_version).tar.xz
-libpng_url = "https://download.sourceforge.net/libpng/$(notdir $(libpng_src))"
+libpng_pkg := pkg/libpng-$(libpng_version).pkg.tar.xz
+libpng_src := src/libpng-$(libpng_version).tar.xz
+libpng_url := "https://download.sourceforge.net/libpng/$(notdir $(libpng_src))"
 
-libtiff_pkg = pkg/libtiff-$(libtiff_version).pkg.tar.xz
-libtiff_src = src/libtiff-$(libtiff_version).tar.gz
-libtiff_url = "https://download.osgeo.org/libtiff/tiff-$(libtiff_version).tar.gz"
+libtiff_pkg := pkg/libtiff-$(libtiff_version).pkg.tar.xz
+libtiff_src := src/libtiff-$(libtiff_version).tar.gz
+libtiff_url := "https://download.osgeo.org/libtiff/tiff-$(libtiff_version).tar.gz"
 
-lz4_pkg = pkg/lz4-$(lz4_version).pkg.tar.xz
-lz4_src = src/lz4-$(lz4_version).tar.gz
-lz4_url = "https://github.com/lz4/lz4/archive/v$(lz4_version).tar.gz"
+lz4_pkg := pkg/lz4-$(lz4_version).pkg.tar.xz
+lz4_src := src/lz4-$(lz4_version).tar.gz
+lz4_url := "https://github.com/lz4/lz4/archive/v$(lz4_version).tar.gz"
 
-zlib_pkg = pkg/zlib-$(zlib_version).pkg.tar.xz
-zlib_src = src/zlib-$(zlib_version).tar.gz
-zlib_url = "http://downloads.sourceforge.net/libpng/$(notdir $(zlib_src))"
+zlib_pkg := pkg/zlib-$(zlib_version).pkg.tar.xz
+zlib_src := src/zlib-$(zlib_version).tar.gz
+zlib_url := "http://downloads.sourceforge.net/libpng/$(notdir $(zlib_src))"
 
-zstd_pkg = pkg/zstd-$(zstd_version).pkg.tar.xz
-zstd_src = src/zstd-$(zstd_version).tar.zst
-zstd_url = "https://github.com/facebook/zstd/releases/download/v$(zstd_version)/$(notdir $(zstd_src))"
+zstd_pkg := pkg/zstd-$(zstd_version).pkg.tar.xz
+zstd_src := src/zstd-$(zstd_version).tar.zst
+zstd_url := "https://github.com/facebook/zstd/releases/download/v$(zstd_version)/$(notdir $(zstd_src))"
+
+libpano13_deps := $(libjpeg_turbo_pkg) $(libpng_pkg) $(libtiff_pkg) $(zlib_pkg)
+libpng_deps := $(zlib_pkg)
+libtiff_deps := $(libjpeg_turbo_pkg) $(liblzma_pkg) $(zlib_pkg) $(zstd_pkg)
 
 pkgs := \
 	$(libjpeg_turbo_pkg) \
@@ -99,7 +103,7 @@ $(liblzma_pkg): $(liblzma_src)
 		.
 	rm -rf "$(SRCDIR)" "$(PKGDIR)"
 
-$(libpano13_pkg): $(libpano13_src) $(libjpeg_turbo_pkg) $(libpng_pkg) $(libtiff_pkg) $(zlib_pkg)
+$(libpano13_pkg): $(libpano13_src) $(libpano13_deps)
 	mkdir -p "$(SRCDIR)" "$(DEPDIR)"
 	tar --extract --file=$< --directory="$(SRCDIR)" --strip-components=1
 	for dep in $(filter pkg/%,$^); do \
@@ -126,7 +130,7 @@ $(libpano13_pkg): $(libpano13_src) $(libjpeg_turbo_pkg) $(libpng_pkg) $(libtiff_
 		.
 	rm -rf "$(SRCDIR)" "$(DEPDIR)" "$(PKGDIR)"
 
-$(libpng_pkg): $(libpng_src) $(zlib_pkg)
+$(libpng_pkg): $(libpng_src) $(libpng_deps)
 	mkdir -p "$(SRCDIR)" "$(DEPDIR)"
 	tar --extract --file=$< --directory="$(SRCDIR)" --strip-components=1
 	for dep in $(filter pkg/%,$^); do \
@@ -149,7 +153,7 @@ $(libpng_pkg): $(libpng_src) $(zlib_pkg)
 		.
 	rm -rf "$(SRCDIR)" "$(DEPDIR)" "$(PKGDIR)"
 
-$(libtiff_pkg): $(libtiff_src) $(libjpeg_turbo_pkg) $(liblzma_pkg) $(zlib_pkg) $(zstd_pkg)
+$(libtiff_pkg): $(libtiff_src) $(libtiff_deps)
 	mkdir -p "$(SRCDIR)" "$(DEPDIR)"
 	tar --extract --file=$< --directory="$(SRCDIR)" --strip-components=1
 	for dep in $(filter pkg/%,$^); do \
