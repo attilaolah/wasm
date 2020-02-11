@@ -254,7 +254,7 @@ $(liblzma_src):
 
 $(libpano13_src):
 	mkdir -p $(@D)
-	wget --output-document="$(TMPDIR)/$(@F)" $(libpano_url)
+	wget --output-document="$(TMPDIR)/$(@F)" $(libpano13_url)
 	cd "$(TMPDIR)" && sha256sum --check --strict --ignore-missing "${PWD}/sources.sum"
 	mv "$(TMPDIR)/$(@F)" $(@D)
 
