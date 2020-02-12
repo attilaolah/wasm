@@ -8,6 +8,7 @@ cmake_external(
         "ZSTD_BUILD_SHARED:BOOL": "OFF",
         "ZSTD_BUILD_STATIC:BOOL": "ON",
     },
+    cmake_relative_root = "build/cmake",
     lib_source = "@zstd//:all",
     static_libraries = ["libzstd.a"],
 )

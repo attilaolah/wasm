@@ -12,6 +12,11 @@ def register_dependencies():
         remote = "https://github.com/bazelbuild/rules_foreign_cc",
         commit = "ed3db61a55c13da311d875460938c42ee8bbc2a5",
         shallow_since = "1574792034 +0100",
+        patches = [
+            # PR: https://github.com/bazelbuild/rules_foreign_cc/pull/358
+            "//:third_party/rules_foreign_cc/358.patch",
+        ],
+        patch_args = ["-p1"],
     )
 
     git_repository(
