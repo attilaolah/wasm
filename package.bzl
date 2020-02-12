@@ -1,6 +1,7 @@
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 load("//libjpeg_turbo:package.bzl", download_libjpeg_turbo = "download_src")
 load("//liblzma:package.bzl", download_liblzma = "download_src")
+load("//libpng:package.bzl", download_libpng = "download_src")
 load("//zlib:package.bzl", download_zlib = "download_src")
 load("//zstd:package.bzl", download_zstd = "download_src")
 
@@ -24,5 +25,6 @@ def register_repositories():
     """Fetch and set up dependencies."""
     download_libjpeg_turbo()
     download_liblzma()
+    download_libpng()
     download_zlib()
     download_zstd()

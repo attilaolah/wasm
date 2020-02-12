@@ -2,10 +2,14 @@ load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@rules_foreign_cc//tools/build_defs:configure.bzl", "configure_make")
 
 configure_make(
-    name = "zlib",
-    lib_source = "@zlib//:all",
-    static_libraries = ["libz.a"],
-    visibility = ["//libpng:__pkg__"],
+    name = "libpng",
+    configure_options = [
+        "--enable-shared=no",
+        "--enable-static=yes",
+    ],
+    lib_source = "@libpng//:all",
+    static_libraries = ["libpng.a"],
+    deps = ["//zlib"],
 )
 
 bzl_library(
