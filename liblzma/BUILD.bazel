@@ -1,0 +1,25 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("@rules_foreign_cc//tools/build_defs:configure.bzl", "configure_make")
+
+configure_make(
+    name = "liblzma",
+    configure_options = [
+        "--disable-doc",
+        "--disable-lzma-links",
+        "--disable-lzmadec",
+        "--disable-lzmainfo",
+        "--disable-scripts",
+        "--disable-shared",
+        "--disable-xz",
+        "--disable-xzdec",
+    ],
+    lib_source = "@liblzma//:all",
+    static_libraries = ["liblzma.a"],
+)
+
+bzl_library(
+    name = "package",
+    srcs = ["package.bzl"],
+    visibility = ["//:__pkg__"],
+    deps = ["//:http_archive"],
+)

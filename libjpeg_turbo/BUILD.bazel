@@ -17,6 +17,6 @@ cmake_external(
 bzl_library(
     name = "package",
     srcs = ["package.bzl"],
-    deps = ["//:http_archive"],
     visibility = ["//:__pkg__"],
+    deps = ["//:http_archive"],
 )
