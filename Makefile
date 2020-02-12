@@ -49,7 +49,7 @@ zstd_url := "https://github.com/facebook/zstd/releases/download/v$(zstd_version)
 libpano13_deps := $(libjpeg_turbo_pkg) $(libpng_pkg) $(libtiff_pkg) $(zlib_pkg)
 libpng_deps := $(zlib_pkg)
 libtiff_deps := $(libjpeg_turbo_pkg) $(liblzma_pkg) $(zlib_pkg) $(zstd_pkg)
-vigra_deps := $(libjpeg_turbo_pkg) $(libpng_pkg) $(libtiff_pkg) $(zlib_pkg)
+vigra_deps := $(fftw_pkg) $(libjpeg_turbo_pkg) $(libpng_pkg) $(libtiff_pkg) $(zlib_pkg)
 
 pkgs := \
 	$(fftw_pkg) \
@@ -247,6 +247,10 @@ $(vigra_pkg): $(vigra_src) $(vigra_deps)
 	emcmake cmake \
 		-DCMAKE_INSTALL_PREFIX:PATH="$(PKGDIR)" \
 		-DDEPENDENCY_SEARCH_PREFIX:PATH="$(DEPDIR)" \
+		-DFFTW3_INCLUDE_DIR:PATH="$(DEPDIR)/include" \
+		-DFFTW3_LIBRARY:PATH="$(DEPDIR)/lib/libfftw3q.a" \
+		-DFFTW3F_INCLUDE_DIR:PATH="$(DEPDIR)/include" \
+		-DFFTW3F_LIBRARY:PATH="$(DEPDIR)/lib/libfftw3q.a" \
 		-DJPEG_INCLUDE_DIR:PATH="$(DEPDIR)/include" \
 		-DJPEG_LIBRARY:PATH="$(DEPDIR)/lib/libjpeg.a" \
 		-DPNG_PNG_INCLUDE_DIR:PATH="$(DEPDIR)/include" \
