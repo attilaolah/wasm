@@ -5,6 +5,6 @@ libpano13_version := 2.9.19
 libpng_version := 1.6.37
 libtiff_version := 4.1.0
 lz4_version := 1.9.2
+vigra_version := 1.11.1
 zlib_version := 1.2.11
 zstd_version := 1.4.4
-vigra_version := 1.11.1

@@ -34,6 +34,10 @@ lz4_pkg := pkg/lz4-$(lz4_version).pkg.tar.xz
 lz4_src := src/lz4-$(lz4_version).tar.gz
 lz4_url := "https://github.com/lz4/lz4/archive/v$(lz4_version).tar.gz"
 
+vigra_pkg := pkg/vigra-$(vigra_version).pkg.tar.xz
+vigra_src := src/vigra-$(vigra_version).tar.gz
+vigra_url := "https://github.com/ukoethe/vigra/releases/download/Version-$(shell tr . - <<< $(vigra_version))/vigra-$(vigra_version)-src.tar.gz"
+
 zlib_pkg := pkg/zlib-$(zlib_version).pkg.tar.xz
 zlib_src := src/zlib-$(zlib_version).tar.gz
 zlib_url := "http://downloads.sourceforge.net/libpng/$(notdir $(zlib_src))"
@@ -41,10 +45,6 @@ zlib_url := "http://downloads.sourceforge.net/libpng/$(notdir $(zlib_src))"
 zstd_pkg := pkg/zstd-$(zstd_version).pkg.tar.xz
 zstd_src := src/zstd-$(zstd_version).tar.zst
 zstd_url := "https://github.com/facebook/zstd/releases/download/v$(zstd_version)/$(notdir $(zstd_src))"
-
-vigra_pkg := pkg/vigra-$(vigra_version).pkg.tar.xz
-vigra_src := src/vigra-$(vigra_version).tar.gz
-vigra_url := "https://github.com/ukoethe/vigra/releases/download/Version-$(shell tr . - <<< $(vigra_version))/vigra-$(vigra_version)-src.tar.gz"
 
 libpano13_deps := $(libjpeg_turbo_pkg) $(libpng_pkg) $(libtiff_pkg) $(zlib_pkg)
 libpng_deps := $(zlib_pkg)
@@ -59,9 +59,9 @@ pkgs := \
 	$(libpng_pkg) \
 	$(libtiff_pkg) \
 	$(lz4_pkg) \
+	$(vigra_pkg) \
 	$(zlib_pkg) \
-	$(zstd_pkg) \
-	$(vigra_pkg)
+	$(zstd_pkg)
 
 all: $(pkgs)
 	@rmdir $(TMPDIR)
@@ -234,6 +234,41 @@ $(lz4_pkg): $(lz4_src)
 		.
 	rm -rf "$(SRCDIR)" "$(PKGDIR)"
 
+$(vigra_pkg): $(vigra_src) $(vigra_deps)
+	mkdir -p "$(SRCDIR)" "$(BUILDDIR)" "$(DEPDIR)"
+	tar --extract --file=$< --directory="$(SRCDIR)" --strip-components=1
+	for dep in $(filter pkg/%,$^); do \
+		tar --extract --file=$$dep --directory="$(DEPDIR)"; \
+	done
+	patch --directory="$(SRCDIR)" --strip=0 < vigra.patch
+	emcmake cmake \
+		-DCMAKE_INSTALL_PREFIX:PATH="$(PKGDIR)" \
+		-DDEPENDENCY_SEARCH_PREFIX:PATH="$(DEPDIR)" \
+		-DJPEG_INCLUDE_DIR:PATH="$(DEPDIR)/include" \
+		-DJPEG_LIBRARY:PATH="$(DEPDIR)/lib/libjpeg.a" \
+		-DPNG_PNG_INCLUDE_DIR:PATH="$(DEPDIR)/include" \
+		-DPNG_LIBRARY:PATH="$(DEPDIR)/lib/libpng.a" \
+		-DTIFF_INCLUDE_DIR:PATH="$(DEPDIR)/include" \
+		-DTIFF_LIBRARY:PATH="$(DEPDIR)/lib/libtiff.a" \
+		-DZLIB_INCLUDE_DIR:PATH="$(DEPDIR)/include" \
+		-DZLIB_LIBRARY:PATH="$(DEPDIR)/lib/libz.a" \
+		-DWITH_VIGRANUMPY:BOOL=OFF \
+		-DWITH_HDF5:BOOL=OFF \
+		-DCMAKE_CXX_FLAGS="-std=c++11" \
+		-DVIGRA_STATIC_LIB:BOOL=ON \
+		-S "$(SRCDIR)" \
+		-B "$(BUILDDIR)"
+	emcmake $(MAKE) \
+		--directory="$(BUILDDIR)" \
+		all install
+	rm -rf "$(PKGDIR)/bin"
+	tar --create \
+		--file=$@ \
+		--directory="$(PKGDIR)" \
+		--auto-compress \
+		.
+	rm -rf "$(SRCDIR)" "$(BUILDDIR)" "$(DEPDIR)" "$(PKGDIR)"
+
 $(zlib_pkg): $(zlib_src)
 	mkdir -p "$(SRCDIR)"
 	tar --extract --file=$< --directory="$(SRCDIR)" --strip-components=1
@@ -270,41 +305,6 @@ $(zstd_pkg): $(zstb_src)
 		--auto-compress \
 		.
 	rm -rf "$(SRCDIR)" "$(BUILDDIR)" "$(PKGDIR)"
-
-$(vigra_pkg): $(vigra_src) $(vigra_deps)
-	mkdir -p "$(SRCDIR)" "$(BUILDDIR)" "$(DEPDIR)"
-	tar --extract --file=$< --directory="$(SRCDIR)" --strip-components=1
-	for dep in $(filter pkg/%,$^); do \
-		tar --extract --file=$$dep --directory="$(DEPDIR)"; \
-	done
-	patch --directory="$(SRCDIR)" --strip=0 < vigra.patch
-	emcmake cmake \
-		-DCMAKE_INSTALL_PREFIX:PATH="$(PKGDIR)" \
-		-DDEPENDENCY_SEARCH_PREFIX:PATH="$(DEPDIR)" \
-		-DJPEG_INCLUDE_DIR:PATH="$(DEPDIR)/include" \
-		-DJPEG_LIBRARY:PATH="$(DEPDIR)/lib/libjpeg.a" \
-		-DPNG_PNG_INCLUDE_DIR:PATH="$(DEPDIR)/include" \
-		-DPNG_LIBRARY:PATH="$(DEPDIR)/lib/libpng.a" \
-		-DTIFF_INCLUDE_DIR:PATH="$(DEPDIR)/include" \
-		-DTIFF_LIBRARY:PATH="$(DEPDIR)/lib/libtiff.a" \
-		-DZLIB_INCLUDE_DIR:PATH="$(DEPDIR)/include" \
-		-DZLIB_LIBRARY:PATH="$(DEPDIR)/lib/libz.a" \
-		-DWITH_VIGRANUMPY:BOOL=OFF \
-		-DWITH_HDF5:BOOL=OFF \
-		-DCMAKE_CXX_FLAGS="-std=c++11" \
-		-DVIGRA_STATIC_LIB:BOOL=ON \
-		-S "$(SRCDIR)" \
-		-B "$(BUILDDIR)"
-	emcmake $(MAKE) \
-		--directory="$(BUILDDIR)" \
-		all install
-	rm -rf "$(PKGDIR)/bin"
-	tar --create \
-		--file=$@ \
-		--directory="$(PKGDIR)" \
-		--auto-compress \
-		.
-	rm -rf "$(SRCDIR)" "$(BUILDDIR)" "$(DEPDIR)" "$(PKGDIR)"
 
 $(fftw_src):
 	mkdir -p $(@D)
@@ -348,6 +348,12 @@ $(lz4_src):
 	cd "$(TMPDIR)" && sha256sum --check --strict --ignore-missing "${PWD}/sources.sum"
 	mv "$(TMPDIR)/$(@F)" $(@D)
 
+$(vigra_src):
+	mkdir -p $(@D)
+	wget --output-document="$(TMPDIR)/$(@F)" $(vigra_url)
+	cd "$(TMPDIR)" && sha256sum --check --strict --ignore-missing "${PWD}/sources.sum"
+	mv "$(TMPDIR)/$(@F)" $(@D)
+
 $(zlib_src):
 	mkdir -p $(@D)
 	wget --output-document="$(TMPDIR)/$(@F)" $(zlib_url)
@@ -357,12 +363,6 @@ $(zlib_src):
 $(zstd_src):
 	mkdir -p $(@D)
 	wget --output-document="$(TMPDIR)/$(@F)" $(zstd_url)
-	cd "$(TMPDIR)" && sha256sum --check --strict --ignore-missing "${PWD}/sources.sum"
-	mv "$(TMPDIR)/$(@F)" $(@D)
-
-$(vigra_src):
-	mkdir -p $(@D)
-	wget --output-document="$(TMPDIR)/$(@F)" $(vigra_url)
 	cd "$(TMPDIR)" && sha256sum --check --strict --ignore-missing "${PWD}/sources.sum"
 	mv "$(TMPDIR)/$(@F)" $(@D)
 
