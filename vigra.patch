@@ -1,3 +1,14 @@
+--- CMakeLists.txt
++++ CMakeLists.txt
+@@ -269,8 +269,6 @@
+ ##################################################
+ 
+ ADD_SUBDIRECTORY(src)
+-ADD_SUBDIRECTORY(test)
+-ADD_SUBDIRECTORY(docsrc)
+ 
+ IF(WITH_VIGRANUMPY)
+     ADD_SUBDIRECTORY(vigranumpy)
 --- config/check_std_thread.cxx
 +++ config/check_std_thread.cxx
 @@ -1,3 +1,4 @@

@@ -266,6 +266,7 @@ $(vigra_pkg): $(vigra_src) $(vigra_deps)
 		-DZLIB_LIBRARY:PATH="$(DEPDIR)/lib/libz.a" \
 		-DWITH_VIGRANUMPY:BOOL=OFF \
 		-DWITH_HDF5:BOOL=OFF \
+		-DCMAKE_CXX_FLAGS="-std=c++11" \
 		-DVIGRA_STATIC_LIB:BOOL=ON \
 		-S "$(SRCDIR)" \
 		-B "$(BUILDDIR)"
@@ -278,7 +279,7 @@ $(vigra_pkg): $(vigra_src) $(vigra_deps)
 		--directory="$(PKGDIR)" \
 		--auto-compress \
 		.
-	rm -rf "$(SRCDIR)" "$(BUILDDIR)" "$(PKGDIR)"
+	rm -rf "$(SRCDIR)" "$(BUILDDIR)" "$(DEPDIR)" "$(PKGDIR)"
 
 $(libjpeg_turbo_src):
 	mkdir -p $(@D)
