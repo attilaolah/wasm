@@ -4,7 +4,7 @@ BUILD_FILE_CONTENT = """
 filegroup(
     name = "all",
     srcs = glob(["**"]),
-    visibility = ["//visibility:public"],
+    visibility = ["@//:__subpackages__"],
 )
 """
 

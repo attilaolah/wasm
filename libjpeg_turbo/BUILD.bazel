@@ -1,6 +1,8 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@rules_foreign_cc//tools/build_defs:cmake.bzl", "cmake_external")
 
+package(default_visibility = ["//:__subpackages__"])
+
 cmake_external(
     name = "libjpeg_turbo",
     cache_entries = {
@@ -17,6 +19,5 @@ cmake_external(
 bzl_library(
     name = "package",
     srcs = ["package.bzl"],
-    visibility = ["//:__pkg__"],
     deps = ["//:http_archive"],
 )

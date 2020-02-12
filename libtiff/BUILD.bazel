@@ -4,14 +4,19 @@ load("@rules_foreign_cc//tools/build_defs:configure.bzl", "configure_make")
 package(default_visibility = ["//:__subpackages__"])
 
 configure_make(
-    name = "libpng",
+    name = "libtiff",
     configure_options = [
         "--enable-shared=no",
         "--enable-static=yes",
     ],
-    lib_source = "@libpng//:all",
-    static_libraries = ["libpng.a"],
-    deps = ["//zlib"],
+    lib_source = "@libtiff//:all",
+    static_libraries = ["libtiff.a"],
+    deps = [
+        "//libjpeg_turbo",
+        "//liblzma",
+        "//zlib",
+        "//zstd",
+    ],
 )
 
 bzl_library(

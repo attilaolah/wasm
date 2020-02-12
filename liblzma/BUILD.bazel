@@ -1,6 +1,8 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@rules_foreign_cc//tools/build_defs:configure.bzl", "configure_make")
 
+package(default_visibility = ["//:__subpackages__"])
+
 configure_make(
     name = "liblzma",
     configure_options = [
@@ -20,6 +22,5 @@ configure_make(
 bzl_library(
     name = "package",
     srcs = ["package.bzl"],
-    visibility = ["//:__pkg__"],
     deps = ["//:http_archive"],
 )
