@@ -38,9 +38,14 @@ zstd_pkg := pkg/zstd-$(zstd_version).pkg.tar.xz
 zstd_src := src/zstd-$(zstd_version).tar.zst
 zstd_url := "https://github.com/facebook/zstd/releases/download/v$(zstd_version)/$(notdir $(zstd_src))"
 
+vigra_pkg := pkg/vigra-$(vigra_version).pkg.tar.xz
+vigra_src := src/vigra-$(vigra_version).tar.gz
+vigra_url := "https://github.com/ukoethe/vigra/releases/download/Version-$(shell tr . - <<< $(vigra_version))/vigra-$(vigra_version)-src.tar.gz"
+
 libpano13_deps := $(libjpeg_turbo_pkg) $(libpng_pkg) $(libtiff_pkg) $(zlib_pkg)
 libpng_deps := $(zlib_pkg)
 libtiff_deps := $(libjpeg_turbo_pkg) $(liblzma_pkg) $(zlib_pkg) $(zstd_pkg)
+vigra_deps := $(libjpeg_turbo_pkg) $(libpng_pkg) $(libtiff_pkg) $(zlib_pkg)
 
 pkgs := \
 	$(libjpeg_turbo_pkg) \
@@ -50,7 +55,8 @@ pkgs := \
 	$(libtiff_pkg) \
 	$(lz4_pkg) \
 	$(zlib_pkg) \
-	$(zstd_pkg)
+	$(zstd_pkg) \
+	$(vigra_pkg)
 
 all: $(pkgs)
 	@rmdir $(TMPDIR)
@@ -240,6 +246,40 @@ $(zstd_pkg): $(zstb_src)
 		.
 	rm -rf "$(SRCDIR)" "$(BUILDDIR)" "$(PKGDIR)"
 
+$(vigra_pkg): $(vigra_src) $(vigra_deps)
+	mkdir -p "$(SRCDIR)" "$(BUILDDIR)" "$(DEPDIR)"
+	tar --extract --file=$< --directory="$(SRCDIR)" --strip-components=1
+	for dep in $(filter pkg/%,$^); do \
+		tar --extract --file=$$dep --directory="$(DEPDIR)"; \
+	done
+	patch --directory="$(SRCDIR)" --strip=0 < vigra.patch
+	emcmake cmake \
+		-DCMAKE_INSTALL_PREFIX:PATH="$(PKGDIR)" \
+		-DDEPENDENCY_SEARCH_PREFIX:PATH="$(DEPDIR)" \
+		-DJPEG_INCLUDE_DIR:PATH="$(DEPDIR)/include" \
+		-DJPEG_LIBRARY:PATH="$(DEPDIR)/lib/libjpeg.a" \
+		-DPNG_PNG_INCLUDE_DIR:PATH="$(DEPDIR)/include" \
+		-DPNG_LIBRARY:PATH="$(DEPDIR)/lib/libpng.a" \
+		-DTIFF_INCLUDE_DIR:PATH="$(DEPDIR)/include" \
+		-DTIFF_LIBRARY:PATH="$(DEPDIR)/lib/libtiff.a" \
+		-DZLIB_INCLUDE_DIR:PATH="$(DEPDIR)/include" \
+		-DZLIB_LIBRARY:PATH="$(DEPDIR)/lib/libz.a" \
+		-DWITH_VIGRANUMPY:BOOL=OFF \
+		-DWITH_HDF5:BOOL=OFF \
+		-DVIGRA_STATIC_LIB:BOOL=ON \
+		-S "$(SRCDIR)" \
+		-B "$(BUILDDIR)"
+	emcmake $(MAKE) \
+		--directory="$(BUILDDIR)" \
+		all install
+	rm -rf "$(PKGDIR)/bin"
+	tar --create \
+		--file=$@ \
+		--directory="$(PKGDIR)" \
+		--auto-compress \
+		.
+	rm -rf "$(SRCDIR)" "$(BUILDDIR)" "$(PKGDIR)"
+
 $(libjpeg_turbo_src):
 	mkdir -p $(@D)
 	wget --output-document="$(TMPDIR)/$(@F)" $(libjpeg_turbo_url)
@@ -285,6 +325,12 @@ $(zlib_src):
 $(zstd_src):
 	mkdir -p $(@D)
 	wget --output-document="$(TMPDIR)/$(@F)" $(zstd_url)
+	cd "$(TMPDIR)" && sha256sum --check --strict --ignore-missing "${PWD}/sources.sum"
+	mv "$(TMPDIR)/$(@F)" $(@D)
+
+$(vigra_src):
+	mkdir -p $(@D)
+	wget --output-document="$(TMPDIR)/$(@F)" $(vigra_url)
 	cd "$(TMPDIR)" && sha256sum --check --strict --ignore-missing "${PWD}/sources.sum"
 	mv "$(TMPDIR)/$(@F)" $(@D)
 
