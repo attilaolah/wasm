@@ -1,0 +1,14 @@
+load("@rules_foreign_cc//tools/build_defs:cmake.bzl", "cmake_external")
+
+cmake_external(
+    name = "libjpeg_turbo",
+    cache_entries = {
+        "CMAKE_INSTALL_DEFAULT_LIBDIR:PATH": "lib",
+        "ENABLE_SHARED:BOOL": "OFF",
+        "ENABLE_STATIC:BOOL": "ON",
+        "WITH_JAVA:BOOL": "OFF",
+        "WITH_TURBOJPEG:BOOL": "OFF",
+    },
+    lib_source = "@libjpeg_turbo//:all",
+    static_libraries = ["libjpeg.a"]
+)

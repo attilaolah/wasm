@@ -1,0 +1,7 @@
+load("@rules_foreign_cc//tools/build_defs:configure.bzl", "configure_make")
+
+configure_make(
+    name = "zlib",
+    lib_source = "@zlib//:all",
+    static_libraries = ["libz.a"],
+)
