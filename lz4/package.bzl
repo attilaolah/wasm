@@ -1,11 +1,11 @@
 load("//:http_archive.bzl", "http_archive")
 
-NAME = "zstd"
-VERSION = "1.4.4"
+NAME = "lz4"
+VERSION = "1.9.2"
 
-URL = "https://github.com/facebook/{name}/releases/download/v{version}/{name}-{version}.tar.gz"
+URL = "https://github.com/lz4/lz4/archive/v{version}.tar.gz"
 
-SHA256 = "59ef70ebb757ffe74a7b3fe9c305e2ba3350021a918d168a046c6300aeea9315"
+SHA256 = "658ba6191fa44c92280d4aa2c271b0f4fbc0e34d249578dd05e50e76d0e5efcc"
 
 def download_src():
     http_archive(

@@ -1,0 +1,16 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("@rules_foreign_cc//tools/build_defs:make.bzl", "make")
+
+package(default_visibility = ["//:__subpackages__"])
+
+make(
+    name = "lz4",
+    lib_source = "@lz4//:all",
+    static_libraries = ["liblz4.a"],
+)
+
+bzl_library(
+    name = "package",
+    srcs = ["package.bzl"],
+    deps = ["//:http_archive"],
+)
