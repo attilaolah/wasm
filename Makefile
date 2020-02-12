@@ -293,7 +293,7 @@ $(zlib_pkg): $(zlib_src)
 		.
 	rm -rf "$(SRCDIR)" "$(PKGDIR)"
 
-$(zstd_pkg): $(zstb_src)
+$(zstd_pkg): $(zstd_src)
 	mkdir -p "$(SRCDIR)" "$(BUILDDIR)"
 	tar --extract --file=$< --directory="$(SRCDIR)" --strip-components=1
 	emcmake cmake \
