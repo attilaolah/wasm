@@ -71,6 +71,9 @@ $(fftw_pkg): $(fftw_src)
 	tar --extract --file=$< --directory="$(SRCDIR)" --strip-components=1
 	emcmake cmake \
 		-DCMAKE_INSTALL_PREFIX:PATH="$(PKGDIR)" \
+		-DENABLE_FLOAT:BOOL=ON \
+		-DENABLE_LONG_DOUBLE:BOOL=ON \
+		-DENABLE_QUAD_PRECISION:BOOL=ON \
 		-DDISABLE_FORTRAN:BOOL=ON \
 		-DBUILD_TESTS:BOOL=OFF \
 		-DBUILD_SHARED_LIBS:BOOL=OFF \
