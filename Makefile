@@ -6,6 +6,10 @@ BUILDDIR := $(TMPDIR)/build
 
 include versions.mk
 
+fftw_pkg := pkg/fftw-$(fftw_version).pkg.tar.xz
+fftw_src := src/fftw-$(fftw_version).tar.gz
+fftw_url := "http://www.fftw.org/$(notdir $(fftw_src))"
+
 libjpeg_turbo_pkg := pkg/libjpeg-turbo-$(libjpeg_turbo_version).pkg.tar.xz
 libjpeg_turbo_src := src/libjpeg-turbo-$(libjpeg_turbo_version).tar.gz
 libjpeg_turbo_url := "https://download.sourceforge.net/libjpeg-turbo/$(notdir $(libjpeg_turbo_src))"
@@ -48,6 +52,7 @@ libtiff_deps := $(libjpeg_turbo_pkg) $(liblzma_pkg) $(zlib_pkg) $(zstd_pkg)
 vigra_deps := $(libjpeg_turbo_pkg) $(libpng_pkg) $(libtiff_pkg) $(zlib_pkg)
 
 pkgs := \
+	$(fftw_pkg) \
 	$(libjpeg_turbo_pkg) \
 	$(liblzma_pkg) \
 	$(libpano13_pkg) \
@@ -60,6 +65,26 @@ pkgs := \
 
 all: $(pkgs)
 	@rmdir $(TMPDIR)
+
+$(fftw_pkg): $(fftw_src)
+	mkdir -p "$(SRCDIR)" "$(BUILDDIR)"
+	tar --extract --file=$< --directory="$(SRCDIR)" --strip-components=1
+	emcmake cmake \
+		-DCMAKE_INSTALL_PREFIX:PATH="$(PKGDIR)" \
+		-DDISABLE_FORTRAN:BOOL=ON \
+		-DBUILD_TESTS:BOOL=OFF \
+		-DBUILD_SHARED_LIBS:BOOL=OFF \
+		-S "$(SRCDIR)" \
+		-B "$(BUILDDIR)"
+	emcmake $(MAKE) \
+		--directory=$(BUILDDIR) \
+		all install
+	tar --create \
+		--file=$@ \
+		--directory="$(PKGDIR)" \
+		--auto-compress \
+		.
+	rm -rf "$(SRCDIR)" "$(BUILDDIR)" "$(PKGDIR)"
 
 $(libjpeg_turbo_pkg): $(libjpeg_turbo_src)
 	mkdir -p "$(SRCDIR)" "$(BUILDDIR)"
@@ -280,6 +305,12 @@ $(vigra_pkg): $(vigra_src) $(vigra_deps)
 		--auto-compress \
 		.
 	rm -rf "$(SRCDIR)" "$(BUILDDIR)" "$(DEPDIR)" "$(PKGDIR)"
+
+$(fftw_src):
+	mkdir -p $(@D)
+	wget --output-document="$(TMPDIR)/$(@F)" $(fftw_url)
+	cd "$(TMPDIR)" && sha256sum --check --strict --ignore-missing "${PWD}/sources.sum"
+	mv "$(TMPDIR)/$(@F)" $(@D)
 
 $(libjpeg_turbo_src):
 	mkdir -p $(@D)

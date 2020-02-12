@@ -1,3 +1,4 @@
+fftw_version := 3.3.8
 libjpeg_turbo_version := 2.0.4
 liblzma_version := 5.2.4
 libpano13_version := 2.9.19
