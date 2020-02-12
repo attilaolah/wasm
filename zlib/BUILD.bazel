@@ -1,7 +1,15 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@rules_foreign_cc//tools/build_defs:configure.bzl", "configure_make")
 
 configure_make(
     name = "zlib",
     lib_source = "@zlib//:all",
     static_libraries = ["libz.a"],
+)
+
+bzl_library(
+    name = "package",
+    srcs = ["package.bzl"],
+    deps = ["//:http_archive"],
+    visibility = ["//:__pkg__"],
 )

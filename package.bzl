@@ -11,6 +11,13 @@ def register_dependencies():
         shallow_since = "1574792034 +0100",
     )
 
+    git_repository(
+        name = "bazel_skylib",
+        remote = "https://github.com/bazelbuild/bazel-skylib",
+        commit = "e59b620b392a8ebbcf25879fc3fde52b4dc77535",  # 1.0.2
+        shallow_since = "1570639401 -0400",
+    )
+
 def register_repositories():
     """Fetch and set up dependencies."""
     download_libjpeg_turbo()

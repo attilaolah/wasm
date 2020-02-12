@@ -1,3 +1,4 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@rules_foreign_cc//tools/build_defs:cmake.bzl", "cmake_external")
 
 cmake_external(
@@ -10,5 +11,12 @@ cmake_external(
         "WITH_TURBOJPEG:BOOL": "OFF",
     },
     lib_source = "@libjpeg_turbo//:all",
-    static_libraries = ["libjpeg.a"]
+    static_libraries = ["libjpeg.a"],
+)
+
+bzl_library(
+    name = "package",
+    srcs = ["package.bzl"],
+    deps = ["//:http_archive"],
+    visibility = ["//:__pkg__"],
 )
