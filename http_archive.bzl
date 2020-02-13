@@ -1,10 +1,10 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", _http_archive = "http_archive")
 
-BUILD_FILE_CONTENT = """
+ALL_PUBLIC = """
 filegroup(
     name = "all",
     srcs = glob(["**"]),
-    visibility = ["@//:__subpackages__"],
+    visibility = ["//visibility:public"],
 )
 """
 
@@ -28,7 +28,7 @@ def http_archive(name, version, urls, sha256, strip_prefix = None, patches = Non
         urls = [url.format(**args) for url in urls],
         sha256 = sha256,
         strip_prefix = strip_prefix,
-        build_file_content = BUILD_FILE_CONTENT,
+        build_file_content = ALL_PUBLIC,
         patches = patches,
         patch_cmds = patch_cmds,
     )
