@@ -4,22 +4,20 @@ load("@rules_foreign_cc//tools/build_defs:configure.bzl", "configure_make")
 package(default_visibility = ["//:__subpackages__"])
 
 configure_make(
-    name = "libtiff",
+    name = "libpano13",
+    configure_command = "bootstrap",
     configure_options = [
-        "--enable-cxx",
         "--enable-shared=no",
         "--enable-static=yes",
+        "--without-java",
     ],
-    lib_source = "@libtiff//:all",
-    static_libraries = [
-        "libtiff.a",
-        "libtiffxx.a",
-    ],
+    lib_source = "@libpano13//:all",
+    static_libraries = ["libpano13.a"],
     deps = [
         "//libjpeg_turbo",
-        "//liblzma",
+        "//libpng",
+        "//libtiff",
         "//zlib",
-        "//zstd",
     ],
 )
 

@@ -8,10 +8,13 @@ filegroup(
 )
 """
 
-def http_archive(name, version, urls, sha256, strip_prefix = None):
+def http_archive(name, version, urls, sha256, strip_prefix = None, patches = None, patch_cmds = None):
     """Wrapper around http_archive() that specifies a common BUILD file."""
     if strip_prefix != None:
         strip_prefix = strip_prefix.format(name = name, version = version)
+
+    for i, patch in enumerate(patches or []):
+        patches[i] = "//{}:{}".format(name, patch)
 
     _http_archive(
         name = name.replace("-", "_"),
@@ -19,4 +22,6 @@ def http_archive(name, version, urls, sha256, strip_prefix = None):
         sha256 = sha256,
         strip_prefix = strip_prefix,
         build_file_content = BUILD_FILE_CONTENT,
+        patches = patches,
+        patch_cmds = patch_cmds,
     )
