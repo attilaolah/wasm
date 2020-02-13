@@ -1,0 +1,28 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("@rules_foreign_cc//tools/build_defs:cmake.bzl", "cmake_external")
+
+package(default_visibility = ["//:__subpackages__"])
+
+cmake_external(
+    name = "vigra",
+    cache_entries = {
+        "VIGRA_STATIC_LIB:BOOL": "ON",
+        "WITH_HDF5:BOOL": "OFF",
+        "WITH_VIGRANUMPY:BOOL": "OFF",
+    },
+    lib_source = "@vigra//:all",
+    static_libraries = ["libvigraimpex.a"],
+    deps = [
+        "//fftw",
+        "//libjpeg_turbo",
+        "//libpng",
+        "//libtiff",
+        "//zlib",
+    ],
+)
+
+bzl_library(
+    name = "package",
+    srcs = ["package.bzl"],
+    deps = ["//:http_archive"],
+)

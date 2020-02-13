@@ -7,6 +7,7 @@ load("//libpano13:package.bzl", download_libpano13 = "download_src")
 load("//libpng:package.bzl", download_libpng = "download_src")
 load("//libtiff:package.bzl", download_libtiff = "download_src")
 load("//lz4:package.bzl", download_lz4 = "download_src")
+load("//vigra:package.bzl", download_vigra = "download_src")
 load("//zlib:package.bzl", download_zlib = "download_src")
 load("//zstd:package.bzl", download_zstd = "download_src")
 
@@ -38,6 +39,7 @@ def register_repositories():
     download_libpng()
     download_libtiff()
     download_lz4()
+    download_vigra()
     download_zlib()
     download_zstd()
 
