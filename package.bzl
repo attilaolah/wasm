@@ -1,5 +1,5 @@
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive", "http_file")
 load("//fftw:package.bzl", download_fftw = "download_src")
 load("//libjpeg_turbo:package.bzl", download_libjpeg_turbo = "download_src")
 load("//liblzma:package.bzl", download_liblzma = "download_src")
@@ -11,6 +11,14 @@ load("//vigra:package.bzl", download_vigra = "download_src")
 load("//zlib:package.bzl", download_zlib = "download_src")
 load("//zstd:package.bzl", download_zstd = "download_src")
 
+ALL_PUBLIC = """
+filegroup(
+    name = "all",
+    srcs = glob(["**"]),
+    visibility = ["//visibility:public"],
+)
+"""
+
 def register_dependencies():
     """Set up dependencies of THIS workspace."""
     _github_repository(
@@ -21,6 +29,22 @@ def register_dependencies():
         pull_requests = {
             358: "cb5d6d647daeaed0e66685d148e00063217e7e2553cbc4c9ca714ac8ca4c49e4",
         },
+    )
+
+    http_archive(
+        name = "cmake",
+        urls = ["https://gitlab.kitware.com/cmake/cmake/-/archive/v3.16.4/cmake-v3.16.4.tar.bz2"],
+        sha256 = "40e0dec6dc9e36820e001b8425aa4328a0b42f1915b14d68aee116e25c3d34df",
+        strip_prefix = "cmake-v3.16.4",
+        build_file_content = ALL_PUBLIC,
+    )
+
+    http_archive(
+        name = "ninja",
+        urls = ["https://github.com/ninja-build/ninja/archive/v1.10.0.zip"],
+        sha256 = "bb489516d71f6e9c01ae65ab177041e025736bfcb042ac037be9e298abfcb056",
+        strip_prefix = "ninja-1.10.0",
+        build_file_content = ALL_PUBLIC,
     )
 
     _github_repository(
