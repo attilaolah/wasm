@@ -1,0 +1,30 @@
+load("@rules_foreign_cc//for_workspace:cmake_build.bzl", "cmake_tool")
+load("@rules_foreign_cc//tools/build_defs/native_tools:native_tools_toolchain.bzl", "native_tool_toolchain")
+
+toolchain(
+    name = "cmake",
+    exec_compatible_with = [
+        "@bazel_tools//platforms:linux",
+        "@bazel_tools//platforms:x86_64",
+    ],
+    toolchain = ":cmake_toolchain",
+    toolchain_type = "@rules_foreign_cc//tools/build_defs:cmake_toolchain",
+)
+
+native_tool_toolchain(
+    name = "cmake_toolchain",
+    path = "cmake/bin/cmake",
+    target = ":cmake_tool",
+    visibility = ["//visibility:public"],
+)
+
+cmake_tool(
+    name = "cmake_tool",
+    cmake_srcs = "@cmake//:all",
+)
+
+toolchain(
+    name = "preinstalled",
+    toolchain = "@rules_foreign_cc//tools/build_defs/native_tools:preinstalled_cmake",
+    toolchain_type = "@rules_foreign_cc//tools/build_defs:cmake_toolchain",
+)

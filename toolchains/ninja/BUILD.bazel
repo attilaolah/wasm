@@ -1,0 +1,30 @@
+load("@rules_foreign_cc//for_workspace:ninja_build.bzl", "ninja_tool")
+load("@rules_foreign_cc//tools/build_defs/native_tools:native_tools_toolchain.bzl", "native_tool_toolchain")
+
+toolchain(
+    name = "ninja",
+    exec_compatible_with = [
+        "@bazel_tools//platforms:linux",
+        "@bazel_tools//platforms:x86_64",
+    ],
+    toolchain = ":ninja_toolchain",
+    toolchain_type = "@rules_foreign_cc//tools/build_defs:ninja_toolchain",
+)
+
+native_tool_toolchain(
+    name = "ninja_toolchain",
+    path = "ninja/ninja",
+    target = ":ninja_tool",
+    visibility = ["//visibility:public"],
+)
+
+ninja_tool(
+    name = "ninja_tool",
+    ninja_srcs = "@ninja//:all",
+)
+
+toolchain(
+    name = "preinstalled",
+    toolchain = "@rules_foreign_cc//tools/build_defs/native_tools:preinstalled_ninja",
+    toolchain_type = "@rules_foreign_cc//tools/build_defs:ninja_toolchain",
+)

@@ -10,8 +10,13 @@ load("@rules_foreign_cc//:workspace_definitions.bzl", "rules_foreign_cc_dependen
 
 rules_foreign_cc_dependencies(
     native_tools_toolchains = [
-        "//tools:cmake_toolchain",
-        "//tools:ninja_toolchain",
+        # Build cmake/ninja:
+        #"//toolchains/cmake",
+        #"//toolchains/ninja",
+
+        # Use system cmake/ninja:
+        "//toolchains/cmake:preinstalled",
+        "//toolchains/ninja:preinstalled",
     ],
     register_default_tools = False,
 )
