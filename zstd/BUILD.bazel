@@ -3,20 +3,32 @@ load("@rules_foreign_cc//tools/build_defs:cmake.bzl", "cmake_external")
 
 package(default_visibility = ["//:__subpackages__"])
 
+CACHE_ENTRIES = {
+    "ZSTD_BUILD_SHARED:BOOL": "OFF",
+    "ZSTD_BUILD_STATIC:BOOL": "ON",
+}
+
 cmake_external(
     name = "zstd",
-    binaries = [
-        "unzstd",
-        "zstd",
-        "zstdcat",
-        "zstdgrep",
-        "zstdless",
-        "zstdmt",
-    ],
-    cache_entries = {
-        "ZSTD_BUILD_SHARED:BOOL": "OFF",
-        "ZSTD_BUILD_STATIC:BOOL": "ON",
-    },
+    binaries = select({
+        ":build_binaries": [
+            "unzstd",
+            "zstd",
+            "zstdcat",
+            "zstdgrep",
+            "zstdless",
+            "zstdmt",
+        ],
+        "//conditions:default": [],
+    }),
+    cache_entries = select({
+        ":build_binaries": dict(CACHE_ENTRIES.items() + {
+            "ZSTD_BUILD_PROGRAMS:BOOL": "ON",
+        }.items()),
+        "//conditions:default": dict(CACHE_ENTRIES.items() + {
+            "ZSTD_BUILD_PROGRAMS:BOOL": "OFF",
+        }.items()),
+    }),
     cmake_relative_root = "build/cmake",
     lib_source = "@zstd//:all",
     static_libraries = ["libzstd.a"],
@@ -26,4 +38,9 @@ bzl_library(
     name = "package",
     srcs = ["package.bzl"],
     deps = ["//:http_archive"],
+)
+
+config_setting(
+    name = "build_binaries",
+    values = {"define": "build_binaries=true"},
 )
