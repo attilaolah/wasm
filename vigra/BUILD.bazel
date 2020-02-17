@@ -5,11 +5,18 @@ package(default_visibility = ["//:__subpackages__"])
 
 cmake_external(
     name = "vigra",
+    binaries = select({
+        ":build_binaries": [
+            "vigra-config",
+        ],
+        "//conditions:default": [],
+    }),
     cache_entries = {
         "VIGRA_STATIC_LIB:BOOL": "ON",
         "WITH_HDF5:BOOL": "OFF",
         "WITH_VIGRANUMPY:BOOL": "OFF",
     },
+    lib_name = "libvigraimpex",
     lib_source = "@vigra//:all",
     static_libraries = ["libvigraimpex.a"],
     deps = [
@@ -25,4 +32,9 @@ bzl_library(
     name = "package",
     srcs = ["package.bzl"],
     deps = ["//:http_archive"],
+)
+
+config_setting(
+    name = "build_binaries",
+    values = {"define": "build_binaries=true"},
 )
