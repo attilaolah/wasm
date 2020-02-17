@@ -14,5 +14,8 @@ def download_src():
         urls = [URL],
         sha256 = SHA256,
         strip_prefix = "{name}-{version}",
-        patches = ["output_cplusplus_version.patch"],
+        patches = [
+            "CMakeLists.txt.patch",
+            "output_cplusplus_version.cxx.patch",
+        ],
     )
