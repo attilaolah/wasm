@@ -30,6 +30,7 @@ cmake_external(
         }.items()),
     }),
     cmake_relative_root = "build/cmake",
+    lib_name = "libzstd",
     lib_source = "@zstd//:all",
     static_libraries = ["libzstd.a"],
 )
