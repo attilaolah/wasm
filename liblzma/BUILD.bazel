@@ -3,18 +3,53 @@ load("@rules_foreign_cc//tools/build_defs:configure.bzl", "configure_make")
 
 package(default_visibility = ["//:__subpackages__"])
 
+CONFIGURE_OPTIONS = [
+    "--disable-doc",
+    "--disable-shared",
+]
+
 configure_make(
     name = "liblzma",
-    configure_options = [
-        "--disable-doc",
-        "--disable-lzma-links",
-        "--disable-lzmadec",
-        "--disable-lzmainfo",
-        "--disable-scripts",
-        "--disable-shared",
-        "--disable-xz",
-        "--disable-xzdec",
-    ],
+    binaries = select({
+        ":build_binaries": [
+            "lzcat",
+            "lzcmp",
+            "lzdiff",
+            "lzegrep",
+            "lzfgrep",
+            "lzgrep",
+            "lzless",
+            "lzma",
+            "lzmadec",
+            "lzmainfo",
+            "lzmore",
+            "unlzma",
+            "unxz",
+            "xz",
+            "xzcat",
+            "xzcmp",
+            "xzdec",
+            "xzdiff",
+            "xzegrep",
+            "xzfgrep",
+            "xzgrep",
+            "xzless",
+            "xzmore",
+        ],
+        "//conditions:default": [],
+    }),
+    configure_options = select({
+        ":build_binaries": CONFIGURE_OPTIONS,
+        "//conditions:default": CONFIGURE_OPTIONS + [
+            "--disable-lzma-links",
+            "--disable-lzmadec",
+            "--disable-lzmainfo",
+            "--disable-scripts",
+            "--disable-xz",
+            "--disable-xzdec",
+        ],
+    }),
+    lib_name = "liblzma",
     lib_source = "@liblzma//:all",
     static_libraries = ["liblzma.a"],
 )
@@ -23,4 +58,9 @@ bzl_library(
     name = "package",
     srcs = ["package.bzl"],
     deps = ["//:http_archive"],
+)
+
+config_setting(
+    name = "build_binaries",
+    values = {"define": "build_binaries=true"},
 )
