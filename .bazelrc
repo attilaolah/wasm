@@ -1,5 +1,5 @@
 # Print test logs for failed tests.
 test --test_output=errors
 
-# Don't create bazel-.* symlinks in the project.
-build --symlink_prefix=/
+# Emscripten needs a writable EM_CACHE location.
+build --action_env=EM_CACHE
