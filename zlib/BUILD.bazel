@@ -5,6 +5,9 @@ package(default_visibility = ["//:__subpackages__"])
 
 configure_make(
     name = "zlib",
+    configure_options = [
+        "--static",
+    ],
     lib_source = "@zlib//:all",
     static_libraries = ["libz.a"],
 )
