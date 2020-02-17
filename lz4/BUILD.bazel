@@ -1,10 +1,15 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
-load("@rules_foreign_cc//tools/build_defs:make.bzl", "make")
+load("@rules_foreign_cc//tools/build_defs:cmake.bzl", "cmake_external")
 
 package(default_visibility = ["//:__subpackages__"])
 
-make(
+cmake_external(
     name = "lz4",
+    cache_entries = {
+        "BUILD_SHARED_LIBS:BOOL": "OFF",
+        "BUILD_STATIC_LIBS:BOOL": "ON",
+    },
+    cmake_relative_root = "contrib/cmake_unofficial",
     lib_source = "@lz4//:all",
     static_libraries = ["liblz4.a"],
 )
