@@ -8,6 +8,7 @@ cmake_external(
     cache_entries = {
         "BUILD_SHARED_LIBS:BOOL": "OFF",
         "BUILD_STATIC_LIBS:BOOL": "ON",
+        "LZ4_BUILD_LEGACY_LZ4C:BOOL": "OFF",
     },
     cmake_relative_root = "contrib/cmake_unofficial",
     lib_name = "liblz4",
