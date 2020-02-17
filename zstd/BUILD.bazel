@@ -5,8 +5,15 @@ package(default_visibility = ["//:__subpackages__"])
 
 cmake_external(
     name = "zstd",
+    binaries = [
+        "unzstd",
+        "zstd",
+        "zstdcat",
+        "zstdgrep",
+        "zstdless",
+        "zstdmt",
+    ],
     cache_entries = {
-        "ZSTD_BUILD_PROGRAMS:BOOL": "OFF",
         "ZSTD_BUILD_SHARED:BOOL": "OFF",
         "ZSTD_BUILD_STATIC:BOOL": "ON",
     },
