@@ -5,6 +5,11 @@ package(default_visibility = ["//:__subpackages__"])
 
 cmake_external(
     name = "lz4",
+    binaries = [
+        "lz4",
+        "lz4cat",
+        "unlz4",
+    ],
     cache_entries = {
         "BUILD_SHARED_LIBS:BOOL": "OFF",
         "BUILD_STATIC_LIBS:BOOL": "ON",
