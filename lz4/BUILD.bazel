@@ -10,6 +10,7 @@ cmake_external(
         "BUILD_STATIC_LIBS:BOOL": "ON",
     },
     cmake_relative_root = "contrib/cmake_unofficial",
+    lib_name = "liblz4",
     lib_source = "@lz4//:all",
     static_libraries = ["liblz4.a"],
 )
