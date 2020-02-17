@@ -5,11 +5,36 @@ package(default_visibility = ["//:__subpackages__"])
 
 configure_make(
     name = "libtiff",
+    binaries = select({
+        ":build_binaries": [
+            "fax2ps",
+            "fax2tiff",
+            "pal2rgb",
+            "ppm2tiff",
+            "raw2tiff",
+            "tiff2bw",
+            "tiff2pdf",
+            "tiff2ps",
+            "tiff2rgba",
+            "tiffcmp",
+            "tiffcp",
+            "tiffcrop",
+            "tiffdither",
+            "tiffdump",
+            "tiffgt",
+            "tiffinfo",
+            "tiffmedian",
+            "tiffset",
+            "tiffsplit",
+        ],
+        "//conditions:default": [],
+    }),
     configure_options = [
         "--enable-cxx",
         "--enable-shared=no",
         "--enable-static=yes",
     ],
+    lib_name = "libtiff",
     lib_source = "@libtiff//:all",
     static_libraries = [
         "libtiff.a",
@@ -27,4 +52,9 @@ bzl_library(
     name = "package",
     srcs = ["package.bzl"],
     deps = ["//:http_archive"],
+)
+
+config_setting(
+    name = "build_binaries",
+    values = {"define": "build_binaries=true"},
 )
