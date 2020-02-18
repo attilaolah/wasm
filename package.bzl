@@ -9,7 +9,6 @@ load("//libpng:package.bzl", download_libpng = "download_src")
 load("//libtiff:package.bzl", download_libtiff = "download_src")
 load("//lz4:package.bzl", download_lz4 = "download_src")
 load("//vigra:package.bzl", download_vigra = "download_src")
-load("//zlib:package.bzl", download_zlib = "download_src")
 load(":http_archive.bzl", "http_archive")
 
 def register_dependencies():
@@ -58,7 +57,6 @@ def register_repositories():
     download_libtiff()
     download_lz4()
     download_vigra()
-    download_zlib()
 
 def _github_repository(project, owner, commit, shallow_since, pull_requests = None):
     """Wrapper around git_repository() for GitHub."""

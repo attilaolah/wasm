@@ -4,9 +4,7 @@ bzl_library(
     name = "package",
     srcs = ["package.bzl"],
     deps = [
-        "//libjpeg_turbo:package",
-        "//zlib:package",
-        "//zstd:package",
+        "//lib:package",
     ],
 )
 

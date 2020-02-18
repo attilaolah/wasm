@@ -24,7 +24,7 @@ configure_make(
         "libpng.a",
         "libpng16.a",
     ],
-    deps = ["//zlib"],
+    deps = ["//lib/z"],
 )
 
 bzl_library(

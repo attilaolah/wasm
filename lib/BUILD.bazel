@@ -12,6 +12,7 @@ bzl_library(
         "//:http_archive",
         "//lib/gif:package",
         "//lib/webp:package",
+        "//lib/z:package",
         "//lib/zstd:package",
     ],
 )

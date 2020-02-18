@@ -4,12 +4,12 @@ load("@rules_foreign_cc//tools/build_defs:configure.bzl", "configure_make")
 package(default_visibility = ["//:__subpackages__"])
 
 configure_make(
-    name = "zlib",
+    name = "z",
     configure_options = [
         "--static",
     ],
     lib_name = "libz",
-    lib_source = "@zlib//:all",
+    lib_source = "@lib_z//:all",
     static_libraries = ["libz.a"],
 )
 
