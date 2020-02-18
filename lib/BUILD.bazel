@@ -10,6 +10,7 @@ bzl_library(
     srcs = ["package.bzl"],
     deps = [
         "//:http_archive",
+        "//lib/fftw:package",
         "//lib/gif:package",
         "//lib/lz4:package",
         "//lib/lzma:package",

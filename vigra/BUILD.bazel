@@ -12,10 +12,10 @@ cmake_external(
         "//conditions:default": [],
     }),
     cache_entries = {
-        "FFTW3F_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/libfftw3/include",
-        "FFTW3F_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/libfftw3/lib/libfftw3q.a",
-        "FFTW3_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/libfftw3/include",
-        "FFTW3_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/libfftw3/lib/libfftw3q.a",
+        "FFTW3F_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/libfftw/include",
+        "FFTW3F_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/libfftw/lib/libfftw3q.a",
+        "FFTW3_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/libfftw/include",
+        "FFTW3_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/libfftw/lib/libfftw3q.a",
         "JPEG_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/libjpeg/include",
         "JPEG_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/libjpeg/lib/libjpeg.a",
         "LIB_SUFFIX:STRING": "",
@@ -33,11 +33,11 @@ cmake_external(
     lib_source = "@vigra//:all",
     static_libraries = ["libvigraimpex.a"],
     deps = [
-        "//fftw",
-        "//libjpeg_turbo",
+        "//lib/fftw",
         "//lib/png",
         "//lib/tiff",
         "//lib/z",
+        "//libjpeg_turbo",
     ],
 )
 
