@@ -9,9 +9,9 @@ CONFIGURE_OPTIONS = [
 ]
 
 configure_make(
-    name = "liblzma",
+    name = "lzma",
     binaries = select({
-        ":build_binaries": [
+        "//conditions:default": [
             "lzcat",
             "lzcmp",
             "lzdiff",
@@ -36,11 +36,11 @@ configure_make(
             "xzless",
             "xzmore",
         ],
-        "//conditions:default": [],
+        "//lib:no_binaries": [],
     }),
     configure_options = select({
-        ":build_binaries": CONFIGURE_OPTIONS,
-        "//conditions:default": CONFIGURE_OPTIONS + [
+        "//conditions:default": CONFIGURE_OPTIONS,
+        "//lib:no_binaries": CONFIGURE_OPTIONS + [
             "--disable-lzma-links",
             "--disable-lzmadec",
             "--disable-lzmainfo",
@@ -50,7 +50,7 @@ configure_make(
         ],
     }),
     lib_name = "liblzma",
-    lib_source = "@liblzma//:all",
+    lib_source = "@lib_lzma//:all",
     static_libraries = ["liblzma.a"],
 )
 
@@ -58,9 +58,4 @@ bzl_library(
     name = "package",
     srcs = ["package.bzl"],
     deps = ["//:http_archive"],
-)
-
-config_setting(
-    name = "build_binaries",
-    values = {"define": "build_binaries=true"},
 )

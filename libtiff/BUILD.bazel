@@ -39,10 +39,10 @@ cmake_external(
         "libtiffxx.a",
     ],
     deps = [
+        "//lib/lzma",
+        "//lib/z",
         "//lib/zstd",
         "//libjpeg_turbo",
-        "//liblzma",
-        "//lib/z",
     ],
 )
 
