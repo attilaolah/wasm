@@ -38,10 +38,10 @@ cmake_external(
     static_libraries = ["libwebp.a"],
     deps = [
         "//lib/gif",
+        "//lib/jpeg_turbo",
         "//lib/png",
         "//lib/tiff",
         "//lib/z",
-        "//lib/jpeg_turbo",
     ],
 )
 
