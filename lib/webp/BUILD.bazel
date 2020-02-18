@@ -9,7 +9,7 @@ package(default_visibility = ["//:__subpackages__"])
 cmake_external(
     name = "webp",
     binaries = select({
-        ":build_binaries": [
+        "//conditions:default": [
             "cwebp",
             "dwebp",
             "gif2webp",
@@ -18,7 +18,7 @@ cmake_external(
             "webpinfo",
             "webpmux",
         ],
-        "//conditions:default": [],
+        "//lib:no_binaries": [],
     }),
     cache_entries = {
         "BUILD_SHARED_LIBS:BOOL": "OFF",
@@ -34,7 +34,7 @@ cmake_external(
         "ZLIB_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/libz/lib/libz.a",
     },
     lib_name = "libwebp",
-    lib_source = "@webp//:all",
+    lib_source = "@lib_webp//:all",
     static_libraries = ["libwebp.a"],
     deps = [
         "//lib/gif",
@@ -49,9 +49,4 @@ bzl_library(
     name = "package",
     srcs = ["package.bzl"],
     deps = ["//:http_archive"],
-)
-
-config_setting(
-    name = "build_binaries",
-    values = {"define": "build_binaries=true"},
 )
