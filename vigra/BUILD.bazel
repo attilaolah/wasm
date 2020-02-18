@@ -16,7 +16,7 @@ cmake_external(
         "FFTW3F_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/fftw/lib/libfftw3q.a",
         "FFTW3_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/fftw3/include",
         "FFTW3_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/fftw3/lib/libfftw3q.a",
-        "JPEG_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/fftwlibjpeg_turbo/include",
+        "JPEG_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/libjpeg_turbo/include",
         "JPEG_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/libjpeg_turbo/lib/libjpeg.a",
         "PNG_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/libpng/lib/libpng.a",
         "PNG_PNG_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/libpng/include",
