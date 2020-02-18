@@ -12,7 +12,6 @@ def http_archive(name, version, urls, sha256, strip_prefix = None, patches = Non
     """Wrapper around http_archive() that specifies a common BUILD file."""
     args = {
         "name": name,
-        "lname": "lib" + name,
         "version": version,
         "version-": version.replace(".", "-"),
         "version_": version.replace(".", "_"),
@@ -20,9 +19,6 @@ def http_archive(name, version, urls, sha256, strip_prefix = None, patches = Non
 
     if strip_prefix != None:
         strip_prefix = strip_prefix.format(**args)
-
-    for i, patch in enumerate(patches or []):
-        patches[i] = "//{}:{}".format(name, patch)
 
     _http_archive(
         name = name.replace("-", "_"),

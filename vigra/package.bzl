@@ -15,7 +15,7 @@ def download_src():
         sha256 = SHA256,
         strip_prefix = "{name}-{version}",
         patches = [
-            "CMakeLists.txt.patch",
-            "output_cplusplus_version.cxx.patch",
+            "//vigra:CMakeLists.txt.patch",
+            "//vigra:output_cplusplus_version.cxx.patch",
         ],
     )

@@ -4,9 +4,9 @@ load("@rules_foreign_cc//tools/build_defs:cmake.bzl", "cmake_external")
 package(default_visibility = ["//:__subpackages__"])
 
 cmake_external(
-    name = "libpano13",
+    name = "pano13",
     binaries = select({
-        ":build_binaries": [
+        "//conditions:default": [
             "panoinfo",
             "PTblender",
             "PTcrop",
@@ -19,7 +19,7 @@ cmake_external(
             "PTtiffdump",
             "PTuncrop",
         ],
-        "//conditions:default": [],
+        "//lib:no_binaries": [],
     }),
     cache_entries = {
         "BUILD_SHARED_LIBS:BOOL": "OFF",
@@ -33,7 +33,7 @@ cmake_external(
         "ZLIB_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/libz/lib/libz.a",
     },
     lib_name = "libpano13",
-    lib_source = "@libpano13//:all",
+    lib_source = "@lib_pano13//:all",
     static_libraries = ["libpano13.a"],
     deps = [
         "//libjpeg_turbo",
@@ -47,9 +47,4 @@ bzl_library(
     name = "package",
     srcs = ["package.bzl"],
     deps = ["//:http_archive"],
-)
-
-config_setting(
-    name = "build_binaries",
-    values = {"define": "build_binaries=true"},
 )
