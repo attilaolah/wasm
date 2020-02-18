@@ -31,6 +31,17 @@ cmake_external(
     }),
     cache_entries = {
         "BUILD_SHARED_LIBS:BOOL": "OFF",
+        "JPEG_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/libjpeg/include",
+        "JPEG_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/libjpeg/lib/libjpeg.a",
+        # TODO: These two don't seem to work?
+        "LZMA_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/liblzma/include",
+        "LZMA_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/liblzma/lib/liblzma.a",
+        "WEBP_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/libwebp/include",
+        "WEBP_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/libwebp/lib/libwebp.a",
+        "ZLIB_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/libz/include",
+        "ZLIB_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/libz/lib/libz.a",
+        "ZSTD_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/libzstd/include",
+        "ZSTD_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/libzstd/lib/libzstd.a",
     },
     lib_name = "libtiff",
     lib_source = "@lib_tiff//:all",
@@ -41,6 +52,7 @@ cmake_external(
     deps = [
         "//lib/jpeg_turbo",
         "//lib/lzma",
+        "//lib/webp",
         "//lib/z",
         "//lib/zstd",
     ],
