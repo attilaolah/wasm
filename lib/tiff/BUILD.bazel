@@ -4,9 +4,9 @@ load("@rules_foreign_cc//tools/build_defs:cmake.bzl", "cmake_external")
 package(default_visibility = ["//:__subpackages__"])
 
 cmake_external(
-    name = "libtiff",
+    name = "tiff",
     binaries = select({
-        ":build_binaries": [
+        "//conditions:default": [
             "fax2ps",
             "fax2tiff",
             "pal2rgb",
@@ -27,13 +27,13 @@ cmake_external(
             "tiffset",
             "tiffsplit",
         ],
-        "//conditions:default": [],
+        "//lib:no_binaries": [],
     }),
     cache_entries = {
         "BUILD_SHARED_LIBS:BOOL": "OFF",
     },
     lib_name = "libtiff",
-    lib_source = "@libtiff//:all",
+    lib_source = "@lib_tiff//:all",
     static_libraries = [
         "libtiff.a",
         "libtiffxx.a",
@@ -50,9 +50,4 @@ bzl_library(
     name = "package",
     srcs = ["package.bzl"],
     deps = ["//:http_archive"],
-)
-
-config_setting(
-    name = "build_binaries",
-    values = {"define": "build_binaries=true"},
 )

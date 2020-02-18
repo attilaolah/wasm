@@ -38,7 +38,7 @@ cmake_external(
     deps = [
         "//libjpeg_turbo",
         "//libpng",
-        "//libtiff",
+        "//lib/tiff",
         "//lib/z",
     ],
 )
