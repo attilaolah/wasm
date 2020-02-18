@@ -4,22 +4,22 @@ load("@rules_foreign_cc//tools/build_defs:configure.bzl", "configure_make")
 package(default_visibility = ["//:__subpackages__"])
 
 configure_make(
-    name = "libpng",
+    name = "png",
     binaries = select({
-        ":build_binaries": [
+        "//conditions:default": [
             "libpng-config",
             "libpng16-config",
             "png-fix-itxt",
             "pngfix",
         ],
-        "//conditions:default": [],
+        "//lib:no_binaries": [],
     }),
     configure_options = [
         "--enable-shared=no",
         "--enable-static=yes",
     ],
     lib_name = "libpng",
-    lib_source = "@libpng//:all",
+    lib_source = "@lib_png//:all",
     static_libraries = [
         "libpng.a",
         "libpng16.a",
@@ -31,9 +31,4 @@ bzl_library(
     name = "package",
     srcs = ["package.bzl"],
     deps = ["//:http_archive"],
-)
-
-config_setting(
-    name = "build_binaries",
-    values = {"define": "build_binaries=true"},
 )

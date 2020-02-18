@@ -13,6 +13,7 @@ bzl_library(
         "//lib/gif:package",
         "//lib/lz4:package",
         "//lib/lzma:package",
+        "//lib/png:package",
         "//lib/tiff:package",
         "//lib/webp:package",
         "//lib/z:package",

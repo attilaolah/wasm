@@ -37,7 +37,7 @@ cmake_external(
     static_libraries = ["libpano13.a"],
     deps = [
         "//libjpeg_turbo",
-        "//libpng",
+        "//lib/png",
         "//lib/tiff",
         "//lib/z",
     ],
