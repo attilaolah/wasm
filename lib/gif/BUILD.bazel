@@ -1,0 +1,28 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("@rules_foreign_cc//tools/build_defs:make.bzl", "make")
+
+package(default_visibility = ["//:__subpackages__"])
+
+make(
+    name = "gif",
+    binaries = select({
+        "//conditions:default": [
+            "gif2rgb",
+            "gifbuild",
+            "gifclrmp",
+            "giffix",
+            "giftext",
+            "giftool",
+        ],
+        "//lib:no_binaries": [],
+    }),
+    lib_name = "libgif",
+    lib_source = "@lib_gif//:all",
+    static_libraries = ["libgif.a"],
+)
+
+bzl_library(
+    name = "package",
+    srcs = ["package.bzl"],
+    deps = ["//:http_archive"],
+)

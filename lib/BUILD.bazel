@@ -1,0 +1,15 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+
+config_setting(
+    name = "no_binaries",
+    values = {"define": "build_binaries=false"},
+)
+
+bzl_library(
+    name = "package",
+    srcs = ["package.bzl"],
+    deps = [
+        "//:http_archive",
+        "//lib/gif:package",
+    ],
+)
