@@ -11,7 +11,7 @@ CACHE_ENTRIES = {
 cmake_external(
     name = "zstd",
     binaries = select({
-        ":build_binaries": [
+        "//conditions:default": [
             "unzstd",
             "zstd",
             "zstdcat",
@@ -19,19 +19,19 @@ cmake_external(
             "zstdless",
             "zstdmt",
         ],
-        "//conditions:default": [],
+        "//lib:no_binaries": [],
     }),
     cache_entries = select({
-        ":build_binaries": dict(CACHE_ENTRIES.items() + {
+        "//conditions:default": dict(CACHE_ENTRIES.items() + {
             "ZSTD_BUILD_PROGRAMS:BOOL": "ON",
         }.items()),
-        "//conditions:default": dict(CACHE_ENTRIES.items() + {
+        "//lib:no_binaries": dict(CACHE_ENTRIES.items() + {
             "ZSTD_BUILD_PROGRAMS:BOOL": "OFF",
         }.items()),
     }),
     cmake_relative_root = "build/cmake",
     lib_name = "libzstd",
-    lib_source = "@zstd//:all",
+    lib_source = "@lib_zstd//:all",
     static_libraries = ["libzstd.a"],
 )
 
@@ -39,9 +39,4 @@ bzl_library(
     name = "package",
     srcs = ["package.bzl"],
     deps = ["//:http_archive"],
-)
-
-config_setting(
-    name = "build_binaries",
-    values = {"define": "build_binaries=true"},
 )
