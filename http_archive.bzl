@@ -12,6 +12,7 @@ def http_archive(name, version, urls, sha256, strip_prefix = None, patches = Non
     """Wrapper around http_archive() that specifies a common BUILD file."""
     args = {
         "name": name,
+        "lname": "lib" + name,
         "version": version,
         "version-": version.replace(".", "-"),
         "version_": version.replace(".", "_"),

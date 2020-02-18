@@ -1,0 +1,54 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("@rules_foreign_cc//tools/build_defs:cmake.bzl", "cmake_external")
+
+package(default_visibility = ["//:__subpackages__"])
+
+# Binaries that are not being built:
+# - gif2webp: Requires GIF support.
+# - vwebp: Requires SDL support.
+
+cmake_external(
+    name = "webp",
+    binaries = select({
+        ":build_binaries": [
+            "cwebp",
+            "dwebp",
+            "img2webp",
+            "webp_quality",
+            "webpinfo",
+            "webpmux",
+        ],
+        "//conditions:default": [],
+    }),
+    cache_entries = {
+        "BUILD_SHARED_LIBS:BOOL": "OFF",
+        "JPEG_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/libjpeg/include",
+        "JPEG_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/libjpeg/lib/libjpeg.a",
+        "PNG_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/libpng/lib/libpng.a",
+        "PNG_PNG_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/libpng/include",
+        "TIFF_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/libtiff/include",
+        "TIFF_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/libtiff/lib/libtiff.a",
+        "ZLIB_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/libz/include",
+        "ZLIB_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/libz/lib/libz.a",
+    },
+    lib_name = "libwebp",
+    lib_source = "@webp//:all",
+    static_libraries = ["libwebp.a"],
+    deps = [
+        "//libjpeg_turbo",
+        "//libpng",
+        "//libtiff",
+        "//zlib",
+    ],
+)
+
+bzl_library(
+    name = "package",
+    srcs = ["package.bzl"],
+    deps = ["//:http_archive"],
+)
+
+config_setting(
+    name = "build_binaries",
+    values = {"define": "build_binaries=true"},
+)
