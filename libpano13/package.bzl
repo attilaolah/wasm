@@ -14,7 +14,7 @@ def download_src():
         urls = [URL],
         sha256 = SHA256,
         strip_prefix = "{name}-{version}",
-        patches = ["bootstrap.patch"],
+        patches = ["CMakeLists.txt.patch"],
         patch_cmds = [
             "chmod +x bootstrap",
         ],
