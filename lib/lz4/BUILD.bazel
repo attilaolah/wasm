@@ -6,12 +6,12 @@ package(default_visibility = ["//:__subpackages__"])
 cmake_external(
     name = "lz4",
     binaries = select({
-        ":build_binaries": [
+        "//conditions:default": [
             "lz4",
             "lz4cat",
             "unlz4",
         ],
-        "//conditions:default": [],
+        "//lib:no_binaries": [],
     }),
     cache_entries = {
         "BUILD_SHARED_LIBS:BOOL": "OFF",
@@ -20,7 +20,7 @@ cmake_external(
     },
     cmake_relative_root = "contrib/cmake_unofficial",
     lib_name = "liblz4",
-    lib_source = "@lz4//:all",
+    lib_source = "@lib_lz4//:all",
     static_libraries = ["liblz4.a"],
 )
 
@@ -28,9 +28,4 @@ bzl_library(
     name = "package",
     srcs = ["package.bzl"],
     deps = ["//:http_archive"],
-)
-
-config_setting(
-    name = "build_binaries",
-    values = {"define": "build_binaries=true"},
 )
