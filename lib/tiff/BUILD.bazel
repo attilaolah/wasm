@@ -42,7 +42,7 @@ cmake_external(
         "//lib/lzma",
         "//lib/z",
         "//lib/zstd",
-        "//libjpeg_turbo",
+        "//lib/jpeg_turbo",
     ],
 )
 

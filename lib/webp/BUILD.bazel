@@ -41,7 +41,7 @@ cmake_external(
         "//lib/png",
         "//lib/tiff",
         "//lib/z",
-        "//libjpeg_turbo",
+        "//lib/jpeg_turbo",
     ],
 )
 

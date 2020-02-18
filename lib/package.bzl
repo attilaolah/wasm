@@ -1,5 +1,6 @@
 load("//lib/fftw:package.bzl", "download_fftw")
 load("//lib/gif:package.bzl", "download_gif")
+load("//lib/jpeg_turbo:package.bzl", "download_jpeg_turbo")
 load("//lib/lz4:package.bzl", "download_lz4")
 load("//lib/lzma:package.bzl", "download_lzma")
 load("//lib/pano13:package.bzl", "download_pano13")
@@ -14,6 +15,7 @@ def download_lib():
     """Download all library sources."""
     download_fftw()
     download_gif()
+    download_jpeg_turbo()
     download_lz4()
     download_lzma()
     download_pano13()
