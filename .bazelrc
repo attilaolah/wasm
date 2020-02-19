@@ -2,4 +2,4 @@
 test --test_output=errors
 
 # Emscripten needs a writable EM_CACHE location.
-build --action_env=EM_CACHE
+build:emscripten --action_env=EM_CACHE=/tmp/em_cache
