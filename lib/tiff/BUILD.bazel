@@ -33,9 +33,8 @@ cmake_external(
         "BUILD_SHARED_LIBS:BOOL": "OFF",
         "JPEG_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/libjpeg/include",
         "JPEG_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/libjpeg/lib/libjpeg.a",
-        # TODO: These two don't seem to work?
-        "LZMA_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/liblzma/include",
-        "LZMA_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/liblzma/lib/liblzma.a",
+        "LIBLZMA_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/liblzma/include",
+        "LIBLZMA_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/liblzma/lib/liblzma.a",
         "WEBP_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/libwebp/include",
         "WEBP_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/libwebp/lib/libwebp.a",
         "ZLIB_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/libz/include",
