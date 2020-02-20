@@ -1,8 +1,38 @@
-# Print test logs for failed tests.
-test --test_output=errors
+# CONFIG OPTIONS
+#
+# The following config options are available:
+#
+# - cmake: 		     Download and build cmake from source.
+# - emcmake:         DO NOT USE, not implemented yet.
+# - ninja:           Download and build ninja from source.
+# - system_cmake:    Use the preinstalled cmake in the execution environment.
+# - system_emcmake:  Use the preinstalled emcmake in the execution environment.
+# - system_ninja:    Use the preinstalled ninja in the execution environment.
+#
+# The following config options are mandatory:
+#
+# - One of {cmake, system_cmake, emcmake, system_emcmake}
+# - One of {ninja, system_ninja}
 
-# Emscripten needs a writable EM_CACHE location.
+# Configure toolchains for each target:
+build:cmake          --extra_toolchains=//toolchains/cmake
+build:system_cmake   --extra_toolchains=//toolchains/cmake:preinstalled
+build:ninja          --extra_toolchains=//toolchains/ninja
+build:system_ninja   --extra_toolchains=//toolchains/ninja:preinstalled
+build:emcmake        --extra_toolchains=//toolchains/emcmake
+build:system_emcmake --extra_toolchains=//toolchains/emcmake:preinstalled
+
+# Additional Emscripten configuration:
+build:emcmake        --config=emscripten
+build:system_emcmake --config=emscripten
+
+# Define that enables //toolchains/emcmake:enabled.
+build:emscripten --define=target_platform=emscripten
+
+# Required environment variables:
 build:emscripten --action_env=BINARYEN=/usr
 build:emscripten --action_env=BINARYEN_ROOT=/usr
 build:emscripten --action_env=EM_CACHE=/tmp/em_cache
-build:emscripten --define=target_platform=emscripten
+
+# Not implemented yet, so fail fast:
+build:emcmake --not_implemented_yet
