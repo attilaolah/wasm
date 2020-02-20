@@ -17,6 +17,9 @@ rules_foreign_cc_dependencies(
         # Use system cmake/ninja:
         "//toolchains/cmake:preinstalled",
         "//toolchains/ninja:preinstalled",
+
+        # Use Emscripten instead of cmake:
+        #"//toolchains/emcmake:preinstalled",
     ],
     register_default_tools = False,
 )

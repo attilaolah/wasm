@@ -1,0 +1,19 @@
+load("@rules_foreign_cc//for_workspace:cmake_build.bzl", "cmake_tool")
+load("@rules_foreign_cc//tools/build_defs/native_tools:native_tools_toolchain.bzl", "native_tool_toolchain")
+
+config_setting(
+    name = "enabled",
+    values = {"define": "target_platform=emscripten"},
+)
+
+toolchain(
+    name = "preinstalled",
+    toolchain = ":preinstalled_emcmake",
+    toolchain_type = "@rules_foreign_cc//tools/build_defs:cmake_toolchain",
+)
+
+native_tool_toolchain(
+    name = "preinstalled_emcmake",
+    path = "emcmake cmake",
+    visibility = ["//visibility:public"],
+)

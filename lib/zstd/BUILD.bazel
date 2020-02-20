@@ -4,35 +4,51 @@ load("@rules_foreign_cc//tools/build_defs:cmake.bzl", "cmake_external")
 package(default_visibility = ["//:__subpackages__"])
 
 CACHE_ENTRIES = {
+    "ZSTD_BUILD_PROGRAMS:BOOL": "OFF",
     "ZSTD_BUILD_SHARED:BOOL": "OFF",
     "ZSTD_BUILD_STATIC:BOOL": "ON",
 }
 
+BIN_CACHE_ENTRIES = dict(
+    CACHE_ENTRIES.items() + {
+        "ZSTD_BUILD_PROGRAMS:BOOL": "ON",
+    }.items(),
+)
+
+EM_CACHE_ENTRIES = {
+    "CMAKE_SHARED_LINKER_FLAGS": "",
+    "CMAKE_EXE_LINKER_FLAGS": "",
+}
+
 cmake_external(
     name = "zstd",
-    binaries = select({
-        "//conditions:default": [
-            "unzstd",
-            "zstd",
-            "zstdcat",
-            "zstdgrep",
-            "zstdless",
-            "zstdmt",
-        ],
-        "//lib:no_binaries": [],
-    }),
     cache_entries = select({
-        "//conditions:default": dict(CACHE_ENTRIES.items() + {
-            "ZSTD_BUILD_PROGRAMS:BOOL": "ON",
-        }.items()),
-        "//lib:no_binaries": dict(CACHE_ENTRIES.items() + {
-            "ZSTD_BUILD_PROGRAMS:BOOL": "OFF",
-        }.items()),
+        "//conditions:default": CACHE_ENTRIES,
+        "//toolchains/emcmake:enabled": dict(CACHE_ENTRIES.items() + EM_CACHE_ENTRIES.items()),
     }),
     cmake_relative_root = "build/cmake",
     lib_name = "libzstd",
     lib_source = "@lib_zstd//:all",
     static_libraries = ["libzstd.a"],
+)
+
+cmake_external(
+    name = "binaries",
+    binaries = [
+        "unzstd",
+        "zstd",
+        "zstdcat",
+        "zstdgrep",
+        "zstdless",
+        "zstdmt",
+    ],
+    cache_entries = select({
+        "//conditions:default": BIN_CACHE_ENTRIES,
+        "//toolchains/emcmake:enabled": dict(BIN_CACHE_ENTRIES.items() + EM_CACHE_ENTRIES.items()),
+    }),
+    cmake_relative_root = "build/cmake",
+    lib_name = "libzstd",
+    lib_source = "@lib_zstd//:all",
 )
 
 bzl_library(
