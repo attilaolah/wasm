@@ -3,25 +3,32 @@ load("@rules_foreign_cc//tools/build_defs:cmake.bzl", "cmake_external")
 
 package(default_visibility = ["//:__subpackages__"])
 
+CACHE_ENTRIES = {
+    "BUILD_SHARED_LIBS:BOOL": "OFF",
+    "BUILD_STATIC_LIBS:BOOL": "ON",
+    "LZ4_BUILD_LEGACY_LZ4C:BOOL": "OFF",
+}
+
 cmake_external(
     name = "lz4",
-    binaries = select({
-        "//conditions:default": [
-            "lz4",
-            "lz4cat",
-            "unlz4",
-        ],
-        "//lib:no_binaries": [],
-    }),
-    cache_entries = {
-        "BUILD_SHARED_LIBS:BOOL": "OFF",
-        "BUILD_STATIC_LIBS:BOOL": "ON",
-        "LZ4_BUILD_LEGACY_LZ4C:BOOL": "OFF",
-    },
+    cache_entries = CACHE_ENTRIES,
     cmake_relative_root = "contrib/cmake_unofficial",
-    lib_name = "liblz4",
+    lib_name = "lz4_lib",
     lib_source = "@lib_lz4//:all",
     static_libraries = ["liblz4.a"],
+)
+
+cmake_external(
+    name = "binaries",
+    binaries = [
+        "lz4",
+        "lz4cat",
+        "unlz4",
+    ],
+    cache_entries = CACHE_ENTRIES,
+    cmake_relative_root = "contrib/cmake_unofficial",
+    lib_name = "lz4_bin",
+    lib_source = "@lib_lz4//:all",
 )
 
 bzl_library(
