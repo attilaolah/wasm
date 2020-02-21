@@ -3,7 +3,9 @@ load("@rules_foreign_cc//tools/build_defs/native_tools:native_tools_toolchain.bz
 
 config_setting(
     name = "enabled",
-    values = {"define": "target_platform=emscripten"},
+    flag_values = {
+        "//toolchains:cmake_toolchain": "//toolchains/emcmake:preinstalled",
+    },
 )
 
 toolchain(
