@@ -1,11 +1,2 @@
+.bazelrc.local
 bazel-*
-
-*.bc
-*.js
-*.html
-*.wasm
-
-pkg/*.pkg.tar.xz
-src/*.tar.gz
-src/*.tar.xz
-src/*.tar.zst

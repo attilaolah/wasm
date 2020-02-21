@@ -14,6 +14,12 @@
 # - One of {cmake, system_cmake, emcmake, system_emcmake}
 # - One of {ninja, system_ninja}
 
+# Allow the local workspace to define these configs.
+# To make the default build work, add these lines to .bazelrc.local:
+# build --config=system_cmake
+# build --config=system_ninja
+try-import %workspace%/.bazelrc.local
+
 # Configure toolchains for each target:
 build:cmake          --extra_toolchains=//toolchains/cmake
 build:system_cmake   --extra_toolchains=//toolchains/cmake:preinstalled
