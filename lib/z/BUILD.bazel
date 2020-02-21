@@ -10,6 +10,16 @@ configure_make(
     ],
     lib_name = "libz",
     lib_source = "@lib_z//:all",
+    make_commands = select({
+        "//conditions:default": [
+            "make",
+            "make install",
+        ],
+        "//config:emscripten": [
+            "emmake make",
+            "emmake make install",
+        ],
+    }),
     static_libraries = ["libz.a"],
 )
 

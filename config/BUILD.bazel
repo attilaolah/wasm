@@ -1,4 +1,4 @@
 config_setting(
     name = "emscripten",
-    values = {"define": "platform=emscripten"}
+    values = {"define": "platform=emscripten"},
 )
