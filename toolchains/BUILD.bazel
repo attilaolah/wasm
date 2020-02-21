@@ -1,8 +1,0 @@
-load(":build_settings.bzl", "cmake_toolchain")
-
-package(default_visibility = ["//visibility:public"])
-
-cmake_toolchain(
-    name = "cmake_toolchain",
-    build_setting_default = "//toolchains/cmake:preinstalled",
-)

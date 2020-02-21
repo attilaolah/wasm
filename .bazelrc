@@ -4,35 +4,35 @@
 #
 # - cmake: 		     Download and build cmake from source.
 # - emcmake:         DO NOT USE, not implemented yet.
+# - ninja:           Download and build ninja from source.
 # - system_cmake:    Use the preinstalled cmake in the execution environment.
 # - system_emcmake:  Use the preinstalled emcmake in the execution environment.
+# - system_ninja:    Use the preinstalled ninja in the execution environment.
 #
-# The following config options are mandatory:
+# If none of them are provided, the default toolchains will be used:
 #
-# - One of {cmake, system_cmake, emcmake, system_emcmake}
+# - @rules_foreign_cc//tools/build_defs/native_tools:preinstalled_cmake
+# - @rules_foreign_cc//tools/build_defs/native_tools:preinstalled_ninja
 
-# Allow the local workspace to define these configs.
-# To make the default build work, add these lines to .bazelrc.local:
-# build --config=system_cmake
+# Allow local workspace config to select a different default :
 try-import %workspace%/.bazelrc.local
 
 # Configure toolchains for each target:
-build:cmake          --extra_toolchains=//toolchains/cmake
-build:system_cmake   --extra_toolchains=//toolchains/cmake:preinstalled
-build:emcmake        --extra_toolchains=//toolchains/emcmake
-build:system_emcmake --extra_toolchains=//toolchains/emcmake:preinstalled
+build:cmake          --//toolchains/cmake:selected=cmake
+build:system_cmake   --//toolchains/cmake:selected=cmake_preinstalled
+build:ninja          --//toolchains/ninja:selected=ninja
+build:system_ninja   --//toolchains/ninja:selected=ninja_preinstalled
+build:emcmake        --//toolchains/cmake:selected=emcmake
+build:system_emcmake --//toolchains/cmake:selected=emcmake_preinstalled
 
 # Additional Emscripten configuration:
 build:emcmake        --config=emscripten
 build:system_emcmake --config=emscripten
 
-# Define that enables //toolchains/emcmake:enabled.
-build:emscripten --define=target_platform=emscripten
+# Define that enables //config:emscripten:
+build:emscripten --define=platform=emscripten
 
 # Required environment variables:
 build:emscripten --action_env=BINARYEN=/usr
 build:emscripten --action_env=BINARYEN_ROOT=/usr
 build:emscripten --action_env=EM_CACHE=/tmp/em_cache
-
-# Not implemented yet, so fail fast:
-build:emcmake --not_implemented_yet

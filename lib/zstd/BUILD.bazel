@@ -24,7 +24,7 @@ cmake_external(
     name = "zstd",
     cache_entries = select({
         "//conditions:default": CACHE_ENTRIES,
-        "//toolchains/emcmake:enabled": dict(CACHE_ENTRIES.items() + EM_CACHE_ENTRIES.items()),
+        "//config:emscripten": dict(CACHE_ENTRIES.items() + EM_CACHE_ENTRIES.items()),
     }),
     cmake_relative_root = "build/cmake",
     lib_name = "zstd_lib",
@@ -44,7 +44,7 @@ cmake_external(
     ],
     cache_entries = select({
         "//conditions:default": BIN_CACHE_ENTRIES,
-        "//toolchains/emcmake:enabled": dict(BIN_CACHE_ENTRIES.items() + EM_CACHE_ENTRIES.items()),
+        "//config:emscripten": dict(BIN_CACHE_ENTRIES.items() + EM_CACHE_ENTRIES.items()),
     }),
     cmake_relative_root = "build/cmake",
     lib_name = "zstd_bin",

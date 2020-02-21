@@ -2,10 +2,8 @@ load("@rules_foreign_cc//for_workspace:cmake_build.bzl", "cmake_tool")
 load("@rules_foreign_cc//tools/build_defs/native_tools:native_tools_toolchain.bzl", "native_tool_toolchain")
 
 config_setting(
-    name = "enabled",
-    flag_values = {
-        "//toolchains:cmake_toolchain": "//toolchains/emcmake:preinstalled",
-    },
+    name = "enable_preinstalled",
+    flag_values = {"//toolchains/cmake:selected": "emcmake_preinstalled"},
 )
 
 toolchain(
