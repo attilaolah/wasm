@@ -6,12 +6,6 @@ config_setting(
     flag_values = {"//toolchains/cmake:selected": "emcmake_preinstalled"},
 )
 
-toolchain(
-    name = "preinstalled",
-    toolchain = ":preinstalled_emcmake",
-    toolchain_type = "@rules_foreign_cc//tools/build_defs:cmake_toolchain",
-)
-
 native_tool_toolchain(
     name = "preinstalled_emcmake",
     path = "emcmake cmake",
