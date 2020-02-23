@@ -26,8 +26,8 @@ cmake_external(
         "GIF_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/gif_lib/lib/libgif.a",
         "JPEG_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/jpeg_turbo_lib/include",
         "JPEG_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/jpeg_turbo_lib/lib/libjpeg.a",
-        "PNG_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/libpng/lib/libpng.a",
-        "PNG_PNG_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/libpng/include",
+        "PNG_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/png_lib/lib/libpng.a",
+        "PNG_PNG_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/png_lib/include",
         "ZLIB_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/z_lib/include",
         "ZLIB_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/z_lib/lib/libz.a",
 
