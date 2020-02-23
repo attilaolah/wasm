@@ -5,12 +5,6 @@ package(default_visibility = ["//:__subpackages__"])
 
 cmake_external(
     name = "vigra",
-    binaries = select({
-        "//conditions:default": [
-            "vigra-config",
-        ],
-        "//lib:no_binaries": [],
-    }),
     cache_entries = {
         "FFTW3F_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/fftw_lib/include",
         "FFTW3F_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/fftw_lib/lib/libfftw3q.a",
