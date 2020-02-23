@@ -3,55 +3,58 @@ load("@rules_foreign_cc//tools/build_defs:configure.bzl", "configure_make")
 
 package(default_visibility = ["//:__subpackages__"])
 
-CONFIGURE_OPTIONS = [
+BIN_CONFIGURE_OPTIONS = [
     "--disable-doc",
     "--disable-shared",
 ]
 
+CONFIGURE_OPTIONS = BIN_CONFIGURE_OPTIONS + [
+    "--disable-lzma-links",
+    "--disable-lzmadec",
+    "--disable-lzmainfo",
+    "--disable-scripts",
+    "--disable-xz",
+    "--disable-xzdec",
+]
+
 configure_make(
     name = "lzma",
-    binaries = select({
-        "//conditions:default": [
-            "lzcat",
-            "lzcmp",
-            "lzdiff",
-            "lzegrep",
-            "lzfgrep",
-            "lzgrep",
-            "lzless",
-            "lzma",
-            "lzmadec",
-            "lzmainfo",
-            "lzmore",
-            "unlzma",
-            "unxz",
-            "xz",
-            "xzcat",
-            "xzcmp",
-            "xzdec",
-            "xzdiff",
-            "xzegrep",
-            "xzfgrep",
-            "xzgrep",
-            "xzless",
-            "xzmore",
-        ],
-        "//lib:no_binaries": [],
-    }),
-    configure_options = select({
-        "//conditions:default": CONFIGURE_OPTIONS,
-        "//lib:no_binaries": CONFIGURE_OPTIONS + [
-            "--disable-lzma-links",
-            "--disable-lzmadec",
-            "--disable-lzmainfo",
-            "--disable-scripts",
-            "--disable-xz",
-            "--disable-xzdec",
-        ],
-    }),
-    lib_name = "liblzma",
+    configure_options = CONFIGURE_OPTIONS,
+    lib_name = "lzma_lib",
     lib_source = "@lib_lzma//:all",
     static_libraries = ["liblzma.a"],
+)
+
+configure_make(
+    name = "binaries",
+    binaries = [
+        "lzcat",
+        "lzcmp",
+        "lzdiff",
+        "lzegrep",
+        "lzfgrep",
+        "lzgrep",
+        "lzless",
+        "lzma",
+        "lzmadec",
+        "lzmainfo",
+        "lzmore",
+        "unlzma",
+        "unxz",
+        "xz",
+        "xzcat",
+        "xzcmp",
+        "xzdec",
+        "xzdiff",
+        "xzegrep",
+        "xzfgrep",
+        "xzgrep",
+        "xzless",
+        "xzmore",
+    ],
+    configure_options = BIN_CONFIGURE_OPTIONS,
+    lib_name = "lzma_bin",
+    lib_source = "@lib_lzma//:all",
 )
 
 bzl_library(
