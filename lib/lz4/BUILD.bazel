@@ -1,5 +1,6 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@rules_foreign_cc//tools/build_defs:cmake.bzl", "cmake_external")
+load("//toolchains/emcmake:cmake.bzl", "emcmake_cache_entries")
 
 package(default_visibility = ["//:__subpackages__"])
 
@@ -11,7 +12,10 @@ CACHE_ENTRIES = {
 
 cmake_external(
     name = "lz4",
-    cache_entries = CACHE_ENTRIES,
+    cache_entries = select({
+        "//conditions:default": CACHE_ENTRIES,
+        "//config:emscripten": emcmake_cache_entries(CACHE_ENTRIES),
+    }),
     cmake_relative_root = "contrib/cmake_unofficial",
     lib_name = "lz4_lib",
     lib_source = "@lib_lz4//:all",
@@ -25,7 +29,10 @@ cmake_external(
         "lz4cat",
         "unlz4",
     ],
-    cache_entries = CACHE_ENTRIES,
+    cache_entries = select({
+        "//conditions:default": CACHE_ENTRIES,
+        "//config:emscripten": emcmake_cache_entries(CACHE_ENTRIES),
+    }),
     cmake_relative_root = "contrib/cmake_unofficial",
     lib_name = "lz4_bin",
     lib_source = "@lib_lz4//:all",

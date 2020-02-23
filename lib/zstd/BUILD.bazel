@@ -1,19 +1,18 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@rules_foreign_cc//tools/build_defs:cmake.bzl", "cmake_external")
+load("//toolchains/emcmake:cmake.bzl", "emcmake_cache_entries")
 
 package(default_visibility = ["//:__subpackages__"])
 
-CACHE_ENTRIES = {
+LIB_CACHE_ENTRIES = {
     "ZSTD_BUILD_PROGRAMS:BOOL": "OFF",
     "ZSTD_BUILD_SHARED:BOOL": "OFF",
     "ZSTD_BUILD_STATIC:BOOL": "ON",
 }
 
-BIN_CACHE_ENTRIES = dict(
-    CACHE_ENTRIES.items() + {
-        "ZSTD_BUILD_PROGRAMS:BOOL": "ON",
-    }.items(),
-)
+BIN_CACHE_ENTRIES = dict(LIB_CACHE_ENTRIES.items() + {
+    "ZSTD_BUILD_PROGRAMS:BOOL": "ON",
+}.items())
 
 # Disable Bazel's default linker flags.
 EM_CACHE_ENTRIES = {
@@ -24,8 +23,8 @@ EM_CACHE_ENTRIES = {
 cmake_external(
     name = "zstd",
     cache_entries = select({
-        "//conditions:default": CACHE_ENTRIES,
-        "//config:emscripten": dict(CACHE_ENTRIES.items() + EM_CACHE_ENTRIES.items()),
+        "//conditions:default": LIB_CACHE_ENTRIES,
+        "//config:emscripten": emcmake_cache_entries(LIB_CACHE_ENTRIES),
     }),
     cmake_relative_root = "build/cmake",
     lib_name = "zstd_lib",
@@ -45,7 +44,7 @@ cmake_external(
     ],
     cache_entries = select({
         "//conditions:default": BIN_CACHE_ENTRIES,
-        "//config:emscripten": dict(BIN_CACHE_ENTRIES.items() + EM_CACHE_ENTRIES.items()),
+        "//config:emscripten": emcmake_cache_entries(BIN_CACHE_ENTRIES),
     }),
     cmake_relative_root = "build/cmake",
     lib_name = "zstd_bin",

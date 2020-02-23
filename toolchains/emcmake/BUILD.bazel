@@ -1,3 +1,4 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@rules_foreign_cc//for_workspace:cmake_build.bzl", "cmake_tool")
 load("@rules_foreign_cc//tools/build_defs/native_tools:native_tools_toolchain.bzl", "native_tool_toolchain")
 
@@ -10,4 +11,9 @@ native_tool_toolchain(
     name = "preinstalled_emcmake",
     path = "emcmake cmake",
     visibility = ["//visibility:public"],
+)
+
+bzl_library(
+    name = "cmake",
+    srcs = ["cmake.bzl"],
 )
