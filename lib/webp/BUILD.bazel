@@ -6,39 +6,51 @@ package(default_visibility = ["//:__subpackages__"])
 # Unsupported binaries:
 # - vwebp: Requires SDL support.
 
+CACHE_ENTRIES = {
+    "BUILD_SHARED_LIBS:BOOL": "OFF",
+    "GIF_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/gif_lib/include",
+    "GIF_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/gif_lib/lib/libgif.a",
+    "JPEG_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/jpeg_turbo_lib/include",
+    "JPEG_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/jpeg_turbo_lib/lib/libjpeg.a",
+    "PNG_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/png_lib/lib/libpng.a",
+    "PNG_PNG_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/png_lib/include",
+    "ZLIB_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/z_lib/include",
+    "ZLIB_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/z_lib/lib/libz.a",
+
+    # TODO: The following results in a cylcil build dependency.
+    # Resolve this by creating library-only and binary-only targets.
+    #"TIFF_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/tiff_lib/include",
+    #"TIFF_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/tiff_lib/lib/libtiff.a",
+}
+
 cmake_external(
     name = "webp",
-    binaries = select({
-        "//conditions:default": [
-            "cwebp",
-            "dwebp",
-            "gif2webp",
-            "img2webp",
-            "webp_quality",
-            "webpinfo",
-            "webpmux",
-        ],
-        "//lib:no_binaries": [],
-    }),
-    cache_entries = {
-        "BUILD_SHARED_LIBS:BOOL": "OFF",
-        "GIF_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/gif_lib/include",
-        "GIF_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/gif_lib/lib/libgif.a",
-        "JPEG_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/jpeg_turbo_lib/include",
-        "JPEG_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/jpeg_turbo_lib/lib/libjpeg.a",
-        "PNG_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/png_lib/lib/libpng.a",
-        "PNG_PNG_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/png_lib/include",
-        "ZLIB_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/z_lib/include",
-        "ZLIB_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/z_lib/lib/libz.a",
-
-        # TODO: The following results in a cylcil build dependency.
-        # Resolve this by creating library-only and binary-only targets.
-        #"TIFF_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/tiff_lib/include",
-        #"TIFF_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/tiff_lib/lib/libtiff.a",
-    },
-    lib_name = "libwebp",
+    cache_entries = CACHE_ENTRIES,
+    lib_name = "webp_lib",
     lib_source = "@lib_webp//:all",
     static_libraries = ["libwebp.a"],
+    deps = [
+        "//lib/gif",
+        "//lib/jpeg_turbo",
+        "//lib/png",
+        "//lib/z",
+    ],
+)
+
+cmake_external(
+    name = "binaries",
+    binaries = [
+        "cwebp",
+        "dwebp",
+        "gif2webp",
+        "img2webp",
+        "webp_quality",
+        "webpinfo",
+        "webpmux",
+    ],
+    cache_entries = CACHE_ENTRIES,
+    lib_name = "webp_bin",
+    lib_source = "@lib_webp//:all",
     deps = [
         "//lib/gif",
         "//lib/jpeg_turbo",
