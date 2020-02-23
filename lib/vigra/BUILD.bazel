@@ -23,7 +23,7 @@ cmake_external(
         "ZLIB_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/z_lib/include",
         "ZLIB_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/z_lib/lib/libz.a",
     },
-    lib_name = "libvigraimpex",
+    lib_name = "vigra_lib",
     lib_source = "@lib_vigra//:all",
     static_libraries = ["libvigraimpex.a"],
     deps = [
