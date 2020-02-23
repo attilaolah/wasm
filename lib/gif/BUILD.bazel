@@ -5,20 +5,23 @@ package(default_visibility = ["//:__subpackages__"])
 
 make(
     name = "gif",
-    binaries = select({
-        "//conditions:default": [
-            "gif2rgb",
-            "gifbuild",
-            "gifclrmp",
-            "giffix",
-            "giftext",
-            "giftool",
-        ],
-        "//lib:no_binaries": [],
-    }),
-    lib_name = "libgif",
+    lib_name = "gif_lib",
     lib_source = "@lib_gif//:all",
     static_libraries = ["libgif.a"],
+)
+
+make(
+    name = "binaries",
+    binaries = [
+        "gif2rgb",
+        "gifbuild",
+        "gifclrmp",
+        "giffix",
+        "giftext",
+        "giftool",
+    ],
+    lib_name = "gif_bin",
+    lib_source = "@lib_gif//:all",
 )
 
 bzl_library(

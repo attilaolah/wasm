@@ -22,8 +22,8 @@ cmake_external(
     }),
     cache_entries = {
         "BUILD_SHARED_LIBS:BOOL": "OFF",
-        "GIF_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/libgif/include",
-        "GIF_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/libgif/lib/libgif.a",
+        "GIF_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/gif_lib/include",
+        "GIF_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/gif_lib/lib/libgif.a",
         "JPEG_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/libjpeg/include",
         "JPEG_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/libjpeg/lib/libjpeg.a",
         "PNG_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/libpng/lib/libpng.a",
