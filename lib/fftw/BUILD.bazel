@@ -13,7 +13,7 @@ cmake_external(
         "ENABLE_LONG_DOUBLE:BOOL": "ON",
         "ENABLE_QUAD_PRECISION:BOOL": "ON",
     },
-    lib_name = "libfftw",
+    lib_name = "fftw_lib",
     lib_source = "@lib_fftw//:all",
     static_libraries = ["libfftw3q.a"],
 )
