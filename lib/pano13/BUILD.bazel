@@ -23,8 +23,8 @@ cmake_external(
     }),
     cache_entries = {
         "BUILD_SHARED_LIBS:BOOL": "OFF",
-        "JPEG_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/libjpeg/include",
-        "JPEG_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/libjpeg/lib/libjpeg.a",
+        "JPEG_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/jpeg_turbo_lib/include",
+        "JPEG_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/jpeg_turbo_lib/lib/libjpeg.a",
         "PNG_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/libpng/lib/libpng.a",
         "PNG_PNG_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/libpng/include",
         "TIFF_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/libtiff/include",

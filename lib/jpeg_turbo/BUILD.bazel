@@ -3,28 +3,34 @@ load("@rules_foreign_cc//tools/build_defs:cmake.bzl", "cmake_external")
 
 package(default_visibility = ["//:__subpackages__"])
 
+CACHE_ENTRIES = {
+    "CMAKE_INSTALL_DEFAULT_LIBDIR:PATH": "lib",
+    "ENABLE_SHARED:BOOL": "OFF",
+    "ENABLE_STATIC:BOOL": "ON",
+    "WITH_JAVA:BOOL": "OFF",
+}
+
 cmake_external(
     name = "jpeg_turbo",
-    binaries = select({
-        "//conditions:default": [
-            "cjpeg",
-            "djpeg",
-            "jpegtran",
-            "rdjpgcom",
-            "tjbench",
-            "wrjpgcom",
-        ],
-        "//lib:no_binaries": [],
-    }),
-    cache_entries = {
-        "CMAKE_INSTALL_DEFAULT_LIBDIR:PATH": "lib",
-        "ENABLE_SHARED:BOOL": "OFF",
-        "ENABLE_STATIC:BOOL": "ON",
-        "WITH_JAVA:BOOL": "OFF",
-    },
-    lib_name = "libjpeg",
+    cache_entries = CACHE_ENTRIES,
+    lib_name = "jpeg_turbo_lib",
     lib_source = "@lib_jpeg_turbo//:all",
     static_libraries = ["libjpeg.a"],
+)
+
+cmake_external(
+    name = "binaries",
+    binaries = [
+        "cjpeg",
+        "djpeg",
+        "jpegtran",
+        "rdjpgcom",
+        "tjbench",
+        "wrjpgcom",
+    ],
+    cache_entries = CACHE_ENTRIES,
+    lib_name = "jpeg_turbo_bin",
+    lib_source = "@lib_jpeg_turbo//:all",
 )
 
 bzl_library(
