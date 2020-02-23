@@ -28,8 +28,8 @@ cmake_external(
         "JPEG_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/libjpeg/lib/libjpeg.a",
         "PNG_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/libpng/lib/libpng.a",
         "PNG_PNG_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/libpng/include",
-        "ZLIB_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/libz/include",
-        "ZLIB_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/libz/lib/libz.a",
+        "ZLIB_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/z_lib/include",
+        "ZLIB_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/z_lib/lib/libz.a",
 
         # TODO: The following results in a cylcil build dependency.
         # Resolve this by creating library-only and binary-only targets.
