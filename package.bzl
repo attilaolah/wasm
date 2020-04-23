@@ -17,10 +17,10 @@ def register_dependencies():
 
     http_archive(
         name = "cmake",
-        version = "3.16.4",
-        urls = ["https://gitlab.kitware.com/{name}/{name}/-/archive/v{version}/{name}-v{version}.tar.bz2"],
-        sha256 = "40e0dec6dc9e36820e001b8425aa4328a0b42f1915b14d68aee116e25c3d34df",
-        strip_prefix = "{name}-v{version}",
+        version = "3.17.1",
+        urls = ["https://github.com/Kitware/CMake/releases/download/v{version}/{name}-{version}.tar.gz"],
+        sha256 = "3aa9114485da39cbd9665a0bfe986894a282d5f0882b1dea960a739496620727",
+        strip_prefix = "{name}-{version}",
     )
 
     http_archive(
