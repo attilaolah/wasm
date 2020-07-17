@@ -2,7 +2,7 @@
 
 Scripts to compile libraries to [WebAssembly] using [Bazel].
 
-To compile fir the local architecture, run:
+To compile for the local architecture, run:
 
 ```sh
 $ bazel build ...
