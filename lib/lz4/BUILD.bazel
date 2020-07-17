@@ -16,10 +16,10 @@ cmake_external(
         "//conditions:default": CACHE_ENTRIES,
         "//config:emscripten": emcmake_cache_entries(CACHE_ENTRIES),
     }),
-    cmake_relative_root = "contrib/cmake_unofficial",
     lib_name = "lz4_lib",
     lib_source = "@lib_lz4//:all",
     static_libraries = ["liblz4.a"],
+    working_directory = "contrib/cmake_unofficial",
 )
 
 cmake_external(
@@ -33,9 +33,9 @@ cmake_external(
         "//conditions:default": CACHE_ENTRIES,
         "//config:emscripten": emcmake_cache_entries(CACHE_ENTRIES),
     }),
-    cmake_relative_root = "contrib/cmake_unofficial",
     lib_name = "lz4_bin",
     lib_source = "@lib_lz4//:all",
+    working_directory = "contrib/cmake_unofficial",
 )
 
 bzl_library(

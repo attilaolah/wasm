@@ -8,11 +8,8 @@ def register_dependencies():
     _github_repository(
         project = "rules_foreign_cc",
         owner = "bazelbuild",
-        commit = "8b477ca9cb248fc472f152aa1a44c55ab71c4636",
-        shallow_since = "1581586002 +0100",
-        pull_requests = {
-            358: "cb5d6d647daeaed0e66685d148e00063217e7e2553cbc4c9ca714ac8ca4c49e4",
-        },
+        commit = "9eb30f8c5a214799b73707666ca49e7b7a35978f",
+        shallow_since = "1594651263 +0200"
     )
 
     http_archive(
