@@ -31,6 +31,9 @@ cmake_external(
         "TIFF_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/tiff_lib/lib/libtiff.a",
         "ZLIB_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/z_lib/include",
         "ZLIB_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/z_lib/lib/libz.a",
+
+        # Force linking against static dependencies for binaries.
+        "CMAKE_EXE_LINKER_FLAGS": "-llzma -lwebp -lzstd",
     },
     lib_name = "libpano13",
     lib_source = "@lib_pano13//:all",
