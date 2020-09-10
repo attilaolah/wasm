@@ -1,43 +1,62 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@rules_foreign_cc//tools/build_defs:cmake.bzl", "cmake_external")
+load("//toolchains/emcmake:cmake.bzl", "emcmake_cache_entries")
 
 package(default_visibility = ["//:__subpackages__"])
 
+CACHE_ENTRIES = {
+    "BUILD_SHARED_LIBS:BOOL": "OFF",
+    "JPEG_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/jpeg_turbo_lib/include",
+    "JPEG_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/jpeg_turbo_lib/lib/libjpeg.a",
+    "PNG_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/png_lib/lib/libpng.a",
+    "PNG_PNG_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/png_lib/include",
+    "TIFF_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/tiff_lib/include",
+    "TIFF_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/tiff_lib/lib/libtiff.a",
+    "ZLIB_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/z_lib/include",
+    "ZLIB_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/z_lib/lib/libz.a",
+
+    # Force linking against static dependencies for binaries.
+    "CMAKE_EXE_LINKER_FLAGS": "-llzma -lwebp -lzstd",
+}
+
 cmake_external(
     name = "pano13",
-    binaries = select({
-        "//conditions:default": [
-            "panoinfo",
-            "PTblender",
-            "PTcrop",
-            "PTinfo",
-            "PTmasker",
-            "PTmender",
-            "PToptimizer",
-            "PTroller",
-            "PTtiff2psd",
-            "PTtiffdump",
-            "PTuncrop",
-        ],
-        "//lib:no_binaries": [],
+    cache_entries = select({
+        "//conditions:default": CACHE_ENTRIES,
+        "//config:emscripten": emcmake_cache_entries(CACHE_ENTRIES),
     }),
-    cache_entries = {
-        "BUILD_SHARED_LIBS:BOOL": "OFF",
-        "JPEG_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/jpeg_turbo_lib/include",
-        "JPEG_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/jpeg_turbo_lib/lib/libjpeg.a",
-        "PNG_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/png_lib/lib/libpng.a",
-        "PNG_PNG_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/png_lib/include",
-        "TIFF_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/tiff_lib/include",
-        "TIFF_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/tiff_lib/lib/libtiff.a",
-        "ZLIB_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/z_lib/include",
-        "ZLIB_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/z_lib/lib/libz.a",
-
-        # Force linking against static dependencies for binaries.
-        "CMAKE_EXE_LINKER_FLAGS": "-llzma -lwebp -lzstd",
-    },
-    lib_name = "libpano13",
+    lib_name = "pano13_lib",
     lib_source = "@lib_pano13//:all",
     static_libraries = ["libpano13.a"],
+    deps = [
+        "//lib/jpeg_turbo",
+        "//lib/png",
+        "//lib/tiff",
+        "//lib/z",
+    ],
+)
+
+cmake_external(
+    name = "binaries",
+    binaries = [
+        "panoinfo",
+        "PTblender",
+        "PTcrop",
+        "PTinfo",
+        "PTmasker",
+        "PTmender",
+        "PToptimizer",
+        "PTroller",
+        "PTtiff2psd",
+        "PTtiffdump",
+        "PTuncrop",
+    ],
+    cache_entries = select({
+        "//conditions:default": CACHE_ENTRIES,
+        "//config:emscripten": emcmake_cache_entries(CACHE_ENTRIES),
+    }),
+    lib_name = "pano13_bin",
+    lib_source = "@lib_pano13//:all",
     deps = [
         "//lib/jpeg_turbo",
         "//lib/png",
