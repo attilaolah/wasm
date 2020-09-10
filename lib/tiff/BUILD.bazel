@@ -16,10 +16,10 @@ CACHE_ENTRIES = {
     "ZLIB_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/z_lib/lib/libz.a",
     "ZSTD_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/zstd_lib/include",
     "ZSTD_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/zstd_lib/lib/libzstd.a",
-}
 
-# Force linking against pthread for binaries.
-CACHE_ENTRIES["CMAKE_EXE_LINKER_FLAGS"] = "-lpthread"
+    # Force linking against pthread for binaries.
+    "CMAKE_EXE_LINKER_FLAGS": "-lpthread",
+}
 
 cmake_external(
     name = "tiff",
