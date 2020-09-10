@@ -28,11 +28,14 @@ def register_dependencies():
         strip_prefix = "{name}-{version}",
     )
 
-    _github_repository(
-        project = "bazel-skylib",
-        owner = "bazelbuild",
-        commit = "e59b620b392a8ebbcf25879fc3fde52b4dc77535",  # 1.0.2
-        shallow_since = "1570639401 -0400",
+    http_archive(
+        name = "bazel-skylib",
+        version = "1.0.3",
+        urls = [
+            "https://mirror.bazel.build/github.com/bazelbuild/{name}/releases/download/{version}/{name}-{version}.tar.gz",
+            "https://github.com/bazelbuild/{name}/releases/download/{version}/{name}-{version}.tar.gz",
+        ],
+        sha256 = "1c531376ac7e5a180e0237938a2536de0c54d93f5c278634818e0efc952dd56c",
     )
 
 def register_repositories():
