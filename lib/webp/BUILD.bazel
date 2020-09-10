@@ -4,7 +4,7 @@ load("//toolchains/emcmake:cmake.bzl", "emcmake_cache_entries")
 
 package(default_visibility = ["//:__subpackages__"])
 
-CACHE_ENTRIES = {
+_CACHE_ENTRIES = {
     "BUILD_SHARED_LIBS:BOOL": "OFF",
     "GIF_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/gif_lib/include",
     "GIF_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/gif_lib/lib/libgif.a",
@@ -30,9 +30,9 @@ BIN_CACHE_KEYS = [
     "WEBP_BUILD_WEBPMUX:BOOL",
 ]
 
-LIB_CACHE_ENTRIES = dict(CACHE_ENTRIES.items() + {key: "OFF" for key in BIN_CACHE_KEYS}.items())
+LIB_CACHE_ENTRIES = dict(_CACHE_ENTRIES.items() + {key: "OFF" for key in BIN_CACHE_KEYS}.items())
 
-BIN_CACHE_ENTRIES = dict(CACHE_ENTRIES.items() + {key: "ON" for key in BIN_CACHE_KEYS}.items() + {
+BIN_CACHE_ENTRIES = dict(_CACHE_ENTRIES.items() + {key: "ON" for key in BIN_CACHE_KEYS}.items() + {
     "TIFF_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/tiff_lib/include",
     "TIFF_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/tiff_lib/lib/libtiff.a",
 

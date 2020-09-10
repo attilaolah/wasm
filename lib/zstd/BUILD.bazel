@@ -4,21 +4,18 @@ load("//toolchains/emcmake:cmake.bzl", "emcmake_cache_entries")
 
 package(default_visibility = ["//:__subpackages__"])
 
-LIB_CACHE_ENTRIES = {
-    "ZSTD_BUILD_PROGRAMS:BOOL": "OFF",
+_CACHE_ENTRIES = {
     "ZSTD_BUILD_SHARED:BOOL": "OFF",
     "ZSTD_BUILD_STATIC:BOOL": "ON",
 }
 
-BIN_CACHE_ENTRIES = dict(LIB_CACHE_ENTRIES.items() + {
-    "ZSTD_BUILD_PROGRAMS:BOOL": "ON",
+LIB_CACHE_ENTRIES = dict(_CACHE_ENTRIES.items() + {
+    "ZSTD_BUILD_PROGRAMS:BOOL": "OFF",
 }.items())
 
-# Disable Bazel's default linker flags.
-EM_CACHE_ENTRIES = {
-    "CMAKE_SHARED_LINKER_FLAGS": "",
-    "CMAKE_EXE_LINKER_FLAGS": "",
-}
+BIN_CACHE_ENTRIES = dict(_CACHE_ENTRIES.items() + {
+    "ZSTD_BUILD_PROGRAMS:BOOL": "ON",
+}.items())
 
 cmake_external(
     name = "zstd",
