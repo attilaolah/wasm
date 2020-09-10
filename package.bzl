@@ -8,23 +8,23 @@ def register_dependencies():
     _github_repository(
         project = "rules_foreign_cc",
         owner = "bazelbuild",
-        commit = "9eb30f8c5a214799b73707666ca49e7b7a35978f",
-        shallow_since = "1594651263 +0200"
+        commit = "ea571fcdd1a3b46570632e41701225de33e86206",
+        shallow_since = "1599468506 +0200",
     )
 
     http_archive(
         name = "cmake",
-        version = "3.17.1",
+        version = "3.18.2",
         urls = ["https://github.com/Kitware/CMake/releases/download/v{version}/{name}-{version}.tar.gz"],
-        sha256 = "3aa9114485da39cbd9665a0bfe986894a282d5f0882b1dea960a739496620727",
+        sha256 = "5d4e40fc775d3d828c72e5c45906b4d9b59003c9433ff1b36a1cb552bbd51d7e",
         strip_prefix = "{name}-{version}",
     )
 
     http_archive(
         name = "ninja",
-        version = "1.10.0",
-        urls = ["https://github.com/{name}-build/{name}/archive/v{version}.zip"],
-        sha256 = "bb489516d71f6e9c01ae65ab177041e025736bfcb042ac037be9e298abfcb056",
+        version = "1.10.1",
+        urls = ["https://github.com/{name}-build/{name}/archive/v{version}.tar.gz"],
+        sha256 = "a6b6f7ac360d4aabd54e299cc1d8fa7b234cd81b9401693da21221c62569a23e",
         strip_prefix = "{name}-{version}",
     )
 
