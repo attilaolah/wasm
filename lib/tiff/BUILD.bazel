@@ -18,6 +18,7 @@ CACHE_ENTRIES = {
     "ZSTD_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/zstd_lib/lib/libzstd.a",
 
     # Force linking against pthread for binaries.
+    # This is required for the lib target as well, since there's no way to avoid building the binaries.
     "CMAKE_EXE_LINKER_FLAGS": "-lpthread",
 }
 
