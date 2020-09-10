@@ -2,30 +2,52 @@
 #
 # The following config options are available:
 #
+# For GNU Make:
+# - make:            Download and build make from source.
+# - emmake:          DO NOT USE, not implemeted yet.
+# - system_make:     Use the preinstalled make in the execution environment.
+# - system_emmake:   Use the preinstalled emmake in the execution environment.
+#
+# For CMake:
 # - cmake: 		     Download and build cmake from source.
 # - emcmake:         DO NOT USE, not implemented yet.
-# - ninja:           Download and build ninja from source.
 # - system_cmake:    Use the preinstalled cmake in the execution environment.
 # - system_emcmake:  Use the preinstalled emcmake in the execution environment.
+#
+# For Ninja:
+# - ninja:           Download and build ninja from source.
 # - system_ninja:    Use the preinstalled ninja in the execution environment.
 #
 # If none of them are provided, the default toolchains will be used:
 #
+# - @rules_foreign_cc//tools/build_defs/native_tools:preinstalled_make
 # - @rules_foreign_cc//tools/build_defs/native_tools:preinstalled_cmake
 # - @rules_foreign_cc//tools/build_defs/native_tools:preinstalled_ninja
 
 # Allow local workspace config to select a different default :
 try-import %workspace%/.bazelrc.local
 
-# Configure toolchains for each target:
+# Configure toolchains for each target.
+#
+# GNU Make, incl. Emscripten (emmake):
+build:make           --//toolchains/make:selected=make
+build:emmake         --//toolchains/make:selected=emmake
+build:system_make    --//toolchains/make:selected=make_preinstalled
+build:system_emmake  --//toolchains/make:selected=emmake_preinstalled
+
+# CMake, incl. Emscripten (emcmake)
 build:cmake          --//toolchains/cmake:selected=cmake
-build:system_cmake   --//toolchains/cmake:selected=cmake_preinstalled
-build:ninja          --//toolchains/ninja:selected=ninja
-build:system_ninja   --//toolchains/ninja:selected=ninja_preinstalled
 build:emcmake        --//toolchains/cmake:selected=emcmake
+build:system_cmake   --//toolchains/cmake:selected=cmake_preinstalled
 build:system_emcmake --//toolchains/cmake:selected=emcmake_preinstalled
 
+# Ninja:
+build:ninja          --//toolchains/ninja:selected=ninja
+build:system_ninja   --//toolchains/ninja:selected=ninja_preinstalled
+
 # Additional Emscripten configuration:
+build:emmake         --config=emscripten
+build:system_emmake  --config=emscripten
 build:emcmake        --config=emscripten
 build:system_emcmake --config=emscripten
 

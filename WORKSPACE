@@ -12,6 +12,7 @@ rules_foreign_cc_dependencies(
     native_tools_toolchains = [
         "//toolchains/cmake",
         "//toolchains/ninja",
+        "//toolchains/make",
     ],
     register_default_tools = False,
 )

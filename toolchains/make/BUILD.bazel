@@ -1,0 +1,52 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("@rules_foreign_cc//for_workspace:make_build.bzl", "make_tool")
+load("@rules_foreign_cc//tools/build_defs/native_tools:native_tools_toolchain.bzl", "native_tool_toolchain")
+load(":build_settings.bzl", "make_toolchain")
+
+make_toolchain(
+    name = "selected",
+    # Use the pre-installed make by default.
+    build_setting_default = "make_preinstalled",
+    visibility = ["//toolchains/emmake:__pkg__"],
+)
+
+config_setting(
+    name = "enable",
+    flag_values = {":selected": "make"},
+)
+
+config_setting(
+    name = "enable_preinstalled",
+    flag_values = {":selected": "make_preinstalled"},
+)
+
+toolchain(
+    name = "make",
+    exec_compatible_with = [
+        "@bazel_tools//platforms:linux",
+        "@bazel_tools//platforms:x86_64",
+    ],
+    toolchain = select({
+        ":enable": ":make_toolchain",
+        ":enable_preinstalled": "@rules_foreign_cc//tools/build_defs/native_tools:preinstalled_make",
+        "//toolchains/emmake:enable_preinstalled": "//toolchains/emmake:preinstalled_emmake",
+    }),
+    toolchain_type = "@rules_foreign_cc//tools/build_defs:make_toolchain",
+)
+
+native_tool_toolchain(
+    name = "make_toolchain",
+    path = "make/bin/make",
+    target = ":make_tool",
+    visibility = ["//visibility:public"],
+)
+
+make_tool(
+    name = "make_tool",
+    make_srcs = "@make//:all",
+)
+
+bzl_library(
+    name = "build_settings",
+    srcs = ["build_settings.bzl"],
+)
