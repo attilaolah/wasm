@@ -12,7 +12,7 @@ def make_commands(root):
         "//conditions:default": [],
         "//config:emscripten": [
             "emmake make -k -C $EXT_BUILD_ROOT/external/{}".format(root),
-            "emmake make -C $EXT_BUILD_ROOT/external/{} install PREFIX=$INSTALLDIR".format(root)
+            "emmake make -C $EXT_BUILD_ROOT/external/{} install PREFIX=$INSTALLDIR".format(root),
         ],
     })
 
