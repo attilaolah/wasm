@@ -8,6 +8,7 @@ make(
     name = "gif",
     lib_name = "gif_lib",
     lib_source = "@lib_gif//:all",
+    linkopts = ["-lgif"],
     make_commands = select({
         "//conditions:default": [],
         "//config:emscripten": emmake_make_commands("lib_gif"),

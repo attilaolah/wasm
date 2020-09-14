@@ -22,6 +22,7 @@ configure_make(
     configure_options = CONFIGURE_OPTIONS,
     lib_name = "lzma_lib",
     lib_source = "@lib_lzma//:all",
+    linkopts = ["-llzma"],
     static_libraries = ["liblzma.a"],
 )
 

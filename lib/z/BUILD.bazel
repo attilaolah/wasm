@@ -12,6 +12,7 @@ configure_make(
     ],
     lib_name = "z_lib",
     lib_source = "@lib_z//:all",
+    linkopts = ["-lz"],
     make_commands = CONFIGURE_MAKE_COMMANDS,
     static_libraries = ["libz.a"],
 )

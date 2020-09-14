@@ -29,6 +29,7 @@ cmake_external(
     }),
     lib_name = "zstd_lib",
     lib_source = "@lib_zstd//:all",
+    linkopts = ["-lzstd"],
     static_libraries = ["libzstd.a"],
     working_directory = "build/cmake",
 )

@@ -30,6 +30,7 @@ cmake_external(
     }),
     lib_name = "tiff_lib",
     lib_source = "@lib_tiff//:all",
+    linkopts = ["-ltiff"],
     static_libraries = [
         "libtiff.a",
         "libtiffxx.a",

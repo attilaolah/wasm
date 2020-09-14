@@ -15,6 +15,7 @@ cmake_external(
     },
     lib_name = "fftw_lib",
     lib_source = "@lib_fftw//:all",
+    linkopts = ["-lfftw3q"],
     static_libraries = ["libfftw3q.a"],
 )
 

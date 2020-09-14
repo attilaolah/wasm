@@ -18,6 +18,7 @@ cmake_external(
     }),
     lib_name = "lz4_lib",
     lib_source = "@lib_lz4//:all",
+    linkopts = ["-llz4"],
     static_libraries = ["liblz4.a"],
     working_directory = "contrib/cmake_unofficial",
 )

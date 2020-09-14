@@ -19,6 +19,7 @@ cmake_external(
     }),
     lib_name = "jpeg_turbo_lib",
     lib_source = "@lib_jpeg_turbo//:all",
+    linkopts = ["-ljpeg"],
     static_libraries = ["libjpeg.a"],
 )
 

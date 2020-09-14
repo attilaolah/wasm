@@ -13,6 +13,7 @@ configure_make(
     configure_options = CONFIGURE_OPTIONS,
     lib_name = "png_lib",
     lib_source = "@lib_png//:all",
+    linkopts = ["-lpng"],
     static_libraries = [
         "libpng.a",
         "libpng16.a",

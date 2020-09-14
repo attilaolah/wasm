@@ -35,9 +35,6 @@ LIB_CACHE_ENTRIES = dict(_CACHE_ENTRIES.items() + {key: "OFF" for key in BIN_CAC
 BIN_CACHE_ENTRIES = dict(_CACHE_ENTRIES.items() + {key: "ON" for key in BIN_CACHE_KEYS}.items() + {
     "TIFF_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/tiff_lib/include",
     "TIFF_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/tiff_lib/lib/libtiff.a",
-
-    # Force linking against static dependencies for binaries.
-    "CMAKE_EXE_LINKER_FLAGS": "-ljpeg -llzma -lzstd",
 }.items())
 
 cmake_external(
@@ -48,6 +45,7 @@ cmake_external(
     }),
     lib_name = "webp_lib",
     lib_source = "@lib_webp//:all",
+    linkopts = ["-lwebp"],
     static_libraries = ["libwebp.a"],
     deps = [
         "//lib/gif",
