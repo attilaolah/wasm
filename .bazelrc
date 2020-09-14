@@ -59,6 +59,10 @@ build:emscripten --action_env=BINARYEN=/usr
 build:emscripten --action_env=BINARYEN_ROOT=/usr
 build:emscripten --action_env=EM_CACHE=/tmp/em_cache
 
+# Environment variables for configuring the toolchain:
+build:emscripten --action_env=CC=/usr/lib/emscripten/emcc
+build:emscripten --action_env=CXX=/usr/lib/emscripten/em++
+
 # Using the stack protector breaks some builds.
 # See https://github.com/emscripten-core/emscripten/issues/9780.
 build:emscripten --copt=-fno-stack-protector
