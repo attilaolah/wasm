@@ -7,14 +7,5 @@ CACHE_ENTRIES = {
     "CMAKE_EXE_LINKER_FLAGS": "",
 }
 
-def make_commands(root):
-    return select({
-        "//conditions:default": [],
-        "//config:emscripten": [
-            "emmake make -k -C $EXT_BUILD_ROOT/external/{}".format(root),
-            "emmake make -C $EXT_BUILD_ROOT/external/{} install PREFIX=$INSTALLDIR".format(root),
-        ],
-    })
-
 def emcmake_cache_entries(original):
     return dict(original.items() + CACHE_ENTRIES.items())
