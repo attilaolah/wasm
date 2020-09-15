@@ -61,7 +61,6 @@ cmake_external(
         "tiffcrop",
         "tiffdither",
         "tiffdump",
-        "tiffgt",
         "tiffinfo",
         "tiffmedian",
         "tiffset",
