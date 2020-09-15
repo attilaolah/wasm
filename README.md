@@ -2,18 +2,12 @@
 
 Scripts to compile libraries to [WebAssembly] using [Bazel].
 
-To compile for the local architecture, run:
+To get (somewhat) reproducible results, run the builds in a Docker container:
 
 ```sh
-$ bazel build ...
-```
-
-To cross-compile for [WebAssembly], run:
-
-```sh
-$ CC=emcc bazel build ...
+$ docker build -t wasm .
+$ docker run wasm
 ```
 
 [Bazel]: https://bazel.build
-[Emscripten]: https://emscripten.org
 [WebAssembly]: https://webassembly.org
