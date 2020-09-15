@@ -45,7 +45,10 @@ cmake_external(
     }),
     lib_name = "webp_lib",
     lib_source = "@lib_webp//:all",
-    linkopts = ["-lwebp"],
+    linkopts = [
+        "-lwebp",
+        "-lpthread",
+    ],
     static_libraries = ["libwebp.a"],
     deps = [
         "//lib/gif",
