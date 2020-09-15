@@ -19,3 +19,6 @@ apt-key adv --recv-keys --keyserver keyserver.ubuntu.com "${key_id}" 2>&1
 apt-get update
 apt-get --yes dist-upgrade 2>&1
 apt-get --yes install build-essential cmake 2>&1
+
+# Self-destruct.
+rm /tmp/update.sh

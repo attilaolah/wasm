@@ -1,9 +1,9 @@
 FROM insready/bazel:latest
 LABEL maintainer="Attila Oláh (atl@google.com)"
 
-COPY [".", "${HOME}/wasm"]
-WORKDIR "${HOME}/wasm"
+COPY ["update.sh", "/tmp"]
+RUN ["sh", "/tmp/update.sh"]
 
-RUN ["sh", "update.sh"]
+WORKDIR "/build"
 
 ENTRYPOINT ["bazel", "build", "//lib/..."]
