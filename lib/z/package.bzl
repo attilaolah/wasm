@@ -1,5 +1,5 @@
 load("//:http_archive.bzl", "http_archive")
-load("//toolchains/emmake:make.bzl", "EMCONFIGURE")
+load("//toolchains/make:make.bzl", "EMCONFIGURE")
 
 VERSION = "1.2.11"
 

@@ -1,6 +1,6 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@rules_foreign_cc//tools/build_defs:make.bzl", "make")
-load("//toolchains/emmake:make.bzl", "emmake_make_commands")
+load("//toolchains/make:make.bzl", "emmake_make_commands")
 
 package(default_visibility = ["//:__subpackages__"])
 
@@ -11,7 +11,7 @@ make(
     linkopts = ["-lgif"],
     make_commands = select({
         "//conditions:default": [],
-        "//config:emscripten": emmake_make_commands("lib_gif"),
+        "//target:wasm": emmake_make_commands("lib_gif"),
     }),
     static_libraries = ["libgif.a"],
 )
@@ -30,7 +30,7 @@ make(
     lib_source = "@lib_gif//:all",
     make_commands = select({
         "//conditions:default": [],
-        "//config:emscripten": emmake_make_commands("lib_gif"),
+        "//target:wasm": emmake_make_commands("lib_gif"),
     }),
 )
 

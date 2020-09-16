@@ -1,6 +1,6 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@rules_foreign_cc//tools/build_defs:configure.bzl", "configure_make")
-load("//toolchains/emmake:make.bzl", "CONFIGURE_COMMAND", "CONFIGURE_MAKE_COMMANDS")
+load("//toolchains/make:make.bzl", "CONFIGURE_COMMAND", "CONFIGURE_MAKE_COMMANDS")
 
 package(default_visibility = ["//:__subpackages__"])
 
@@ -15,6 +15,7 @@ configure_make(
     linkopts = ["-lz"],
     make_commands = CONFIGURE_MAKE_COMMANDS,
     static_libraries = ["libz.a"],
+    #target_compatible_with=["//platforms:wasm"],
 )
 
 bzl_library(

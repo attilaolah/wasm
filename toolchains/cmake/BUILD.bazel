@@ -1,52 +1,31 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
-load("@rules_foreign_cc//for_workspace:cmake_build.bzl", "cmake_tool")
 load("@rules_foreign_cc//tools/build_defs/native_tools:native_tools_toolchain.bzl", "native_tool_toolchain")
-load(":build_settings.bzl", "cmake_toolchain")
-
-cmake_toolchain(
-    name = "selected",
-    # Use the pre-installed cmake by default.
-    build_setting_default = "cmake_preinstalled",
-    visibility = ["//toolchains/emcmake:__pkg__"],
-)
-
-config_setting(
-    name = "enable",
-    flag_values = {":selected": "cmake"},
-)
-
-config_setting(
-    name = "enable_preinstalled",
-    flag_values = {":selected": "cmake_preinstalled"},
-)
 
 toolchain(
     name = "cmake",
     exec_compatible_with = [
-        "@bazel_tools//platforms:linux",
-        "@bazel_tools//platforms:x86_64",
+        "@platforms//os:linux",
+        "@platforms//cpu:x86_64",
+    ],
+    target_compatible_with = [
+        "@platforms//os:linux",
+        "@platforms//cpu:x86_64",
     ],
     toolchain = select({
-        ":enable": ":cmake_toolchain",
-        ":enable_preinstalled": "@rules_foreign_cc//tools/build_defs/native_tools:preinstalled_cmake",
-        "//toolchains/emcmake:enable_preinstalled": "//toolchains/emcmake:preinstalled_emcmake",
+        "//target:wasm": ":emcmake",
+        "//conditions:default": "@rules_foreign_cc//tools/build_defs/native_tools:preinstalled_cmake",
     }),
     toolchain_type = "@rules_foreign_cc//tools/build_defs:cmake_toolchain",
 )
 
 native_tool_toolchain(
-    name = "cmake_toolchain",
-    path = "cmake/bin/cmake",
-    target = ":cmake_tool",
+    name = "emcmake",
+    path = "emcmake",
+    target = "@emscripten//:all",
     visibility = ["//visibility:public"],
 )
 
-cmake_tool(
-    name = "cmake_tool",
-    cmake_srcs = "@cmake//:all",
-)
-
 bzl_library(
-    name = "build_settings",
-    srcs = ["build_settings.bzl"],
+    name = "cmake_bzl",
+    srcs = ["cmake.bzl"],
 )

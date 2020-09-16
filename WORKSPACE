@@ -11,8 +11,7 @@ load("@rules_foreign_cc//:workspace_definitions.bzl", "rules_foreign_cc_dependen
 rules_foreign_cc_dependencies(
     native_tools_toolchains = [
         "//toolchains/cmake",
-        "//toolchains/ninja",
         "//toolchains/make",
     ],
-    register_default_tools = False,
+    register_default_tools = True,
 )

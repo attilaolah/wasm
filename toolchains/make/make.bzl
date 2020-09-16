@@ -1,11 +1,11 @@
 EMCONFIGURE = [
-    "echo '/usr/lib/emscripten/emconfigure $(dirname $0)/configure $@' > emconfigure.sh",
+    "echo 'emconfigure $(dirname $0)/configure $@' > emconfigure.sh",
     "chmod +x emconfigure.sh",
 ]
 
 CONFIGURE_COMMAND = select({
     "//conditions:default": "configure",
-    "//config:emscripten": "emconfigure.sh",
+    "//target:wasm": "emconfigure.sh",
 })
 
 CONFIGURE_MAKE_COMMANDS = select({
@@ -13,7 +13,7 @@ CONFIGURE_MAKE_COMMANDS = select({
         "make",
         "make install",
     ],
-    "//config:emscripten": [
+    "//target:wasm": [
         "emmake make",
         "emmake make install",
     ],

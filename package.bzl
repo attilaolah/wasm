@@ -13,18 +13,18 @@ def register_dependencies():
     )
 
     http_archive(
-        name = "cmake",
-        version = "3.18.2",
-        urls = ["https://github.com/Kitware/CMake/releases/download/v{version}/{name}-{version}.tar.gz"],
-        sha256 = "5d4e40fc775d3d828c72e5c45906b4d9b59003c9433ff1b36a1cb552bbd51d7e",
+        name = "platforms",
+        version = "0.0.1",
+        urls = ["https://github.com/bazelbuild/{name}/archive/{version}.tar.gz"],
+        sha256 = "0fc19efca1dfc5c1448c98f050639e3a48beb0031701d55bea5eb546507970f2",
         strip_prefix = "{name}-{version}",
     )
 
     http_archive(
-        name = "ninja",
-        version = "1.10.1",
-        urls = ["https://github.com/{name}-build/{name}/archive/v{version}.tar.gz"],
-        sha256 = "a6b6f7ac360d4aabd54e299cc1d8fa7b234cd81b9401693da21221c62569a23e",
+        name = "emscripten",
+        version = "2.0.4",
+        urls = ["https://github.com/{name}-core/{name}/archive/{version}.tar.gz"],
+        sha256 = "f450aacf98cf5d70672452bbbb42ac41d51468f756c33414ce16b7cfc25ac699",
         strip_prefix = "{name}-{version}",
     )
 

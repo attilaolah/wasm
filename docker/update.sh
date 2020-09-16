@@ -18,7 +18,10 @@ apt-key adv --recv-keys --keyserver keyserver.ubuntu.com "${key_id}" 2>&1
 # Finally do a system upgrade.
 apt-get update
 apt-get --yes dist-upgrade 2>&1
-apt-get --yes install build-essential cmake 2>&1
+
+# Install cmake and friends.
+# Also, Emscripten requires Python 3.5+ and NodeJS.
+apt-get --yes install build-essential cmake clang llvm python3 nodejs 2>&1
 
 # Self-destruct.
-rm /tmp/update.sh
+rm /etc/update.sh
