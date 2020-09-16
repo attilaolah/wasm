@@ -15,7 +15,6 @@ configure_make(
     linkopts = ["-lz"],
     make_commands = CONFIGURE_MAKE_COMMANDS,
     static_libraries = ["libz.a"],
-    #target_compatible_with=["//platforms:wasm"],
 )
 
 bzl_library(

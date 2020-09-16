@@ -1,16 +1,5 @@
-config_setting(
-    name = "wasm32",
-    constraint_values = [
-        "@platforms//os:none",
-        "@platforms//cpu:wasm32",
-    ],
-)
-
-config_setting(
-    name = "wasm64",
-    constraint_values = [
-        #"//platforms:wasm64",
-        "@platforms//os:none",
-        "@platforms//cpu:wasm64",
-    ],
+filegroup(
+    name = "all",
+    srcs = ["emscripten_config.py"],
+    visibility = ["//visibility:public"],
 )

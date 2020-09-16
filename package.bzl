@@ -5,26 +5,18 @@ load("//lib:package.bzl", "download_lib")
 
 def register_dependencies():
     """Set up dependencies of THIS workspace."""
-    _github_repository(
-        project = "rules_foreign_cc",
-        owner = "bazelbuild",
-        commit = "ed95b95affecaa3ea3bf7bab3e0ab6aa847dfb06",
-        shallow_since = "1599808059 +0200",
-    )
+    #_github_repository(
+    #    project = "rules_foreign_cc",
+    #    owner = "bazelbuild",
+    #    commit = "ed95b95affecaa3ea3bf7bab3e0ab6aa847dfb06",
+    #    shallow_since = "1599808059 +0200",
+    #)
 
     http_archive(
         name = "platforms",
         version = "0.0.1",
         urls = ["https://github.com/bazelbuild/{name}/archive/{version}.tar.gz"],
         sha256 = "0fc19efca1dfc5c1448c98f050639e3a48beb0031701d55bea5eb546507970f2",
-        strip_prefix = "{name}-{version}",
-    )
-
-    http_archive(
-        name = "emscripten",
-        version = "2.0.4",
-        urls = ["https://github.com/{name}-core/{name}/archive/{version}.tar.gz"],
-        sha256 = "f450aacf98cf5d70672452bbbb42ac41d51468f756c33414ce16b7cfc25ac699",
         strip_prefix = "{name}-{version}",
     )
 
@@ -36,6 +28,44 @@ def register_dependencies():
             "https://github.com/bazelbuild/{name}/releases/download/{version}/{name}-{version}.tar.gz",
         ],
         sha256 = "1c531376ac7e5a180e0237938a2536de0c54d93f5c278634818e0efc952dd56c",
+    )
+
+    http_archive(
+        name = "binaryen",
+        version = "96",
+        urls = ["https://github.com/WebAssembly/{name}/releases/download/version_{version}/{name}-version_{version}-x86_64-linux.tar.gz"],
+        sha256 = "9f8397a12931df577b244a27c293d7c976bc7e980a12457839f46f8202935aac",
+        strip_prefix = "{name}-version_{version}",
+    )
+
+    http_archive(
+        name = "emscripten",
+        version = "2.0.4",
+        urls = ["https://github.com/{name}-core/{name}/archive/{version}.tar.gz"],
+        sha256 = "f450aacf98cf5d70672452bbbb42ac41d51468f756c33414ce16b7cfc25ac699",
+        strip_prefix = "{name}-{version}",
+    )
+
+    http_archive(
+        name = "llvm",
+        version = "10.0.1",
+        urls = ["https://github.com/{name}/{name}-project/releases/download/{name}org-{version}/clang+{name}-{version}-x86_64-linux-gnu-ubuntu-16.04.tar.xz"],
+        sha256 = "48b83ef827ac2c213d5b64f5ad7ed082c8bcb712b46644e0dc5045c6f462c231",
+        strip_prefix = "clang+{name}-{version}-x86_64-linux-gnu-ubuntu-16.04"
+    )
+
+    http_archive(
+        name = "node",
+        version = "14.11.0",
+        urls = ["https://nodejs.org/dist/v14.11.0/{name}-v{version}-linux-x64.tar.xz"],
+        sha256 = "c0dfb8e45aefefc65410dbe3e9a05e346b952b2a19a965f5bea3e77b74fc73d8",
+        strip_prefix = "{name}-v{version}-linux-x64",
+    )
+
+    native.new_local_repository(
+        name = "config",
+        path = "config",
+        build_file = "//config:BUILD.bazel",
     )
 
 def register_repositories():

@@ -1,5 +1,6 @@
 EMCONFIGURE = [
-    "echo 'emconfigure $(dirname $0)/configure $@' > emconfigure.sh",
+    "echo 'export EM_CONFIG=\"${EXT_BUILD_DEPS}/bin/emscripten_config.py\"' > emconfigure.sh",
+    "echo '\"${EXT_BUILD_DEPS}/bin/emscripten/emconfigure\" $(dirname $0)/configure $@' >> emconfigure.sh",
     "chmod +x emconfigure.sh",
 ]
 
