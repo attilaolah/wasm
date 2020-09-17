@@ -2,11 +2,6 @@ workspace(name = "wasm")
 
 load("//:package.bzl", "register_dependencies", "register_repositories")
 
-local_repository(
-    name = "rules_foreign_cc",
-    path = "../rules_foreign_cc",
-)
-
 register_dependencies()
 
 register_repositories()

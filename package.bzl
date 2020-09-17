@@ -5,12 +5,16 @@ load("//lib:package.bzl", "download_lib")
 
 def register_dependencies():
     """Set up dependencies of THIS workspace."""
-    #_github_repository(
-    #    project = "rules_foreign_cc",
-    #    owner = "bazelbuild",
-    #    commit = "ed95b95affecaa3ea3bf7bab3e0ab6aa847dfb06",
-    #    shallow_since = "1599808059 +0200",
-    #)
+    _github_repository(
+        project = "rules_foreign_cc",
+        owner = "bazelbuild",
+        commit = "ed95b95affecaa3ea3bf7bab3e0ab6aa847dfb06",
+        shallow_since = "1599808059 +0200",
+        pull_requests = {
+            427: "6172e0c838a06346c9aab7c76c5e0fccc8355c7a0fe63f57d2060c27869b12e8",
+            428: "13ff5c01debb49816322ba1abd5af16059050f3bd43ba47c2972961dbc9f56da",
+        },
+    )
 
     http_archive(
         name = "platforms",
