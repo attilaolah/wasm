@@ -2,30 +2,33 @@ load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@rules_foreign_cc//tools/build_defs/native_tools:native_tools_toolchain.bzl", "native_tool_toolchain")
 
 toolchain(
-    name = "cmake",
+    name = "emcmake",
     exec_compatible_with = [
         "@platforms//os:linux",
         "@platforms//cpu:x86_64",
     ],
     target_compatible_with = [
-        "@platforms//os:linux",
-        "@platforms//cpu:x86_64",
+        "@platforms//os:none",
+        "@platforms//cpu:wasm64",
     ],
-    toolchain = select({
-        "//target:wasm": ":emcmake",
-        "//conditions:default": "@rules_foreign_cc//tools/build_defs/native_tools:preinstalled_cmake",
-    }),
+    toolchain = ":emcmake_toolchain",
     toolchain_type = "@rules_foreign_cc//tools/build_defs:cmake_toolchain",
 )
 
 native_tool_toolchain(
-    name = "emcmake",
-    path = "emcmake",
-    target = "@emscripten//:all",
+    name = "emcmake_toolchain",
+    path = "emcmake/bin/emcmake",
+    targets = [
+        "@emscripten//:all",
+        "@binaryen//:all",
+        "@llvm//:all",
+        "@node//:all",
+        "//config:all",
+    ],
     visibility = ["//visibility:public"],
 )
 
 bzl_library(
-    name = "cmake_bzl",
+    name = "bzl_lib",
     srcs = ["cmake.bzl"],
 )

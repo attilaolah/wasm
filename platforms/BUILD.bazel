@@ -1,0 +1,15 @@
+platform(
+    name = "wasm32",
+    constraint_values = [
+        "@platforms//cpu:wasm32",
+        "@platforms//os:none",
+    ],
+)
+
+platform(
+    name = "wasm64",
+    constraint_values = [
+        "@platforms//cpu:wasm64",
+        "@platforms//os:none",
+    ],
+)

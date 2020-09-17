@@ -1,19 +1,19 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@rules_foreign_cc//tools/build_defs:configure.bzl", "configure_make")
-load("//toolchains/make:make.bzl", "CONFIGURE_COMMAND", "CONFIGURE_MAKE_COMMANDS")
+load("//toolchains/make:configure.bzl", "configure_command", "make_commands")
 
 package(default_visibility = ["//:__subpackages__"])
 
 configure_make(
     name = "z",
-    configure_command = CONFIGURE_COMMAND,
+    configure_command = configure_command(),
     configure_options = [
         "--static",
     ],
     lib_name = "z_lib",
     lib_source = "@lib_z//:all",
     linkopts = ["-lz"],
-    make_commands = CONFIGURE_MAKE_COMMANDS,
+    make_commands = make_commands(),
     static_libraries = ["libz.a"],
 )
 

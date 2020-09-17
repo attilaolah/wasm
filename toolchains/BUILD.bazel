@@ -1,0 +1,8 @@
+cc_toolchain_suite(
+    name = "toolchains",
+    toolchains = {
+        "k8": "@local_config_cc//:cc-compiler-k8",
+        "wasm32": "//toolchains/cc:linux_x86_64_wasm32_cc",
+        "wasm64": "//toolchains/cc:linux_x86_64_wasm64_cc",
+    },
+)

@@ -1,0 +1,11 @@
+load(":wasm_toolchain_config.bzl", "wasm_toolchains")
+
+wasm_toolchains(
+    exec_cpu = "x86_64",
+    exec_os = "linux",
+)
+
+filegroup(
+    name = "empty",
+    srcs = [],
+)

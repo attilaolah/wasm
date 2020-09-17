@@ -17,6 +17,14 @@ def register_dependencies():
     )
 
     http_archive(
+        name = "platforms",
+        version = "0.0.1",
+        urls = ["https://github.com/bazelbuild/{name}/archive/{version}.tar.gz"],
+        sha256 = "0fc19efca1dfc5c1448c98f050639e3a48beb0031701d55bea5eb546507970f2",
+        strip_prefix = "{name}-{version}",
+    )
+
+    http_archive(
         name = "bazel-skylib",
         version = "1.0.3",
         urls = [
@@ -28,9 +36,12 @@ def register_dependencies():
 
     http_archive(
         name = "binaryen",
-        version = "96",
+        version = "97",
+        # Build from source:
+        # urls = ["https://github.com/WebAssembly/{name}/archive/version_{version}.tar.gz"],
+        # Pre-built binaries:
         urls = ["https://github.com/WebAssembly/{name}/releases/download/version_{version}/{name}-version_{version}-x86_64-linux.tar.gz"],
-        sha256 = "9f8397a12931df577b244a27c293d7c976bc7e980a12457839f46f8202935aac",
+        sha256 = "7eb18a35a6c91d49da42b775293c14945eecc2ea125dafbd4fba83cdf326e8e6",
         strip_prefix = "{name}-version_{version}",
     )
 
@@ -42,12 +53,23 @@ def register_dependencies():
         strip_prefix = "{name}-{version}",
     )
 
-    http_archive(
+    #http_archive(
+    #    name = "llvm",
+    #    version = "10.0.1",
+    #    urls = ["https://github.com/{name}/{name}-project/releases/download/{name}org-{version}/clang+{name}-{version}-x86_64-linux-gnu-ubuntu-16.04.tar.xz"],
+    #    sha256 = "48b83ef827ac2c213d5b64f5ad7ed082c8bcb712b46644e0dc5045c6f462c231",
+    #    strip_prefix = "clang+{name}-{version}-x86_64-linux-gnu-ubuntu-16.04"
+    #)
+    native.new_local_repository(
         name = "llvm",
-        version = "10.0.1",
-        urls = ["https://github.com/{name}/{name}-project/releases/download/{name}org-{version}/clang+{name}-{version}-x86_64-linux-gnu-ubuntu-16.04.tar.xz"],
-        sha256 = "48b83ef827ac2c213d5b64f5ad7ed082c8bcb712b46644e0dc5045c6f462c231",
-        strip_prefix = "clang+{name}-{version}-x86_64-linux-gnu-ubuntu-16.04"
+        path = "/tmp/emsdk-2.0.4/llvm/git/build_master_64",
+        build_file_content = """
+filegroup(
+    name = "all",
+    srcs = glob(["**"]),
+    visibility = ["//visibility:public"],
+)
+""",
     )
 
     http_archive(

@@ -1,27 +1,7 @@
-EMCONFIGURE = [
-    "echo 'export EM_CONFIG=\"${EXT_BUILD_DEPS}/bin/emscripten_config.py\"' > emconfigure.sh",
-    "echo '\"${EXT_BUILD_DEPS}/bin/emscripten/emconfigure\" $(dirname $0)/configure $@' >> emconfigure.sh",
-    "chmod +x emconfigure.sh",
-]
+load(":configure.bzl", _make_commands = "make_commands")
 
-CONFIGURE_COMMAND = select({
-    "//conditions:default": "configure",
-    "//target:wasm": "emconfigure.sh",
-})
-
-CONFIGURE_MAKE_COMMANDS = select({
-    "//conditions:default": [
-        "make",
-        "make install",
-    ],
-    "//target:wasm": [
-        "emmake make",
-        "emmake make install",
-    ],
-})
-
-def emmake_make_commands(root):
-    return [
-        "emmake make -k -C $EXT_BUILD_ROOT/external/{}".format(root),
-        "emmake make -C $EXT_BUILD_ROOT/external/{} install PREFIX=$INSTALLDIR".format(root),
-    ]
+def make_commands(lib_name):
+    return _make_commands(commands = [
+        'make -C "${EXT_BUILD_ROOT}/external/lib_{}"'.format(lib_name),
+        'make -C "${EXT_BUILD_ROOT}/external/lib_{}" install PREFIX="${INSTALLDIR}"'.format(lib_name),
+    ])

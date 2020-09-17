@@ -1,0 +1,24 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("@rules_foreign_cc//tools/build_defs:cmake.bzl", "cmake_external")
+
+cmake_external(
+    name = "binaryen",
+    binaries = [
+        "asm2wasm",
+        "wasm2js",
+        "wasm-as",
+        "wasm-ctor-eval",
+        "wasm-dis",
+        "wasm-emscripten-finalize",
+        "wasm-metadce",
+        "wasm-opt",
+        "wasm-reduce",
+        "wasm-shell",
+    ],
+    cache_entries = {
+        "BUILD_STATIC_LIB:BOOL": "ON",
+    },
+    lib_source = "@binaryen//:all",
+    linkopts = ["-lbinaryen"],
+    static_libraries = ["libbinaryen.a"],
+)
