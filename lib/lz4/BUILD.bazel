@@ -14,7 +14,7 @@ cmake_external(
     name = "lz4",
     cache_entries = select({
         "//conditions:default": CACHE_ENTRIES,
-        "//target:wasm": emcmake_cache_entries(CACHE_ENTRIES),
+        "//config:wasm64": emcmake_cache_entries(CACHE_ENTRIES),
     }),
     lib_name = "lz4_lib",
     lib_source = "@lib_lz4//:all",
@@ -32,7 +32,7 @@ cmake_external(
     ],
     cache_entries = select({
         "//conditions:default": CACHE_ENTRIES,
-        "//target:wasm": emcmake_cache_entries(CACHE_ENTRIES),
+        "//config:wasm64": emcmake_cache_entries(CACHE_ENTRIES),
     }),
     lib_name = "lz4_bin",
     lib_source = "@lib_lz4//:all",

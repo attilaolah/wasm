@@ -15,7 +15,7 @@ cmake_external(
     name = "jpeg_turbo",
     cache_entries = select({
         "//conditions:default": CACHE_ENTRIES,
-        "//target:wasm": emcmake_cache_entries(CACHE_ENTRIES),
+        "//config:wasm64": emcmake_cache_entries(CACHE_ENTRIES),
     }),
     lib_name = "jpeg_turbo_lib",
     lib_source = "@lib_jpeg_turbo//:all",
@@ -35,7 +35,7 @@ cmake_external(
     ],
     cache_entries = select({
         "//conditions:default": CACHE_ENTRIES,
-        "//target:wasm": emcmake_cache_entries(CACHE_ENTRIES),
+        "//config:wasm64": emcmake_cache_entries(CACHE_ENTRIES),
     }),
     lib_name = "jpeg_turbo_bin",
     lib_source = "@lib_jpeg_turbo//:all",

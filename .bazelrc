@@ -6,19 +6,11 @@ try-import %workspace%/.bazelrc.local
 # Register all extra toolchains.
 build --extra_toolchains=//toolchains/cc:linux_x86_64_wasm64
 
-# Configs wasm32/wasm64 imply --config=wasm.
-build:wasm32 --config=wasm
-build:wasm64 --config=wasm
-
 # New Platforms toolchain API:
 build:wasm32 --platforms=//platforms:wasm32
 build:wasm64 --platforms=//platforms:wasm64
 
 # Old C++ CPU/CROSSTOOL toolchain API:
 build:wasm --crosstool_top=//toolchains
-build:wasm32 --cpu=wasm32
-build:wasm64 --cpu=wasm64
-
-# Config shorthand for wasm builds.
-# TODO: Replace with the Platforms API!
-build:wasm --//target=wasm
+build:wasm32 --cpu=wasm32 --crosstool_top=//toolchains
+build:wasm64 --cpu=wasm64 --crosstool_top=//toolchains

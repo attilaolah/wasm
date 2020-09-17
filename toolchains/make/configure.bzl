@@ -14,7 +14,7 @@ def emmake(make_command):
 def configure_command():
     return select({
         "//conditions:default": "configure",
-        "//target:wasm": "emconfigure.sh",
+        "//config:wasm64": "emconfigure.sh",
     })
 
 def make_commands(commands = None):
@@ -23,5 +23,5 @@ def make_commands(commands = None):
 
     return select({
         "//conditions:default": commands,
-        "//target:wasm": [emmake(cmd) for cmd in commands],
+        "//config:wasm64": [emmake(cmd) for cmd in commands],
     })

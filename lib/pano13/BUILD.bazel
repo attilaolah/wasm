@@ -23,7 +23,7 @@ cmake_external(
     name = "pano13",
     cache_entries = select({
         "//conditions:default": CACHE_ENTRIES,
-        "//target:wasm": emcmake_cache_entries(CACHE_ENTRIES),
+        "//config:wasm64": emcmake_cache_entries(CACHE_ENTRIES),
     }),
     lib_name = "pano13_lib",
     lib_source = "@lib_pano13//:all",
@@ -54,7 +54,7 @@ cmake_external(
     ],
     cache_entries = select({
         "//conditions:default": CACHE_ENTRIES,
-        "//target:wasm": emcmake_cache_entries(CACHE_ENTRIES),
+        "//config:wasm64": emcmake_cache_entries(CACHE_ENTRIES),
     }),
     lib_name = "pano13_bin",
     lib_source = "@lib_pano13//:all",
