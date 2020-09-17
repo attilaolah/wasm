@@ -4,6 +4,9 @@ load("//toolchains/make:make.bzl", "make_commands")
 
 package(default_visibility = ["//:__subpackages__"])
 
+# TODO: The Makefile doesn't seem to obey the -c option, it forces an optimised
+# build by default. Find a way to relay the build setting to the Makefile.
+
 make(
     name = "gif",
     lib_name = "gif_lib",
