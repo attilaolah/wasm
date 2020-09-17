@@ -1,6 +1,6 @@
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
-load(":http_archive.bzl", "http_archive")
+load(":http_archive.bzl", "ALL_PUBLIC", "http_archive")
 load("//lib:package.bzl", "download_lib")
 
 def register_dependencies():
@@ -37,7 +37,7 @@ def register_dependencies():
     http_archive(
         name = "binaryen",
         version = "97",
-        # Build from source:
+        # To build from source:
         # urls = ["https://github.com/WebAssembly/{name}/archive/version_{version}.tar.gz"],
         # Pre-built binaries:
         urls = ["https://github.com/WebAssembly/{name}/releases/download/version_{version}/{name}-version_{version}-x86_64-linux.tar.gz"],
@@ -60,16 +60,11 @@ def register_dependencies():
     #    sha256 = "48b83ef827ac2c213d5b64f5ad7ed082c8bcb712b46644e0dc5045c6f462c231",
     #    strip_prefix = "clang+{name}-{version}-x86_64-linux-gnu-ubuntu-16.04"
     #)
+    # TODO: Compile LLVM, or wait for a new version to be released.
     native.new_local_repository(
         name = "llvm",
         path = "/tmp/emsdk-2.0.4/llvm/git/build_master_64",
-        build_file_content = """
-filegroup(
-    name = "all",
-    srcs = glob(["**"]),
-    visibility = ["//visibility:public"],
-)
-""",
+        build_file_content = ALL_PUBLIC,
     )
 
     http_archive(
