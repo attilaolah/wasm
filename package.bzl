@@ -73,12 +73,6 @@ def register_dependencies():
         strip_prefix = "{name}-v{version}-linux-x64",
     )
 
-    native.new_local_repository(
-        name = "config",
-        path = "config",
-        build_file = "//config:BUILD.bazel",
-    )
-
 def register_repositories():
     """Fetch and set up dependencies."""
     download_lib()
