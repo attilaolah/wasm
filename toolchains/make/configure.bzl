@@ -1,7 +1,8 @@
-EM_CONFIG = 'EM_CONFIG="${EXT_BUILD_DEPS}/bin/emscripten_config.py"'
-EM_CACHE = 'EM_CACHE="${EXT_BUILD_ROOT}/emscripten_cache"'
-
-ENV_VARS = " ".join((EM_CONFIG, EM_CACHE))
+ENV_VARS = " ".join((
+    'EM_CACHE="${EXT_BUILD_ROOT}/emscripten_cache"',
+    'EM_CONFIG="${EXT_BUILD_DEPS}/bin/emscripten_config.py"',
+    'NODE_PATH="${EXT_BUILD_DEPS}/bin"',
+))
 
 EMCONFIGURE = [
     "echo '{} \"${{EXT_BUILD_DEPS}}/bin/emscripten/emconfigure\" $(dirname $0)/configure $@' >> emconfigure.sh".format(ENV_VARS),

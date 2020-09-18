@@ -17,6 +17,13 @@ def register_dependencies():
     )
 
     http_archive(
+        name = "build_bazel_rules_nodejs",
+        version = "2.2.0",
+        urls = ["https://github.com/bazelbuild/rules_nodejs/releases/download/{version}/rules_nodejs-{version}.tar.gz"],
+        sha256 = "4952ef879704ab4ad6729a29007e7094aef213ea79e9f2e94cbe1c9a753e63ef",
+    )
+
+    http_archive(
         name = "platforms",
         version = "0.0.1",
         urls = ["https://github.com/bazelbuild/{name}/archive/{version}.tar.gz"],
@@ -62,15 +69,6 @@ def register_dependencies():
         name = "llvm",
         path = "/tmp/emsdk-2.0.4/llvm/git/build_master_64",
         build_file_content = ALL_PUBLIC,
-    )
-
-    # TODO: Replace with https://github.com/bazelbuild/rules_nodejs!
-    http_archive(
-        name = "node",
-        version = "14.11.0",
-        urls = ["https://nodejs.org/dist/v14.11.0/{name}-v{version}-linux-x64.tar.xz"],
-        sha256 = "c0dfb8e45aefefc65410dbe3e9a05e346b952b2a19a965f5bea3e77b74fc73d8",
-        strip_prefix = "{name}-v{version}-linux-x64",
     )
 
 def register_repositories():

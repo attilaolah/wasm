@@ -1,0 +1,18 @@
+{
+  "name": "wasm",
+  "version": "1.0.0",
+  "description": "WebAssembly Bazel playground",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/attilaolah/wasm.git"
+  },
+  "author": "Attila Oláh <atl@google.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/attilaolah/wasm/issues"
+  },
+  "homepage": "https://github.com/attilaolah/wasm#readme",
+  "dependencies": {
+    "acorn": "^8.0.1"
+  }
+}
