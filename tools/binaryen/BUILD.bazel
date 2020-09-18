@@ -1,13 +1,9 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@rules_foreign_cc//tools/build_defs:cmake.bzl", "cmake_external")
 
-# NOTE: Currently unused.
-# Should be possible to build for the execution environment, then use it.
-
 cmake_external(
     name = "binaryen",
     binaries = [
-        "asm2wasm",
         "wasm2js",
         "wasm-as",
         "wasm-ctor-eval",
@@ -17,6 +13,9 @@ cmake_external(
         "wasm-opt",
         "wasm-reduce",
         "wasm-shell",
+
+        # TODO: These fail to build.
+        #"asm2wasm",
     ],
     cache_entries = {
         "BUILD_STATIC_LIB:BOOL": "ON",
