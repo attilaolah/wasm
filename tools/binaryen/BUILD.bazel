@@ -24,4 +24,8 @@ cmake_external(
     lib_source = "@binaryen//:all",
     linkopts = ["-lbinaryen"],
     static_libraries = ["libbinaryen.a"],
+    visibility = [
+        "//toolchains/cmake:__pkg__",
+        "//toolchains/make:__pkg__",
+    ],
 )

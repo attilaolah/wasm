@@ -20,10 +20,10 @@ native_tool_toolchain(
     path = "emcmake/bin/emcmake",
     targets = [
         "@emscripten//:all",
-        "@binaryen//:all",
         "@llvm//:all",
         "@node//:all",
         "//config:all",
+        "//tools/binaryen",
     ],
     visibility = ["//visibility:public"],
 )

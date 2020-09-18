@@ -37,11 +37,8 @@ def register_dependencies():
     http_archive(
         name = "binaryen",
         version = "97",
-        # To build from source:
-        # urls = ["https://github.com/WebAssembly/{name}/archive/version_{version}.tar.gz"],
-        # Pre-built binaries:
-        urls = ["https://github.com/WebAssembly/{name}/releases/download/version_{version}/{name}-version_{version}-x86_64-linux.tar.gz"],
-        sha256 = "7eb18a35a6c91d49da42b775293c14945eecc2ea125dafbd4fba83cdf326e8e6",
+        urls = ["https://github.com/WebAssembly/{name}/archive/version_{version}.tar.gz"],
+        sha256 = "a1bb8a62851706892faabd4f2aa3c6f7f00462512abd1a6923c746e51290b265",
         strip_prefix = "{name}-version_{version}",
     )
 
