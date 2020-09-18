@@ -17,7 +17,7 @@ toolchain(
 
 native_tool_toolchain(
     name = "emcmake_toolchain",
-    path = "emcmake/bin/emcmake",
+    path = "emscripten/emcmake",
     targets = [
         "//config:emscripten_config",
         "//tools:nodejs",
