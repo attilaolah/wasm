@@ -67,6 +67,7 @@ def register_dependencies():
         build_file_content = ALL_PUBLIC,
     )
 
+    # TODO: Replace with https://github.com/bazelbuild/rules_nodejs!
     http_archive(
         name = "node",
         version = "14.11.0",
