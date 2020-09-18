@@ -1,5 +1,5 @@
 filegroup(
-    name = "all",
+    name = "emscripten_config",
     srcs = ["emscripten_config.py"],
     visibility = ["//visibility:public"],
 )

@@ -19,19 +19,14 @@ native_tool_toolchain(
     name = "emmake_toolchain",
     path = "emscripten/emmake",
     targets = [
-        ":nodejs_bin",
-        "//config:all",
+        "//config:emscripten_config",
+        "//tools:nodejs",
         "//tools/binaryen",
         "@emscripten//:all",
         "@llvm//:all",
         "@npm//acorn",
     ],
     visibility = ["//visibility:public"],
-)
-
-filegroup(
-    name = "nodejs_bin",
-    srcs = ["@nodejs_linux_amd64//:node_bin"],
 )
 
 bzl_library(

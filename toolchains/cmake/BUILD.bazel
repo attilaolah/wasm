@@ -19,11 +19,12 @@ native_tool_toolchain(
     name = "emcmake_toolchain",
     path = "emcmake/bin/emcmake",
     targets = [
-        "//config:all",
+        "//config:emscripten_config",
+        "//tools:nodejs",
         "//tools/binaryen",
         "@emscripten//:all",
         "@llvm//:all",
-        "@node//:all",
+        "@npm//acorn",
     ],
     visibility = ["//visibility:public"],
 )
