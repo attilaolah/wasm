@@ -1,6 +1,5 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@rules_foreign_cc//tools/build_defs:cmake.bzl", "cmake_external")
-load("//toolchains/cmake:cmake.bzl", "emcmake_cache_entries")
 load("//toolchains/make:configure.bzl", "make_commands")
 
 package(default_visibility = ["//:__subpackages__"])
@@ -20,10 +19,13 @@ BIN_CACHE_ENTRIES = dict(_CACHE_ENTRIES.items() + {
 
 cmake_external(
     name = "zstd",
-    cache_entries = select({
-        "//conditions:default": LIB_CACHE_ENTRIES,
-        "//config:wasm64": emcmake_cache_entries(LIB_CACHE_ENTRIES),
-    }),
+    cache_entries = LIB_CACHE_ENTRIES,
+    # TODO: Try and see if this works.
+    env_vars = {
+        "EM_CACHE": '${EXT_BUILD_ROOT}/emscripten_cache',
+        "EM_CONFIG": '${EXT_BUILD_DEPS}/bin/emscripten_config.py',
+        "NODE_PATH": '${EXT_BUILD_DEPS}/bin',
+    },
     lib_name = "zstd_lib",
     lib_source = "@lib_zstd//:all",
     linkopts = [
@@ -45,10 +47,7 @@ cmake_external(
         "zstdless",
         "zstdmt",
     ],
-    cache_entries = select({
-        "//conditions:default": BIN_CACHE_ENTRIES,
-        "//config:wasm64": emcmake_cache_entries(BIN_CACHE_ENTRIES),
-    }),
+    cache_entries = BIN_CACHE_ENTRIES,
     lib_name = "zstd_bin",
     lib_source = "@lib_zstd//:all",
     make_commands = make_commands(),

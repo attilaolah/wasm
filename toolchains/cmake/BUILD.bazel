@@ -1,4 +1,3 @@
-load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@rules_foreign_cc//tools/build_defs/native_tools:native_tools_toolchain.bzl", "native_tool_toolchain")
 
 toolchain(
@@ -17,7 +16,7 @@ toolchain(
 
 native_tool_toolchain(
     name = "emcmake_toolchain",
-    path = "emscripten/emcmake",
+    path = "emscripten/emcmake cmake",
     targets = [
         "//config:emscripten_config",
         "//tools:nodejs",
@@ -27,9 +26,4 @@ native_tool_toolchain(
         "@npm//acorn",
     ],
     visibility = ["//visibility:public"],
-)
-
-bzl_library(
-    name = "bzl_lib",
-    srcs = ["cmake.bzl"],
 )

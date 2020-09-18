@@ -1,6 +1,5 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@rules_foreign_cc//tools/build_defs:cmake.bzl", "cmake_external")
-load("//toolchains/cmake:cmake.bzl", "emcmake_cache_entries")
 
 package(default_visibility = ["//:__subpackages__"])
 
@@ -21,10 +20,7 @@ CACHE_ENTRIES = {
 
 cmake_external(
     name = "pano13",
-    cache_entries = select({
-        "//conditions:default": CACHE_ENTRIES,
-        "//config:wasm64": emcmake_cache_entries(CACHE_ENTRIES),
-    }),
+    cache_entries = CACHE_ENTRIES,
     lib_name = "pano13_lib",
     lib_source = "@lib_pano13//:all",
     linkopts = ["-lpano13"],
@@ -52,10 +48,7 @@ cmake_external(
         "PTtiffdump",
         "PTuncrop",
     ],
-    cache_entries = select({
-        "//conditions:default": CACHE_ENTRIES,
-        "//config:wasm64": emcmake_cache_entries(CACHE_ENTRIES),
-    }),
+    cache_entries = CACHE_ENTRIES,
     lib_name = "pano13_bin",
     lib_source = "@lib_pano13//:all",
     deps = [

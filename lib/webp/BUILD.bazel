@@ -1,6 +1,5 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@rules_foreign_cc//tools/build_defs:cmake.bzl", "cmake_external")
-load("//toolchains/cmake:cmake.bzl", "emcmake_cache_entries")
 
 package(default_visibility = ["//:__subpackages__"])
 
@@ -39,10 +38,7 @@ BIN_CACHE_ENTRIES = dict(_CACHE_ENTRIES.items() + {key: "ON" for key in BIN_CACH
 
 cmake_external(
     name = "webp",
-    cache_entries = select({
-        "//conditions:default": LIB_CACHE_ENTRIES,
-        "//config:wasm64": emcmake_cache_entries(LIB_CACHE_ENTRIES),
-    }),
+    cache_entries = LIB_CACHE_ENTRIES,
     lib_name = "webp_lib",
     lib_source = "@lib_webp//:all",
     linkopts = [
@@ -69,10 +65,7 @@ cmake_external(
         "webpinfo",
         "webpmux",
     ],
-    cache_entries = select({
-        "//conditions:default": BIN_CACHE_ENTRIES,
-        "//config:wasm64": emcmake_cache_entries(BIN_CACHE_ENTRIES),
-    }),
+    cache_entries = BIN_CACHE_ENTRIES,
     lib_name = "webp_bin",
     lib_source = "@lib_webp//:all",
     deps = [

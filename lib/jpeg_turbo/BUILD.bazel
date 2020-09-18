@@ -1,6 +1,6 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@rules_foreign_cc//tools/build_defs:cmake.bzl", "cmake_external")
-load("//toolchains/cmake:cmake.bzl", "emcmake_cache_entries")
+load("//toolchains/make:configure.bzl", "make_commands")
 
 package(default_visibility = ["//:__subpackages__"])
 
@@ -13,13 +13,11 @@ CACHE_ENTRIES = {
 
 cmake_external(
     name = "jpeg_turbo",
-    cache_entries = select({
-        "//conditions:default": CACHE_ENTRIES,
-        "//config:wasm64": emcmake_cache_entries(CACHE_ENTRIES),
-    }),
+    cache_entries = CACHE_ENTRIES,
     lib_name = "jpeg_turbo_lib",
     lib_source = "@lib_jpeg_turbo//:all",
     linkopts = ["-ljpeg"],
+    make_commands = make_commands(),
     static_libraries = ["libjpeg.a"],
 )
 
@@ -33,12 +31,10 @@ cmake_external(
         "tjbench",
         "wrjpgcom",
     ],
-    cache_entries = select({
-        "//conditions:default": CACHE_ENTRIES,
-        "//config:wasm64": emcmake_cache_entries(CACHE_ENTRIES),
-    }),
+    cache_entries = CACHE_ENTRIES,
     lib_name = "jpeg_turbo_bin",
     lib_source = "@lib_jpeg_turbo//:all",
+    make_commands = make_commands(),
 )
 
 bzl_library(
