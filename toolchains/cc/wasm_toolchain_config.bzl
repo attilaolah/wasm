@@ -55,14 +55,14 @@ def wasm_toolchain(exec_os, exec_cpu, cpu):
         abi_version = "local",
         compile_flags = [
             "-U_FORTIFY_SOURCE",
-            # Using the stack protector breaks some builds.
-            # See https://github.com/emscripten-core/emscripten/issues/9780.
-            "-fno-stack-protector",
             "-Wall",
             "-Wthread-safety",
             "-Wself-assign",
             "-fcolor-diagnostics",
             "-fno-omit-frame-pointer",
+            # Using the stack protector breaks some builds.
+            # See https://github.com/emscripten-core/emscripten/issues/9780.
+            "-fno-stack-protector",
         ],
         compiler = "clang",
         coverage_compile_flags = ["--coverage"],
@@ -73,7 +73,8 @@ def wasm_toolchain(exec_os, exec_cpu, cpu):
         dbg_compile_flags = ["-g"],
         host_system_name = "local",
         link_flags = [
-            "-Wl,-z,relro,-z,now",
+            # Disabling lazy binding ("-Wl,-z,now) breaks libpng.
+            "-Wl,-z,relro",  #,-z,now",
             "-lm",
         ],
         link_libs = [],
