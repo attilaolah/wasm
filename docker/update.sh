@@ -20,8 +20,8 @@ apt-get update
 apt-get --yes dist-upgrade 2>&1
 
 # Install cmake and friends.
-# Also, Emscripten requires Python 3.5+ and NodeJS.
-apt-get --yes install build-essential cmake clang llvm python3 nodejs 2>&1
+# Also, Emscripten requires Python 3.5+.
+apt-get --yes install build-essential python3 2>&1
 
 # Self-destruct.
 rm /etc/update.sh
