@@ -1,4 +1,5 @@
 load("//:http_archive.bzl", "http_archive")
+load("//toolchains/make:configure.bzl", "EMCONFIGURE")
 
 VERSION = "5.2.4"
 
@@ -13,4 +14,5 @@ def download_lzma():
         urls = [URL],
         sha256 = SHA256,
         strip_prefix = "xz-{version}",
+        patch_cmds = EMCONFIGURE,
     )

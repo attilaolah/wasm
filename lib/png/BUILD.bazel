@@ -1,5 +1,6 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@rules_foreign_cc//tools/build_defs:configure.bzl", "configure_make")
+load("//toolchains/make:configure.bzl", "configure_command", "make_commands")
 
 package(default_visibility = ["//:__subpackages__"])
 
@@ -10,10 +11,12 @@ CONFIGURE_OPTIONS = [
 
 configure_make(
     name = "png",
+    configure_command = configure_command(),
     configure_options = CONFIGURE_OPTIONS,
     lib_name = "png_lib",
     lib_source = "@lib_png//:all",
     linkopts = ["-lpng"],
+    make_commands = make_commands(),
     static_libraries = [
         "libpng.a",
         "libpng16.a",
@@ -29,9 +32,11 @@ configure_make(
         "png-fix-itxt",
         "pngfix",
     ],
+    configure_command = configure_command(),
     configure_options = CONFIGURE_OPTIONS,
     lib_name = "png_bin",
     lib_source = "@lib_png//:all",
+    make_commands = make_commands(),
     deps = ["//lib/z"],
 )
 

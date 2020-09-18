@@ -1,6 +1,7 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@rules_foreign_cc//tools/build_defs:cmake.bzl", "cmake_external")
 load("//toolchains/cmake:cmake.bzl", "emcmake_cache_entries")
+load("//toolchains/make:configure.bzl", "make_commands")
 
 package(default_visibility = ["//:__subpackages__"])
 
@@ -29,6 +30,7 @@ cmake_external(
         "-lzstd",
         "-lpthread",
     ],
+    make_commands = make_commands(),
     static_libraries = ["libzstd.a"],
     working_directory = "build/cmake",
 )
@@ -49,6 +51,7 @@ cmake_external(
     }),
     lib_name = "zstd_bin",
     lib_source = "@lib_zstd//:all",
+    make_commands = make_commands(),
     working_directory = "build/cmake",
 )
 

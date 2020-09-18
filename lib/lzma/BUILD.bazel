@@ -1,5 +1,6 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@rules_foreign_cc//tools/build_defs:configure.bzl", "configure_make")
+load("//toolchains/make:configure.bzl", "configure_command", "make_commands")
 
 package(default_visibility = ["//:__subpackages__"])
 
@@ -19,10 +20,12 @@ CONFIGURE_OPTIONS = BIN_CONFIGURE_OPTIONS + [
 
 configure_make(
     name = "lzma",
+    configure_command = configure_command(),
     configure_options = CONFIGURE_OPTIONS,
     lib_name = "lzma_lib",
     lib_source = "@lib_lzma//:all",
     linkopts = ["-llzma"],
+    make_commands = make_commands(),
     static_libraries = ["liblzma.a"],
 )
 
@@ -53,9 +56,11 @@ configure_make(
         "xzless",
         "xzmore",
     ],
+    configure_command = configure_command(),
     configure_options = BIN_CONFIGURE_OPTIONS,
     lib_name = "lzma_bin",
     lib_source = "@lib_lzma//:all",
+    make_commands = make_commands(),
 )
 
 bzl_library(

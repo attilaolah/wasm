@@ -73,11 +73,7 @@ def wasm_toolchain(exec_os, exec_cpu, cpu):
         dbg_compile_flags = ["-g"],
         host_system_name = "local",
         link_flags = [
-            "-fuse-ld=/usr/bin/ld.gold",
-            "-Wl,-no-as-needed",
             "-Wl,-z,relro,-z,now",
-            "-Bexternal/emscripten",
-            "-lstdc++",
             "-lm",
         ],
         link_libs = [],
@@ -95,16 +91,16 @@ def wasm_toolchain(exec_os, exec_cpu, cpu):
         target_system_name = "local",
         tool_paths = {
             # Emscripten tools:
-            "ar": "external/emscripten/emar",
-            "cpp": "external/emscripten/em++",
-            "gcc": "external/emscripten/emcc",
+            "ar": "emar",
+            "cpp": "em++",
+            "gcc": "emcc",
 
             # LLVM tools:
-            "dwp": "external/llvm/bin/llvm-dwp",
-            "nm": "external/llvm/bin/llvm-nm",
-            "objcopy": "external/llvm/bin/llvm-objcopy",
-            "objdump": "external/llvm/bin/llvm-objdump",
-            "strip": "external/llvm/bin/llvm-strip",
+            "dwp": "llvm-dwp",
+            "nm": "llvm-nm",
+            "objcopy": "llvm-objcopy",
+            "objdump": "llvm-objdump",
+            "strip": "llvm-strip",
 
             # System tools:
             "gcov": "/usr/bin/gcov",
