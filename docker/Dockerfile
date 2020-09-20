@@ -1,4 +1,4 @@
-FROM insready/bazel:latest
+FROM debian:bullseye
 LABEL maintainer="Attila Oláh (atl@google.com)"
 
 COPY [".", "/etc/"]
