@@ -1,7 +1,7 @@
 FROM insready/bazel:latest
 LABEL maintainer="Attila Oláh (atl@google.com)"
 
-COPY ["docker", "/etc/"]
+COPY [".", "/etc/"]
 RUN ["sh", "/etc/update.sh"]
 
 WORKDIR "/build"
