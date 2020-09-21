@@ -1,19 +1,32 @@
-ENV_VARS = {
-    "EM_CACHE": "${EXT_BUILD_ROOT}/emscripten_cache",
-    "EM_CONFIG": "${EXT_BUILD_DEPS}/bin/emscripten_config.py",
-    "NODE_PATH": "${EXT_BUILD_DEPS}/bin",
-}
+load("@rules_foreign_cc//tools/build_defs:configure.bzl", "configure_make")
+load(":env_vars.bzl", "ENV_CMD")
 
-def _quote(text):
-    # Like shell.quote() from @bazel_skylib//lib:shell.bzl, but uses double quotes.
-    return '"' + text.replace('"', '"\\""') + '"'
+def configure_make_lib(name, configure_options, static_libraries = None, deps = None):
+    if static_libraries == None:
+        static_libraries = ["lib{}.a".format(name)]
+    configure_make(
+        name = name,
+        configure_command = configure_command(),
+        configure_options = configure_options,
+        lib_name = "{}_lib".format(name),
+        lib_source = lib_source(name),
+        linkopts = ["-l{}".format(name)],
+        make_commands = make_commands(),
+        static_libraries = static_libraries,
+        deps = deps or [],
+    )
 
-ENV_CMD = " ".join(sorted(["=".join((key, _quote(val))) for key, val in ENV_VARS.items()]))
-
-EMCONFIGURE = [
-    "echo '{} \"${{EXT_BUILD_DEPS}}/bin/emscripten/emconfigure\" $(dirname $0)/configure $@' >> emconfigure.sh".format(ENV_CMD),
-    "chmod +x emconfigure.sh",
-]
+def configure_make_binaries(name, lib_name, binaries, configure_options, deps = None):
+    configure_make(
+        name = name,
+        binaries = binaries,
+        configure_command = configure_command(),
+        configure_options = configure_options,
+        lib_name = "{}_bin".format(lib_name),
+        lib_source = lib_source(lib_name),
+        make_commands = make_commands(),
+        deps = deps or [],
+    )
 
 def configure_command():
     return select({
