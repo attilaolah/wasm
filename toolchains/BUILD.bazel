@@ -6,3 +6,15 @@ cc_toolchain_suite(
         "wasm64": "//toolchains/cc:linux_x86_64_wasm64_cc",
     },
 )
+
+# These have to be directly under //toolchains.
+# This is because toolchain tool_paths seem to be prefixed with toolchains/.
+filegroup(
+    name = "emscripten",
+    srcs = [
+        "em++.sh",
+        "emar.sh",
+        "emcc.sh",
+    ],
+    visibility = ["//toolchains:__subpackages__"],
+)

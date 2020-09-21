@@ -33,9 +33,9 @@ def wasm_toolchain(exec_os, exec_cpu, cpu):
     native.cc_toolchain(
         name = name_cc,
         all_files = ":empty",
-        ar_files = "@emscripten//:all",
+        ar_files = "//toolchains:emscripten",
         as_files = ":empty",
-        compiler_files = "@emscripten//:all",
+        compiler_files = "//toolchains:emscripten",
         dwp_files = ":empty",
         linker_files = ":empty",
         objcopy_files = ":empty",
@@ -92,16 +92,16 @@ def wasm_toolchain(exec_os, exec_cpu, cpu):
         target_system_name = "local",
         tool_paths = {
             # Emscripten tools:
-            "ar": "emar",
-            "cpp": "em++",
-            "gcc": "emcc",
+            "gcc": "emcc.sh",
+            "cpp": "em++.sh",
+            "ar": "emar.sh",
 
             # LLVM tools:
-            "dwp": "llvm-dwp",
-            "nm": "llvm-nm",
-            "objcopy": "llvm-objcopy",
-            "objdump": "llvm-objdump",
-            "strip": "llvm-strip",
+            "dwp": "external/llvm/llvm-dwp",
+            "nm": "external/llvm/llvm-nm",
+            "objcopy": "external/llvm/llvm-objcopy",
+            "objdump": "external/llvm/llvm-objdump",
+            "strip": "external/llvm/llvm-strip",
 
             # System tools:
             "gcov": "/usr/bin/gcov",
