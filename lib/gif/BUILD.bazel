@@ -1,22 +1,15 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@rules_foreign_cc//tools/build_defs:make.bzl", "make")
-load("//toolchains/make:make.bzl", "make_commands")
+load("//toolchains/make:make.bzl", "make_binaries", "make_lib")
 
 package(default_visibility = ["//:__subpackages__"])
 
 # TODO: The Makefile doesn't seem to obey the -c option, it forces an optimised
 # build by default. Find a way to relay the build setting to the Makefile.
 
-make(
-    name = "gif",
-    lib_name = "gif_lib",
-    lib_source = "@lib_gif//:all",
-    linkopts = ["-lgif"],
-    make_commands = make_commands("gif"),
-    static_libraries = ["libgif.a"],
-)
+make_lib(name = "gif")
 
-make(
+make_binaries(
     name = "binaries",
     binaries = [
         "gif2rgb",
@@ -26,9 +19,7 @@ make(
         "giftext",
         "giftool",
     ],
-    lib_name = "gif_bin",
-    lib_source = "@lib_gif//:all",
-    make_commands = make_commands("gif"),
+    lib_name = "gif",
 )
 
 bzl_library(
