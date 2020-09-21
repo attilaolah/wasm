@@ -1,5 +1,5 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
-load("@rules_foreign_cc//tools/build_defs:cmake.bzl", "cmake_external")
+load("//toolchains/cmake:cmake.bzl", "cmake_lib", "cmake_binaries")
 
 package(default_visibility = ["//:__subpackages__"])
 
@@ -36,16 +36,9 @@ BIN_CACHE_ENTRIES = dict(_CACHE_ENTRIES.items() + {key: "ON" for key in BIN_CACH
     "TIFF_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/tiff_lib/lib/libtiff.a",
 }.items())
 
-cmake_external(
+cmake_lib(
     name = "webp",
     cache_entries = LIB_CACHE_ENTRIES,
-    lib_name = "webp_lib",
-    lib_source = "@lib_webp//:all",
-    linkopts = [
-        "-lwebp",
-        "-lpthread",
-    ],
-    static_libraries = ["libwebp.a"],
     deps = [
         "//lib/gif",
         "//lib/jpeg_turbo",
@@ -54,8 +47,9 @@ cmake_external(
     ],
 )
 
-cmake_external(
+cmake_binaries(
     name = "binaries",
+    lib_name = "webp",
     binaries = [
         "cwebp",
         "dwebp",
@@ -66,8 +60,6 @@ cmake_external(
         "webpmux",
     ],
     cache_entries = BIN_CACHE_ENTRIES,
-    lib_name = "webp_bin",
-    lib_source = "@lib_webp//:all",
     deps = [
         "//lib/gif",
         "//lib/jpeg_turbo",

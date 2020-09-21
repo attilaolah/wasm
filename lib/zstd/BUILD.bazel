@@ -1,6 +1,5 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
-load("@rules_foreign_cc//tools/build_defs:cmake.bzl", "cmake_external")
-load("//toolchains/make:configure.bzl", "make_commands")
+load("//toolchains/cmake:cmake.bzl", "cmake_lib", "cmake_binaries")
 
 package(default_visibility = ["//:__subpackages__"])
 
@@ -17,28 +16,15 @@ BIN_CACHE_ENTRIES = dict(_CACHE_ENTRIES.items() + {
     "ZSTD_BUILD_PROGRAMS:BOOL": "ON",
 }.items())
 
-cmake_external(
+cmake_lib(
     name = "zstd",
     cache_entries = LIB_CACHE_ENTRIES,
-    # TODO: Get these from //toolchains/make:configure.bzl.
-    env_vars = {
-        "EM_CACHE": "${EXT_BUILD_ROOT}/emscripten_cache",
-        "EM_CONFIG": "${EXT_BUILD_DEPS}/bin/emscripten_config.py",
-        "NODE_PATH": "${EXT_BUILD_DEPS}/bin",
-    },
-    lib_name = "zstd_lib",
-    lib_source = "@lib_zstd//:all",
-    linkopts = [
-        "-lzstd",
-        "-lpthread",
-    ],
-    make_commands = make_commands(),
-    static_libraries = ["libzstd.a"],
     working_directory = "build/cmake",
 )
 
-cmake_external(
+cmake_binaries(
     name = "binaries",
+    lib_name = "zstd",
     binaries = [
         "unzstd",
         "zstd",
@@ -48,9 +34,6 @@ cmake_external(
         "zstdmt",
     ],
     cache_entries = BIN_CACHE_ENTRIES,
-    lib_name = "zstd_bin",
-    lib_source = "@lib_zstd//:all",
-    make_commands = make_commands(),
     working_directory = "build/cmake",
 )
 

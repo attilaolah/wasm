@@ -1,9 +1,9 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
-load("@rules_foreign_cc//tools/build_defs:cmake.bzl", "cmake_external")
+load("//toolchains/cmake:cmake.bzl", "cmake_lib")
 
 package(default_visibility = ["//:__subpackages__"])
 
-cmake_external(
+cmake_lib(
     name = "fftw",
     cache_entries = {
         "BUILD_SHARED_LIBS:BOOL": "OFF",
@@ -13,8 +13,6 @@ cmake_external(
         "ENABLE_LONG_DOUBLE:BOOL": "ON",
         "ENABLE_QUAD_PRECISION:BOOL": "ON",
     },
-    lib_name = "fftw_lib",
-    lib_source = "@lib_fftw//:all",
     linkopts = ["-lfftw3q"],
     static_libraries = ["libfftw3q.a"],
 )

@@ -1,6 +1,5 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
-load("@rules_foreign_cc//tools/build_defs:cmake.bzl", "cmake_external")
-load("//toolchains/make:configure.bzl", "make_commands")
+load("//toolchains/cmake:cmake.bzl", "cmake_lib", "cmake_binaries")
 
 package(default_visibility = ["//:__subpackages__"])
 
@@ -11,18 +10,16 @@ CACHE_ENTRIES = {
     "WITH_JAVA:BOOL": "OFF",
 }
 
-cmake_external(
+cmake_lib(
     name = "jpeg_turbo",
     cache_entries = CACHE_ENTRIES,
-    lib_name = "jpeg_turbo_lib",
-    lib_source = "@lib_jpeg_turbo//:all",
     linkopts = ["-ljpeg"],
-    make_commands = make_commands(),
     static_libraries = ["libjpeg.a"],
 )
 
-cmake_external(
+cmake_binaries(
     name = "binaries",
+    lib_name = "jpeg_turbo",
     binaries = [
         "cjpeg",
         "djpeg",
@@ -32,9 +29,6 @@ cmake_external(
         "wrjpgcom",
     ],
     cache_entries = CACHE_ENTRIES,
-    lib_name = "jpeg_turbo_bin",
-    lib_source = "@lib_jpeg_turbo//:all",
-    make_commands = make_commands(),
 )
 
 bzl_library(

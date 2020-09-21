@@ -1,5 +1,5 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
-load("@rules_foreign_cc//tools/build_defs:cmake.bzl", "cmake_external")
+load("//toolchains/cmake:cmake.bzl", "cmake_lib", "cmake_binaries")
 
 package(default_visibility = ["//:__subpackages__"])
 
@@ -21,12 +21,9 @@ CACHE_ENTRIES = {
     "CMAKE_EXE_LINKER_FLAGS": "-lpthread",
 }
 
-cmake_external(
+cmake_lib(
     name = "tiff",
     cache_entries = CACHE_ENTRIES,
-    lib_name = "tiff_lib",
-    lib_source = "@lib_tiff//:all",
-    linkopts = ["-ltiff"],
     static_libraries = [
         "libtiff.a",
         "libtiffxx.a",
@@ -40,8 +37,9 @@ cmake_external(
     ],
 )
 
-cmake_external(
+cmake_binaries(
     name = "binaries",
+    lib_name = "tiff",
     binaries = [
         "fax2ps",
         "fax2tiff",
@@ -63,8 +61,6 @@ cmake_external(
         "tiffsplit",
     ],
     cache_entries = CACHE_ENTRIES,
-    lib_name = "tiff_bin",
-    lib_source = "@lib_tiff//:all",
     deps = [
         "//lib/jpeg_turbo",
         "//lib/lzma",
