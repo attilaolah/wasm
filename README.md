@@ -29,6 +29,7 @@ Then build targets as usual.
 | `//lib/jpeg_turbo` | 2.0.4   | ✅       | ✅              | ✅       | ✅              |
 | `//lib/lz4`        | 1.9.2   | ✅       | ✅              | ✅       | ✅              |
 | `//lib/lzma`       | 5.2.4   | ✅       | ✅              | ✅       | ✅              |
+| `//lib/png`        | 1.6.37  | ✅       | ✅              | ✅       | ✅              |
 | `//lib/z`          | 1.2.11  | ✅       | ✅              | ✅       | ✅              |
 | `//lib/zstd`       | 1.4.4   | ✅       | ✅              | ✅       | ✅              |
 
