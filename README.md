@@ -21,5 +21,11 @@ Then build targets as usual.
 - The default build type is fastbuild.
 - Pass `--compilation_mode=opt` (or `-c opt`) to produce an optimised build.
 
+## Build status
+
+| Library   | Version | `x86_64` | `x86_64 -c opt` | `wasm64` | `wasm64 -c opt` |
+|-----------|---------|:--------:|:---------------:|:--------:|:---------------:|
+| `//lib/z` | 1.2.11  | ✅       | ✅              | ✅       | ✅              |
+
 [Bazel]: https://bazel.build
 [WebAssembly]: https://webassembly.org
