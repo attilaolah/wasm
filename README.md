@@ -45,6 +45,7 @@ Notes:
 2. 'atomics' feature is used by `buffer_dec.c.o`, so `--shared-memory` must be
    used.
 3. Depends on `//lib/tiff`.
+4. Linker error.
 
 [Bazel]: https://bazel.build
 [WebAssembly]: https://webassembly.org
