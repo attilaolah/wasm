@@ -1,5 +1,5 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
-load("//toolchains/cmake:cmake.bzl", "cmake_lib", "cmake_binaries")
+load("//toolchains/cmake:cmake.bzl", "cmake_binaries", "cmake_lib")
 
 package(default_visibility = ["//:__subpackages__"])
 
@@ -49,7 +49,6 @@ cmake_lib(
 
 cmake_binaries(
     name = "binaries",
-    lib_name = "webp",
     binaries = [
         "cwebp",
         "dwebp",
@@ -60,6 +59,7 @@ cmake_binaries(
         "webpmux",
     ],
     cache_entries = BIN_CACHE_ENTRIES,
+    lib_name = "webp",
     deps = [
         "//lib/gif",
         "//lib/jpeg_turbo",

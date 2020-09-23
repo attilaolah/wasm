@@ -1,5 +1,5 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
-load("//toolchains/cmake:cmake.bzl", "cmake_lib", "cmake_binaries")
+load("//toolchains/cmake:cmake.bzl", "cmake_binaries", "cmake_lib")
 
 package(default_visibility = ["//:__subpackages__"])
 
@@ -24,7 +24,6 @@ cmake_lib(
 
 cmake_binaries(
     name = "binaries",
-    lib_name = "zstd",
     binaries = [
         "unzstd",
         "zstd",
@@ -34,6 +33,7 @@ cmake_binaries(
         "zstdmt",
     ],
     cache_entries = BIN_CACHE_ENTRIES,
+    lib_name = "zstd",
     working_directory = "build/cmake",
 )
 

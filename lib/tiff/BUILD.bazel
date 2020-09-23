@@ -1,5 +1,5 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
-load("//toolchains/cmake:cmake.bzl", "cmake_lib", "cmake_binaries")
+load("//toolchains/cmake:cmake.bzl", "cmake_binaries", "cmake_lib")
 
 package(default_visibility = ["//:__subpackages__"])
 
@@ -39,7 +39,6 @@ cmake_lib(
 
 cmake_binaries(
     name = "binaries",
-    lib_name = "tiff",
     binaries = [
         "fax2ps",
         "fax2tiff",
@@ -61,6 +60,7 @@ cmake_binaries(
         "tiffsplit",
     ],
     cache_entries = CACHE_ENTRIES,
+    lib_name = "tiff",
     deps = [
         "//lib/jpeg_turbo",
         "//lib/lzma",
