@@ -10,28 +10,16 @@ $ docker build -t wasm docker
 $ docker run -it -v "${PWD}:/build" wasm
 ```
 
-Then build as normally.
+Then build targets as usual.
 
+### Selecting the target architecture:
 
-Host (x86\_64) fastbuild:
+- The default target is the host architecture.
+- Pass `--config=wasm64` to target WebAssembly.
 
-```sh
-$ bazel build //lib/...
-```
-
-Host (x86\_64) optimised build:
-
-```sh
-$ bazel build -c opt //lib/...
-```
-
-The same but cross-compiled for WebAssembly:
-
-```sh
-$ bazel build --config=wasm64 //lib/...
-$ bazel build --config=wasm64 -c opt //lib/...
-```
-
+### Selecting the build type:
+- The default build type is fastbuild.
+- Pass `--compilation_mode=opt` (or `-c opt`) to produce an optimised build.
 
 [Bazel]: https://bazel.build
 [WebAssembly]: https://webassembly.org
