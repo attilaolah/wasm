@@ -19,6 +19,9 @@ CACHE_ENTRIES = {
     # Force linking against pthread for binaries.
     # This is required for the lib target as well, since there's no way to avoid building the binaries.
     "CMAKE_EXE_LINKER_FLAGS:STRING": "-lpthread",
+
+    # Shared memory is required to link some libraries, e.g. readline.
+    "CMAKE_STATIC_LINKER_FLAGS:STRING": "-Wl,--shared-memory",
 }
 
 cmake_lib(
