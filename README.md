@@ -23,9 +23,10 @@ Then build targets as usual.
 
 ## Build status
 
-| Library   | Version | `x86_64` | `x86_64 -c opt` | `wasm64` | `wasm64 -c opt` |
-|-----------|---------|:--------:|:---------------:|:--------:|:---------------:|
-| `//lib/z` | 1.2.11  | ✅       | ✅              | ✅       | ✅              |
+| Library      | Version | `x86_64` | `x86_64 -c opt` | `wasm64` | `wasm64 -c opt` |
+|--------------|---------|:--------:|:---------------:|:--------:|:---------------:|
+| `//lib/z`    | 1.2.11  | ✅       | ✅              | ✅       | ✅              |
+| `//lib/zstd` | 1.4.4   | ✅       | ✅              | ✅       | ✅              |
 
 [Bazel]: https://bazel.build
 [WebAssembly]: https://webassembly.org
