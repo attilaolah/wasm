@@ -12,6 +12,7 @@ bzl_library(
         "//lib/lz4:package",
         "//lib/lzma:package",
         "//lib/png:package",
+        "//lib/readline:package",
         "//lib/tiff:package",
         "//lib/vigra:package",
         "//lib/webp:package",

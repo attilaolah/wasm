@@ -32,6 +32,7 @@ Then build targets as usual.
 | `//lib/lzma`       | 5.2.4   | ✅       | ✅              | ✅       | ✅              |
 | `//lib/pano13`     | 2.9.19  | ❌⁴      | ❌⁴             | ❌⁴      | ❌⁴             |
 | `//lib/png`        | 1.6.37  | ✅       | ✅              | ✅       | ✅              |
+| `//lib/readline`   | 8.0     | ✅       | ✅              | ❌²      | ❌²             |
 | `//lib/tiff`       | 4.1.0   | ✅       | ✅              | ❌²      | ❌²             |
 | `//lib/vigra`      | 1.11.1  | ✅       | ✅              | ❌³      | ❌³             |
 | `//lib/webp`       | 1.1.0   | ✅       | ✅              | ✅       | ✅              |
