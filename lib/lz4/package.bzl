@@ -13,4 +13,7 @@ def download_lz4():
         urls = [URL],
         sha256 = SHA256,
         strip_prefix = "lz4-{version}",
+        patches = [
+            "//lib/lz4:CMakeLists.txt.patch",
+        ],
     )

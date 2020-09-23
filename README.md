@@ -25,14 +25,10 @@ Then build targets as usual.
 
 | Library      | Version | `x86_64` | `x86_64 -c opt` | `wasm64` | `wasm64 -c opt` |
 |--------------|---------|:--------:|:---------------:|:--------:|:---------------:|
-| `//lib/lz4`  | 1.9.2   | ✅       | ✅              | ❌¹      | ❌¹             |
+| `//lib/lz4`  | 1.9.2   | ✅       | ✅              | ✅       | ✅              |
 | `//lib/lzma` | 5.2.4   | ✅       | ✅              | ✅       | ✅              |
 | `//lib/z`    | 1.2.11  | ✅       | ✅              | ✅       | ✅              |
 | `//lib/zstd` | 1.4.4   | ✅       | ✅              | ✅       | ✅              |
-
-Notes:
-
-1. Missing `.js` extension results in broken symlinks for `lz4cat` and `unlz4`.
 
 [Bazel]: https://bazel.build
 [WebAssembly]: https://webassembly.org

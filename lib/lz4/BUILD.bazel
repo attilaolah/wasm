@@ -1,29 +1,38 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
-load("//toolchains/cmake:cmake.bzl", "cmake_lib", "cmake_binaries")
+load("//toolchains/cmake:cmake.bzl", "cmake_binaries", "cmake_lib")
 
 package(default_visibility = ["//:__subpackages__"])
 
-CACHE_ENTRIES = {
+_CACHE_ENTRIES = {
     "BUILD_SHARED_LIBS:BOOL": "OFF",
     "BUILD_STATIC_LIBS:BOOL": "ON",
-    "LZ4_BUILD_LEGACY_LZ4C:BOOL": "OFF",
 }
+
+LIB_CACHE_ENTRIES = dict(_CACHE_ENTRIES.items() + {
+    "LZ4_BUILD_CLI:BOOL": "OFF",
+    "LZ4_BUILD_LEGACY_LZ4C:BOOL": "OFF",
+}.items())
+
+BIN_CACHE_ENTRIES = dict(_CACHE_ENTRIES.items() + {
+    "LZ4_BUILD_CLI:BOOL": "ON",
+    "LZ4_BUILD_LEGACY_LZ4C:BOOL": "ON",
+}.items())
 
 cmake_lib(
     name = "lz4",
-    cache_entries = CACHE_ENTRIES,
+    cache_entries = LIB_CACHE_ENTRIES,
     working_directory = "contrib/cmake_unofficial",
 )
 
 cmake_binaries(
     name = "binaries",
-    lib_name = "lz4",
     binaries = [
         "lz4",
         "lz4cat",
         "unlz4",
     ],
-    cache_entries = CACHE_ENTRIES,
+    cache_entries = BIN_CACHE_ENTRIES,
+    lib_name = "lz4",
     working_directory = "contrib/cmake_unofficial",
 )
 
