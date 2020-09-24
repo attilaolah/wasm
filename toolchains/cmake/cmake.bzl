@@ -2,7 +2,14 @@ load("@rules_foreign_cc//tools/build_defs:cmake.bzl", "cmake_external")
 load("//toolchains/make:configure.bzl", "lib_source", "make_commands")
 load("//toolchains/make:env_vars.bzl", "ENV_VARS")
 
-def cmake_lib(name, cache_entries, working_directory = "", linkopts = None, static_libraries = None, deps = None):
+def cmake_lib(
+        name,
+        cache_entries,
+        working_directory = "",
+        linkopts = None,
+        static_libraries = None,
+        headers_only = False,
+        deps = None):
     if linkopts == None:
         linkopts = ["-l{}".format(name)]
     if static_libraries == None:
@@ -11,6 +18,7 @@ def cmake_lib(name, cache_entries, working_directory = "", linkopts = None, stat
         name = name,
         cache_entries = cache_entries,
         env_vars = ENV_VARS,
+        headers_only = headers_only,
         lib_name = "{}_lib".format(name),
         lib_source = lib_source(name),
         linkopts = linkopts,
@@ -20,7 +28,13 @@ def cmake_lib(name, cache_entries, working_directory = "", linkopts = None, stat
         deps = deps or [],
     )
 
-def cmake_binaries(name, lib_name, binaries, cache_entries, working_directory = "", deps = None):
+def cmake_binaries(
+        name,
+        lib_name,
+        binaries,
+        cache_entries,
+        working_directory = "",
+        deps = None):
     cmake_external(
         name = name,
         binaries = binaries,

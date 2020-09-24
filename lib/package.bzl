@@ -1,3 +1,4 @@
+load("//lib/eigen:package.bzl", "download_eigen")
 load("//lib/fftw:package.bzl", "download_fftw")
 load("//lib/gif:package.bzl", "download_gif")
 load("//lib/hdf5:package.bzl", "download_hdf5")
@@ -15,6 +16,7 @@ load("//lib/zstd:package.bzl", "download_zstd")
 
 def download_lib():
     """Download all library sources."""
+    download_eigen()
     download_fftw()
     download_gif()
     download_hdf5()
