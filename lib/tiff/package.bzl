@@ -13,4 +13,5 @@ def download_tiff():
         urls = [URL],
         sha256 = SHA256,
         strip_prefix = "tiff-{version}",
+        patches = ["//lib/tiff:CMakeLists.txt.patch"],
     )

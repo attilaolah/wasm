@@ -15,13 +15,6 @@ CACHE_ENTRIES = {
     "ZLIB_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/z_lib/lib/libz.a",
     "ZSTD_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/zstd_lib/include",
     "ZSTD_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/zstd_lib/lib/libzstd.a",
-
-    # Force linking against pthread for binaries.
-    # This is required for the lib target as well, since there's no way to avoid building the binaries.
-    "CMAKE_EXE_LINKER_FLAGS:STRING": "-lpthread",
-
-    # Shared memory is required to link some libraries, e.g. readline.
-    "CMAKE_STATIC_LINKER_FLAGS:STRING": "-Wl,--shared-memory",
 }
 
 cmake_lib(
