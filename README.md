@@ -30,10 +30,10 @@ Then build targets as usual.
 | `//lib/jpeg_turbo` | 2.0.4   | ✅       | ✅              | ✅       | ✅              |
 | `//lib/lz4`        | 1.9.2   | ✅       | ✅              | ✅       | ✅              |
 | `//lib/lzma`       | 5.2.4   | ✅       | ✅              | ✅       | ✅              |
-| `//lib/pano13`     | 2.9.19  | ❌³      | ❌³             |          |                 |
+| `//lib/pano13`     | 2.9.19  | ❌²      | ❌²             |          |                 |
 | `//lib/png`        | 1.6.37  | ✅       | ✅              | ✅       | ✅              |
-| `//lib/readline`   | 8.0     | ✅       | ✅              | ❌²      | ❌²             |
-| `//lib/tiff`       | 4.1.0   | ✅       | ✅              |          |                 |
+| `//lib/readline`   | 8.0     | ✅       | ✅              | ❌       | ❌              |
+| `//lib/tiff`       | 4.1.0   | ❌       | ❌              | ✅       | ✅              |
 | `//lib/vigra`      | 1.11.1  | ✅       | ✅              |          |                 |
 | `//lib/webp`       | 1.1.0   | ✅       | ✅              | ✅       | ✅              |
 | `//lib/z`          | 1.2.11  | ✅       | ✅              | ✅       | ✅              |
@@ -43,7 +43,6 @@ Notes:
 
 1. `libgif` actually builds in optimised mode even when building without `-c opt`.
    This is because the compiler flags don't get propagated correctly.
-2. `signals.c` fails to compile.
 3. Linker error.
 
 [Bazel]: https://bazel.build
