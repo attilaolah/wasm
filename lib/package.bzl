@@ -1,6 +1,8 @@
 load("//lib/eigen:package.bzl", "download_eigen")
 load("//lib/fftw:package.bzl", "download_fftw")
+load("//lib/gflags:package.bzl", "download_gflags")
 load("//lib/gif:package.bzl", "download_gif")
+load("//lib/glog:package.bzl", "download_glog")
 load("//lib/hdf5:package.bzl", "download_hdf5")
 load("//lib/jpeg_turbo:package.bzl", "download_jpeg_turbo")
 load("//lib/lz4:package.bzl", "download_lz4")
@@ -18,7 +20,9 @@ def download_lib():
     """Download all library sources."""
     download_eigen()
     download_fftw()
+    download_gflags()
     download_gif()
+    download_glog()
     download_hdf5()
     download_jpeg_turbo()
     download_lz4()

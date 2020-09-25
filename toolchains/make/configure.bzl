@@ -53,3 +53,10 @@ def lib_source(lib_name):
 
 def emmake(make_command):
     return '{} "${{EXT_BUILD_DEPS}}/bin/emscripten/emmake" {}'.format(ENV_CMD, make_command)
+
+def patch_files(patch_map):
+    """Generates a list of 'sed' commands that patch files in-place."""
+    return [
+        "sed --in-place --regexp-extended '{}' \"{}\"".format(regex, filename)
+        for filename, regex in sorted(patch_map.items())
+    ]

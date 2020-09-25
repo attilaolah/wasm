@@ -1,0 +1,45 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//toolchains/cmake:cmake.bzl", "cmake_lib")
+load("//toolchains/make:configure.bzl", "patch_files")
+
+package(default_visibility = ["//:__subpackages__"])
+
+_X86_64_CACHE_ENTRIES = {
+    "WITH_GFLAGS:BOOL": "ON",
+    "WITH_THREADS:BOOL": "ON",
+    "WITH_TLS:BOOL": "ON",
+    "BUILD_SHARED_LIBS:BOOL": "OFF",
+}
+
+_WASM_CACHE_ENTRIES = dict(_X86_64_CACHE_ENTRIES.items() + {
+    # Emscripten fails to compile tests that use popen().
+    "BUILD_TESTING:BOOL": "OFF",
+}.items())
+
+# These headers are available in Emscripten, but incomplete.
+# Mask them out so that they would appear as missing and not break the build.
+_MASK_HEADERS = [
+    "SYMBOLIZE",
+    "SYSCALL_H",
+    "SYS_SYSCALL_H",
+]
+
+cmake_lib(
+    name = "glog",
+    after_emcmake = patch_files({
+        "config.h": r"/^#define HAVE_({})\b.*/d".format("|".join(_MASK_HEADERS)),
+    }),
+    cache_entries = select({
+        "//conditions:default": _X86_64_CACHE_ENTRIES,
+        "//config:wasm64": _WASM_CACHE_ENTRIES,
+    }),
+    deps = [
+        "//lib/gflags",
+    ],
+)
+
+bzl_library(
+    name = "package",
+    srcs = ["package.bzl"],
+    deps = ["//:http_archive"],
+)
