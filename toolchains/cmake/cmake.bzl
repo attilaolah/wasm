@@ -6,6 +6,7 @@ def cmake_lib(
         name,
         cache_entries,
         working_directory = "",
+        after_emcmake = None,
         linkopts = None,
         static_libraries = None,
         headers_only = False,
@@ -14,6 +15,9 @@ def cmake_lib(
         linkopts = ["-l{}".format(name)]
     if static_libraries == None:
         static_libraries = ["lib{}.a".format(name)]
+    before_emmake = []
+    if after_emcmake != None:
+        before_emmake = [after_emcmake]
     cmake_external(
         name = name,
         cache_entries = cache_entries,
@@ -22,7 +26,7 @@ def cmake_lib(
         lib_name = "{}_lib".format(name),
         lib_source = lib_source(name),
         linkopts = linkopts,
-        make_commands = make_commands(),
+        make_commands = make_commands(before_emmake = before_emmake),
         static_libraries = static_libraries,
         working_directory = working_directory,
         deps = deps or [],

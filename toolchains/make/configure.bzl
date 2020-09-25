@@ -34,13 +34,18 @@ def configure_command():
         "//config:wasm64": "emconfigure.sh",
     })
 
-def make_commands(commands = None):
+def make_commands(commands = None, before_emmake = None, after_emmake = None):
     if commands == None:
         commands = ["make", "make install"]
+    wasm_commands = [emmake(cmd) for cmd in commands]
+    if before_emmake != None:
+        wasm_commands = before_emmake + wasm_commands
+    if after_emmake != None:
+        wasm_commands += after_emmake
 
     return select({
         "//conditions:default": commands,
-        "//config:wasm64": [emmake(cmd) for cmd in commands],
+        "//config:wasm64": wasm_commands,
     })
 
 def lib_source(lib_name):
