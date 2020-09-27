@@ -34,9 +34,19 @@ def configure_command():
         "//config:wasm64": "emconfigure.sh",
     })
 
-def make_commands(commands = None, before_emmake = None, after_emmake = None):
+def make_commands(
+        commands = None,
+        before_make = None,
+        after_make = None,
+        before_emmake = None,
+        after_emmake = None):
     if commands == None:
         commands = ["make", "make install"]
+    if before_make != None:
+        commands = before_make + commands
+    if after_make != None:
+        commands != after_make
+
     wasm_commands = [emmake(cmd) for cmd in commands]
     if before_emmake != None:
         wasm_commands = before_emmake + wasm_commands

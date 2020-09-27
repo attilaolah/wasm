@@ -1,0 +1,36 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//toolchains/cmake:cmake.bzl", "cmake_lib")
+load("//toolchains/make:configure.bzl", "patch_files")
+
+package(default_visibility = ["//:__subpackages__"])
+
+# NOTE: Version 2.0.0rc1 fails to detect Eigen3 due to some buggy CMake magic.
+
+CACHE_ENTRIES = {
+    "BUILD_EXAMPLES:BOOL": "OFF",
+    "BUILD_SHARED_LIBS:BOOL": "OFF",
+    "EIGEN_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/eigen_lib/include/eigen3",
+    "GLOG_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/glog_lib/include",
+    "GLOG_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/glog_lib/lib/libglog.a",
+}
+
+cmake_lib(
+    name = "ceres",
+    after_cmake = patch_files({
+        # CMake fails to detect std::unordered map due to a linker error.
+        # This is because it uses CXX for *linking* the resulting binary, and Bazel sets CXX to "gcc".
+        # When linking with GCC, -lstdc++ has to come *after* the input file to avoid any linker errors.
+        "config/ceres/internal/config.h": r"s/^#define CERES_NO_UNORDERED_MAP$/#define CERES_STD_UNORDERED_MAP/",
+    }),
+    cache_entries = CACHE_ENTRIES,
+    deps = [
+        "//lib/eigen",
+        "//lib/glog",
+    ],
+)
+
+bzl_library(
+    name = "package",
+    srcs = ["package.bzl"],
+    deps = ["//:http_archive"],
+)

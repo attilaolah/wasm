@@ -1,3 +1,4 @@
+load("//lib/ceres:package.bzl", "download_ceres")
 load("//lib/eigen:package.bzl", "download_eigen")
 load("//lib/fftw:package.bzl", "download_fftw")
 load("//lib/gflags:package.bzl", "download_gflags")
@@ -18,6 +19,7 @@ load("//lib/zstd:package.bzl", "download_zstd")
 
 def download_lib():
     """Download all library sources."""
+    download_ceres()
     download_eigen()
     download_fftw()
     download_gflags()
