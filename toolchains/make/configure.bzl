@@ -42,12 +42,13 @@ def make_commands(
         after_emmake = None):
     if commands == None:
         commands = ["make", "make install"]
+    wasm_commands = [emmake(cmd) for cmd in commands]
+
     if before_make != None:
         commands = before_make + commands
     if after_make != None:
         commands != after_make
 
-    wasm_commands = [emmake(cmd) for cmd in commands]
     if before_emmake != None:
         wasm_commands = before_emmake + wasm_commands
     if after_emmake != None:
