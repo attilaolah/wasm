@@ -17,6 +17,10 @@ cmake_lib(
         "ZLIB_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/z_lib/lib/libz.a",
         "ZSTD_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/zstd_lib/include",
         "ZSTD_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/zstd_lib/lib/libzstd.a",
+
+        # We don't care about executables, but CMake will try to build them anyway.
+        # So we tell the linker to link them with -lpthread to avoid linker errors.
+        "CMAKE_EXE_LINKER_FLAGS:STRING": "-lpthread",
     },
     static_libraries = [
         "libtiff.a",
