@@ -3,13 +3,11 @@ load("//toolchains/cmake:cmake.bzl", "cmake_lib")
 
 package(default_visibility = ["//:__subpackages__"])
 
-CACHE_ENTRIES = {
-    "BUILD_TESTING:BOOL": "OFF",
-}
-
 cmake_lib(
     name = "eigen",
-    cache_entries = CACHE_ENTRIES,
+    cache_entries = {
+        "BUILD_TESTING:BOOL": "OFF",
+    },
     headers_only = True,
     static_libraries = [],
 )

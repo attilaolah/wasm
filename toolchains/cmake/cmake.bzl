@@ -32,22 +32,3 @@ def cmake_lib(
         working_directory = working_directory,
         deps = deps or [],
     )
-
-def cmake_binaries(
-        name,
-        lib_name,
-        binaries,
-        cache_entries,
-        working_directory = "",
-        deps = None):
-    cmake_external(
-        name = name,
-        binaries = binaries,
-        cache_entries = cache_entries,
-        env_vars = ENV_VARS,
-        lib_name = "{}_bin".format(lib_name),
-        lib_source = lib_source(lib_name),
-        make_commands = make_commands(),
-        working_directory = working_directory,
-        deps = deps or [],
-    )

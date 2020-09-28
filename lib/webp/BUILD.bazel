@@ -1,70 +1,38 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
-load("//toolchains/cmake:cmake.bzl", "cmake_binaries", "cmake_lib")
+load("//toolchains/cmake:cmake.bzl", "cmake_lib")
 
 package(default_visibility = ["//:__subpackages__"])
 
-_CACHE_ENTRIES = {
-    "BUILD_SHARED_LIBS:BOOL": "OFF",
-    "GIF_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/gif_lib/include",
-    "GIF_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/gif_lib/lib/libgif.a",
-    "JPEG_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/jpeg_turbo_lib/include",
-    "JPEG_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/jpeg_turbo_lib/lib/libjpeg.a",
-    "PNG_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/png_lib/lib/libpng.a",
-    "PNG_PNG_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/png_lib/include",
-    "ZLIB_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/z_lib/include",
-    "ZLIB_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/z_lib/lib/libz.a",
-
-    # Unsupported: Requires SDL.
-    "WEBP_BUILD_VWEBP:BOOL": "OFF",
-}
-
-BIN_CACHE_KEYS = [
-    "WEBP_BUILD_ANIM_UTILS:BOOL",
-    "WEBP_BUILD_CWEBP:BOOL",
-    "WEBP_BUILD_DWEBP:BOOL",
-    "WEBP_BUILD_EXTRAS:BOOL",
-    "WEBP_BUILD_GIF2WEBP:BOOL",
-    "WEBP_BUILD_IMG2WEBP:BOOL",
-    "WEBP_BUILD_WEBPINFO:BOOL",
-    "WEBP_BUILD_WEBPMUX:BOOL",
-]
-
-LIB_CACHE_ENTRIES = dict(_CACHE_ENTRIES.items() + {key: "OFF" for key in BIN_CACHE_KEYS}.items())
-
-BIN_CACHE_ENTRIES = dict(_CACHE_ENTRIES.items() + {key: "ON" for key in BIN_CACHE_KEYS}.items() + {
-    "TIFF_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/tiff_lib/include",
-    "TIFF_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/tiff_lib/lib/libtiff.a",
-}.items())
-
 cmake_lib(
     name = "webp",
-    cache_entries = LIB_CACHE_ENTRIES,
-    deps = [
-        "//lib/gif",
-        "//lib/jpeg_turbo",
-        "//lib/png",
-        "//lib/z",
-    ],
-)
+    cache_entries = {
+        "BUILD_SHARED_LIBS:BOOL": "OFF",
+        "GIF_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/gif_lib/include",
+        "GIF_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/gif_lib/lib/libgif.a",
+        "JPEG_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/jpeg_turbo_lib/include",
+        "JPEG_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/jpeg_turbo_lib/lib/libjpeg.a",
+        "PNG_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/png_lib/lib/libpng.a",
+        "PNG_PNG_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/png_lib/include",
+        "WEBP_BUILD_ANIM_UTILS:BOOL": "OFF",
+        "WEBP_BUILD_CWEBP:BOOL": "OFF",
+        "WEBP_BUILD_DWEBP:BOOL": "OFF",
+        "WEBP_BUILD_EXTRAS:BOOL": "OFF",
+        "WEBP_BUILD_GIF2WEBP:BOOL": "OFF",
+        "WEBP_BUILD_IMG2WEBP:BOOL": "OFF",
+        "WEBP_BUILD_WEBPINFO:BOOL": "OFF",
+        "WEBP_BUILD_WEBPMUX:BOOL": "OFF",
+        "ZLIB_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/z_lib/include",
+        "ZLIB_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/z_lib/lib/libz.a",
 
-cmake_binaries(
-    name = "binaries",
-    binaries = [
-        "cwebp",
-        "dwebp",
-        "gif2webp",
-        "img2webp",
-        "webp_quality",
-        "webpinfo",
-        "webpmux",
-    ],
-    cache_entries = BIN_CACHE_ENTRIES,
-    lib_name = "webp",
+        # Unsupported: Requires SDL.
+        "WEBP_BUILD_VWEBP:BOOL": "OFF",
+    },
+    # NOTE: //lib/tiff would be a dependency for some tools,
+    # but that would introduce a cyclic dependency, so we don't list it here.
     deps = [
         "//lib/gif",
         "//lib/jpeg_turbo",
         "//lib/png",
-        "//lib/tiff",
         "//lib/z",
     ],
 )

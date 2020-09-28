@@ -3,16 +3,14 @@ load("//toolchains/cmake:cmake.bzl", "cmake_lib")
 
 package(default_visibility = ["//:__subpackages__"])
 
-CACHE_ENTRIES = {
-    "GFLAGS_BUILD_SHARED_LIBS:BOOL": "OFF",
-    "GFLAGS_BUILD_STATIC_LIBS:BOOL": "ON",
-    "GFLAGS_BUILD_TESTING:BOOL": "OFF",
-    "GFLAGS_BUILD_PACKAGING:BOOL": "OFF",
-}
-
 cmake_lib(
     name = "gflags",
-    cache_entries = CACHE_ENTRIES,
+    cache_entries = {
+        "GFLAGS_BUILD_SHARED_LIBS:BOOL": "OFF",
+        "GFLAGS_BUILD_STATIC_LIBS:BOOL": "ON",
+        "GFLAGS_BUILD_TESTING:BOOL": "OFF",
+        "GFLAGS_BUILD_PACKAGING:BOOL": "OFF",
+    },
     static_libraries = [
         "libgflags.a",
         "libgflags_nothreads.a",

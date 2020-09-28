@@ -6,7 +6,10 @@ def configure_make_lib(name, configure_options, static_libraries = None, deps = 
         static_libraries = ["lib{}.a".format(name)]
     configure_make(
         name = name,
-        configure_command = configure_command(),
+        configure_command = select({
+            "//conditions:default": "configure",
+            "//config:wasm64": "emconfigure.sh",
+        }),
         configure_options = configure_options,
         lib_name = "{}_lib".format(name),
         lib_source = lib_source(name),
@@ -16,24 +19,6 @@ def configure_make_lib(name, configure_options, static_libraries = None, deps = 
         deps = deps or [],
     )
 
-def configure_make_binaries(name, lib_name, binaries, configure_options, deps = None):
-    configure_make(
-        name = name,
-        binaries = binaries,
-        configure_command = configure_command(),
-        configure_options = configure_options,
-        lib_name = "{}_bin".format(lib_name),
-        lib_source = lib_source(lib_name),
-        make_commands = make_commands(),
-        deps = deps or [],
-    )
-
-def configure_command():
-    return select({
-        "//conditions:default": "configure",
-        "//config:wasm64": "emconfigure.sh",
-    })
-
 def make_commands(
         commands = None,
         before_make = None,
@@ -42,7 +27,7 @@ def make_commands(
         after_emmake = None):
     if commands == None:
         commands = ["make", "make install"]
-    wasm_commands = [emmake(cmd) for cmd in commands]
+    wasm_commands = [_emmake(cmd) for cmd in commands]
 
     if before_make != None:
         commands = before_make + commands
@@ -62,12 +47,12 @@ def make_commands(
 def lib_source(lib_name):
     return "@lib_{}//:all".format(lib_name)
 
-def emmake(make_command):
-    return '{} "${{EXT_BUILD_DEPS}}/bin/emscripten/emmake" {}'.format(ENV_CMD, make_command)
-
 def patch_files(patch_map):
     """Generates a list of 'sed' commands that patch files in-place."""
     return [
         "sed --in-place --regexp-extended '{}' \"{}\"".format(regex, filename)
         for filename, regex in sorted(patch_map.items())
     ]
+
+def _emmake(make_command):
+    return '{} "${{EXT_BUILD_DEPS}}/bin/emscripten/emmake" {}'.format(ENV_CMD, make_command)

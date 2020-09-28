@@ -3,17 +3,15 @@ load("//toolchains/cmake:cmake.bzl", "cmake_lib")
 
 package(default_visibility = ["//:__subpackages__"])
 
-CACHE_ENTRIES = {
-    "BUILD_SHARED_LIBS:BOOL": "OFF",
-    "BUILD_STATIC_LIBS:BOOL": "ON",
-    "BUILD_TESTING:BOOL": "OFF",
-    "HDF5_BUILD_EXAMPLES:BOOL": "OFF",
-    "HDF5_BUILD_TOOLS:BOOL": "OFF",
-}
-
 cmake_lib(
     name = "hdf5",
-    cache_entries = CACHE_ENTRIES,
+    cache_entries = {
+        "BUILD_SHARED_LIBS:BOOL": "OFF",
+        "BUILD_STATIC_LIBS:BOOL": "ON",
+        "BUILD_TESTING:BOOL": "OFF",
+        "HDF5_BUILD_EXAMPLES:BOOL": "OFF",
+        "HDF5_BUILD_TOOLS:BOOL": "OFF",
+    },
 )
 
 bzl_library(

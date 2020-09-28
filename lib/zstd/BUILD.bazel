@@ -1,39 +1,15 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
-load("//toolchains/cmake:cmake.bzl", "cmake_binaries", "cmake_lib")
+load("//toolchains/cmake:cmake.bzl", "cmake_lib")
 
 package(default_visibility = ["//:__subpackages__"])
 
-_CACHE_ENTRIES = {
-    "ZSTD_BUILD_SHARED:BOOL": "OFF",
-    "ZSTD_BUILD_STATIC:BOOL": "ON",
-}
-
-LIB_CACHE_ENTRIES = dict(_CACHE_ENTRIES.items() + {
-    "ZSTD_BUILD_PROGRAMS:BOOL": "OFF",
-}.items())
-
-BIN_CACHE_ENTRIES = dict(_CACHE_ENTRIES.items() + {
-    "ZSTD_BUILD_PROGRAMS:BOOL": "ON",
-}.items())
-
 cmake_lib(
     name = "zstd",
-    cache_entries = LIB_CACHE_ENTRIES,
-    working_directory = "build/cmake",
-)
-
-cmake_binaries(
-    name = "binaries",
-    binaries = [
-        "unzstd",
-        "zstd",
-        "zstdcat",
-        "zstdgrep",
-        "zstdless",
-        "zstdmt",
-    ],
-    cache_entries = BIN_CACHE_ENTRIES,
-    lib_name = "zstd",
+    cache_entries = {
+        "ZSTD_BUILD_PROGRAMS:BOOL": "OFF",
+        "ZSTD_BUILD_SHARED:BOOL": "OFF",
+        "ZSTD_BUILD_STATIC:BOOL": "ON",
+    },
     working_directory = "build/cmake",
 )
 

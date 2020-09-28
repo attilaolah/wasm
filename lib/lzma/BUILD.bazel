@@ -1,57 +1,21 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@rules_foreign_cc//tools/build_defs:configure.bzl", "configure_make")
-load("//toolchains/make:configure.bzl", "configure_make_binaries", "configure_make_lib")
+load("//toolchains/make:configure.bzl", "configure_make_lib")
 
 package(default_visibility = ["//:__subpackages__"])
 
-BIN_CONFIGURE_OPTIONS = [
-    "--disable-doc",
-    "--disable-shared",
-]
-
-CONFIGURE_OPTIONS = BIN_CONFIGURE_OPTIONS + [
-    "--disable-lzma-links",
-    "--disable-lzmadec",
-    "--disable-lzmainfo",
-    "--disable-scripts",
-    "--disable-xz",
-    "--disable-xzdec",
-]
-
 configure_make_lib(
     name = "lzma",
-    configure_options = CONFIGURE_OPTIONS,
-)
-
-configure_make_binaries(
-    name = "binaries",
-    binaries = [
-        "lzcat",
-        "lzcmp",
-        "lzdiff",
-        "lzegrep",
-        "lzfgrep",
-        "lzgrep",
-        "lzless",
-        "lzma",
-        "lzmadec",
-        "lzmainfo",
-        "lzmore",
-        "unlzma",
-        "unxz",
-        "xz",
-        "xzcat",
-        "xzcmp",
-        "xzdec",
-        "xzdiff",
-        "xzegrep",
-        "xzfgrep",
-        "xzgrep",
-        "xzless",
-        "xzmore",
+    configure_options = [
+        "--disable-doc",
+        "--disable-shared",
+        "--disable-lzma-links",
+        "--disable-lzmadec",
+        "--disable-lzmainfo",
+        "--disable-scripts",
+        "--disable-xz",
+        "--disable-xzdec",
     ],
-    configure_options = BIN_CONFIGURE_OPTIONS,
-    lib_name = "lzma",
 )
 
 bzl_library(

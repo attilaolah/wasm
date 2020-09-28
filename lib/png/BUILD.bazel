@@ -1,34 +1,19 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@rules_foreign_cc//tools/build_defs:configure.bzl", "configure_make")
-load("//toolchains/make:configure.bzl", "configure_make_binaries", "configure_make_lib")
+load("//toolchains/make:configure.bzl", "configure_make_lib")
 
 package(default_visibility = ["//:__subpackages__"])
 
-CONFIGURE_OPTIONS = [
-    "--enable-shared=no",
-    "--enable-static=yes",
-]
-
 configure_make_lib(
     name = "png",
-    configure_options = CONFIGURE_OPTIONS,
+    configure_options = [
+        "--enable-shared=no",
+        "--enable-static=yes",
+    ],
     static_libraries = [
         "libpng.a",
         "libpng16.a",
     ],
-    deps = ["//lib/z"],
-)
-
-configure_make_binaries(
-    name = "binaries",
-    binaries = [
-        "libpng-config",
-        "libpng16-config",
-        "png-fix-itxt",
-        "pngfix",
-    ],
-    configure_options = CONFIGURE_OPTIONS,
-    lib_name = "png",
     deps = ["//lib/z"],
 )
 
