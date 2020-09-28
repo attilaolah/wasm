@@ -31,9 +31,9 @@
 +    set_target_properties(pano13 PROPERTIES VERSION "3.0.0" SOVERSION "3")
 +    install(TARGETS pano13 LIBRARY DESTINATION ${MYLIB} COMPONENT libraries)
 +    set(_pano_target pano13)
-+  ELSE(BUILD_SHARED_LIBS)
++  else(BUILD_SHARED_LIBS)
 +    set(_pano_target pano13a)
-+  ENDIF(BUILD_SHARED_LIBS)
++  endif(BUILD_SHARED_LIBS)
  else()
    IF(BUILD_DLL)
      # Create and install shared library
