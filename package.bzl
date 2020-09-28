@@ -57,18 +57,12 @@ def register_dependencies():
         strip_prefix = "{name}-{version}",
     )
 
-    #http_archive(
-    #    name = "llvm",
-    #    version = "10.0.1",
-    #    urls = ["https://github.com/{name}/{name}-project/releases/download/{name}org-{version}/clang+{name}-{version}-x86_64-linux-gnu-ubuntu-16.04.tar.xz"],
-    #    sha256 = "48b83ef827ac2c213d5b64f5ad7ed082c8bcb712b46644e0dc5045c6f462c231",
-    #    strip_prefix = "clang+{name}-{version}-x86_64-linux-gnu-ubuntu-16.04"
-    #)
-    # TODO: Compile LLVM, or wait for a new version to be released.
-    native.new_local_repository(
+    http_archive(
         name = "llvm",
-        path = "/tmp/emsdk-2.0.4/llvm/git/build_master_64",
-        build_file_content = ALL_PUBLIC,
+        version = "11.0.0-rc3",
+        urls = ["https://github.com/{name}/{name}-project/releases/download/{name}org-{version}/clang+{name}-{version}-x86_64-linux-gnu-ubuntu-20.04.tar.xz"],
+        sha256 = "bdd8d9562723b5e52280acaeaf2f27cdd34325bdfa60c1de7110d12ec0714416",
+        strip_prefix = "clang+{name}-{version}-x86_64-linux-gnu-ubuntu-20.04",
     )
 
 def register_repositories():
