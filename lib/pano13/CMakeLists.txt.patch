@@ -37,3 +37,12 @@
  else()
    IF(BUILD_DLL)
      # Create and install shared library
+@@ -329,8 +335,6 @@
+ 
+ add_subdirectory(man)
+ add_dependencies(${_pano_target} man)
+-add_subdirectory(tools)
+-add_dependencies(tools ${_pano_target})
+ 
+ macro(setstripped _varname _value)
+   string(STRIP ${_value} _v)
