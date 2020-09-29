@@ -6,6 +6,21 @@ package(default_visibility = ["//:__subpackages__"])
 
 # NOTE: Version 2.0.0rc1 fails to detect Eigen3 due to some buggy CMake magic.
 
+_CACHE_ENTRIES = {
+    "BUILD_EXAMPLES:BOOL": "OFF",
+    "BUILD_SHARED_LIBS:BOOL": "OFF",
+    "EIGEN_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/eigen_lib/include/eigen3",
+    "GLOG_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/glog_lib/include",
+    "GLOG_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/glog_lib/lib/libglog.a",
+}
+
+_CLANG_CACHE_ENTRIES = dict(_CACHE_ENTRIES.items() + {
+    # Add -pthread and -lsupc++ to try_compile() commands.
+    # These are only needed when compiling with Clang (GCC works fine without these.)
+    "CMAKE_REQUIRED_FLAGS:STRING": "-pthread",
+    "CMAKE_REQUIRED_LIBRARIES:STRING": "-lsupc++",
+}.items())
+
 cmake_lib(
     name = "ceres",
     after_cmake = patch_files({
@@ -14,18 +29,10 @@ cmake_lib(
         # When linking with GCC, -lstdc++ has to come *after* the input file to avoid any linker errors.
         "config/ceres/internal/config.h": r"s/^#define CERES_NO_UNORDERED_MAP$/#define CERES_STD_UNORDERED_MAP/",
     }),
-    cache_entries = {
-        "BUILD_EXAMPLES:BOOL": "OFF",
-        "BUILD_SHARED_LIBS:BOOL": "OFF",
-        "EIGEN_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/eigen_lib/include/eigen3",
-        "GLOG_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/glog_lib/include",
-        "GLOG_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/glog_lib/lib/libglog.a",
-
-        # Add -pthread and -lsupc++ to try_compile() commands.
-        # These are only needed when compiling with Clang (GCC works fine without these.)
-        "CMAKE_REQUIRED_FLAGS:STRING": "-pthread",
-        "CMAKE_REQUIRED_LIBRARIES:STRING": "-lsupc++",
-    },
+    cache_entries = select({
+        "//conditions:default": _CLANG_CACHE_ENTRIES,
+        "//config:wasm64": _CACHE_ENTRIES,
+    }),
     deps = [
         "//lib/eigen",
         "//lib/glog",
