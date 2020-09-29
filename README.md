@@ -39,7 +39,7 @@ TODO: Use the shipped `clang` from the (already loaded) `@llvm` repo!
 | `//lib/jpeg_turbo` | 2.0.4     | ✅       | ✅       |
 | `//lib/lz4`        | 1.9.2     | ✅       | ✅       |
 | `//lib/lzma`       | 5.2.4     | ✅       | ✅       |
-| `//lib/pano13`     | 2.9.19    | ❌       | ❌       |
+| `//lib/pano13`     | 2.9.19    | ✅       | ❌       |
 | `//lib/png`        | 1.6.37    | ✅       | ✅       |
 | `//lib/readline`   | 8.0       | ✅       | ❌       |
 | `//lib/tiff`       | 4.1.0     | ✅       | ✅       |

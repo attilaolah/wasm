@@ -20,6 +20,11 @@ cmake_lib(
         "EIGEN_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/eigen_lib/include/eigen3",
         "GLOG_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/glog_lib/include",
         "GLOG_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/glog_lib/lib/libglog.a",
+
+        # Add -pthread and -lsupc++ to try_compile() commands.
+        # These are only needed when compiling with Clang (GCC works fine without these.)
+        "CMAKE_REQUIRED_FLAGS:STRING": "-pthread",
+        "CMAKE_REQUIRED_LIBRARIES:STRING": "-lsupc++",
     },
     deps = [
         "//lib/eigen",
