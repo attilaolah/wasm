@@ -140,8 +140,8 @@ def clang_cc_toolchain_config(
             "-Wno-builtin-macro-redefined",
 
             # Make builds reproducible:
-            '-D__DATE__="redacted"',
-            '-D__TIME__="redacted"',
-            '-D__TIMESTAMP__="redacted"',
+            "-D__DATE__='\"redacted\"'",
+            "-D__TIME__='\"redacted\"'",
+            "-D__TIMESTAMP__='\"redacted\"'",
         ],
     )
