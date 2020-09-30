@@ -23,10 +23,6 @@ Then build targets as usual.
 
 ## Build status
 
-NOTE: Currently `//lib/tiff` only builds with `CC=clang`.
-
-TODO: Use the shipped `clang` from the (already loaded) `@llvm` repo!
-
 | Library            | Version   | `x86_64` | `wasm64` |
 |--------------------|-----------|:--------:|:--------:|
 | `//lib/ceres`      | 1.14.0    | ✅       | ❌       |
