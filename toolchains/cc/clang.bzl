@@ -5,6 +5,8 @@ LINUX_X86_64 = [
     "@platforms//cpu:x86_64",
 ]
 
+LLVM_PATH = "${EXT_BUILD_ROOT}/external/llvm"
+
 def clang_toolchain():
     native.toolchain(
         name = "linux_x86_64_clang",
@@ -28,19 +30,13 @@ def clang_toolchain():
         cpu = "k8",
         stack_protector = True,
         cxx_builtin_include_directories = [
-            "/usr/lib/llvm-9/lib/clang/9.0.1/include",
-            "/usr/lib/llvm-9/lib/clang/9.0.1/share",
-            "/usr/include/x86_64-linux-gnu/c++/9",
-            "/usr/include/x86_64-linux-gnu",
-            "/usr/include/c++/9",
-            "/usr/include/c++/9/backward",
-            "/usr/include",
+            "{}/lib/clang/11.0.0/include".format(LLVM_PATH),
         ],
         link_flags = [
-            "-fuse-ld=/usr/bin/ld.gold",
+            "-B{}/bin".format(LLVM_PATH),
+            "-fuse-ld={}/bin/ld.lld".format(LLVM_PATH),
             "-Wl,-no-as-needed",
             "-Wl,-z,relro,-z,now",
-            "-B/usr/bin",
             "-lstdc++",
             "-lm",
         ],
@@ -83,8 +79,10 @@ def clang_cc_toolchain_config(
     if tool_paths == None:
         tool_paths = {}
 
-    # Must be an absolute path, or else it gets prefixed with "toolchains/".
-    llvm_bin = "/.${EXT_BUILD_ROOT}/external/llvm/bin"
+    # Paths in the tool_paths dict must be absolute paths.
+    # Otherwise Bazel prefixes them with "toolchains/", which breaks
+    # @rules_foreign_cc rules that prefix them with ${EXT_BUILD_ROOT}.
+    llvm_bin = "/.{}/bin".format(LLVM_PATH)
 
     # LLVM tools prefixed with "llvm-":
     for tool in ["ar", "dwp", "nm", "objcopy", "objdump", "strip"]:
@@ -95,7 +93,7 @@ def clang_cc_toolchain_config(
         "cpp": "clang++",
         "gcc": "clang",
         "gcov": "llvm-cov",
-        "ld": "lld",
+        "ld": "ld.lld",
     }.items():
         tool_paths.setdefault(tool, "{}/{}".format(llvm_bin, llvm_tool))
 
