@@ -4,9 +4,10 @@ load("//toolchains/make:configure.bzl", "configure_make_lib")
 package(default_visibility = ["//:__subpackages__"])
 
 configure_make_lib(
-    name = "z",
+    name = "gmp",
     configure_options = [
-        "--static",
+        "--disable-shared",
+        "--enable-static",
     ],
 )
 
