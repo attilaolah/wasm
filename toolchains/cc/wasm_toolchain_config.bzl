@@ -1,24 +1,12 @@
-load("@local_config_cc//:cc_toolchain_config.bzl", "cc_toolchain_config")
+load(":clang.bzl", "LINUX_X86_64", "LLVM_TOOLS", "clang_cc_toolchain", "clang_cc_toolchain_config")
 
-WASM_ABIS = [32, 64]
-
-WASM_CPUS = ["wasm{}".format(abi) for abi in WASM_ABIS]
-
-def wasm_toolchains(exec_os, exec_cpu):
-    for cpu in WASM_CPUS:
-        wasm_toolchain(exec_os, exec_cpu, cpu)
-
-def wasm_toolchain(exec_os, exec_cpu, cpu):
-    name = "_".join((exec_os, exec_cpu, cpu))
-    name_cc = "{}_cc_toolchain".format(name)
-    config = "{}_cc_toolchain_config".format(name)
+def wasm_toolchain(cpu):
+    name = "linux_x86_64_{}".format(cpu)
+    name_cc_toolchain = "{}_cc_toolchain".format(name)
 
     native.toolchain(
         name = name,
-        exec_compatible_with = [
-            "@platforms//os:{}".format(exec_os),
-            "@platforms//cpu:{}".format(exec_cpu),
-        ],
+        exec_compatible_with = LINUX_X86_64,
         target_compatible_with = [
             "@platforms//os:none",
             "@platforms//cpu:{}".format(cpu),
@@ -30,91 +18,32 @@ def wasm_toolchain(exec_os, exec_cpu, cpu):
     # Based on the output of:
     # CC=clang bazel query --output=build @local_config_cc//:cc-compiler-k8
 
-    native.cc_toolchain(
+    clang_cc_toolchain(
         name = name_cc_toolchain,
-        all_files = ":empty",
-        ar_files = "//toolchains:emscripten",
-        as_files = ":empty",
-        compiler_files = "//toolchains:emscripten",
-        dwp_files = ":empty",
-        linker_files = ":empty",
-        objcopy_files = ":empty",
-        strip_files = ":empty",
-        supports_param_files = True,
-        toolchain_config = ":{}".format(name_toolchain_config),
-        toolchain_identifier = "local",
-        visibility = ["//toolchains:__pkg__"],
+        all_files = "//toolchains:emscripten",
     )
 
-    # Based on the output of:
-    # CC=clang bazel query --output=build @local_config_cc//:local
+    # Emscripten tools:
+    tool_paths = {
+        "gcc": "emcc.sh",
+        "cpp": "em++.sh",
+        "ar": "emar.sh",
+    }
 
-    cc_toolchain_config(
-        name = name_toolchain_config,
-        abi_libc_version = "local",
-        abi_version = "local",
-        compile_flags = [
-            "-U_FORTIFY_SOURCE",
-            "-Wall",
-            "-Wthread-safety",
-            "-Wself-assign",
-            "-fcolor-diagnostics",
-            "-fno-omit-frame-pointer",
-            # Using the stack protector breaks some builds.
-            # See https://github.com/emscripten-core/emscripten/issues/9780.
-            "-fno-stack-protector",
-        ],
-        compiler = "clang",
-        coverage_compile_flags = ["--coverage"],
-        coverage_link_flags = ["--coverage"],
+    # LLVM tools:
+    for tool in LLVM_TOOLS:
+        tool_paths[tool] = "external/llvm/llvm-{}".format(tool)
+
+    clang_cc_toolchain_config(
+        name = "{}_config".format(name_cc_toolchain),
         cpu = cpu,
-        cxx_builtin_include_directories = [],
-        cxx_flags = ["-std=c++0x"],
-        dbg_compile_flags = ["-g"],
-        host_system_name = "local",
+        # Using the stack protector breaks some builds.
+        # See https://github.com/emscripten-core/emscripten/issues/9780.
+        stack_protector = False,
         link_flags = [
             # Disabling lazy binding ("-Wl,-z,now) breaks libpng.
             "-Wl,-z,relro",  #,-z,now",
             "-lm",
         ],
-        link_libs = [],
-        opt_compile_flags = [
-            "-g0",
-            "-O2",
-            "-D_FORTIFY_SOURCE=1",
-            "-DNDEBUG",
-            "-ffunction-sections",
-            "-fdata-sections",
-        ],
-        opt_link_flags = ["-Wl,--gc-sections"],
-        supports_start_end_lib = True,
-        target_libc = "local",
-        target_system_name = "local",
-        tool_paths = {
-            # Emscripten tools:
-            "gcc": "emcc.sh",
-            "cpp": "em++.sh",
-            "ar": "emar.sh",
-
-            # LLVM tools:
-            "dwp": "external/llvm/llvm-dwp",
-            "nm": "external/llvm/llvm-nm",
-            "objcopy": "external/llvm/llvm-objcopy",
-            "objdump": "external/llvm/llvm-objdump",
-            "strip": "external/llvm/llvm-strip",
-
-            # System tools:
-            "gcov": "/usr/bin/gcov",
-            "ld": "/usr/bin/ld",
-        },
-        toolchain_identifier = "local",
-        unfiltered_compile_flags = [
-            "-no-canonical-prefixes",
-            "-Wno-builtin-macro-redefined",
-
-            # Make builds reproducible:
-            '-D__DATE__="redacted"',
-            '-D__TIME__="redacted"',
-            '-D__TIMESTAMP__="redacted"',
-        ],
+        tool_paths = tool_paths,
     )
