@@ -16,14 +16,9 @@ def clang_toolchain():
         toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
     )
 
-    builtin_include_directory_paths = "builtin_include_directory_paths"
-
     # Based on the output of:
     # CC=clang bazel query --output=build @local_config_cc//:cc-compiler-k8
-    clang_cc_toolchain(
-        name = "linux_x86_64_clang_cc_toolchain",
-        all_files = "@llvm//:all",
-    )
+    clang_cc_toolchain(name = "linux_x86_64_clang_cc_toolchain")
 
     clang_cc_toolchain_config(
         name = "linux_x86_64_clang_cc_toolchain_config",
@@ -42,7 +37,7 @@ def clang_toolchain():
         ],
     )
 
-def clang_cc_toolchain(name, all_files = "@local_config_cc//:empty"):
+def clang_cc_toolchain(name, all_files = "@llvm//:all"):
     # Based on the output of:
     # CC=clang bazel query --output=build @local_config_cc//:cc-compiler-k8
     native.cc_toolchain(

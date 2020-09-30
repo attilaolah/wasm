@@ -20,7 +20,6 @@ native_tool_toolchain(
     path = "emscripten/emmake",
     targets = [
         "//config:emscripten_config",
-        "//toolchains:emscripten",
         "//tools:nodejs",
         "//tools/binaryen",
         "@emscripten//:all",

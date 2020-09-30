@@ -1,4 +1,4 @@
-load(":clang.bzl", "LINUX_X86_64", "clang_cc_toolchain", "clang_cc_toolchain_config")
+load(":clang.bzl", "LINUX_X86_64", "LLVM_PATH", "clang_cc_toolchain", "clang_cc_toolchain_config")
 
 def wasm_toolchain(cpu):
     name = "linux_x86_64_{}".format(cpu)
@@ -18,10 +18,7 @@ def wasm_toolchain(cpu):
     # Based on the output of:
     # CC=clang bazel query --output=build @local_config_cc//:cc-compiler-k8
 
-    clang_cc_toolchain(
-        name = name_cc_toolchain,
-        all_files = "//toolchains:emscripten",
-    )
+    clang_cc_toolchain(name = name_cc_toolchain)
 
     clang_cc_toolchain_config(
         name = "{}_config".format(name_cc_toolchain),
@@ -35,8 +32,9 @@ def wasm_toolchain(cpu):
             "-lm",
         ],
         tool_paths = {
-            "gcc": "emcc.sh",
-            "cpp": "em++.sh",
-            "ar": "emar.sh",
+            "ar": "/.${EXT_BUILD_DEPS}/bin/emscripten/emar",
+            "cpp": "/.${EXT_BUILD_DEPS}/bin/emscripten/em++",
+            "gcc": "/.${EXT_BUILD_DEPS}/bin/emscripten/emcc",
+            "ld": "/.{}/bin/wasm-ld".format(LLVM_PATH),
         },
     )
