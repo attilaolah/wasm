@@ -32,7 +32,7 @@ def make_commands(
     if before_make != None:
         commands = before_make + commands
     if after_make != None:
-        commands != after_make
+        commands += after_make
 
     if before_emmake != None:
         wasm_commands = before_emmake + wasm_commands
