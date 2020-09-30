@@ -1,7 +1,7 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
 load("//toolchains/make:make.bzl", "make_lib")
-load(":libraries.bzl", "LIB_SOURCE", "suite_sparse_lib")
+load(":libraries.bzl", "LIB_SOURCE", "PREFIX", "suite_sparse_lib")
 load(":package.bzl", "METIS_VERSION")
 
 package(default_visibility = ["//:__subpackages__"])
@@ -22,6 +22,20 @@ suite_sparse_lib(name = "cholmod")
 
 suite_sparse_lib(name = "colamd")
 
+make_lib(
+    name = "config",
+    install_commands = [
+        'install "{}/SuiteSparse_config"/*.h ${{INSTALLDIR}}/include'.format(PREFIX),
+        'install "{}/SuiteSparse_config"/*.a ${{INSTALLDIR}}/lib'.format(PREFIX),
+    ],
+    lib_source = LIB_SOURCE,
+    linkopts = ["-lsuitesparseconfig"],
+    make_commands = [
+        'make -C "{}/SuiteSparse_config" static'.format(PREFIX),
+    ],
+    static_libraries = ["libsuitesparseconfig.a"],
+)
+
 suite_sparse_lib(
     name = "csparse",
     directory = "CSparse",
@@ -30,35 +44,6 @@ suite_sparse_lib(
 suite_sparse_lib(
     name = "cxsparse",
     directory = "CXSparse",
-)
-
-suite_sparse_lib(name = "klu")
-
-suite_sparse_lib(name = "ldl")
-
-suite_sparse_lib(
-    name = "rbio",
-    directory = "RBio",
-)
-
-suite_sparse_lib(
-    name = "spqr",
-    header_ext = "{h,hpp}",
-)
-
-suite_sparse_lib(name = "umfpack")
-
-make_lib(
-    name = "config",
-    install_commands = [
-        'install "${EXT_BUILD_ROOT}/external/lib_suite_sparse/SuiteSparse_config"/*.a ${INSTALLDIR}/lib',
-    ],
-    lib_source = LIB_SOURCE,
-    linkopts = ["-libsuitesparseconfig"],
-    make_commands = [
-        'make -C "${EXT_BUILD_ROOT}/external/lib_suite_sparse/SuiteSparse_config" static',
-    ],
-    static_libraries = ["libsuitesparseconfig.a"],
 )
 
 cmake_lib(
@@ -78,10 +63,14 @@ cmake_lib(
     working_directory = "GraphBLAS",
 )
 
+suite_sparse_lib(name = "klu")
+
+suite_sparse_lib(name = "ldl")
+
 cmake_lib(
     name = "metis",
     cache_entries = {
-        "GKLIB_PATH:PATH": "${{EXT_BUILD_ROOT}}/external/lib_suite_sparse/{}".format(GK_PATH),
+        "GKLIB_PATH:PATH": "{}/{}".format(PREFIX, GK_PATH),
         "SHARED:BOOL": "OFF",
     },
     lib_source = LIB_SOURCE,
@@ -92,7 +81,44 @@ cmake_lib(
     name = "mongoose",
     lib_source = LIB_SOURCE,
     working_directory = "Mongoose",
+    # TODO: Make CMake discover -lsuitesparseconfig!
+    deps = [":config"],
 )
+
+suite_sparse_lib(
+    name = "rbio",
+    directory = "RBio",
+)
+
+SLIP_LU_CFLAGS = " ".join([
+    "-I${EXT_BUILD_DEPS}/gmp_lib/include",
+    "-I${EXT_BUILD_DEPS}/mpfr_lib/include",
+])
+
+make_lib(
+    name = "slip_lu",
+    install_commands = [
+        'install "{}/SLIP_LU/Include"/*.h ${{INSTALLDIR}}/include'.format(PREFIX),
+        'install "{}/SLIP_LU/Lib"/*.a ${{INSTALLDIR}}/lib'.format(PREFIX),
+    ],
+    lib_source = LIB_SOURCE,
+    linkopts = ["-lsliplu"],
+    make_commands = [
+        'make CFLAGS="{}" -C "{}/SLIP_LU" static'.format(SLIP_LU_CFLAGS, PREFIX),
+    ],
+    static_libraries = ["libsliplu.a"],
+    deps = [
+        "//lib/gmp",
+        "//lib/mpfr",
+    ],
+)
+
+suite_sparse_lib(
+    name = "spqr",
+    header_ext = "{h,hpp}",
+)
+
+suite_sparse_lib(name = "umfpack")
 
 bzl_library(
     name = "package",

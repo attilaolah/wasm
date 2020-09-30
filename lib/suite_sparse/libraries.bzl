@@ -5,10 +5,14 @@ PREFIX = "${EXT_BUILD_ROOT}/external/lib_suite_sparse"
 
 LIB_SOURCE = lib_source("suite_sparse")
 
-def suite_sparse_lib(name, header_ext = "h", directory = None):
+def suite_sparse_lib(name, header_ext = "h", directory = None, deps = None):
     if directory == None:
         directory = name.upper()
+    if deps == None:
+        deps = []
+
     prefix = "{}/{}".format(PREFIX, directory)
+
     make_lib(
         name = name,
         install_commands = [
@@ -19,5 +23,5 @@ def suite_sparse_lib(name, header_ext = "h", directory = None):
         make_commands = [
             'make -C "{}" static'.format(prefix),
         ],
-        deps = [":config"],
+        deps = deps,
     )
