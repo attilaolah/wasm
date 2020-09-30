@@ -32,6 +32,7 @@ Then build targets as usual.
 | `//lib/gif`           | 5.2.1     | ✅¹      | ✅¹      |
 | `//lib/glog`          | 0.4.0     | ✅       | ✅       |
 | `//lib/gmp`           | 6.2.0     | ✅       |          |
+| `//lib/mpfr`          | 4.1.0     | ✅       |          |
 | `//lib/hdf5`          | 1.12.0    | ✅       | ❌       |
 | `//lib/jpeg_turbo`    | 2.0.4     | ✅       | ✅       |
 | `//lib/lz4`           | 1.9.2     | ✅       | ✅       |
