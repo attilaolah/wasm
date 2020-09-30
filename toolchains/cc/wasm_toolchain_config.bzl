@@ -10,8 +10,8 @@ def wasm_toolchains(exec_os, exec_cpu):
 
 def wasm_toolchain(exec_os, exec_cpu, cpu):
     name = "_".join((exec_os, exec_cpu, cpu))
-    name_cc = "{}_cc".format(name)
-    config = "{}_toolchain_config".format(cpu)
+    name_cc = "{}_cc_toolchain".format(name)
+    config = "{}_cc_toolchain_config".format(name)
 
     native.toolchain(
         name = name,
