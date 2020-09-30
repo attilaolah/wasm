@@ -3,9 +3,6 @@
 # Allow local workspace config to select a different default :
 try-import %workspace%/.bazelrc.local
 
-# Register all extra toolchains.
-build --extra_toolchains=//toolchains/cc:linux_x86_64_wasm64
-
 # New Platforms toolchain API:
 build:wasm32 --platforms=//platforms:wasm32
 build:wasm64 --platforms=//platforms:wasm64
