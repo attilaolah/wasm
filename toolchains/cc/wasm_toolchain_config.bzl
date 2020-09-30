@@ -23,7 +23,7 @@ def wasm_toolchain(exec_os, exec_cpu, cpu):
             "@platforms//os:none",
             "@platforms//cpu:{}".format(cpu),
         ],
-        toolchain = name_cc,
+        toolchain = name_cc_toolchain,
         toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
     )
 
@@ -31,7 +31,7 @@ def wasm_toolchain(exec_os, exec_cpu, cpu):
     # CC=clang bazel query --output=build @local_config_cc//:cc-compiler-k8
 
     native.cc_toolchain(
-        name = name_cc,
+        name = name_cc_toolchain,
         all_files = ":empty",
         ar_files = "//toolchains:emscripten",
         as_files = ":empty",
@@ -41,7 +41,7 @@ def wasm_toolchain(exec_os, exec_cpu, cpu):
         objcopy_files = ":empty",
         strip_files = ":empty",
         supports_param_files = True,
-        toolchain_config = ":{}".format(config),
+        toolchain_config = ":{}".format(name_toolchain_config),
         toolchain_identifier = "local",
         visibility = ["//toolchains:__pkg__"],
     )
@@ -50,7 +50,7 @@ def wasm_toolchain(exec_os, exec_cpu, cpu):
     # CC=clang bazel query --output=build @local_config_cc//:local
 
     cc_toolchain_config(
-        name = config,
+        name = name_toolchain_config,
         abi_libc_version = "local",
         abi_version = "local",
         compile_flags = [

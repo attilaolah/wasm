@@ -14,7 +14,7 @@ cmake_external(
         "wasm-reduce",
         "wasm-shell",
 
-        # TODO: These fail to build.
+        # NOTE: This one fails to build.
         #"asm2wasm",
     ],
     cache_entries = {

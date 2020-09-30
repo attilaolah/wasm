@@ -1,9 +1,12 @@
 cc_toolchain_suite(
     name = "toolchains",
     toolchains = {
-        "k8": "@local_config_cc//:cc-compiler-k8",
+        "k8": "//toolchains/cc:linux_x86_64_clang_cc_toolchain",
+        "k8|clang": "//toolchains/cc:linux_x86_64_clang_cc_toolchain",
         "wasm32": "//toolchains/cc:linux_x86_64_wasm32_cc_toolchain",
+        "wasm32|clang": "//toolchains/cc:linux_x86_64_wasm32_cc_toolchain",
         "wasm64": "//toolchains/cc:linux_x86_64_wasm64_cc_toolchain",
+        "wasm64|clang": "//toolchains/cc:linux_x86_64_wasm64_cc_toolchain",
     },
 )
 
