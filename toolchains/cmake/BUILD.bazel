@@ -31,9 +31,5 @@ native_tool_toolchain(
 
 bzl_library(
     name = "bzl_lib",
-    srcs = [
-        "configure.bzl",
-        "env_vars.bzl",
-        "make.bzl",
-    ],
+    srcs = ["cmake.bzl"],
 )
