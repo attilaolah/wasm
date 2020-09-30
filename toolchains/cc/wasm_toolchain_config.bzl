@@ -1,4 +1,4 @@
-load(":clang.bzl", "LINUX_X86_64", "LLVM_TOOLS", "clang_cc_toolchain", "clang_cc_toolchain_config")
+load(":clang.bzl", "LINUX_X86_64", "clang_cc_toolchain", "clang_cc_toolchain_config")
 
 def wasm_toolchain(cpu):
     name = "linux_x86_64_{}".format(cpu)
@@ -23,17 +23,6 @@ def wasm_toolchain(cpu):
         all_files = "//toolchains:emscripten",
     )
 
-    # Emscripten tools:
-    tool_paths = {
-        "gcc": "emcc.sh",
-        "cpp": "em++.sh",
-        "ar": "emar.sh",
-    }
-
-    # LLVM tools:
-    for tool in LLVM_TOOLS:
-        tool_paths[tool] = "external/llvm/llvm-{}".format(tool)
-
     clang_cc_toolchain_config(
         name = "{}_config".format(name_cc_toolchain),
         cpu = cpu,
@@ -45,5 +34,9 @@ def wasm_toolchain(cpu):
             "-Wl,-z,relro",  #,-z,now",
             "-lm",
         ],
-        tool_paths = tool_paths,
+        tool_paths = {
+            "gcc": "emcc.sh",
+            "cpp": "em++.sh",
+            "ar": "emar.sh",
+        },
     )

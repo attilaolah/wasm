@@ -5,22 +5,6 @@ LINUX_X86_64 = [
     "@platforms//cpu:x86_64",
 ]
 
-LLVM_TOOLS = [
-    "dwp",
-    "nm",
-    "objcopy",
-    "objdump",
-    "strip",
-]
-
-TOOLS = LLVM_TOOLS + [
-    "ar",
-    "cpp",
-    "gcc",
-    "gcov",
-    "ld",
-]
-
 def clang_toolchain():
     native.toolchain(
         name = "linux_x86_64_clang",
@@ -36,7 +20,7 @@ def clang_toolchain():
     # CC=clang bazel query --output=build @local_config_cc//:cc-compiler-k8
     clang_cc_toolchain(
         name = "linux_x86_64_clang_cc_toolchain",
-        all_files = ":{}".format(builtin_include_directory_paths),
+        all_files = "@llvm//:all",
     )
 
     clang_cc_toolchain_config(
@@ -60,14 +44,6 @@ def clang_toolchain():
             "-lstdc++",
             "-lm",
         ],
-        tool_paths = {
-            "gcc": "/usr/bin/clang",
-        },
-    )
-
-    native.filegroup(
-        name = builtin_include_directory_paths,
-        srcs = ["@local_config_cc//:{}".format(builtin_include_directory_paths)],
     )
 
 def clang_cc_toolchain(name, all_files = "@local_config_cc//:empty"):
@@ -106,8 +82,22 @@ def clang_cc_toolchain_config(
         link_flags = []
     if tool_paths == None:
         tool_paths = {}
-    for tool in TOOLS:
-        tool_paths.setdefault(tool, "/usr/bin/{}".format(tool))
+
+    # Must be an absolute path, or else it gets prefixed with "toolchains/".
+    llvm_bin = "/.${EXT_BUILD_ROOT}/external/llvm/bin"
+
+    # LLVM tools prefixed with "llvm-":
+    for tool in ["ar", "dwp", "nm", "objcopy", "objdump", "strip"]:
+        tool_paths.setdefault(tool, "{}/llvm-{}".format(llvm_bin, tool))
+
+    # Special-case these tools that don't match the above pattern:
+    for tool, llvm_tool in {
+        "cpp": "clang++",
+        "gcc": "clang",
+        "gcov": "llvm-cov",
+        "ld": "lld",
+    }.items():
+        tool_paths.setdefault(tool, "{}/{}".format(llvm_bin, llvm_tool))
 
     compile_flags = [
         "-U_FORTIFY_SOURCE",
