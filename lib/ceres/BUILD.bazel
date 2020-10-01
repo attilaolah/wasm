@@ -6,12 +6,36 @@ package(default_visibility = ["//:__subpackages__"])
 
 # NOTE: Version 2.0.0rc1 fails to detect Eigen3 due to some buggy CMake magic.
 
+_SS_LIBS = [
+    "amd",
+    "camd",
+    "ccolamd",
+    "cholmod",
+    "colamd",
+    "config",
+    "metis",
+    "spqr",
+]
+
 _CACHE_ENTRIES = {
     "BUILD_EXAMPLES:BOOL": "OFF",
     "BUILD_SHARED_LIBS:BOOL": "OFF",
+    "CXSPARSE_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/cxsparse_lib/include",
+    "CXSPARSE_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/cxsparse_lib/lib/libcxsparse.a",
     "EIGEN_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/eigen_lib/include/eigen3",
     "GLOG_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/glog_lib/include",
     "GLOG_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/glog_lib/lib/libglog.a",
+
+    # SuiteSparse hints.
+    # We must list each component since we put them in separate directories.
+    "SUITESPARSE_INCLUDE_DIR_HINTS": ";".join([
+        "${{EXT_BUILD_DEPS}}/{}_lib/include".format(lib)
+        for lib in _SS_LIBS
+    ]),
+    "SUITESPARSE_LIBRARY_DIR_HINTS": ";".join([
+        "${{EXT_BUILD_DEPS}}/{}_lib/lib".format(lib)
+        for lib in _SS_LIBS
+    ]),
 }
 
 _CLANG_CACHE_ENTRIES = dict(_CACHE_ENTRIES.items() + {
@@ -30,6 +54,15 @@ cmake_lib(
     deps = [
         "//lib/eigen",
         "//lib/glog",
+        "//lib/suite_sparse:amd",
+        "//lib/suite_sparse:camd",
+        "//lib/suite_sparse:ccolamd",
+        "//lib/suite_sparse:cholmod",
+        "//lib/suite_sparse:colamd",
+        "//lib/suite_sparse:config",
+        "//lib/suite_sparse:cxsparse",
+        "//lib/suite_sparse:metis",
+        "//lib/suite_sparse:spqr",
     ],
 )
 
