@@ -23,12 +23,6 @@ _CLANG_CACHE_ENTRIES = dict(_CACHE_ENTRIES.items() + {
 
 cmake_lib(
     name = "ceres",
-    after_cmake = patch_files({
-        # CMake fails to detect std::unordered map due to a linker error.
-        # This is because it uses CXX for *linking* the resulting binary, and Bazel sets CXX to "gcc".
-        # When linking with GCC, -lstdc++ has to come *after* the input file to avoid any linker errors.
-        "config/ceres/internal/config.h": r"s/^#define CERES_NO_UNORDERED_MAP$/#define CERES_STD_UNORDERED_MAP/",
-    }),
     cache_entries = select({
         "//conditions:default": _CLANG_CACHE_ENTRIES,
         "//config:wasm64": _CACHE_ENTRIES,
