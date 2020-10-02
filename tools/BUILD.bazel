@@ -1,8 +1,5 @@
 filegroup(
     name = "nodejs",
     srcs = ["@nodejs_linux_amd64//:node_bin"],
-    visibility = [
-        "//toolchains/cmake:__pkg__",
-        "//toolchains/make:__pkg__",
-    ],
+    visibility = ["//visibility:public"],
 )
