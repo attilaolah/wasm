@@ -12,7 +12,8 @@
     "url": "https://github.com/attilaolah/wasm/issues"
   },
   "homepage": "https://github.com/attilaolah/wasm#readme",
-  "dependencies": {
+  "devDependencies": {
     "acorn": "^8.0.1"
-  }
+  },
+  "private": true
 }
