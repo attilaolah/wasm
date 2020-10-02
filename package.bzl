@@ -21,6 +21,7 @@ def register_dependencies():
         version = "2.2.0",
         urls = ["https://github.com/bazelbuild/rules_nodejs/releases/download/{version}/rules_nodejs-{version}.tar.gz"],
         sha256 = "4952ef879704ab4ad6729a29007e7094aef213ea79e9f2e94cbe1c9a753e63ef",
+        build_file_content = None,
     )
 
     http_archive(
@@ -29,6 +30,7 @@ def register_dependencies():
         urls = ["https://github.com/bazelbuild/{name}/archive/{version}.tar.gz"],
         sha256 = "0fc19efca1dfc5c1448c98f050639e3a48beb0031701d55bea5eb546507970f2",
         strip_prefix = "{name}-{version}",
+        build_file_content = None,
     )
 
     http_archive(
@@ -39,6 +41,7 @@ def register_dependencies():
             "https://github.com/bazelbuild/{name}/releases/download/{version}/{name}-{version}.tar.gz",
         ],
         sha256 = "1c531376ac7e5a180e0237938a2536de0c54d93f5c278634818e0efc952dd56c",
+        build_file_content = None,
     )
 
     http_archive(

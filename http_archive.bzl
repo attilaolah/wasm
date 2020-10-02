@@ -8,7 +8,15 @@ filegroup(
 )
 """
 
-def http_archive(name, version, urls, sha256, strip_prefix = None, patches = None, patch_cmds = None):
+def http_archive(
+        name,
+        version,
+        urls,
+        sha256,
+        build_file_content = ALL_PUBLIC,
+        strip_prefix = None,
+        patches = None,
+        patch_cmds = None):
     """Wrapper around http_archive() that specifies a common BUILD file."""
     args = {
         "name": name,
@@ -25,7 +33,7 @@ def http_archive(name, version, urls, sha256, strip_prefix = None, patches = Non
         urls = [url.format(**args) for url in urls],
         sha256 = sha256,
         strip_prefix = strip_prefix,
-        build_file_content = ALL_PUBLIC,
+        build_file_content = build_file_content,
         patches = patches,
         patch_cmds = patch_cmds,
     )
