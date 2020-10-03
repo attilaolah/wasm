@@ -3,8 +3,8 @@ load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 package(default_visibility = ["//visibility:public"])
 
 exports_files([
-    "add_on_init.js",
-    "nodejs_shebang.sh",
+    "shebang.sh",
+    "wait_for_init.js",
 ])
 
 bzl_library(

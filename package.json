@@ -13,7 +13,8 @@
   },
   "homepage": "https://github.com/attilaolah/wasm#readme",
   "devDependencies": {
-    "acorn": "^8.0.1"
+    "acorn": "^8.0.1",
+    "mocha": "^8.1.3"
   },
   "private": true
 }
