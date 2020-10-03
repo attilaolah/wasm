@@ -1,0 +1,11 @@
+package(default_visibility = ["//visibility:public"])
+
+filegroup(
+    name = "emcc",
+    srcs = ["emcc.sh"],
+)
+
+filegroup(
+    name = "config",
+    srcs = ["config.py"],
+)

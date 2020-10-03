@@ -1,3 +1,4 @@
+# DEPRECATED: Use //tools/emscripten:config!
 filegroup(
     name = "emscripten_config",
     srcs = ["emscripten_config.py"],
