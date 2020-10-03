@@ -9,8 +9,5 @@ exports_files([
 
 bzl_library(
     name = "bzl_lib",
-    srcs = [
-        "clang.bzl",
-        "wasm_toolchain_config.bzl",
-    ],
+    srcs = ["wasm_test.bzl"],
 )
