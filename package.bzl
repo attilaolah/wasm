@@ -62,9 +62,9 @@ def register_dependencies():
 
     http_archive(
         name = "llvm",
-        version = "11.0.0-rc3",
+        version = "11.0.0",
         urls = ["https://github.com/{name}/{name}-project/releases/download/{name}org-{version}/clang+{name}-{version}-x86_64-linux-gnu-ubuntu-20.04.tar.xz"],
-        sha256 = "bdd8d9562723b5e52280acaeaf2f27cdd34325bdfa60c1de7110d12ec0714416",
+        sha256 = "829f5fb0ebda1d8716464394f97d5475d465ddc7bea2879c0601316b611ff6db",
         strip_prefix = "clang+{name}-{version}-x86_64-linux-gnu-ubuntu-20.04",
     )
 
