@@ -26,10 +26,12 @@ def register_dependencies():
 
     http_archive(
         name = "platforms",
-        version = "0.0.1",
-        urls = ["https://github.com/bazelbuild/{name}/archive/{version}.tar.gz"],
-        sha256 = "0fc19efca1dfc5c1448c98f050639e3a48beb0031701d55bea5eb546507970f2",
-        strip_prefix = "{name}-{version}",
+        version = "0.0.2",
+        urls = [
+            "https://mirror.bazel.build/github.com/bazelbuild/{name}/releases/download/{version}/{name}-{version}.tar.gz",
+            "https://github.com/bazelbuild/{name}/releases/download/{version}/{name}-{version}.tar.gz",
+        ],
+        sha256 = "48a2d8d343863989c232843e01afc8a986eb8738766bfd8611420a7db8f6f0c3",
         build_file_content = None,
     )
 
