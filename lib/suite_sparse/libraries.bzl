@@ -5,7 +5,7 @@ PREFIX = "${EXT_BUILD_ROOT}/external/lib_suite_sparse"
 
 LIB_SOURCE = lib_source("suite_sparse")
 
-def suite_sparse_lib(name, header_ext = "h", directory = None, deps = None, with_cuda=False):
+def suite_sparse_lib(name, header_ext = "h", directory = None, deps = None, with_cuda = False):
     if directory == None:
         directory = name.upper()
     if deps == None:
