@@ -88,6 +88,7 @@ def clang_cc_toolchain_config(
         "cpp": "clang++",
         "gcc": "clang",
         "gcov": "llvm-cov",
+        "llvm-cov": "llvm-cov",
         "ld": "ld.lld",
     }.items():
         tool_paths.setdefault(tool, "{}/{}".format(llvm_bin, llvm_tool))
