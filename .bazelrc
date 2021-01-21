@@ -1,6 +1,6 @@
 # CONFIG OPTIONS
 #
-# Allow local workspace config to select a different default :
+# Allow local workspace config to select a different default:
 try-import %workspace%/.bazelrc.local
 
 # New Platforms toolchain API:
