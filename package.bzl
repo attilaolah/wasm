@@ -48,17 +48,17 @@ def register_dependencies():
 
     http_archive(
         name = "binaryen",
-        version = "98",
+        version = "99",
         urls = ["https://github.com/WebAssembly/{name}/archive/version_{version}.tar.gz"],
-        sha256 = "9f805db6735869ab52cde7c0404879c90cf386888c0f587e944737550171c1c4",
+        sha256 = "66ac4430367f2096466703b81749db836d8f4766e542b042d64e78b601372cf7",
         strip_prefix = "{name}-version_{version}",
     )
 
     http_archive(
         name = "emscripten",
-        version = "2.0.8",
+        version = "2.0.12",
         urls = ["https://github.com/{name}-core/{name}/archive/{version}.tar.gz"],
-        sha256 = "609a7ecea954821efbcc55bf5ad88dd03ba4f836c703b8ad2e37c243329174a6",
+        sha256 = "d9419c9ea6df4c9582a3a09fdeafec16f5f3c64866f6faf86989ea1ef99f54ea",
         strip_prefix = "{name}-{version}",
     )
 
