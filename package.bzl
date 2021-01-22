@@ -18,9 +18,9 @@ def register_dependencies():
 
     http_archive(
         name = "build_bazel_rules_nodejs",
-        version = "2.2.0",
+        version = "3.0.0",
         urls = ["https://github.com/bazelbuild/rules_nodejs/releases/download/{version}/rules_nodejs-{version}.tar.gz"],
-        sha256 = "4952ef879704ab4ad6729a29007e7094aef213ea79e9f2e94cbe1c9a753e63ef",
+        sha256 = "6142e9586162b179fdd570a55e50d1332e7d9c030efd853453438d607569721d",
         build_file_content = None,
     )
 
