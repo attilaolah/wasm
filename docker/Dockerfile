@@ -1,4 +1,4 @@
-FROM debian:bullseye
+FROM ubuntu:20.10
 LABEL maintainer="Attila Oláh (atl@google.com)"
 
 COPY [".", "/etc/"]
