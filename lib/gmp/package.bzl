@@ -1,11 +1,11 @@
 load("//:http_archive.bzl", "http_archive")
 load("//toolchains/make:env_vars.bzl", "EMCONFIGURE")
 
-VERSION = "6.2.0"
+VERSION = "6.2.1"
 
-URL = "https://gmplib.org/download/gmp/gmp-{version}.tar.gz"
+URL = "https://gmplib.org/download/gmp/gmp-{version}.tar.xz"
 
-SHA256 = "cadd49052b740ccc3d8075c24ceaefbe5128d44246d91d0ecc818b2f78b0ec9c"
+SHA256 = "fd4829912cddd12f84181c3451cc752be224643e87fac497b69edddadc49b4f2"
 
 def download_gmp():
     http_archive(
