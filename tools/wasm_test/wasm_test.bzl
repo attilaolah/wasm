@@ -1,4 +1,5 @@
 load("@bazel_skylib//lib:paths.bzl", "paths")
+load("//tools/wasm_library:wasm_library.bzl", "wasm64_transition")
 
 def _find_file(files, name):
     for f in files:
@@ -7,9 +8,6 @@ def _find_file(files, name):
     fail("Failed to find {}!".format(name))
 
 def _impl(ctx):
-    if ctx.var.get("TARGET_CPU") not in ("wasm32", "wasm64"):
-        fail(("Target CPU not supported: '{}'. " +
-              "Must be 'wasm32' or 'wasm64'.").format(ctx.var.get("TARGET_CPU")))
     emcc = _find_file(ctx.files._emscripten, "emcc")
     binaryen = _find_file(ctx.files._binaryen, "binaryen")
     clang = _find_file(ctx.files._llvm, "clang")
@@ -64,7 +62,7 @@ def _impl(ctx):
             "EMCC": emcc.path,
             "EM_CONFIG": ctx.file._emscripten_config.path,
 
-            # Valies for EM_CONFIG content.
+            # Values for EM_CONFIG content.
             # See //tools/emscripten:config.py.
             "EM_CACHE": "/tmp/em_cache",
             "EM_BINARYEN_ROOT": paths.join(binaryen.dirname, "binaryen"),
@@ -100,6 +98,7 @@ wasm_test = rule(
         "deps": attr.label_list(
             mandatory = True,
             doc = "Dependencies that provide static libraries to be linked.",
+            cfg = wasm64_transition,
         ),
         "_emscripten": attr.label(
             default = "@emscripten//:all",
@@ -138,6 +137,9 @@ wasm_test = rule(
         "_wait_for_init": attr.label(
             allow_single_file = [".js"],
             default = "//tools/wasm_test:wait_for_init.js",
+        ),
+        "_allowlist_function_transition": attr.label(
+            default = "@bazel_tools//tools/allowlists/function_transition_allowlist",
         ),
     },
     test = True,
