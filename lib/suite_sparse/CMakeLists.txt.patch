@@ -1,0 +1,164 @@
+--- Mongoose/CMakeLists.txt
++++ Mongoose/CMakeLists.txt
+@@ -189,35 +189,10 @@
+ 
+ # Build the Mongoose library for dynamic linking
+ set(CMAKE_MACOSX_RPATH 1)
+-add_library(mongoose_dylib SHARED ${MONGOOSE_LIB_FILES})
+-set_property(TARGET mongoose_dylib PROPERTY POSITION_INDEPENDENT_CODE ON)
+-set_target_properties(mongoose_dylib
+-        PROPERTIES OUTPUT_NAME mongoose)
+-if ( SUITESPARSE_CONFIG_LIBRARY )
+-    target_link_libraries(mongoose_dylib ${SUITESPARSE_CONFIG_LIBRARY})
+-endif ()
+-
+-# if(CMAKE_MAJOR_VERSION GREATER 2)
+-#     set_target_properties(mongoose_dylib PROPERTIES VERSION ${PROJECT_VERSION})
+-#     set_target_properties(mongoose_dylib PROPERTIES SOVERSION ${Mongoose_VERSION_MAJOR})
+-# else()
+-    set_target_properties(mongoose_dylib PROPERTIES VERSION 
+-        ${Mongoose_VERSION_MAJOR}.${Mongoose_VERSION_MINOR}.${Mongoose_VERSION_PATCH})
+-    set_target_properties(mongoose_dylib PROPERTIES SOVERSION
+-        ${Mongoose_VERSION_MAJOR})
+-# endif()
+-
+-
+-set_target_properties(mongoose_dylib PROPERTIES PUBLIC_HEADER Include/Mongoose.hpp)
+-target_include_directories(mongoose_dylib PRIVATE .)
+-
+-if (UNIX AND NOT APPLE)
+-    target_link_libraries(mongoose_dylib rt)
+-endif ()
+ 
+ # Mongoose installation location
+ include ( GNUInstallDirs )
+-install ( TARGETS mongoose_dylib mongoose_lib 
++install ( TARGETS mongoose_lib 
+     LIBRARY       DESTINATION ${CMAKE_INSTALL_LIBDIR}
+     PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+     ARCHIVE       DESTINATION ${CMAKE_INSTALL_LIBDIR} )
+@@ -234,90 +209,6 @@
+     target_link_libraries(mongoose_lib_dbg rt)
+ endif ()
+ 
+-# Build the Mongoose executable
+-add_executable(mongoose_exe ${EXE_FILES})
+-set_target_properties(mongoose_exe
+-        PROPERTIES OUTPUT_NAME mongoose)
+-target_link_libraries(mongoose_exe mongoose_lib)
+-
+-install(TARGETS mongoose_exe
+-        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+-
+-# Build the Demo executable
+-add_executable(demo_exe ${DEMO_FILES})
+-set_target_properties(demo_exe
+-        PROPERTIES OUTPUT_NAME demo)
+-target_link_libraries(demo_exe mongoose_lib)
+-
+-# Coverage and Unit Testing Setup
+-enable_testing()
+-set(TESTING_OUTPUT_PATH ${CMAKE_BINARY_DIR}/tests)
+-
+-# I/O Tests
+-add_executable(mongoose_test_io
+-        Tests/Mongoose_Test_IO.cpp
+-        Tests/Mongoose_Test_IO_exe.cpp)
+-target_link_libraries(mongoose_test_io mongoose_lib_dbg)
+-set_target_properties(mongoose_test_io PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${TESTING_OUTPUT_PATH})
+-
+-add_test(IO_Test ./runTests -min 1 -max 15 -t io -k)
+-
+-# Edge Separator Tests
+-add_executable(mongoose_test_edgesep
+-        Tests/Mongoose_Test_EdgeSeparator.cpp
+-        Tests/Mongoose_Test_EdgeSeparator_exe.cpp)
+-target_link_libraries(mongoose_test_edgesep mongoose_lib_dbg)
+-set_target_properties(mongoose_test_edgesep PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${TESTING_OUTPUT_PATH})
+-
+-add_test(Edge_Separator_Test ./runTests -min 1 -max 15 -t edgesep)
+-add_test(Edge_Separator_Test_2 ./runTests -t edgesep -i 21 39 191 1557 1562 353 2468 1470 1380 505 182 201 2331 760 1389 2401 2420 242 250 1530 1533 360 1437)
+-add_test(Weighted_Edge_Separator_Test ./runTests -t edgesep -i 2624)
+-add_test(Target_Split_Test ./runTests -min 1 -max 15 -t edgesep -s 0.3)
+-
+-# Memory Tests
+-add_executable(mongoose_test_memory
+-        Tests/Mongoose_Test_Memory.cpp
+-        Tests/Mongoose_Test_Memory_exe.cpp)
+-target_link_libraries(mongoose_test_memory mongoose_lib_dbg)
+-set_target_properties(mongoose_test_memory PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${TESTING_OUTPUT_PATH})
+-
+-add_test(Memory_Test ./runTests -min 1 -max 15 -t memory)
+-
+-# Performance Test
+-add_executable(mongoose_test_performance
+-        Tests/Mongoose_Test_Performance.cpp
+-        Tests/Mongoose_Test_Performance_exe.cpp)
+-target_link_libraries(mongoose_test_performance mongoose_lib)
+-set_target_properties(mongoose_test_performance PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${TESTING_OUTPUT_PATH})
+-add_test(Performance_Test ./runTests -min 1 -max 15 -t performance -p)
+-add_test(Performance_Test_2 ./runTests -t performance -i 21 39 1557 1562 353 2468 1470 1380 505 182 201 2331 760 1389 2401 2420 242 250 1530 1533 -p)
+-
+-# Reference Test
+-add_executable(mongoose_test_reference
+-        Tests/Mongoose_Test_Reference.cpp
+-        Tests/Mongoose_Test_Reference_exe.cpp)
+-target_link_libraries(mongoose_test_reference mongoose_lib)
+-set_target_properties(mongoose_test_reference PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${TESTING_OUTPUT_PATH})
+-
+-# Unit Tests
+-add_executable(mongoose_unit_test_io
+-        Tests/Mongoose_UnitTest_IO_exe.cpp)
+-target_link_libraries(mongoose_unit_test_io mongoose_lib_dbg)
+-set_target_properties(mongoose_unit_test_io PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${TESTING_OUTPUT_PATH})
+-add_test(Unit_Test_IO ./tests/mongoose_unit_test_io)
+-
+-add_executable(mongoose_unit_test_graph
+-        Tests/Mongoose_UnitTest_Graph_exe.cpp)
+-target_link_libraries(mongoose_unit_test_graph mongoose_lib_dbg)
+-set_target_properties(mongoose_unit_test_graph PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${TESTING_OUTPUT_PATH})
+-add_test(Unit_Test_Graph ./tests/mongoose_unit_test_graph)
+-
+-add_executable(mongoose_unit_test_edgesep
+-        Tests/Mongoose_UnitTest_EdgeSep_exe.cpp)
+-target_link_libraries(mongoose_unit_test_edgesep mongoose_lib_dbg)
+-set_target_properties(mongoose_unit_test_edgesep PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${TESTING_OUTPUT_PATH})
+-add_test(Unit_Test_EdgeSep ./tests/mongoose_unit_test_edgesep)
+-
+ message(STATUS "CMAKE_CXX_COMPILER: " ${BoldBlue} ${CMAKE_CXX_COMPILER_ID} ${ColourReset})
+ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
+     # using Clang
+@@ -350,20 +241,6 @@
+ set_target_properties(mongoose_lib_dbg PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS_DEBUG}")
+ set_target_properties(mongoose_lib_dbg PROPERTIES LINK_FLAGS "${CMAKE_EXE_LINKER_FLAGS_DEBUG}")
+ 
+-# Add debug compile/linker flags
+-set_target_properties(mongoose_test_io PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS_DEBUG}")
+-set_target_properties(mongoose_test_io PROPERTIES LINK_FLAGS "${CMAKE_EXE_LINKER_FLAGS_DEBUG}")
+-set_target_properties(mongoose_test_memory PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS_DEBUG}")
+-set_target_properties(mongoose_test_memory PROPERTIES LINK_FLAGS "${CMAKE_EXE_LINKER_FLAGS_DEBUG}")
+-set_target_properties(mongoose_test_edgesep PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS_DEBUG}")
+-set_target_properties(mongoose_test_edgesep PROPERTIES LINK_FLAGS "${CMAKE_EXE_LINKER_FLAGS_DEBUG}")
+-set_target_properties(mongoose_unit_test_io PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS_DEBUG}")
+-set_target_properties(mongoose_unit_test_io PROPERTIES LINK_FLAGS "${CMAKE_EXE_LINKER_FLAGS_DEBUG}")
+-set_target_properties(mongoose_unit_test_graph PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS_DEBUG}")
+-set_target_properties(mongoose_unit_test_graph PROPERTIES LINK_FLAGS "${CMAKE_EXE_LINKER_FLAGS_DEBUG}")
+-set_target_properties(mongoose_unit_test_edgesep PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS_DEBUG}")
+-set_target_properties(mongoose_unit_test_edgesep PROPERTIES LINK_FLAGS "${CMAKE_EXE_LINKER_FLAGS_DEBUG}")
+-
+ set(CMAKE_CXX_OUTPUT_EXTENSION_REPLACE 1) # Necessary for gcov - prevents file.cpp.gcda instead of file.gcda
+ 
+ # Copy over runTest.py to build folder for ease of use
+@@ -375,12 +252,6 @@
+                    COMMENT "Copying libmongoose (static) to root Lib directory"
+         )
+ 
+-add_custom_command(TARGET mongoose_dylib
+-        POST_BUILD
+-        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:mongoose_dylib> ${PROJECT_SOURCE_DIR}/Lib
+-        COMMENT "Copying libmongoose (dynamic) to root Lib directory"
+-        )
+-
+ add_custom_target(purge
+         COMMAND rm -rf ${CMAKE_BINARY_DIR}/*
+         COMMAND rm -f ${PROJECT_SOURCE_DIR}/Lib/libmongoose.*

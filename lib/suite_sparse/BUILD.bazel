@@ -81,8 +81,6 @@ cmake_lib(
     name = "mongoose",
     lib_source = LIB_SOURCE,
     working_directory = "Mongoose",
-    # TODO: Make CMake discover -lsuitesparseconfig!
-    deps = [":config"],
 )
 
 suite_sparse_lib(

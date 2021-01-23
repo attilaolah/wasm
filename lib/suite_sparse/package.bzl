@@ -15,4 +15,7 @@ def download_suite_sparse():
         urls = [URL],
         sha256 = SHA256,
         strip_prefix = "SuiteSparse-{version}",
+        patches = [
+            "//lib/suite_sparse:CMakeLists.txt.patch",
+        ],
     )
