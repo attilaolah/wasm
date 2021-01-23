@@ -1,5 +1,6 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
+load("//tools/wasm_library:wasm_library.bzl", "wasm_library")
 load("//tools/wasm_test:wasm_test.bzl", "wasm_test")
 
 package(default_visibility = ["//:__subpackages__"])
@@ -9,6 +10,12 @@ configure_make_lib(
     configure_options = [
         "--static",
     ],
+)
+
+wasm_library(
+    name = "z_wasm",
+    exported_functions = ["zlibVersion"],
+    deps = [":z"],
 )
 
 wasm_test(
