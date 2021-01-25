@@ -23,6 +23,10 @@ configure_make_lib(
 wasm_library(
     name = "z_wasm",
     exported_functions = API,
+    exported_runtime_methods = [
+        "cwrap",
+        "setValue",
+    ],
     deps = [":z"],
 )
 

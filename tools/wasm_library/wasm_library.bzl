@@ -46,7 +46,7 @@ def _rule_impl(ctx):
     args = ctx.actions.args()
     args.add("-o", lib_js)
     args.add("-s", "MODULARIZE")
-    args.add("-s", "EXPORTED_RUNTIME_METHODS=[cwrap]")
+    args.add("-s", "EXPORTED_RUNTIME_METHODS=[{}]".format(",".join(ctx.attr.exported_runtime_methods)))
     args.add("-s", "EXPORTED_FUNCTIONS=[{}]".format(",".join(exported_functions)))
     args.add_all(static_libs)
 
@@ -99,8 +99,14 @@ wasm_library = rule(
     implementation = _rule_impl,
     attrs = {
         "exported_functions": attr.string_list(
-            mandatory = True,
+            mandatory = False,
             doc = "List of C/C++ functions to export.",
+            default = [],
+        ),
+        "exported_runtime_methods": attr.string_list(
+            mandatory = False,
+            doc = "List of Emscripten runtime methods to export.",
+            default = [],
         ),
         "deps": attr.label_list(
             mandatory = True,
