@@ -27,6 +27,7 @@ wasm_library(
         "cwrap",
         "getValue",
         "setValue",
+        "writeArrayToMemory",
     ],
     deps = [":z"],
 )
