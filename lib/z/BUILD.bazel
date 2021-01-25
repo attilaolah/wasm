@@ -5,6 +5,14 @@ load("//tools/wasm_test:wasm_test.bzl", "wasm_test")
 
 package(default_visibility = ["//:__subpackages__"])
 
+API = [
+    # keep sorted
+    "compress",
+    "compressBound",
+    "zlibCompileFlags",
+    "zlibVersion",
+]
+
 configure_make_lib(
     name = "z",
     configure_options = [
@@ -14,20 +22,14 @@ configure_make_lib(
 
 wasm_library(
     name = "z_wasm",
-    exported_functions = ["zlibVersion"],
+    exported_functions = API,
     deps = [":z"],
 )
 
 wasm_test(
     name = "z_test",
     srcs = ["z_test.js"],
-    exported_functions = [
-        # keep sorted
-        "compress",
-        "compressBound",
-        "zlibCompileFlags",
-        "zlibVersion",
-    ],
+    exported_functions = API,
     deps = [":z"],
 )
 
