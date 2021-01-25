@@ -37,6 +37,9 @@ _CACHE_ENTRIES = {
         "${{EXT_BUILD_DEPS}}/{}_lib/lib".format(lib)
         for lib in _SS_LIBS
     ]),
+
+    # Needed to make #include <SuiteSparse_config.h> work.
+    "CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES:PATH": "${EXT_BUILD_DEPS}/config_lib/include",
 }
 
 _CLANG_CACHE_ENTRIES = dict(_CACHE_ENTRIES.items() + {
