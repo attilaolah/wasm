@@ -25,6 +25,7 @@ wasm_library(
     exported_functions = API,
     exported_runtime_methods = [
         "cwrap",
+        "getValue",
         "setValue",
     ],
     deps = [":z"],
