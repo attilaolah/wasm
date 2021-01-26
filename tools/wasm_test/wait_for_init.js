@@ -2,7 +2,7 @@
   let loaded = false;
   addOnInit(() => {
     loaded = true;
-  })
+  });
 
 
   // Mocha "before all" hook that waits for module init.
