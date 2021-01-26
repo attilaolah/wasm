@@ -14,7 +14,7 @@ cmake_lib(
         "LZ4_BUILD_CLI:BOOL": "OFF",
         "LZ4_BUILD_LEGACY_LZ4C:BOOL": "OFF",
     },
-    working_directory = "contrib/cmake_unofficial",
+    working_directory = "build/cmake",
 )
 
 wasm_library(

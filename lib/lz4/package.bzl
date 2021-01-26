@@ -1,10 +1,10 @@
 load("//:http_archive.bzl", "http_archive")
 
-VERSION = "1.9.2"
+VERSION = "1.9.3"
 
 URL = "https://github.com/lz4/lz4/archive/v{version}.tar.gz"
 
-SHA256 = "658ba6191fa44c92280d4aa2c271b0f4fbc0e34d249578dd05e50e76d0e5efcc"
+SHA256 = "030644df4611007ff7dc962d981f390361e6c97a34e5cbc393ddfbe019ffe2c1"
 
 def download_lz4():
     http_archive(
@@ -13,7 +13,4 @@ def download_lz4():
         urls = [URL],
         sha256 = SHA256,
         strip_prefix = "lz4-{version}",
-        patches = [
-            "//lib/lz4:CMakeLists.txt.patch",
-        ],
     )
