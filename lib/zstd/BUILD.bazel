@@ -1,6 +1,8 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("@npm//@bazel/typescript:index.bzl", "ts_library")
+load("@npm//mocha:index.bzl", "mocha_test")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
-load("//tools/wasm_test:wasm_test.bzl", "wasm_test")
+load("//tools/wasm_library:wasm_library.bzl", "wasm_library")
 
 package(default_visibility = ["//:__subpackages__"])
 
@@ -14,11 +16,32 @@ cmake_lib(
     working_directory = "build/cmake",
 )
 
-wasm_test(
-    name = "zstd_test",
-    srcs = ["zstd_test.js"],
-    exported_functions = ["ZSTD_versionString"],
+wasm_library(
+    name = "zstd_wasm",
+    srcs = [":zstd_api"],
+    exported_functions = [
+        # keep sorted
+        "ZSTD_versionString",
+    ],
     deps = [":zstd"],
+)
+
+ts_library(
+    name = "zstd_api",
+    srcs = ["zstd_api.ts"],
+    deps = ["//tools/emscripten:types"],
+)
+
+mocha_test(
+    name = "zstd_api_test",
+    args = [
+        "{}/zstd_api.spec.js".format(package_name()),
+        "--color",
+    ],
+    data = [
+        "zstd_api.spec.js",
+        ":zstd_wasm",
+    ],
 )
 
 bzl_library(
