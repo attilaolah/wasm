@@ -1,4 +1,5 @@
 load("@bazel_skylib//lib:paths.bzl", "paths")
+load("@build_bazel_rules_nodejs//:providers.bzl", "JSModuleInfo")
 
 def _find_file(files, name):
     for f in files:
@@ -45,23 +46,36 @@ def _rule_impl(ctx):
 
     args = ctx.actions.args()
     args.add("-o", lib_js)
-    args.add("-s", "MODULARIZE")
-    args.add("-s", "EXPORTED_RUNTIME_METHODS=[{}]".format(",".join(ctx.attr.exported_runtime_methods)))
-    args.add("-s", "EXPORTED_FUNCTIONS=[{}]".format(",".join(exported_functions)))
+    if ctx.attr.module:
+        args.add("-s", "MODULARIZE")
+    if ctx.attr.exported_functions:
+        lst = ",".join(exported_functions)
+        args.add("-s", "EXPORTED_FUNCTIONS=[{}]".format(lst))
+    if ctx.attr.exported_runtime_methods:
+        lst = ",".join(ctx.attr.exported_runtime_methods)
+        args.add("-s", "EXPORTED_RUNTIME_METHODS=[{}]".format(lst))
+    for src in ctx.attr.srcs:
+        for js in src[JSModuleInfo].direct_sources.to_list():
+            args.add("--pre-js", js)
     args.add_all(static_libs)
+
+    inputs = (
+        ctx.files._emscripten +
+        ctx.files._binaryen +
+        ctx.files._llvm +
+        ctx.files._node +
+        static_libs
+    ) + [
+        ctx.file._emscripten_config,
+    ]
+    for src in ctx.attr.srcs:
+        for js in src[JSModuleInfo].direct_sources.to_list():
+            inputs.append(js)
 
     ctx.actions.run(
         executable = ctx.executable._emscripten_emcc,
         arguments = [args],
-        inputs = (
-            ctx.files._emscripten +
-            ctx.files._binaryen +
-            ctx.files._llvm +
-            ctx.files._node +
-            static_libs
-        ) + [
-            ctx.file._emscripten_config,
-        ],
+        inputs = inputs,
         outputs = [
             lib_js,
             lib_wasm,
@@ -98,6 +112,22 @@ wasm64_transition = transition(
 wasm_library = rule(
     implementation = _rule_impl,
     attrs = {
+        "srcs": attr.label_list(
+            mandatory = True,
+            doc = "Sources to pass to emcc using --pre-js.",
+            providers = [JSModuleInfo],
+            #allow_files = [".js"],
+        ),
+        "deps": attr.label_list(
+            mandatory = True,
+            doc = "Dependencies that provide static libraries to be linked.",
+            cfg = wasm64_transition,
+        ),
+        "module": attr.bool(
+            mandatory = False,
+            doc = "Whether to pass -s MODULARIZE to emcc.",
+            default = True,
+        ),
         "exported_functions": attr.string_list(
             mandatory = False,
             doc = "List of C/C++ functions to export.",
@@ -107,11 +137,6 @@ wasm_library = rule(
             mandatory = False,
             doc = "List of Emscripten runtime methods to export.",
             default = [],
-        ),
-        "deps": attr.label_list(
-            mandatory = True,
-            doc = "Dependencies that provide static libraries to be linked.",
-            cfg = wasm64_transition,
         ),
         "_emscripten": attr.label(
             default = "@emscripten//:all",
