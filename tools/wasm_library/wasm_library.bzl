@@ -45,6 +45,9 @@ def _rule_impl(ctx):
 
     # Default settings:
     settings.setdefault("MODULARIZE", "1")
+    settings.setdefault("EXPORT_NAME", short_name.upper())
+
+    # Override settings:
     if ctx.attr.exported_functions:
         lst = ",".join(exported_functions)
         settings["EXPORTED_FUNCTIONS"] = "[{}]".format(lst)

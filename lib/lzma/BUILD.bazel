@@ -24,9 +24,7 @@ wasm_library(
     name = "lzma_wasm",
     srcs = [":lzma_api"],
     build_settings = {
-        #"ALLOW_MEMORY_GROWTH": "1",
         "USE_PTHREADS": "1",
-        "EXPORT_NAME": "LZMA",
     },
     exported_functions = [
         # keep sorted
