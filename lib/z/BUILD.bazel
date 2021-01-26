@@ -16,6 +16,9 @@ configure_make_lib(
 wasm_library(
     name = "z_wasm",
     srcs = [":z_api"],
+    build_settings = {
+        "ALLOW_MEMORY_GROWTH": "1",
+    },
     exported_functions = [
         # keep sorted
         "compress",

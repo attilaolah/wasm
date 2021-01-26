@@ -19,6 +19,9 @@ cmake_lib(
 wasm_library(
     name = "zstd_wasm",
     srcs = [":zstd_api"],
+    build_settings = {
+        "ALLOW_MEMORY_GROWTH": "1",
+    },
     exported_functions = [
         # keep sorted
         "ZSTD_compress",

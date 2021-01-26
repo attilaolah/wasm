@@ -48,6 +48,8 @@ def _rule_impl(ctx):
     args.add("-o", lib_js)
     if ctx.attr.module:
         args.add("-s", "MODULARIZE")
+    for key, val in ctx.attr.build_settings.items():
+        args.add("-s", "=".join((key, val)))
     if ctx.attr.exported_functions:
         lst = ",".join(exported_functions)
         args.add("-s", "EXPORTED_FUNCTIONS=[{}]".format(lst))
@@ -127,6 +129,11 @@ wasm_library = rule(
             mandatory = False,
             doc = "Whether to pass -s MODULARIZE to emcc.",
             default = True,
+        ),
+        "build_settings": attr.string_dict(
+            mandatory = False,
+            doc = "Additional settings to pass to emcc via -s key=value.",
+            default = {},
         ),
         "exported_functions": attr.string_list(
             mandatory = False,
