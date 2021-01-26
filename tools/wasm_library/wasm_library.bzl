@@ -40,22 +40,28 @@ def _rule_impl(ctx):
     if short_name.endswith("_wasm"):
         short_name = short_name[:-len("_wasm")]
 
-    # Build the test file.
+    # Create a copy of build_settings:
+    settings = dict(ctx.attr.build_settings.items())
+
+    # Default settings:
+    settings.setdefault("MODULARIZE", "1")
+    if ctx.attr.exported_functions:
+        lst = ",".join(exported_functions)
+        settings["EXPORTED_FUNCTIONS"] = "[{}]".format(lst)
+    if ctx.attr.exported_runtime_methods:
+        lst = ",".join(ctx.attr.exported_runtime_methods)
+        settings["EXPORTED_RUNTIME_METHODS"] = "[{}]".format(lst)
+
+    # Declare the library wrapper and the binary file:.
     lib_js = ctx.actions.declare_file("{}.js".format(short_name))
     lib_wasm = ctx.actions.declare_file("{}.wasm".format(short_name))
 
     args = ctx.actions.args()
     args.add("-o", lib_js)
-    if ctx.attr.module:
-        args.add("-s", "MODULARIZE")
-    for key, val in ctx.attr.build_settings.items():
-        args.add("-s", "=".join((key, val)))
-    if ctx.attr.exported_functions:
-        lst = ",".join(exported_functions)
-        args.add("-s", "EXPORTED_FUNCTIONS=[{}]".format(lst))
-    if ctx.attr.exported_runtime_methods:
-        lst = ",".join(ctx.attr.exported_runtime_methods)
-        args.add("-s", "EXPORTED_RUNTIME_METHODS=[{}]".format(lst))
+    for flag, val in settings.items():
+        if val != "1":
+            flag += "={}".format(val)
+        args.add("-s", flag)
     for src in ctx.attr.srcs:
         for js in src[JSModuleInfo].direct_sources.to_list():
             args.add("--pre-js", js)
@@ -124,11 +130,6 @@ wasm_library = rule(
             mandatory = True,
             doc = "Dependencies that provide static libraries to be linked.",
             cfg = wasm64_transition,
-        ),
-        "module": attr.bool(
-            mandatory = False,
-            doc = "Whether to pass -s MODULARIZE to emcc.",
-            default = True,
         ),
         "build_settings": attr.string_dict(
             mandatory = False,
