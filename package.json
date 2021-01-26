@@ -13,6 +13,7 @@
   },
   "homepage": "https://github.com/attilaolah/wasm#readme",
   "devDependencies": {
+    "@bazel/typescript": "^3.0.0",
     "acorn": "^8.0.4",
     "mocha": "^8.2.1",
     "typescript": "^4.1.3"
