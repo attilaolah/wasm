@@ -20,6 +20,12 @@ let $ZSTD_versionString: () => string;
 
 let version: string;
 
+class ZSTDError extends Error {
+  constructor(code: number) {
+    super(`ZSTD: ${$ZSTD_getErrorName(code)} (${code})`);
+  }
+}
+
 Module["onRuntimeInitialized"] = () => {
   wrapFunctions();
   initGlobals();
@@ -62,13 +68,15 @@ function compress(data: Uint8Array, level?: number): Blob {
 
   if ($ZSTD_isError(compressedSize)) {
     _free(dst);
-    throw new Error("TODO: Throw proper error!");
+    throw new ZSTDError(compressedSize);
   }
 
   // Create a copy of the compressed array so we can free the temporary buffer.
-  //const buffer = HEAPU8.subarray(dst, dst + compressedLen);
-  const buffer = new Uint8Array(HEAPU8.subarray(dst, dst + compressedSize)).buffer;
-  const result = new Blob([buffer], {type: "application/zstd"});
+  const result = new Blob([
+    new Uint8Array(HEAPU8.subarray(dst, dst + compressedSize)).buffer,
+  ], {
+    type: "application/zstd",
+  });
   _free(dst);
 
   return result;

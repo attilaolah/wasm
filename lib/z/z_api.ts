@@ -90,7 +90,7 @@ function exportAPI() {
 
 function compress(data: Uint8Array): Blob {
   const bound = $compressBound(data.byteLength);
-  
+
   const src = _malloc(data.byteLength);
   const dst = _malloc(bound);
   const dstLen = _malloc(uLongBytes);
@@ -113,10 +113,12 @@ function compress(data: Uint8Array): Blob {
   _free(dstLen);
 
   // Create a copy of the compressed array so we can free the temporary buffer.
-  //const buffer = HEAPU8.subarray(dst, dst + compressedLen);
-  const buffer = new Uint8Array(HEAPU8.subarray(dst, dst + compressedLen)).buffer;
-  const result = new Blob([buffer], {type: "application/zlib"});
-  //_free(dst);
-  
+  const result = new Blob([
+    new Uint8Array(HEAPU8.subarray(dst, dst + compressedLen)).buffer,
+  ], {
+    type: "application/zlib",
+  });
+  _free(dst);
+
   return result;
 }
