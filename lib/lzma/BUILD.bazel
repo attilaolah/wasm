@@ -49,7 +49,6 @@ mocha_test(
     data = [
         "lzma_api.spec.js",
         ":lzma_wasm",
-        "@npm//cross-blob",
     ],
 )
 
