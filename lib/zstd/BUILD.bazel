@@ -21,6 +21,10 @@ wasm_library(
     srcs = [":zstd_api"],
     exported_functions = [
         # keep sorted
+        "ZSTD_compress",
+        "ZSTD_compressBound",
+        "ZSTD_getErrorName",
+        "ZSTD_isError",
         "ZSTD_versionString",
     ],
     deps = [":zstd"],
@@ -41,6 +45,7 @@ mocha_test(
     data = [
         "zstd_api.spec.js",
         ":zstd_wasm",
+        "@npm//cross-blob",
     ],
 )
 
