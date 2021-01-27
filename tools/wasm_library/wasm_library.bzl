@@ -145,7 +145,6 @@ wasm_library = rule(
             mandatory = True,
             doc = "Sources to pass to emcc using --pre-js.",
             providers = [JSModuleInfo],
-            #allow_files = [".js"],
         ),
         "deps": attr.label_list(
             mandatory = True,
