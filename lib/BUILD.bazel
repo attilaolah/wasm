@@ -5,7 +5,6 @@ bzl_library(
     srcs = ["package.bzl"],
     visibility = ["//:__pkg__"],
     deps = [
-        "//:http_archive",
         "//lib/fftw:package",
         "//lib/gif:package",
         "//lib/jpeg_turbo:package",
