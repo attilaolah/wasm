@@ -8,7 +8,10 @@ exports_files(
 bzl_library(
     name = "package",
     srcs = ["package.bzl"],
-    deps = ["//lib:package"],
+    deps = [
+        "//lib:package",
+        "//tools:package",
+    ],
 )
 
 bzl_library(
