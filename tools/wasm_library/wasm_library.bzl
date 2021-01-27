@@ -28,6 +28,11 @@ def _rule_impl(ctx):
     clang = _find_file(ctx.files._llvm, "clang")
     node = _find_file(ctx.files._node, "node")
 
+    # Find the "node_modules" diectory provided by @npm.
+    # This is where @npm//acorn (and other npm packages) live.
+    acorn = _find_file(ctx.files._acorn, "package.json")
+    node_modules = paths.dirname(acorn.dirname)
+
     static_libs = []
     for f in ctx.files.deps:
         # This picks up all static libraries.
@@ -93,6 +98,7 @@ def _rule_impl(ctx):
         ctx.files._binaryen +
         ctx.files._llvm +
         ctx.files._node +
+        ctx.files._acorn +
         static_libs
     ) + [
         ctx.file._emscripten_config,
@@ -119,6 +125,9 @@ def _rule_impl(ctx):
             "EM_BINARYEN_ROOT": paths.join(binaryen.dirname, "binaryen"),
             "EM_LLVM_ROOT": clang.dirname,
             "EM_NODE_JS": node.path,
+
+            # Required by acorn-optimizer to load @npm//acorn.
+            "NODE_PATH": node_modules,
 
             # Add /usr/bin to PATH so that Emscripten could find Python.
             # TODO: Include our own Python (via @rules_python) and remove this.
@@ -180,6 +189,10 @@ wasm_library = rule(
         ),
         "_node": attr.label(
             default = "//tools:nodejs",
+            cfg = "host",
+        ),
+        "_acorn": attr.label(
+            default = "@npm//acorn",
             cfg = "host",
         ),
         "_emscripten_emcc": attr.label(
