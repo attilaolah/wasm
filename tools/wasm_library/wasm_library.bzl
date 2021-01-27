@@ -122,7 +122,7 @@ def _rule_impl(ctx):
             # Values for EM_CONFIG content.
             # See //tools/emscripten:config.py.
             "EM_CACHE": "/tmp/em_cache",
-            "EM_BINARYEN_ROOT": paths.join(binaryen.dirname, "binaryen"),
+            "EM_BINARYEN_ROOT": binaryen.path,
             "EM_LLVM_ROOT": clang.dirname,
             "EM_NODE_JS": node.path,
 
