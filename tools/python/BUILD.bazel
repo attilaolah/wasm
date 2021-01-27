@@ -1,0 +1,43 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("@rules_foreign_cc//tools/build_defs:configure.bzl", "configure_make")
+
+configure_make(
+    name = "python",
+    binaries = [
+        "2to3",
+        "2to3-3.9",
+        "easy_install-3.9",
+        "idle3",
+        "idle3.9",
+        "pip3",
+        "pip3.9",
+        "pydoc3",
+        "pydoc3.9",
+        "python3",
+        "python3-config",
+        "python3.9",
+        "python3.9-config",
+    ],
+    configure_options = [
+        "--enable-shared=no",
+        "--enable-static=yes",
+        # TODO: Add --enable-optimizations when building with -c opt.
+    ],
+    # TODO: Move install_prefix out of build, so it would never clash.
+    install_prefix = "install",
+    lib_source = "@python//:all",
+    linkopts = ["-lpython"],
+    static_libraries = ["libpython3.9.a"],
+    visibility = ["//visibility:public"],
+    deps = [
+        # Required:
+        "//lib/ffi",
+        "//lib/z",
+    ],
+)
+
+bzl_library(
+    name = "package",
+    srcs = ["package.bzl"],
+    deps = ["//:http_archive"],
+)

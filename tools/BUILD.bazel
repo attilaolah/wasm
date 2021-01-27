@@ -1,5 +1,16 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+
 filegroup(
     name = "nodejs",
     srcs = ["@nodejs_linux_amd64//:node_bin"],
     visibility = ["//visibility:public"],
+)
+
+bzl_library(
+    name = "package",
+    srcs = ["package.bzl"],
+    visibility = ["//:__pkg__"],
+    deps = [
+        "//tools/python:package",
+    ],
 )
