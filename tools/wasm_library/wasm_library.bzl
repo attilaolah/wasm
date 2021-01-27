@@ -44,6 +44,7 @@ def _rule_impl(ctx):
     settings = dict(ctx.attr.build_settings.items())
 
     # Default settings:
+    settings.setdefault("STRICT", "1")
     settings.setdefault("MODULARIZE", "1")
     settings.setdefault("EXPORT_NAME", short_name.upper())
 
