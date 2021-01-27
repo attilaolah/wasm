@@ -11,6 +11,8 @@ configure_make_lib(
     configure_options = [
         "--static",
     ],
+    # Required by //tools/python.
+    copts = ["-fPIC"],
 )
 
 wasm_library(
