@@ -1,5 +1,12 @@
 load("@bazel_skylib//lib:paths.bzl", "paths")
 load("@build_bazel_rules_nodejs//:providers.bzl", "JSModuleInfo")
+load("@rules_foreign_cc//tools/build_defs:cc_toolchain_util.bzl", "CxxFlagsInfo", "get_flags_info")
+
+# Linker flags not supported by the wasm-ld linker:
+WASM_LD_UNSUPPORTED_FLAGS = [
+    "-Wl,-as-needed",
+    "-Wl,-no-as-needed",
+]
 
 def _find_file(files, name):
     for f in files:
@@ -60,6 +67,7 @@ def _rule_impl(ctx):
     lib_js = ctx.actions.declare_file("{}.js".format(short_name))
     lib_wasm = ctx.actions.declare_file("{}.wasm".format(short_name))
 
+    # Build args:
     args = ctx.actions.args()
     args.add("-o", lib_js)
     for flag, val in settings.items():
@@ -70,6 +78,15 @@ def _rule_impl(ctx):
         for js in src[JSModuleInfo].direct_sources.to_list():
             args.add("--pre-js", js)
     args.add_all(static_libs)
+
+    # Append C/C++ compiler flags:
+    flags = get_flags_info(ctx)
+    args.add_all(flags.cc)
+    args.add_all([
+        flag
+        for flag in flags.cxx_linker_executable
+        if flag not in WASM_LD_UNSUPPORTED_FLAGS
+    ])
 
     inputs = (
         ctx.files._emscripten +
@@ -179,5 +196,9 @@ wasm_library = rule(
         "_allowlist_function_transition": attr.label(
             default = "@bazel_tools//tools/allowlists/function_transition_allowlist",
         ),
+        "_cc_toolchain": attr.label(
+            default = Label("@bazel_tools//tools/cpp:current_cc_toolchain"),
+        ),
     },
+    fragments = ["cpp"],
 )
