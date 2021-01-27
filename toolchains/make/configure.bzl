@@ -1,7 +1,7 @@
 load("@rules_foreign_cc//tools/build_defs:configure.bzl", "configure_make")
 load(":env_vars.bzl", "ENV_CMD")
 
-def configure_make_lib(name, configure_options, static_libraries = None, deps = None):
+def configure_make_lib(name, configure_options, static_libraries = None, deps = None, copts = None):
     if static_libraries == None:
         static_libraries = ["lib{}.a".format(name)]
     configure_make(
@@ -11,6 +11,9 @@ def configure_make_lib(name, configure_options, static_libraries = None, deps = 
             "//config:wasm64": "emconfigure.sh",
         }),
         configure_options = configure_options,
+        configure_env_vars = {
+            "CFLAGS": " ".join(copts or []),
+        },
         lib_name = "{}_lib".format(name),
         lib_source = lib_source(name),
         linkopts = ["-l{}".format(name)],
