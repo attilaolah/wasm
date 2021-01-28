@@ -5,11 +5,9 @@ def configure_make_lib(name, configure_options, static_libraries = None, deps = 
     if static_libraries == None:
         static_libraries = ["lib{}.a".format(name)]
 
-    # Default env vars for all targets.
-    # Additionally, wasm targets get a PATH containing //tools/python.
-    env_vars = {
-        "CFLAGS": " ".join(copts or []),
-    }
+    env_vars = {}
+    if copts != None:
+        env_vars["CFLAGS"] = " ".join(copts)
 
     configure_make(
         name = name,
@@ -18,12 +16,7 @@ def configure_make_lib(name, configure_options, static_libraries = None, deps = 
             "//config:wasm64": "emconfigure.sh",
         }),
         configure_options = configure_options,
-        configure_env_vars = select({
-            "//conditions:default": env_vars,
-            "//config:wasm64": dict(env_vars.items() + {
-                "PATH": "${PATH}:${EXT_BUILD_DEPS}/bin/python/bin",
-            }.items()),
-        }),
+        configure_env_vars = env_vars,
         lib_name = "{}_lib".format(name),
         lib_source = lib_source(name),
         linkopts = ["-l{}".format(name)],
