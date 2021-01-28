@@ -22,6 +22,7 @@ native_tool_toolchain(
         "//config:emscripten_config",
         "//tools:nodejs",
         "//tools/binaryen",
+        "//tools/python",
         "@emscripten//:all",
         "@llvm//:all",
         "@npm//acorn",
