@@ -26,6 +26,7 @@ def _rule_impl(ctx):
     emcc = _find_file(ctx.files._emscripten, "emcc")
     binaryen = _find_file(ctx.files._binaryen, "binaryen")
     clang = _find_file(ctx.files._llvm, "clang")
+    python = _find_file(ctx.files._python, "python3")
     node = _find_file(ctx.files._node, "node")
 
     # Find the "node_modules" diectory provided by @npm.
@@ -97,6 +98,7 @@ def _rule_impl(ctx):
         ctx.files._emscripten +
         ctx.files._binaryen +
         ctx.files._llvm +
+        ctx.files._python +
         ctx.files._node +
         ctx.files._acorn +
         static_libs
@@ -125,13 +127,10 @@ def _rule_impl(ctx):
             "EM_BINARYEN_ROOT": binaryen.path,
             "EM_LLVM_ROOT": clang.dirname,
             "EM_NODE_JS": node.path,
+            "PYTHON": python.path,
 
             # Required by acorn-optimizer to load @npm//acorn.
             "NODE_PATH": node_modules,
-
-            # Add /usr/bin to PATH so that Emscripten could find Python.
-            # TODO: Include our own Python (via @rules_python) and remove this.
-            "PATH": "/usr/bin",
         },
         mnemonic = "EMCC",
     )
@@ -185,6 +184,10 @@ wasm_library = rule(
         ),
         "_llvm": attr.label(
             default = "@llvm//:all",
+            cfg = "host",
+        ),
+        "_python": attr.label(
+            default = "//tools/python",
             cfg = "host",
         ),
         "_node": attr.label(

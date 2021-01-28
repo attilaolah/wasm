@@ -9,6 +9,9 @@ export EM_BINARYEN_ROOT="${PWD}/${EM_BINARYEN_ROOT}"
 export EM_LLVM_ROOT="${PWD}/${EM_LLVM_ROOT}"
 export EM_NODE_JS="${PWD}/${EM_NODE_JS}"
 
+# Same applies for the Python interpreter.
+export PYTHON="$(readlink -f "${PYTHON}")"
+
 # The actual location of the 'emcc' binary also comes from the environment.
 
 "${EMCC}" $@
