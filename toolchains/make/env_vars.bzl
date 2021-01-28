@@ -5,6 +5,9 @@ ENV_VARS = {
     "EM_CACHE": "${EXT_BUILD_ROOT}/emscripten_cache",
     "EM_CONFIG": "${EXT_BUILD_DEPS}/bin/emscripten_config.py",
     "NODE_PATH": "${EXT_BUILD_DEPS}/bin",
+
+    # Python from //tools/python
+    "PYTHON": "${EXT_BUILD_DEPS}/bin/python/bin/python3",
 }
 
 def _quote(text):
