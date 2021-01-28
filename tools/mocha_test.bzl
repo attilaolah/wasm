@@ -14,7 +14,6 @@ def mocha_test(name, srcs, deps = None, args = None):
             name = "{}_js".format(name),
             srcs = ts_srcs,
             deps = [
-                # Additional dependencies for the test runner:
                 "@npm//@types/mocha",
                 "@npm//@types/node",
             ],
