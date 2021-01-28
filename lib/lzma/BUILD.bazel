@@ -1,8 +1,8 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@npm//@bazel/typescript:index.bzl", "ts_library")
-load("@npm//mocha:index.bzl", "mocha_test")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
 load("//tools/wasm_library:wasm_library.bzl", "wasm_library")
+load("//tools:mocha_test.bzl", "mocha_test")
 
 package(default_visibility = ["//:__subpackages__"])
 
@@ -40,16 +40,10 @@ ts_library(
 )
 
 mocha_test(
-    name = "lzma_api_test",
-    args = [
-        "{}/lzma_api.spec.js".format(package_name()),
-        "--node_options=--experimental-wasm-threads",
-        "--color",
-    ],
-    data = [
-        "lzma_api.spec.js",
-        ":lzma_wasm",
-    ],
+    name = "lzma_test",
+    srcs = ["lzma_api.spec.js"],
+    args = ["--node_options=--experimental-wasm-threads"],
+    deps = [":lzma_wasm"],
 )
 
 bzl_library(
