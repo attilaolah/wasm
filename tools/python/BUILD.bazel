@@ -1,6 +1,8 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@rules_foreign_cc//tools/build_defs:configure.bzl", "configure_make")
 
+package(default_visibility = ["//:__subpackages__"])
+
 configure_make(
     name = "python",
     binaries = [
