@@ -39,7 +39,7 @@ ts_library(
 
 mocha_test(
     name = "z_test",
-    srcs = ["z_api.spec.js"],
+    srcs = ["z_api.spec.ts"],
     deps = [
         ":z_wasm",
         "@npm//cross-blob",

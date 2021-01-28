@@ -1,10 +1,9 @@
 const assert = require("assert");
-const Blob = require("cross-blob");
-
-const Z = require("./z");
 
 // Z requires Blob to be available as a global constructor.
-global.Blob = Blob;
+global.Blob = require("cross-blob");
+
+const Z = require("./z");
 
 describe("compress", () => {
   const src = new Blob([
@@ -12,6 +11,7 @@ describe("compress", () => {
     "This is some example text to be compressed.",
   ]);
   const big = new Blob([
+    // Approx. 6.9 MB (6,888,891 bytes):
     JSON.stringify(Array.from(Array(1000000).keys())),
   ]);
 
