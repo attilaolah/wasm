@@ -16,6 +16,8 @@ def wasm_toolchain(cpu):
         }[cpu]),
         # Enable Emscripten "strict" build mode.
         "-s STRICT",
+        # Enable JavaScript BigInt support.
+        "-s WASM_BIGINT",
     ]
 
     native.toolchain(

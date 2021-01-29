@@ -59,6 +59,8 @@ def _rule_impl(ctx):
     # Default settings:
     settings.setdefault("STRICT", "1")
     settings.setdefault("MODULARIZE", "1")
+    settings.setdefault("WASM_BIGINT", "1")
+    settings.setdefault("INCOMING_MODULE_JS_API", "[onRuntimeInitialized]")
     settings.setdefault("EXPORT_NAME", short_name.upper())
 
     # Override settings:
