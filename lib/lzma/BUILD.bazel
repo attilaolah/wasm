@@ -41,7 +41,7 @@ ts_library(
 
 mocha_test(
     name = "lzma_test",
-    srcs = ["lzma_api.spec.js"],
+    srcs = ["lzma_api.spec.ts"],
     args = ["--node_options=--experimental-wasm-threads"],
     deps = [":lzma_wasm"],
 )
