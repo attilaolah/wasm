@@ -14,6 +14,8 @@ def wasm_toolchain(cpu):
             "wasm64": 1,
             "wasm64_32": 2,
         }[cpu]),
+        # Enable Emscripten "strict" build mode.
+        "-s STRICT",
     ]
 
     native.toolchain(
