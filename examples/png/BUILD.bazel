@@ -1,0 +1,30 @@
+load("@npm//@bazel/typescript:index.bzl", "ts_library")
+load("//tools:mocha_test.bzl", "mocha_test")
+load("//tools:wasm_library.bzl", "wasm_library")
+
+package(default_visibility = ["//:__subpackages__"])
+
+wasm_library(
+    name = "png_wasm",
+    srcs = [":png_api"],
+    build_settings = {
+        "USE_PTHREADS": "1",
+    },
+    exported_functions = [
+        # keep sorted
+        "png_access_version_number",
+    ],
+    deps = ["//lib/png"],
+)
+
+ts_library(
+    name = "png_api",
+    srcs = ["png_api.ts"],
+    deps = ["//tools/emscripten:types"],
+)
+
+mocha_test(
+    name = "png_test",
+    srcs = ["png_api.spec.ts"],
+    deps = [":png_wasm"],
+)
