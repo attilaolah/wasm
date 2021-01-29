@@ -1,10 +1,9 @@
 const assert = require("assert");
-const Blob = require("cross-blob");
-
-const ZSTD = require("./zstd");
 
 // ZSTD requires Blob to be available as a global constructor.
-global.Blob = Blob;
+global.Blob = require("cross-blob");
+
+const ZSTD = require("./zstd");
 
 describe("compress", () => {
   const src = new Blob([
