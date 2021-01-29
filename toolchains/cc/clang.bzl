@@ -23,10 +23,10 @@ def clang_toolchain():
     clang_cc_toolchain_config(
         name = "linux_x86_64_clang_cc_toolchain_config",
         cpu = "k8",
-        stack_protector = True,
         cxx_builtin_include_directories = [
             "{}/lib/clang/11.0.0/include".format(LLVM_PATH),
         ],
+        compile_flags = ["-fstack-protector"],
         link_flags = [
             "-B{}/bin".format(LLVM_PATH),
             "-fuse-ld={}/bin/ld.lld".format(LLVM_PATH),
@@ -63,12 +63,14 @@ def clang_cc_toolchain(name, all_files = "@llvm//:all"):
 def clang_cc_toolchain_config(
         name,
         cpu,
-        stack_protector = None,
         cxx_builtin_include_directories = None,
+        compile_flags = None,
         link_flags = None,
         tool_paths = None):
     if cxx_builtin_include_directories == None:
         cxx_builtin_include_directories = []
+    if compile_flags == None:
+        compile_flags = []
     if link_flags == None:
         link_flags = []
     if tool_paths == None:
@@ -93,6 +95,7 @@ def clang_cc_toolchain_config(
     }.items():
         tool_paths.setdefault(tool, "{}/{}".format(llvm_bin, llvm_tool))
 
+    # Additional compile flags, enabled by default for all targets:
     compile_flags = [
         "-U_FORTIFY_SOURCE",
         "-Wall",
@@ -100,10 +103,7 @@ def clang_cc_toolchain_config(
         "-Wself-assign",
         "-fcolor-diagnostics",
         "-fno-omit-frame-pointer",
-    ]
-    if stack_protector != None:
-        _flag = "-f{}stack-protector".format("" if stack_protector else "no-")
-        compile_flags.append(_flag)
+    ] + compile_flags
 
     # Based on the output of:
     # CC=clang bazel query --output=build @local_config_cc//:local

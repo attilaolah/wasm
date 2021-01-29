@@ -25,7 +25,7 @@ def wasm_toolchain(cpu):
         cpu = cpu,
         # Using the stack protector breaks some builds.
         # See https://github.com/emscripten-core/emscripten/issues/9780.
-        stack_protector = False,
+        compile_flags = ["-fno-stack-protector"],
         link_flags = [
             # Disabling lazy binding ("-Wl,-z,now) breaks libpng.
             "-Wl,-z,relro",  #,-z,now",
