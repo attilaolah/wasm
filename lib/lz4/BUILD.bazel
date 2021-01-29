@@ -38,7 +38,7 @@ ts_library(
 
 mocha_test(
     name = "lz4_test",
-    srcs = ["lz4_api.spec.js"],
+    srcs = ["lz4_api.spec.ts"],
     deps = [":lz4_wasm"],
 )
 
