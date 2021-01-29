@@ -4,6 +4,18 @@ def wasm_toolchain(cpu):
     name = "linux_x86_64_{}".format(cpu)
     name_cc_toolchain = "{}_cc_toolchain".format(name)
 
+    compile_flags = [
+        # Using the stack protector breaks some builds.
+        # See https://github.com/emscripten-core/emscripten/issues/9780.
+        "-fno-stack-protector",
+        # Set MEMORY64={0,1,2} based on the target CPU architecture.
+        "-s MEMORY64={}".format({
+            "wasm32": 0,
+            "wasm64": 1,
+            "wasm64_32": 2,
+        }[cpu]),
+    ]
+
     native.toolchain(
         name = name,
         exec_compatible_with = LINUX_X86_64,
@@ -23,9 +35,7 @@ def wasm_toolchain(cpu):
     clang_cc_toolchain_config(
         name = "{}_config".format(name_cc_toolchain),
         cpu = cpu,
-        # Using the stack protector breaks some builds.
-        # See https://github.com/emscripten-core/emscripten/issues/9780.
-        compile_flags = ["-fno-stack-protector"],
+        compile_flags = compile_flags,
         link_flags = [
             # Disabling lazy binding ("-Wl,-z,now) breaks libpng.
             "-Wl,-z,relro",  #,-z,now",

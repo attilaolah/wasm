@@ -31,6 +31,7 @@ cmake_lib(
     }),
     cache_entries = select({
         "//conditions:default": _X86_64_CACHE_ENTRIES,
+        "//config:wasm32": _WASM_CACHE_ENTRIES,
         "//config:wasm64": _WASM_CACHE_ENTRIES,
     }),
     deps = [

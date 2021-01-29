@@ -13,6 +13,7 @@ def configure_make_lib(name, configure_options, static_libraries = None, deps = 
         name = name,
         configure_command = select({
             "//conditions:default": "configure",
+            "//config:wasm32": "emconfigure.sh",
             "//config:wasm64": "emconfigure.sh",
         }),
         configure_options = configure_options,
@@ -47,6 +48,7 @@ def make_commands(
 
     return select({
         "//conditions:default": commands,
+        "//config:wasm32": wasm_commands,
         "//config:wasm64": wasm_commands,
     })
 

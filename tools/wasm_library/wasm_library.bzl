@@ -17,9 +17,9 @@ def _find_file(files, name):
 def _transition_impl(settings, attr):
     return {
         # New Platforms toolchain API:
-        "//command_line_option:platforms": "//platforms:wasm64",
+        "//command_line_option:platforms": "//platforms:wasm32",
         # Old C++ CPU/CROSSTOOL toolchain API:
-        "//command_line_option:cpu": "wasm64",
+        "//command_line_option:cpu": "wasm32",
     }
 
 def _rule_impl(ctx):
@@ -137,7 +137,7 @@ def _rule_impl(ctx):
 
     return DefaultInfo(files = depset([lib_js, lib_wasm]))
 
-wasm64_transition = transition(
+wasm32_transition = transition(
     implementation = _transition_impl,
     inputs = [],
     outputs = [
@@ -157,7 +157,7 @@ wasm_library = rule(
         "deps": attr.label_list(
             mandatory = True,
             doc = "Dependencies that provide static libraries to be linked.",
-            cfg = wasm64_transition,
+            cfg = wasm32_transition,
         ),
         "build_settings": attr.string_dict(
             mandatory = False,

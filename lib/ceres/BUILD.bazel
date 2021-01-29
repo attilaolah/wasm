@@ -53,6 +53,7 @@ cmake_lib(
     name = "ceres",
     cache_entries = select({
         "//conditions:default": _CLANG_CACHE_ENTRIES,
+        "//config:wasm32": _CACHE_ENTRIES,
         "//config:wasm64": _CACHE_ENTRIES,
     }),
     deps = [

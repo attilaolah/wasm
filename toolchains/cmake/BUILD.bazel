@@ -9,7 +9,7 @@ toolchain(
     ],
     target_compatible_with = [
         "@platforms//os:none",
-        "@platforms//cpu:wasm64",
+        "@platforms//cpu:wasm32",
     ],
     toolchain = ":emcmake_toolchain",
     toolchain_type = "@rules_foreign_cc//tools/build_defs:cmake_toolchain",
