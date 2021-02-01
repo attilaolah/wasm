@@ -7,6 +7,13 @@ filegroup(
 )
 
 bzl_library(
+    name = "installed_files",
+    srcs = ["package.bzl"],
+    visibility = ["//tools:__subpackages__"],
+    deps = ["@bazel_skylib//lib:paths"],
+)
+
+bzl_library(
     name = "package",
     srcs = ["package.bzl"],
     visibility = ["//:__pkg__"],
