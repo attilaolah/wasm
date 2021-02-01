@@ -1,5 +1,6 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@rules_foreign_cc//tools/build_defs:configure.bzl", "configure_make")
+load("//tools:installed_files.bzl", "installed_files")
 
 package(default_visibility = ["//:__subpackages__"])
 
@@ -35,6 +36,11 @@ configure_make(
         "//lib/ffi",
         "//lib/z",
     ],
+)
+
+installed_files(
+    name = "runtime",
+    deps = [":python"],
 )
 
 bzl_library(
