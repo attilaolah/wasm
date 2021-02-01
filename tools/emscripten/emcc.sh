@@ -11,6 +11,7 @@ export EM_NODE_JS="$(readlink -f "${EM_NODE_JS}")"
 
 # Same applies for the Python interpreter.
 export PYTHON="$(readlink -f "${PYTHON}")"
+export PYTHONHOME="$(readlink -f "${PYTHONHOME}")"
 
 # The actual location of the 'emcc' binary also comes from the environment.
 
