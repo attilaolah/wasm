@@ -131,6 +131,9 @@ def _rule_impl(ctx):
             "EM_NODE_JS": node.path,
             "PYTHON": python.path,
 
+            # Required by the self-built Python.
+            "PYTHONHOME": ctx.files._python_runtime[0].path,
+
             # Required by acorn-optimizer to load @npm//acorn.
             "NODE_PATH": node_modules,
         },
@@ -190,6 +193,10 @@ wasm_library = rule(
         ),
         "_python": attr.label(
             default = "//tools/python",
+            cfg = "host",
+        ),
+        "_python_runtime": attr.label(
+            default = "//tools/python:runtime",
             cfg = "host",
         ),
         "_node": attr.label(
