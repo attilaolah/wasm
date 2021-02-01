@@ -22,7 +22,6 @@ configure_make(
     ],
     configure_options = [
         "--enable-shared=no",
-        "--enable-static=yes",
         # TODO: Add --enable-optimizations when building with -c opt.
     ],
     # TODO: Move install_prefix out of build, so it would never clash.
