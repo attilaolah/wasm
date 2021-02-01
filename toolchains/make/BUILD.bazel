@@ -23,6 +23,7 @@ native_tool_toolchain(
         "//tools:nodejs",
         "//tools/binaryen",
         "//tools/python",
+        "//tools/python:runtime",
         "@emscripten//:all",
         "@llvm//:all",
         "@npm//acorn",

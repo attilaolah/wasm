@@ -8,6 +8,8 @@ ENV_VARS = {
 
     # Python from //tools/python
     "PYTHON": "${EXT_BUILD_DEPS}/bin/python/bin/python3",
+    # Python runtime from //tools/python:runtime
+    "PYTHONHOME": "${EXT_BUILD_DEPS}/bin/python",
 }
 
 def _quote(text):
