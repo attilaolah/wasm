@@ -15,7 +15,7 @@ Then build targets as usual.
 ### Selecting the target architecture:
 
 - The default target is the host architecture.
-- Pass `--config=wasm64` to target WebAssembly.
+- Pass `--config=wasm32` to target WebAssembly.
 
 ### Selecting the build type:
 - The default build type is fastbuild.
@@ -23,7 +23,7 @@ Then build targets as usual.
 
 ## Build status
 
-| Library               | Version   | `x86_64` | `wasm64` |
+| Library               | Version   | `x86_64` | `wasm32` |
 |-----------------------|-----------|:--------:|:--------:|
 | `//lib/ceres`         | 1.14.0    | ✅       | ❌       |
 | `//lib/eigen`         | 3.3.8-rc1 | ✅       | ✅       |
