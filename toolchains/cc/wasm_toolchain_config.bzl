@@ -15,6 +15,7 @@ def wasm_toolchain(cpu):
             "wasm64_32": 2,
         }[cpu]),
         # Enable Emscripten "strict" build mode.
+        # This can be disabled where necessary by adding "-s STRICT=0" to copts.
         "-s STRICT",
         # Enable JavaScript BigInt support.
         "-s WASM_BIGINT",
