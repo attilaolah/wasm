@@ -143,7 +143,10 @@ def _rule_impl(ctx):
         mnemonic = "EMCC",
     )
 
-    return DefaultInfo(files = depset([lib_js, lib_wasm]))
+    return [
+        DefaultInfo(files = depset([lib_js, lib_wasm])),
+        OutputGroupInfo(js = [lib_js], wasm = [lib_wasm]),
+    ]
 
 wasm32_transition = transition(
     implementation = _transition_impl,
