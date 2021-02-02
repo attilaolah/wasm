@@ -58,9 +58,9 @@ def register_dependencies():
 
     http_archive(
         name = "emscripten",
-        version = "2.0.12",
+        version = "2.0.13",
         urls = ["https://github.com/{name}-core/{name}/archive/{version}.tar.gz"],
-        sha256 = "d9419c9ea6df4c9582a3a09fdeafec16f5f3c64866f6faf86989ea1ef99f54ea",
+        sha256 = "0e71d83300741c665026e3528d4c33e0e40af5874838b5ad76fd0a3c96fd786b",
         strip_prefix = "{name}-{version}",
     )
 
