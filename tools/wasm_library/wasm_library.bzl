@@ -111,6 +111,9 @@ def _rule_impl(ctx):
         for js in src[JSModuleInfo].direct_sources.to_list():
             inputs.append(js)
 
+    bazel_out, cfg, _ = lib_js.path.split("/", 2)
+    em_cache = "/".join([bazel_out, cfg, "em_cache"])
+
     ctx.actions.run(
         executable = ctx.executable._emscripten_emcc,
         arguments = [args],
@@ -125,7 +128,7 @@ def _rule_impl(ctx):
 
             # Values for EM_CONFIG content.
             # See //tools/emscripten:config.py.
-            "EM_CACHE": "/tmp/em_cache",
+            "EM_CACHE": em_cache,
             "EM_BINARYEN_ROOT": binaryen.path,
             "EM_LLVM_ROOT": clang.dirname,
             "EM_NODE_JS": node.path,

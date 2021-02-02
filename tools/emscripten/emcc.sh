@@ -5,6 +5,7 @@
 # This avoids a bug where subcommands fail to find the config.
 
 export EM_CONFIG="$(readlink -f "${EM_CONFIG}")"
+export EM_CACHE="$(readlink -f "${EM_CACHE}")"
 export EM_BINARYEN_ROOT="$(readlink -f "${EM_BINARYEN_ROOT}")"
 export EM_LLVM_ROOT="$(readlink -f "${EM_LLVM_ROOT}")"
 export EM_NODE_JS="$(readlink -f "${EM_NODE_JS}")"
