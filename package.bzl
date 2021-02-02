@@ -12,7 +12,9 @@ def register_dependencies():
         commit = "78dd4749941c0031e107cccbc441c7eeb89accd0",
         shallow_since = "1612107783 -0800",
         pull_requests = {
-            428: "38dc052bc4ecec57cee7abb0dba1f7d57071b6d3abcdef90f5414a318bb69df2",
+            428: "c7a838b69ec7e319826f39c80e935ff5b2127ae28ddc172380fa056642d7a3e5",
+            479: "5e6dc952aaf593ddd7fc7d7b2158c44177d8ddb9487351b8d9bd3240d95046db",
+            481: "87ed75f5d327387f00009275dc1c55e1aa1900d99567098f7e6cf8a9e98e4352",
         },
     )
 
