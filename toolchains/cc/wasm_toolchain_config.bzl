@@ -41,8 +41,10 @@ def wasm_toolchain(cpu):
         cpu = cpu,
         compile_flags = compile_flags,
         link_flags = [
-            # Disabling lazy binding ("-Wl,-z,now) breaks libpng.
-            "-Wl,-z,relro",  #,-z,now",
+            # These linker flags somehow break libpng when linking binaries.
+            # However, they are mostly irrelevant for static archives, which is
+            # what we care about when linking with Emscripten anyway.
+            #"-Wl,-z,relro,-z,now",
             "-lm",
         ],
         tool_paths = {
