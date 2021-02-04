@@ -1,5 +1,6 @@
 load("@rules_foreign_cc//tools/build_defs:make.bzl", "make")
 load(":configure.bzl", _lib_source = "lib_source", _make_commands = "make_commands")
+load(":env_vars.bzl", "WASM_ENV_VARS")
 
 def make_lib(
         name,
@@ -8,7 +9,8 @@ def make_lib(
         install_commands = None,
         linkopts = None,
         static_libraries = None,
-        deps = None):
+        deps = None,
+        env = None):
     if lib_source == None:
         lib_source = _lib_source(name)
     if make_commands == None:
@@ -22,6 +24,10 @@ def make_lib(
         static_libraries = ["lib{}.a".format(name)]
     if deps == None:
         deps = []
+    if env == None:
+        env = {}
+    wasm_env = dict(WASM_ENV_VARS.items() + env.items())
+
     make(
         name = name,
         lib_name = "{}_lib".format(name),
@@ -32,6 +38,11 @@ def make_lib(
             after_make = install_commands,
             after_emmake = install_commands,
         ),
+        env = select({
+            "//conditions:default": env,
+            "//config:wasm32": wasm_env,
+            "//config:wasm64": wasm_env,
+        }),
         static_libraries = static_libraries,
         deps = deps,
     )

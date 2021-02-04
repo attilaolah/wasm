@@ -1,13 +1,23 @@
 load("@rules_foreign_cc//tools/build_defs:configure.bzl", "configure_make")
-load(":env_vars.bzl", "ENV_CMD")
+load(":env_vars.bzl", "WASM_ENV_VARS")
 
-def configure_make_lib(name, configure_options, static_libraries = None, deps = None, copts = None):
+def configure_make_lib(
+        name,
+        configure_options,
+        static_libraries = None,
+        deps = None,
+        copts = None,
+        env = None):
     if static_libraries == None:
         static_libraries = ["lib{}.a".format(name)]
 
-    env_vars = {}
+    configure_env_vars = {}
     if copts != None:
-        env_vars["CFLAGS"] = " ".join(copts)
+        configure_env_vars["CFLAGS"] = " ".join(copts)
+
+    if env == None:
+        env = {}
+    wasm_env = dict(WASM_ENV_VARS.items() + env.items())
 
     configure_make(
         name = name,
@@ -17,7 +27,12 @@ def configure_make_lib(name, configure_options, static_libraries = None, deps = 
             "//config:wasm64": "emconfigure.sh",
         }),
         configure_options = configure_options,
-        configure_env_vars = env_vars,
+        configure_env_vars = configure_env_vars,
+        env = select({
+            "//conditions:default": env,
+            "//config:wasm32": wasm_env,
+            "//config:wasm64": wasm_env,
+        }),
         lib_name = "{}_lib".format(name),
         lib_source = lib_source(name),
         linkopts = ["-l{}".format(name)],
@@ -63,4 +78,4 @@ def patch_files(patch_map):
     ]
 
 def _emmake(make_command):
-    return '{} "${{EXT_BUILD_DEPS}}/bin/emscripten/emmake" {}'.format(ENV_CMD, make_command)
+    return '"${{EXT_BUILD_DEPS}}/bin/emscripten/emmake" {}'.format(make_command)

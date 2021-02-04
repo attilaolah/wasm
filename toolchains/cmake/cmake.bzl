@@ -12,7 +12,8 @@ def cmake_lib(
         linkopts = None,
         static_libraries = None,
         headers_only = False,
-        deps = None):
+        deps = None,
+        env = None):
     if cache_entries == None:
         cache_entries = {}
     if lib_source == None:
@@ -21,10 +22,18 @@ def cmake_lib(
         linkopts = ["-l{}".format(name)]
     if static_libraries == None:
         static_libraries = ["lib{}.a".format(name)]
+    if env == None:
+        env = {}
+    wasm_env = dict(WASM_ENV_VARS.items() + env.items())
+
     cmake_external(
         name = name,
         cache_entries = cache_entries,
-        env_vars = ENV_VARS,
+        env = select({
+            "//conditions:default": env,
+            "//config:wasm32": wasm_env,
+            "//config:wasm64": wasm_env,
+        }),
         headers_only = headers_only,
         lib_name = "{}_lib".format(name),
         lib_source = lib_source,

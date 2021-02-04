@@ -1,5 +1,5 @@
 load("@rules_foreign_cc//tools/build_defs:cmake.bzl", "cmake_external")
-load("//toolchains/make:env_vars.bzl", "ENV_VARS")
+load("//toolchains/make:env_vars.bzl", "WASM_ENV_VARS")
 
 cmake_external(
     name = "binaryen",
@@ -22,7 +22,8 @@ cmake_external(
         "PYTHON_EXECUTABLE:FILEPATH": "${EXT_BUILD_DEPS}/bin/python/bin/python3",
     },
     env_vars = {
-        "PYTHONHOME": ENV_VARS["PYTHONHOME"],
+        # TODO: Pick based on macro!
+        "PYTHONHOME": WASM_ENV_VARS["PYTHONHOME"],
     },
     lib_source = "@binaryen//:all",
     linkopts = ["-lbinaryen"],
