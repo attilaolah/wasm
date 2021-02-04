@@ -3,6 +3,10 @@ load("@rules_foreign_cc//tools/build_defs:configure.bzl", "configure_make")
 
 package(default_visibility = ["//:__subpackages__"])
 
+CONFIGURE_OPTIONS = [
+    "--enable-shared=no",
+]
+
 configure_make(
     name = "python",
     binaries = [
@@ -20,10 +24,12 @@ configure_make(
         "python3.9",
         "python3.9-config",
     ],
-    configure_options = [
-        "--enable-shared=no",
-        # TODO: Add --enable-optimizations when building with -c opt.
-    ],
+    configure_options = select({
+        "//conditions:default": CONFIGURE_OPTIONS,
+        ":copt": CONFIGURE_OPTIONS + [
+            "--enable-optimizations",
+        ],
+    }),
     # TODO: Move install_prefix out of build, so it would never clash.
     install_prefix = "install",
     lib_source = "@python//:all",
@@ -47,4 +53,11 @@ bzl_library(
     name = "package",
     srcs = ["package.bzl"],
     deps = ["//:http_archive"],
+)
+
+config_setting(
+    name = "copt",
+    values = {
+        "compilation_mode": "opt",
+    },
 )
