@@ -1,7 +1,7 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load(":clang.bzl", "clang_toolchain")
 
-clang_toolchain()
+clang_toolchain(name = "linux_x86_64_clang")
 
 bzl_library(
     name = "clang_bzl",

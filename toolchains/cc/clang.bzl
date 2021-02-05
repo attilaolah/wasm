@@ -7,21 +7,24 @@ LINUX_X86_64 = [
 
 LLVM_PATH = "${EXT_BUILD_ROOT}/external/llvm"
 
-def clang_toolchain():
+def clang_toolchain(name):
+    name_cc_toolchain = "{}_cc_toolchain".format(name)
+    name_cc_toolchain_config = "{}_config".format(name_cc_toolchain)
+
     native.toolchain(
-        name = "linux_x86_64_clang",
+        name = name,
         exec_compatible_with = LINUX_X86_64,
         target_compatible_with = LINUX_X86_64,
-        toolchain = "linux_x86_64_clang_cc_toolchain",
+        toolchain = name_cc_toolchain,
         toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
     )
 
     # Based on the output of:
     # CC=clang bazel query --output=build @local_config_cc//:cc-compiler-k8
-    clang_cc_toolchain(name = "linux_x86_64_clang_cc_toolchain")
+    clang_cc_toolchain(name = name_cc_toolchain)
 
     clang_cc_toolchain_config(
-        name = "linux_x86_64_clang_cc_toolchain_config",
+        name = name_cc_toolchain_config,
         cpu = "k8",
         cxx_builtin_include_directories = [
             # TODO: Load LLVM/Clang version from another .bzl file!
