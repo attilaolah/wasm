@@ -1,10 +1,3 @@
-# DEPRECATED: Use //tools/emscripten:config!
-filegroup(
-    name = "emscripten_config",
-    srcs = ["emscripten_config.py"],
-    visibility = ["//visibility:public"],
-)
-
 config_setting(
     name = "wasm32",
     values = {"cpu": "wasm32"},
