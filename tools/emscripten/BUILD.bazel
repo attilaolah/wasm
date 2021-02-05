@@ -8,11 +8,6 @@ filegroup(
     srcs = ["emcc.sh"],
 )
 
-filegroup(
-    name = "config",
-    srcs = ["config.py"],
-)
-
 ts_library(
     name = "types",
     srcs = ["types.d.ts"],
