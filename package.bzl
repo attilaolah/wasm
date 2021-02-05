@@ -1,3 +1,10 @@
+"""Repository rules for downloading all dependencies.
+
+The two functions should be called in the WORKSPACE file this order:
+
+register_dependencies()
+register_repositories()
+"""
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
 load(":http_archive.bzl", "http_archive")

@@ -1,3 +1,12 @@
+"""Custom http_archive() macro.
+
+Adds a few convenience methods, most notably templeted URLs and strip_prefix
+params, so that the version would need to be passed only once.
+
+The goal is that the version would be stored in only one place, making it
+easier to update external dependencies.
+"""
+
 load("@bazel_tools//tools/build_defs/repo:http.bzl", _http_archive = "http_archive")
 
 ALL_PUBLIC = """
@@ -12,13 +21,27 @@ def http_archive(
         name,
         version,
         urls,
-        sha256,
-        build_file_content = ALL_PUBLIC,
         strip_prefix = None,
-        patches = None,
-        patch_cmds = None,
+        build_file_content = ALL_PUBLIC,
         **kwargs):
-    """Wrapper around http_archive() that specifies a common BUILD file."""
+    """Wrapper around http_archive().
+
+    It specifies a common BUILD file by default, which publically exports all
+    contents.
+
+    Additionally, it allows template substitution in the URLs and in
+    strip_prefix.
+
+    Args:
+      name: Converted to snake_case and passed on to http_archive().
+      version: Used only for template substitution in the urls and strip_prefix
+        params.
+      urls: Passed on to http_archive() after template substitution.
+      strip_prefix: Passed on to http_archive() after template substitution.
+      build_file_content: Passed on to http_archive().
+      **kwargs: Passed on to http_archive().
+
+    """
     args = {
         "name": name,
         "version": version,
@@ -30,12 +53,9 @@ def http_archive(
         strip_prefix = strip_prefix.format(**args)
 
     _http_archive(
-        name = name.replace("-", "_"),
+        name = name.lower().replace("-", "_"),
         urls = [url.format(**args) for url in urls],
-        sha256 = sha256,
         strip_prefix = strip_prefix,
         build_file_content = build_file_content,
-        patches = patches,
-        patch_cmds = patch_cmds,
         **kwargs
     )
