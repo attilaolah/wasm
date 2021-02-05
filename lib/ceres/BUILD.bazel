@@ -1,6 +1,5 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
-load("//toolchains/make:configure.bzl", "patch_files")
 
 package(default_visibility = ["//:__subpackages__"])
 
