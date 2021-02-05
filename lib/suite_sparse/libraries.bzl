@@ -1,3 +1,5 @@
+"""Macro for building common SuiteSparse libraries."""
+
 load("//toolchains/make:configure.bzl", "lib_source")
 load("//toolchains/make:make.bzl", "make_lib")
 

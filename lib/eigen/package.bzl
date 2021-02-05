@@ -1,3 +1,5 @@
+"""Workspace rule for downloading package dependencies."""
+
 load("//:http_archive.bzl", "http_archive")
 
 VERSION = "3.3.8-rc1"

@@ -1,3 +1,12 @@
+"""Configure+Make library macro.
+
+Contains a convenience macro that wraps configure_make() from
+@rules_foreign_cc.
+
+Also contains most of the common functionality needed by Configure+Make, Make
+and CMake macros.
+"""
+
 load("@rules_foreign_cc//tools/build_defs:configure.bzl", "configure_make")
 
 WASM_ENV_VARS = {

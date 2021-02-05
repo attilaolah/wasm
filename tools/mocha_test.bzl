@@ -1,3 +1,8 @@
+"""Custom mocha_test() macro.
+
+Among others, it allows passing in TypeScript source files.
+"""
+
 load("@npm//@bazel/typescript:index.bzl", "ts_library")
 load("@npm//mocha:index.bzl", _mocha_test = "mocha_test")
 

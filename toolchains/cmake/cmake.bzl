@@ -1,3 +1,9 @@
+"""CMake library macro.
+
+Contains a convenience macro that wraps cmake_external() from
+@rules_foreign_cc.
+"""
+
 load("@rules_foreign_cc//tools/build_defs:cmake.bzl", "cmake_external")
 load("//toolchains/make:configure.bzl", "TOOLS_DEPS", "WASM_ENV_VARS", "make_commands", _lib_source = "lib_source")
 

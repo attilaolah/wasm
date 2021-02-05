@@ -1,3 +1,5 @@
+"""Workspace rule for downloading package dependencies."""
+
 load("//:http_archive.bzl", "http_archive")
 load("//tools/emscripten:emconfigure.bzl", "EMCONFIGURE")
 
