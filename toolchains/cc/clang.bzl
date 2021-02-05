@@ -21,7 +21,25 @@ def clang_toolchain(name):
 
     # Based on the output of:
     # CC=clang bazel query --output=build @local_config_cc//:cc-compiler-k8
-    clang_cc_toolchain(name = name_cc_toolchain)
+    native.cc_toolchain(
+        name = name_cc_toolchain,
+        all_files = "@llvm//:all",
+        ar_files = "@llvm//:all",
+        as_files = "@llvm//:all",
+        compiler_files = "@llvm//:all",
+        dwp_files = "@llvm//:all",
+        linker_files = "@llvm//:all",
+        objcopy_files = "@llvm//:all",
+        strip_files = "@llvm//:all",
+        supports_param_files = True,
+        toolchain_config = ":{}".format(name_cc_toolchain_config),
+        toolchain_identifier = "local",
+        visibility = ["//toolchains:__pkg__"],
+
+        # NOTE: The original module map would be:
+        # module_map = "@local_config_cc//:module.modulemap",
+        # However, it is only generated when auto-configuring with CC=clang.
+    )
 
     clang_cc_toolchain_config(
         name = name_cc_toolchain_config,
@@ -39,29 +57,6 @@ def clang_toolchain(name):
             "-lstdc++",
             "-lm",
         ],
-    )
-
-def clang_cc_toolchain(name, all_files = "@llvm//:all"):
-    # Based on the output of:
-    # CC=clang bazel query --output=build @local_config_cc//:cc-compiler-k8
-    native.cc_toolchain(
-        name = name,
-        all_files = all_files,
-        ar_files = all_files,
-        as_files = all_files,
-        compiler_files = all_files,
-        dwp_files = all_files,
-        linker_files = all_files,
-        objcopy_files = all_files,
-        strip_files = all_files,
-        supports_param_files = True,
-        toolchain_config = ":{}_config".format(name),
-        toolchain_identifier = "local",
-        visibility = ["//toolchains:__pkg__"],
-
-        # NOTE: The original module map would be:
-        # module_map = "@local_config_cc//:module.modulemap",
-        # However, it is only generated when auto-configuring with CC=clang.
     )
 
 def clang_cc_toolchain_config(
