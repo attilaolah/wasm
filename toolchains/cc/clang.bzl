@@ -41,48 +41,16 @@ def clang_toolchain(name):
         # However, it is only generated when auto-configuring with CC=clang.
     )
 
-    clang_cc_toolchain_config(
-        name = name_cc_toolchain_config,
-        cpu = "k8",
-        cxx_builtin_include_directories = [
-            # TODO: Load LLVM/Clang version from another .bzl file!
-            "{}/lib/clang/11.0.1/include".format(LLVM_PATH),
-        ],
-        compile_flags = ["-fstack-protector"],
-        link_flags = [
-            "-B{}/bin".format(LLVM_PATH),
-            "-fuse-ld={}/bin/ld.lld".format(LLVM_PATH),
-            "-Wl,-no-as-needed",
-            "-Wl,-z,relro,-z,now",
-            "-lstdc++",
-            "-lm",
-        ],
-    )
-
-def clang_cc_toolchain_config(
-        name,
-        cpu,
-        cxx_builtin_include_directories = None,
-        compile_flags = None,
-        link_flags = None,
-        tool_paths = None):
-    if cxx_builtin_include_directories == None:
-        cxx_builtin_include_directories = []
-    if compile_flags == None:
-        compile_flags = []
-    if link_flags == None:
-        link_flags = []
-    if tool_paths == None:
-        tool_paths = {}
-
     # Paths in the tool_paths dict must be absolute paths.
     # Otherwise Bazel prefixes them with "toolchains/", which breaks
     # @rules_foreign_cc rules that prefix them with ${EXT_BUILD_ROOT}.
     llvm_bin = "/.{}/bin".format(LLVM_PATH)
 
     # LLVM tools prefixed with "llvm-":
-    for tool in ["ar", "dwp", "nm", "objcopy", "objdump", "strip"]:
-        tool_paths.setdefault(tool, "{}/llvm-{}".format(llvm_bin, tool))
+    tool_paths = {
+        tool: "{}/llvm-{}".format(llvm_bin, tool)
+        for tool in ["ar", "dwp", "nm", "objcopy", "objdump", "strip"]
+    }
 
     # Special-case these tools that don't match the above pattern:
     for tool, llvm_tool in {
@@ -95,31 +63,41 @@ def clang_cc_toolchain_config(
         tool_paths.setdefault(tool, "{}/{}".format(llvm_bin, llvm_tool))
 
     # Additional compile flags, enabled by default for all targets:
-    compile_flags = [
-        "-U_FORTIFY_SOURCE",
-        "-Wall",
-        "-Wthread-safety",
-        "-Wself-assign",
-        "-fcolor-diagnostics",
-        "-fno-omit-frame-pointer",
-    ] + compile_flags
 
     # Based on the output of:
     # CC=clang bazel query --output=build @local_config_cc//:local
     cc_toolchain_config(
-        name = name,
+        name = name_cc_toolchain_config,
         abi_libc_version = "local",
         abi_version = "local",
-        compile_flags = compile_flags,
+        compile_flags = [
+            "-U_FORTIFY_SOURCE",
+            "-Wall",
+            "-Wthread-safety",
+            "-Wself-assign",
+            "-fcolor-diagnostics",
+            "-fno-omit-frame-pointer",
+            "-fstack-protector",
+        ],
         compiler = "clang",
         coverage_compile_flags = ["--coverage"],
         coverage_link_flags = ["--coverage"],
-        cpu = cpu,
-        cxx_builtin_include_directories = cxx_builtin_include_directories,
+        cpu = "k8",
+        cxx_builtin_include_directories = [
+            # TODO: Load LLVM/Clang version from another .bzl file!
+            "{}/lib/clang/11.0.1/include".format(LLVM_PATH),
+        ],
         cxx_flags = ["-std=c++0x"],
         dbg_compile_flags = ["-g"],
         host_system_name = "local",
-        link_flags = link_flags,
+        link_flags = [
+            "-B{}/bin".format(LLVM_PATH),
+            "-fuse-ld={}/bin/ld.lld".format(LLVM_PATH),
+            "-Wl,-no-as-needed",
+            "-Wl,-z,relro,-z,now",
+            "-lstdc++",
+            "-lm",
+        ],
         link_libs = [],
         opt_compile_flags = [
             "-g0",
