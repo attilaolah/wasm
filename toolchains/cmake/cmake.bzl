@@ -1,6 +1,5 @@
 load("@rules_foreign_cc//tools/build_defs:cmake.bzl", "cmake_external")
-load("//toolchains/make:configure.bzl", "make_commands", _lib_source = "lib_source")
-load("//toolchains/make:env_vars.bzl", "ENV_VARS")
+load("//toolchains/make:configure.bzl", "TOOLS_DEPS", "WASM_ENV_VARS", "make_commands", _lib_source = "lib_source")
 
 def cmake_lib(
         name,
@@ -45,4 +44,5 @@ def cmake_lib(
         static_libraries = static_libraries,
         working_directory = working_directory,
         deps = deps or [],
+        tools_deps = TOOLS_DEPS,
     )

@@ -1,3 +1,4 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@npm//@bazel/typescript:index.bzl", "ts_library")
 
 package(default_visibility = ["//visibility:public"])
@@ -19,4 +20,9 @@ ts_library(
         "@npm//@types/emscripten",
         "@npm//@types/node",
     ],
+)
+
+bzl_library(
+    name = "emconfigure_bzl",
+    srcs = ["emconfigure.bzl"],
 )

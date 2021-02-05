@@ -16,7 +16,8 @@ def http_archive(
         build_file_content = ALL_PUBLIC,
         strip_prefix = None,
         patches = None,
-        patch_cmds = None):
+        patch_cmds = None,
+        **kwargs):
     """Wrapper around http_archive() that specifies a common BUILD file."""
     args = {
         "name": name,
@@ -36,4 +37,5 @@ def http_archive(
         build_file_content = build_file_content,
         patches = patches,
         patch_cmds = patch_cmds,
+        **kwargs
     )

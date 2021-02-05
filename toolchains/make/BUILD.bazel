@@ -18,24 +18,18 @@ toolchain(
 native_tool_toolchain(
     name = "emmake_toolchain",
     path = "emscripten/emmake",
-    targets = [
-        "//config:emscripten_config",
-        "//tools:nodejs",
-        "//tools/binaryen",
-        "//tools/python",
-        "//tools/python:runtime",
-        "@emscripten//:all",
-        "@llvm//:all",
-        "@npm//acorn",
-    ],
+    target = ":empty",
     visibility = ["//visibility:public"],
 )
 
 bzl_library(
-    name = "bzl_lib",
-    srcs = [
-        "configure.bzl",
-        "env_vars.bzl",
-        "make.bzl",
-    ],
+    name = "configure_bzl",
+    srcs = ["configure.bzl"],
 )
+
+bzl_library(
+    name = "make_bzl",
+    srcs = ["make.bzl"],
+)
+
+filegroup(name = "empty")

@@ -1,0 +1,33 @@
+diff --git emscripten_toolchain/emar.sh emscripten_toolchain/emar.sh
+index 965442e..0153d7c 100755
+--- emscripten_toolchain/emar.sh
++++ emscripten_toolchain/emar.sh
+@@ -1,5 +1,3 @@
+ #!/bin/bash
+ 
+-source emscripten_toolchain/env.sh
+-
+-exec python3 $EMSCRIPTEN/emar.py "$@"
++exec "${PYTHON:=python3}" "${EMSCRIPTEN}/emar.py" "$@"
+diff --git emscripten_toolchain/emcc.sh emscripten_toolchain/emcc.sh
+index 66d00b6..ed059e9 100755
+--- emscripten_toolchain/emcc.sh
++++ emscripten_toolchain/emcc.sh
+@@ -1,5 +1,3 @@
+ #!/bin/bash
+ 
+-source emscripten_toolchain/env.sh
+-
+-exec python3 external/emscripten/emscripten/emcc.py "$@"
++exec "${PYTHON:=python3}" "${EMSCRIPTEN}/emcc.py" "$@"
+diff --git emscripten_toolchain/emcc_link.sh emscripten_toolchain/emcc_link.sh
+index 9d0f8e2..c2c63c0 100755
+--- emscripten_toolchain/emcc_link.sh
++++ emscripten_toolchain/emcc_link.sh
+@@ -1,5 +1,3 @@
+ #!/bin/bash
+ 
+-source emscripten_toolchain/env.sh
+-
+-exec python3 emscripten_toolchain/link_wrapper.py "$@"
++exec "${PYTHON:=python3}" "${ROOT_DIR}/external/emscripten_toolchain/link_wrapper.py" "$@"

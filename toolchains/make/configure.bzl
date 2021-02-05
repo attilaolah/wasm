@@ -1,5 +1,36 @@
 load("@rules_foreign_cc//tools/build_defs:configure.bzl", "configure_make")
-load(":env_vars.bzl", "WASM_ENV_VARS")
+
+WASM_ENV_VARS = {
+    # Emscripten config from @emsdk//emscripten_toolchain:emscripten_config:
+    "EM_CONFIG": "${EXT_BUILD_ROOT}/external/emsdk/emscripten_toolchain/emscripten_config",
+
+    # The Emscripten config above requires ROOT_DIR and EMSCRIPTEN to be set:
+    "ROOT_DIR": "${EXT_BUILD_ROOT}",
+    "EMSCRIPTEN": "${EXT_BUILD_ROOT}/external/emscripten/emscripten",
+
+    # Python from //tools/python:
+    "PYTHON": "${EXT_BUILD_DEPS}/bin/python/python.sh",
+
+    # Directory containing node_modules:
+    "NODE_PATH": "${EXT_BUILD_DEPS}/bin",
+}
+
+WASM_TOOLS = [
+    # keep sorted
+    "//tools:nodejs",
+    "//tools/python",
+    "//tools/python:runtime",
+    "@emscripten//:all",
+    "@emsdk//emscripten_toolchain:emscripten_config",
+    "@nodejs_linux_amd64//:node",
+    "@npm//acorn",
+]
+
+TOOLS_DEPS = select({
+    "//conditions:default": [],
+    "//config:wasm32": WASM_TOOLS,
+    "//config:wasm64": WASM_TOOLS,
+})
 
 def configure_make_lib(
         name,
@@ -39,6 +70,7 @@ def configure_make_lib(
         make_commands = make_commands(),
         static_libraries = static_libraries,
         deps = deps or [],
+        tools_deps = TOOLS_DEPS,
     )
 
 def make_commands(
@@ -78,4 +110,4 @@ def patch_files(patch_map):
     ]
 
 def _emmake(make_command):
-    return '"${{EXT_BUILD_DEPS}}/bin/emscripten/emmake" {}'.format(make_command)
+    return '"${{EXT_BUILD_DEPS}}/bin/emscripten/emscripten/emmake" {}'.format(make_command)

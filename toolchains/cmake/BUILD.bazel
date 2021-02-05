@@ -18,20 +18,13 @@ toolchain(
 native_tool_toolchain(
     name = "emcmake_toolchain",
     path = "emscripten/emcmake cmake",
-    targets = [
-        "//config:emscripten_config",
-        "//tools:nodejs",
-        "//tools/binaryen",
-        "//tools/python",
-        "//tools/python:runtime",
-        "@emscripten//:all",
-        "@llvm//:all",
-        "@npm//acorn",
-    ],
+    target = ":empty",
     visibility = ["//visibility:public"],
 )
 
 bzl_library(
-    name = "bzl_lib",
+    name = "cmake_bzl",
     srcs = ["cmake.bzl"],
 )
+
+filegroup(name = "empty")

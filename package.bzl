@@ -9,12 +9,10 @@ def register_dependencies():
     _github_repository(
         project = "rules_foreign_cc",
         owner = "bazelbuild",
-        commit = "ece188f9ab3f75777bf80176d6459a994f709061",
-        shallow_since = "1612439941 +0000",
+        commit = "466c32c70f6262f43eac06ad5e9dc2cbecbba228",
+        shallow_since = "1612531747 +0000",
         pull_requests = {
-            428: "c7a838b69ec7e319826f39c80e935ff5b2127ae28ddc172380fa056642d7a3e5",
-            479: "7cc424350b484e3bfbbd39cd5aec22d1dae14fc7380c1631921f6c52beba58fd",
-            481: "e56111b36c7575894145179626a04a9037ea1450485f3e00bbbe8f6a5f57de21",
+            481: "ee6536a9cec2844197b2cf4d9476a7be3bb43d99c3ec2231b5833bb17fe5f909",
         },
     )
 
@@ -49,27 +47,39 @@ def register_dependencies():
     )
 
     http_archive(
-        name = "binaryen",
-        version = "99",
-        urls = ["https://github.com/WebAssembly/{name}/archive/version_{version}.tar.gz"],
-        sha256 = "66ac4430367f2096466703b81749db836d8f4766e542b042d64e78b601372cf7",
-        strip_prefix = "{name}-version_{version}",
-    )
-
-    http_archive(
-        name = "emscripten",
-        version = "2.0.13",
-        urls = ["https://github.com/{name}-core/{name}/archive/{version}.tar.gz"],
-        sha256 = "0e71d83300741c665026e3528d4c33e0e40af5874838b5ad76fd0a3c96fd786b",
-        strip_prefix = "{name}-{version}",
-    )
-
-    http_archive(
         name = "llvm",
         version = "11.0.1",
         urls = ["https://github.com/{name}/{name}-project/releases/download/{name}org-{version}/clang+{name}-{version}-x86_64-linux-gnu-ubuntu-20.10.tar.xz"],
         sha256 = "b60f68581182ace5f7d4a72e5cce61c01adc88050acb72b2070ad298c25071bc",
         strip_prefix = "clang+{name}-{version}-x86_64-linux-gnu-ubuntu-20.10",
+    )
+
+    em_version = "2.0.13"
+
+    http_archive(
+        name = "emsdk",
+        version = em_version,
+        urls = ["https://github.com/{name}-core/emsdk/archive/{version}.tar.gz"],
+        sha256 = "1bacabdfa07e8565f269e99bcdfa13bf832d6fa64a784a40114deaca45572542",
+        strip_prefix = "emsdk-{version}/bazel",
+        build_file_content = None,
+        patches = ["//tools/emscripten:emsdk.patch"],
+    )
+
+    http_archive(
+        name = "emscripten",
+        version = em_version,
+        urls = ["https://storage.googleapis.com/webassembly/emscripten-releases-builds/linux/ce0e4a4d1cab395ee5082a60ebb4f3891a94b256/wasm-binaries.tbz2"],
+        sha256 = "8986ed886e111c661099c5147126b8a379a4040aab6a1f572fe01f0f9b99a343",
+        strip_prefix = "install",
+        build_file = "@emsdk//emscripten_toolchain:emscripten.BUILD",
+        build_file_content = None,
+        patch_cmds = [
+            # Remove files containing whitespace,
+            # Otherwise they cause issues when symlinking sh_binary() runfiles.
+            "rm -r emscripten/third_party/websockify/Windows",
+        ],
+        type = "tar.bz2",
     )
 
 def register_repositories():

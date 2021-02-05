@@ -1,5 +1,5 @@
 load("//:http_archive.bzl", "http_archive")
-load("//toolchains/make:env_vars.bzl", "EMCONFIGURE")
+load("//tools/emscripten:emconfigure.bzl", "EMCONFIGURE")
 
 VERSION = "4.1.0"
 

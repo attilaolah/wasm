@@ -24,7 +24,8 @@ def clang_toolchain():
         name = "linux_x86_64_clang_cc_toolchain_config",
         cpu = "k8",
         cxx_builtin_include_directories = [
-            "{}/lib/clang/11.0.0/include".format(LLVM_PATH),
+            # TODO: Load LLVM/Clang version from another .bzl file!
+            "{}/lib/clang/11.0.1/include".format(LLVM_PATH),
         ],
         compile_flags = ["-fstack-protector"],
         link_flags = [

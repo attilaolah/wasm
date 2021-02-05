@@ -1,14 +1,24 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@rules_foreign_cc//tools/build_defs:configure.bzl", "configure_make")
 
-package(default_visibility = ["//:__subpackages__"])
-
 CONFIGURE_OPTIONS = [
     "--enable-shared=no",
 ]
 
-configure_make(
+sh_binary(
     name = "python",
+    srcs = ["python.sh"],
+    data = [
+        ":runtime",
+    ],
+    env = {
+        "PYTHONHOME": "$(rootpath :runtime)",
+    },
+    visibility = ["//visibility:public"],
+)
+
+configure_make(
+    name = "binaries",
     binaries = [
         "2to3",
         "2to3-3.9",
@@ -27,15 +37,13 @@ configure_make(
     configure_options = select({
         "//conditions:default": CONFIGURE_OPTIONS,
         ":copt": CONFIGURE_OPTIONS + [
-            "--enable-optimizations",
+            # TODO: Add llvm-profdata to dependencies for this to work!
+            #"--enable-optimizations",
         ],
     }),
     # TODO: Move install_prefix out of build, so it would never clash.
     install_prefix = "install",
     lib_source = "@python//:all",
-    linkopts = ["-lpython"],
-    static_libraries = ["libpython3.9.a"],
-    visibility = ["//visibility:public"],
     deps = [
         # Required:
         "//lib/ffi",
@@ -45,13 +53,17 @@ configure_make(
 
 filegroup(
     name = "runtime",
-    srcs = [":python"],
+    srcs = [":binaries"],
     output_group = "gen_dir",
+    # TODO: Remove when this gets merged:
+    # https://github.com/bazelbuild/rules_foreign_cc/pull/437
+    visibility = ["//visibility:public"],
 )
 
 bzl_library(
     name = "package",
     srcs = ["package.bzl"],
+    visibility = ["//tools:__pkg__"],
     deps = ["//:http_archive"],
 )
 

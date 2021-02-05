@@ -16,18 +16,13 @@ def _find_file(files, name):
 
 def _transition_impl(settings, attr):
     return {
-        # New Platforms toolchain API:
-        "//command_line_option:platforms": "//platforms:wasm32",
         # Old C++ CPU/CROSSTOOL toolchain API:
         "//command_line_option:cpu": "wasm32",
     }
 
 def _rule_impl(ctx):
     emcc = _find_file(ctx.files._emscripten, "emcc")
-    binaryen = _find_file(ctx.files._binaryen, "binaryen")
-    clang = _find_file(ctx.files._llvm, "clang")
-    python = _find_file(ctx.files._python, "python3")
-    node = _find_file(ctx.files._node, "node")
+    python = _find_file(ctx.files._python, "python.sh")
 
     # Find the "node_modules" diectory provided by @npm.
     # This is where @npm//acorn (and other npm packages) live.
@@ -98,9 +93,8 @@ def _rule_impl(ctx):
 
     inputs = (
         ctx.files._emscripten +
-        ctx.files._binaryen +
-        ctx.files._llvm +
         ctx.files._python +
+        ctx.files._python_runtime +
         ctx.files._node +
         ctx.files._acorn +
         static_libs
@@ -123,22 +117,18 @@ def _rule_impl(ctx):
             lib_wasm,
         ],
         env = {
+            # Emscripten binary::
             "EMCC": emcc.path,
+            # Emscripten config file:
             "EM_CONFIG": ctx.file._emscripten_config.path,
-
-            # Values for EM_CONFIG content.
-            # See //tools/emscripten:config.py.
-            "EM_CACHE": em_cache,
-            "EM_BINARYEN_ROOT": binaryen.path,
-            "EM_LLVM_ROOT": clang.dirname,
-            "EM_NODE_JS": node.path,
+            # Python wrapper script:
             "PYTHON": python.path,
-
-            # Required by the self-built Python.
+            # Set PYTHONHOME since EXT_BUILD_DEPS is not defined here:
             "PYTHONHOME": ctx.files._python_runtime[0].path,
-
             # Required by acorn-optimizer to load @npm//acorn.
             "NODE_PATH": node_modules,
+            # Required by the Emscripten config:
+            "EMSCRIPTEN": emcc.dirname,
         },
         mnemonic = "EMCC",
     )
@@ -152,7 +142,6 @@ wasm32_transition = transition(
     implementation = _transition_impl,
     inputs = [],
     outputs = [
-        "//command_line_option:platforms",
         "//command_line_option:cpu",
     ],
 )
@@ -187,41 +176,31 @@ wasm_library = rule(
         ),
         "_emscripten": attr.label(
             default = "@emscripten//:all",
-            cfg = "host",
-        ),
-        "_binaryen": attr.label(
-            default = "//tools/binaryen",
-            cfg = "host",
-        ),
-        "_llvm": attr.label(
-            default = "@llvm//:all",
-            cfg = "host",
         ),
         "_python": attr.label(
             default = "//tools/python",
-            cfg = "host",
+            cfg = "exec",
         ),
         "_python_runtime": attr.label(
             default = "//tools/python:runtime",
-            cfg = "host",
+            cfg = "exec",
         ),
         "_node": attr.label(
-            default = "//tools:nodejs",
-            cfg = "host",
+            allow_single_file = True,
+            default = "@nodejs_linux_amd64//:node",
         ),
         "_acorn": attr.label(
             default = "@npm//acorn",
-            cfg = "host",
         ),
         "_emscripten_emcc": attr.label(
             allow_single_file = [".sh"],
             default = "//tools/emscripten:emcc",
             executable = True,
-            cfg = "host",
+            cfg = "exec",
         ),
         "_emscripten_config": attr.label(
-            allow_single_file = [".py"],
-            default = "//tools/emscripten:config",
+            allow_single_file = True,
+            default = "@emsdk//emscripten_toolchain:emscripten_config",
         ),
         "_allowlist_function_transition": attr.label(
             default = "@bazel_tools//tools/allowlists/function_transition_allowlist",

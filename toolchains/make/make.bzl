@@ -1,6 +1,5 @@
 load("@rules_foreign_cc//tools/build_defs:make.bzl", "make")
-load(":configure.bzl", _lib_source = "lib_source", _make_commands = "make_commands")
-load(":env_vars.bzl", "WASM_ENV_VARS")
+load(":configure.bzl", "TOOLS_DEPS", "WASM_ENV_VARS", _lib_source = "lib_source", _make_commands = "make_commands")
 
 def make_lib(
         name,
@@ -45,4 +44,5 @@ def make_lib(
         }),
         static_libraries = static_libraries,
         deps = deps,
+        tools_deps = TOOLS_DEPS,
     )
