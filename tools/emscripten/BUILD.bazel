@@ -21,3 +21,10 @@ bzl_library(
     name = "emconfigure_bzl",
     srcs = ["emconfigure.bzl"],
 )
+
+bzl_library(
+    name = "package",
+    srcs = ["package.bzl"],
+    visibility = ["//tools:__pkg__"],
+    deps = ["//:http_archive"],
+)
