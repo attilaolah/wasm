@@ -7,6 +7,7 @@ Also contains most of the common functionality needed by Configure+Make, Make
 and CMake macros.
 """
 
+load("@bazel_skylib//lib:collections.bzl", "collections")
 load("@rules_foreign_cc//tools/build_defs:configure.bzl", "configure_make")
 
 WASM_ENV_VARS = {
@@ -36,12 +37,6 @@ WASM_TOOLS = [
     "@nodejs_linux_amd64//:node",
     "@npm//acorn",
 ]
-
-TOOLS_DEPS = select({
-    "//config:wasm32": WASM_TOOLS,
-    "//config:wasm64": WASM_TOOLS,
-    "//conditions:default": [],
-})
 
 def configure_make_lib(
         name,
@@ -93,7 +88,7 @@ def configure_make_lib(
         linkopts = ["-l{}".format(name)],
         make_commands = make_commands(),
         static_libraries = static_libraries,
-        tools_deps = TOOLS_DEPS,
+        tools_deps = tools_deps(),
         **kwargs
     )
 
@@ -136,6 +131,29 @@ def make_commands(
         "//config:wasm32": wasm_commands,
         "//config:wasm64": wasm_commands,
         "//conditions:default": commands,
+    })
+
+def tools_deps(extras = None):
+    """Extends tools_deps with extras.
+
+    For Emscripten, merges extras with WASM_TOOLS. Otherwise it simply selects
+    extras for tools_deps.
+
+    Args:
+      extras: Existing tools_deps to extend.
+
+    Returns:
+      A select() wrapping the resulting tools_deps.
+    """
+    if extras == None:
+        extras = []
+
+    wasm_tools = collections.uniq(WASM_TOOLS + extras)
+
+    return select({
+        "//config:wasm32": wasm_tools,
+        "//config:wasm64": wasm_tools,
+        "//conditions:default": extras,
     })
 
 def lib_source(lib_name):

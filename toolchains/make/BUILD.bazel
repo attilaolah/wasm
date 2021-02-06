@@ -25,6 +25,7 @@ native_tool_toolchain(
 bzl_library(
     name = "configure_bzl",
     srcs = ["configure.bzl"],
+    deps = ["@bazel_skylib//lib:collections"],
 )
 
 bzl_library(

@@ -5,7 +5,7 @@ Contains a convenience macro that wraps cmake_external() from
 """
 
 load("@rules_foreign_cc//tools/build_defs:cmake.bzl", "cmake_external")
-load("//toolchains/make:configure.bzl", "TOOLS_DEPS", "WASM_ENV_VARS", "make_commands", _lib_source = "lib_source")
+load("//toolchains/make:configure.bzl", "WASM_ENV_VARS", "make_commands", _lib_source = "lib_source", _tools_deps = "tools_deps")
 
 def cmake_lib(
         name,
@@ -14,6 +14,7 @@ def cmake_lib(
         after_emcmake = None,
         linkopts = None,
         static_libraries = None,
+        tools_deps = None,
         env = None,
         **kwargs):
     """Convenience macro that wraps cmake_external().
@@ -26,6 +27,8 @@ def cmake_lib(
       after_emcmake: Commands to run after emcmake (but not after plain cmake).
       linkopts: Passed on to cmake_external(). Guessed from name.
       static_libraries: Passed on to cmake_external(). Guessed from name.
+      tools_deps: Additional build-time dependencies, compiled with cfg =
+        "exec".
       env: Passed on to cmake_external(). Form Emscripten builds, it is
         pre-populated with environment variables required by the toolchain.
       **kwargs: Passed no cmake_external().
@@ -55,6 +58,6 @@ def cmake_lib(
             before_emmake = after_emcmake,
         ),
         static_libraries = static_libraries,
-        tools_deps = TOOLS_DEPS,
+        tools_deps = _tools_deps(tools_deps),
         **kwargs
     )

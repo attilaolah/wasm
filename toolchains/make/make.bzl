@@ -4,7 +4,7 @@ Contains a convenience macro that wraps make() from @rules_foreign_cc.
 """
 
 load("@rules_foreign_cc//tools/build_defs:make.bzl", "make")
-load(":configure.bzl", "TOOLS_DEPS", "WASM_ENV_VARS", _lib_source = "lib_source", _make_commands = "make_commands")
+load(":configure.bzl", "WASM_ENV_VARS", "tools_deps", _lib_source = "lib_source", _make_commands = "make_commands")
 
 def make_lib(
         name,
@@ -61,6 +61,6 @@ def make_lib(
             "//conditions:default": env,
         }),
         static_libraries = static_libraries,
-        tools_deps = TOOLS_DEPS,
+        tools_deps = tools_deps(),
         **kwargs
     )
