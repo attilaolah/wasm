@@ -45,6 +45,7 @@ TOOLS_DEPS = select({
 
 def configure_make_lib(
         name,
+        configure_script = "configure",
         static_libraries = None,
         copts = None,
         env = None,
@@ -54,6 +55,7 @@ def configure_make_lib(
     Args:
       name: Passed on to configure_make(). Also used for guessing other
         parameters.
+      configure_script: Name of the configure script to run.
       static_libraries: Passed on to configure_make(). Guessed from name.
       copts: Additional compile options, appended to the CFLAGS configure
         environment variable.
@@ -71,13 +73,14 @@ def configure_make_lib(
     if env == None:
         env = {}
     wasm_env = dict(WASM_ENV_VARS.items() + env.items())
+    wasm_env["CONFIGURE"] = configure_script
 
     configure_make(
         name = name,
         configure_command = select({
             "//config:wasm32": "emconfigure.sh",
             "//config:wasm64": "emconfigure.sh",
-            "//conditions:default": "configure",
+            "//conditions:default": configure_script,
         }),
         configure_env_vars = configure_env_vars,
         env = select({

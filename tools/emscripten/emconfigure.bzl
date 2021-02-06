@@ -6,6 +6,6 @@ patch repos before loading them.
 """
 
 EMCONFIGURE = [
-    "echo '\"${EMSCRIPTEN}/emconfigure\" $(dirname $0)/configure $@' >> emconfigure.sh",
+    "echo '\"${EMSCRIPTEN}/emconfigure\" \"$(dirname $0)/${CONFIGURE}\" $@' >> emconfigure.sh",
     "chmod +x emconfigure.sh",
 ]
