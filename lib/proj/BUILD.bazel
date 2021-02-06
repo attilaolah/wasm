@@ -3,18 +3,35 @@ load("//toolchains/cmake:cmake.bzl", "cmake_lib")
 
 package(default_visibility = ["//:__subpackages__"])
 
+BINARIES = [
+    # keep sorted
+    "cct",
+    "cs2cs",
+    "geod",
+    "gie",
+    "proj",
+    "projinfo",
+    "projsync",
+]
+
+CACHE_ENTRIES = dict({
+    "CURL_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/curl_lib/include",
+    "CURL_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/curl_lib/lib/libcurl.a",
+    "SQLITE3_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/sqlite_lib/include",
+    "SQLITE3_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/sqlite_lib/lib/libsqlite3.a",
+    "TIFF_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/tiff_lib/include",
+    "TIFF_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/tiff_lib/lib/libtiff.a",
+}.items() + {
+    "BUILD_{}:BOOL".format(binary.upper()): "OFF"
+    for binary in BINARIES + [
+        "testing",
+        "shared_libs",
+    ]
+}.items())
+
 cmake_lib(
     name = "proj",
-    cache_entries = {
-        "BUILD_SHARED_LIBS:BOOL": "OFF",
-        "BUILD_TESTING:BOOL": "OFF",
-        "CURL_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/curl_lib/include",
-        "CURL_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/curl_lib/lib/libcurl.a",
-        "SQLITE3_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/sqlite_lib/include",
-        "SQLITE3_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/sqlite_lib/lib/libsqlite3.a",
-        "TIFF_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/tiff_lib/include",
-        "TIFF_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/tiff_lib/lib/libtiff.a",
-    },
+    cache_entries = CACHE_ENTRIES,
     tools_deps = ["//tools:sqlite"],
     deps = [
         "//lib/curl",
