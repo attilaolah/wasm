@@ -1,9 +1,16 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 
+package(default_visibility = ["//visibility:public"])
+
 filegroup(
     name = "nodejs",
     srcs = ["@nodejs_linux_amd64//:node_bin"],
-    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "sqlite",
+    srcs = ["//lib/sqlite"],
+    output_group = "sqlite3",
 )
 
 bzl_library(
