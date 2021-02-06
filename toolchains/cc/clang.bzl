@@ -14,6 +14,12 @@ LINUX_X86_64 = [
 LLVM_PATH = "${EXT_BUILD_ROOT}/external/llvm"
 
 def clang_toolchain(name):
+    """LLVM+Clang toolchain.
+
+    Args:
+      name: Name of the toolchain. Should be platform-specific, e.g.
+        "linux_x86_64_clang".
+    """
     name_cc_toolchain = "{}_cc_toolchain".format(name)
     name_cc_toolchain_config = "{}_config".format(name_cc_toolchain)
 

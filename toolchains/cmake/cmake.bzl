@@ -9,18 +9,27 @@ load("//toolchains/make:configure.bzl", "TOOLS_DEPS", "WASM_ENV_VARS", "make_com
 
 def cmake_lib(
         name,
-        working_directory = "",
-        cache_entries = None,
         lib_source = None,
         after_cmake = None,
         after_emcmake = None,
         linkopts = None,
         static_libraries = None,
-        headers_only = False,
-        deps = None,
-        env = None):
-    if cache_entries == None:
-        cache_entries = {}
+        env = None,
+        **kwargs):
+    """Convenience macro that wraps cmake_external().
+
+    Args:
+      name: Passed on to cmake_external(). Also used for guessing other
+        parameters.
+      lib_source: Passed on to cmake_external(). Guessed from name.
+      after_cmake: Commands to run after cmake.
+      after_emcmake: Commands to run after emcmake (but not after plain cmake).
+      linkopts: Passed on to cmake_external(). Guessed from name.
+      static_libraries: Passed on to cmake_external(). Guessed from name.
+      env: Passed on to cmake_external(). Form Emscripten builds, it is
+        pre-populated with environment variables required by the toolchain.
+      **kwargs: Passed no cmake_external().
+    """
     if lib_source == None:
         lib_source = _lib_source(name)
     if linkopts == None:
@@ -33,13 +42,11 @@ def cmake_lib(
 
     cmake_external(
         name = name,
-        cache_entries = cache_entries,
         env = select({
             "//conditions:default": env,
             "//config:wasm32": wasm_env,
             "//config:wasm64": wasm_env,
         }),
-        headers_only = headers_only,
         lib_name = "{}_lib".format(name),
         lib_source = lib_source,
         linkopts = linkopts,
@@ -48,7 +55,6 @@ def cmake_lib(
             before_emmake = after_emcmake,
         ),
         static_libraries = static_libraries,
-        working_directory = working_directory,
-        deps = deps or [],
         tools_deps = TOOLS_DEPS,
+        **kwargs
     )

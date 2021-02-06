@@ -6,4 +6,3 @@ bzl_library(
     visibility = ["//tools:__pkg__"],
     deps = ["//:http_archive"],
 )
-

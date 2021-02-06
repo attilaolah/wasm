@@ -8,6 +8,16 @@ PREFIX = "${EXT_BUILD_ROOT}/external/lib_suite_sparse"
 LIB_SOURCE = lib_source("suite_sparse")
 
 def suite_sparse_lib(name, header_ext = "h", directory = None, deps = None, with_cuda = False):
+    """Convenience macro that wraps make_lib().
+
+    Args:
+      name: Passed on to make_lib().
+      header_ext: Used for locating header files to install.
+      directory: Subdirectory containing the source files. Defaults to the name
+        in upper case.
+      deps: Passed on to make_lib().
+      with_cuda: If True, set the CUDA=auto make variable during build.
+    """
     if directory == None:
         directory = name.upper()
     if deps == None:

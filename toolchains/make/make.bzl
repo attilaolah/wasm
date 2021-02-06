@@ -13,8 +13,23 @@ def make_lib(
         install_commands = None,
         linkopts = None,
         static_libraries = None,
-        deps = None,
-        env = None):
+        env = None,
+        **kwargs):
+    """Convenience macro that wraps make().
+
+    Args:
+      name: Passed on to make(). Also used for guessing other parameters.
+      lib_source: Passed on to make(). Guessed from name.
+      make_commands: Wrapped in a select() for Emscripten, then passed on to
+        make().
+      install_commands: Commands to run after either make or emmake. For
+        Emscripten, these are NOT prefixed with emmake.
+      linkopts: Passed on to cmake_external(). Guessed from name.
+      static_libraries: Passed on to make(). Guessed from name.
+      env: Passed on to make(). Form Emscripten builds, it is
+        pre-populated with environment variables required by the toolchain.
+      **kwargs: Passed no make().
+    """
     if lib_source == None:
         lib_source = _lib_source(name)
     if make_commands == None:
@@ -26,8 +41,6 @@ def make_lib(
         linkopts = ["-l{}".format(name)]
     if static_libraries == None:
         static_libraries = ["lib{}.a".format(name)]
-    if deps == None:
-        deps = []
     if env == None:
         env = {}
     wasm_env = dict(WASM_ENV_VARS.items() + env.items())
@@ -48,6 +61,6 @@ def make_lib(
             "//config:wasm64": wasm_env,
         }),
         static_libraries = static_libraries,
-        deps = deps,
         tools_deps = TOOLS_DEPS,
+        **kwargs
     )

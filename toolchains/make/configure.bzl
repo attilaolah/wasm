@@ -43,11 +43,22 @@ TOOLS_DEPS = select({
 
 def configure_make_lib(
         name,
-        configure_options,
         static_libraries = None,
-        deps = None,
         copts = None,
-        env = None):
+        env = None,
+        **kwargs):
+    """Convenience macro that wraps configure_make().
+
+    Args:
+      name: Passed on to configure_make(). Also used for guessing other
+        parameters.
+      static_libraries: Passed on to configure_make(). Guessed from name.
+      copts: Additional compile options, appended to the CFLAGS configure
+        environment variable.
+      env: Passed on to configure_make(). Form Emscripten builds, it is
+        pre-populated with environment variables required by the toolchain.
+      **kwargs: Passed no configure_make().
+    """
     if static_libraries == None:
         static_libraries = ["lib{}.a".format(name)]
 
@@ -66,7 +77,6 @@ def configure_make_lib(
             "//config:wasm32": "emconfigure.sh",
             "//config:wasm64": "emconfigure.sh",
         }),
-        configure_options = configure_options,
         configure_env_vars = configure_env_vars,
         env = select({
             "//conditions:default": env,
@@ -78,8 +88,8 @@ def configure_make_lib(
         linkopts = ["-l{}".format(name)],
         make_commands = make_commands(),
         static_libraries = static_libraries,
-        deps = deps or [],
         tools_deps = TOOLS_DEPS,
+        **kwargs
     )
 
 def make_commands(
@@ -88,6 +98,21 @@ def make_commands(
         after_make = None,
         before_emmake = None,
         after_emmake = None):
+    """Generate make commands for the target platform.
+
+    By default, returns the passed-in commands. For Emscripten builds, prefixes
+    the commands with "emmake".
+
+    Args:
+      commands: Commands, as a list of strings.
+      before_make: Commands to run before make, but not before emmake.
+      after_make: Commands to run after make, but not after emmake.
+      before_emmake: Commands to run before emmake, but not before make.
+      after_emmake: Commands to run after emmake, but not after make.
+
+    Returns:
+      A select() wrapping the resulting make commands.
+    """
     if commands == None:
         commands = ["make", "make install"]
     wasm_commands = [_emmake(cmd) for cmd in commands]
