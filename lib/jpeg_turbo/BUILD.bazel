@@ -11,8 +11,12 @@ cmake_lib(
         "ENABLE_STATIC:BOOL": "ON",
         "WITH_JAVA:BOOL": "OFF",
     },
-    linkopts = ["-ljpeg"],
-    static_libraries = ["libjpeg.a"],
+    linkopts = ["-lturbojpeg"],
+    static_libraries = [
+        # keep sorted
+        "libjpeg.a",
+        "libturbojpeg.a",
+    ],
 )
 
 bzl_library(
