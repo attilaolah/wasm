@@ -2,11 +2,11 @@
 
 load("//:http_archive.bzl", "http_archive")
 
-VERSION = "2.0.4"
+VERSION = "2.0.90"
 
-URL = "https://download.sourceforge.net/libjpeg-turbo/libjpeg-turbo-{version}.tar.gz"
+URL = "https://github.com/libjpeg-turbo/libjpeg-turbo/archive/{version}.tar.gz"
 
-SHA256 = "33dd8547efd5543639e890efbf2ef52d5a21df81faf41bb940657af916a23406"
+SHA256 = "6a965adb02ad898b2ae48214244618fe342baea79db97157fdc70d8844ac6f09"
 
 def download_jpeg_turbo():
     http_archive(
