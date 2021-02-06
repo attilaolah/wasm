@@ -1,0 +1,22 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//toolchains/cmake:cmake.bzl", "cmake_lib")
+
+package(default_visibility = ["//:__subpackages__"])
+
+cmake_lib(
+    name = "curl",
+    cache_entries = {
+        "BUILD_CURL_EXE:BOOL": "OFF",
+        "BUILD_SHARED_LIBS:BOOL": "OFF",
+        "OPENSSL_CRYPTO_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/openssl_lib/lib/libcrypto.a",
+        "OPENSSL_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/openssl_lib/include",
+        "OPENSSL_SSL_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/openssl_lib/lib/libssl.a",
+    },
+    deps = ["//lib/openssl"],
+)
+
+bzl_library(
+    name = "package",
+    srcs = ["package.bzl"],
+    deps = ["//:http_archive"],
+)
