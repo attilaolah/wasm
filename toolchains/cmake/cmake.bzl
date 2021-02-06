@@ -43,9 +43,9 @@ def cmake_lib(
     cmake_external(
         name = name,
         env = select({
-            "//conditions:default": env,
             "//config:wasm32": wasm_env,
             "//config:wasm64": wasm_env,
+            "//conditions:default": env,
         }),
         lib_name = "{}_lib".format(name),
         lib_source = lib_source,

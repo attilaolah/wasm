@@ -8,9 +8,9 @@ register_repositories()
 
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
-load(":http_archive.bzl", "http_archive")
 load("//lib:package.bzl", "download_lib")
 load("//tools:package.bzl", "download_tools")
+load(":http_archive.bzl", "http_archive")
 
 def register_dependencies():
     """Set up dependencies of THIS workspace."""

@@ -110,9 +110,6 @@ def _rule_impl(ctx):
         for js in src[JSModuleInfo].direct_sources.to_list():
             inputs.append(js)
 
-    bazel_out, cfg, _ = lib_js.path.split("/", 2)
-    em_cache = "/".join([bazel_out, cfg, "em_cache"])
-
     ctx.actions.run(
         executable = ctx.executable._emscripten_emcc,
         arguments = [args],
@@ -122,18 +119,18 @@ def _rule_impl(ctx):
             lib_wasm,
         ],
         env = {
-            # Emscripten binary::
+            # Emscripten binary:
             "EMCC": emcc.path,
+            # Required by the Emscripten config:
+            "EMSCRIPTEN": emcc.dirname,
             # Emscripten config file:
             "EM_CONFIG": ctx.file._emscripten_config.path,
+            # Required by acorn-optimizer to load @npm//acorn.
+            "NODE_PATH": node_modules,
             # Python wrapper script:
             "PYTHON": python.path,
             # Set PYTHONHOME since EXT_BUILD_DEPS is not defined here:
             "PYTHONHOME": ctx.files._python_runtime[0].path,
-            # Required by acorn-optimizer to load @npm//acorn.
-            "NODE_PATH": node_modules,
-            # Required by the Emscripten config:
-            "EMSCRIPTEN": emcc.dirname,
         },
         mnemonic = "EMCC",
     )
@@ -146,28 +143,21 @@ def _rule_impl(ctx):
 wasm32_transition = transition(
     implementation = _transition_impl,
     inputs = [],
-    outputs = [
-        "//command_line_option:cpu",
-    ],
+    outputs = ["//command_line_option:cpu"],
 )
 
 wasm_library = rule(
     implementation = _rule_impl,
     attrs = {
-        "srcs": attr.label_list(
-            mandatory = True,
-            doc = "Sources to pass to emcc using --pre-js.",
-            providers = [JSModuleInfo],
+        "build_settings": attr.string_dict(
+            mandatory = False,
+            doc = "Additional settings to pass to emcc via -s key=value.",
+            default = {},
         ),
         "deps": attr.label_list(
             mandatory = True,
             doc = "Dependencies that provide static libraries to be linked.",
             cfg = wasm32_transition,
-        ),
-        "build_settings": attr.string_dict(
-            mandatory = False,
-            doc = "Additional settings to pass to emcc via -s key=value.",
-            default = {},
         ),
         "exported_functions": attr.string_list(
             mandatory = False,
@@ -179,8 +169,36 @@ wasm_library = rule(
             doc = "List of Emscripten runtime methods to export.",
             default = [],
         ),
+        "srcs": attr.label_list(
+            mandatory = True,
+            doc = "Sources to pass to emcc using --pre-js.",
+            providers = [JSModuleInfo],
+        ),
+        "_acorn": attr.label(
+            default = "@npm//acorn",
+        ),
+        "_allowlist_function_transition": attr.label(
+            default = "@bazel_tools//tools/allowlists/function_transition_allowlist",
+        ),
+        "_cc_toolchain": attr.label(
+            default = Label("@bazel_tools//tools/cpp:current_cc_toolchain"),
+        ),
         "_emscripten": attr.label(
             default = "@emscripten//:all",
+        ),
+        "_emscripten_config": attr.label(
+            allow_single_file = True,
+            default = "@emsdk//emscripten_toolchain:emscripten_config",
+        ),
+        "_emscripten_emcc": attr.label(
+            allow_single_file = [".sh"],
+            default = "//tools/emscripten:emcc",
+            executable = True,
+            cfg = "exec",
+        ),
+        "_node": attr.label(
+            allow_single_file = True,
+            default = "@nodejs_linux_amd64//:node",
         ),
         "_python": attr.label(
             default = "//tools/python",
@@ -189,29 +207,6 @@ wasm_library = rule(
         "_python_runtime": attr.label(
             default = "//tools/python:runtime",
             cfg = "exec",
-        ),
-        "_node": attr.label(
-            allow_single_file = True,
-            default = "@nodejs_linux_amd64//:node",
-        ),
-        "_acorn": attr.label(
-            default = "@npm//acorn",
-        ),
-        "_emscripten_emcc": attr.label(
-            allow_single_file = [".sh"],
-            default = "//tools/emscripten:emcc",
-            executable = True,
-            cfg = "exec",
-        ),
-        "_emscripten_config": attr.label(
-            allow_single_file = True,
-            default = "@emsdk//emscripten_toolchain:emscripten_config",
-        ),
-        "_allowlist_function_transition": attr.label(
-            default = "@bazel_tools//tools/allowlists/function_transition_allowlist",
-        ),
-        "_cc_toolchain": attr.label(
-            default = Label("@bazel_tools//tools/cpp:current_cc_toolchain"),
         ),
     },
     fragments = ["cpp"],

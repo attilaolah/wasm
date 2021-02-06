@@ -35,11 +35,11 @@ configure_make(
         "python3.9-config",
     ],
     configure_options = select({
-        "//conditions:default": CONFIGURE_OPTIONS,
         ":copt": CONFIGURE_OPTIONS + [
             # TODO: Add llvm-profdata to dependencies for this to work!
             #"--enable-optimizations",
         ],
+        "//conditions:default": CONFIGURE_OPTIONS,
     }),
     # TODO: Move install_prefix out of build, so it would never clash.
     install_prefix = "install",

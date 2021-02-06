@@ -19,13 +19,11 @@ cmake_lib(
         "WEBP_BUILD_EXTRAS:BOOL": "OFF",
         "WEBP_BUILD_GIF2WEBP:BOOL": "OFF",
         "WEBP_BUILD_IMG2WEBP:BOOL": "OFF",
+        "WEBP_BUILD_VWEBP:BOOL": "OFF",
         "WEBP_BUILD_WEBPINFO:BOOL": "OFF",
         "WEBP_BUILD_WEBPMUX:BOOL": "OFF",
         "ZLIB_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/z_lib/include",
         "ZLIB_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/z_lib/lib/libz.a",
-
-        # Unsupported: Requires SDL.
-        "WEBP_BUILD_VWEBP:BOOL": "OFF",
     },
     # NOTE: //lib/tiff would be a dependency for some tools,
     # but that would introduce a cyclic dependency, so we don't list it here.

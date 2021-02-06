@@ -56,9 +56,9 @@ def make_lib(
             after_emmake = install_commands,
         ),
         env = select({
-            "//conditions:default": env,
             "//config:wasm32": wasm_env,
             "//config:wasm64": wasm_env,
+            "//conditions:default": env,
         }),
         static_libraries = static_libraries,
         tools_deps = TOOLS_DEPS,

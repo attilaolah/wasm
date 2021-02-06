@@ -10,18 +10,20 @@ and CMake macros.
 load("@rules_foreign_cc//tools/build_defs:configure.bzl", "configure_make")
 
 WASM_ENV_VARS = {
+    # Required by the Emscripten config:
+    "EMSCRIPTEN": "${EXT_BUILD_ROOT}/external/emscripten/emscripten",
+
     # Emscripten config from @emsdk//emscripten_toolchain:emscripten_config:
     "EM_CONFIG": "${EXT_BUILD_ROOT}/external/emsdk/emscripten_toolchain/emscripten_config",
 
-    # The Emscripten config above requires ROOT_DIR and EMSCRIPTEN to be set:
-    "ROOT_DIR": "${EXT_BUILD_ROOT}",
-    "EMSCRIPTEN": "${EXT_BUILD_ROOT}/external/emscripten/emscripten",
+    # Directory containing node_modules:
+    "NODE_PATH": "${EXT_BUILD_DEPS}/bin",
 
     # Python from //tools/python:
     "PYTHON": "${EXT_BUILD_DEPS}/bin/python/python.sh",
 
-    # Directory containing node_modules:
-    "NODE_PATH": "${EXT_BUILD_DEPS}/bin",
+    # Required by the Emscripten config:
+    "ROOT_DIR": "${EXT_BUILD_ROOT}",
 }
 
 WASM_TOOLS = [
@@ -36,9 +38,9 @@ WASM_TOOLS = [
 ]
 
 TOOLS_DEPS = select({
-    "//conditions:default": [],
     "//config:wasm32": WASM_TOOLS,
     "//config:wasm64": WASM_TOOLS,
+    "//conditions:default": [],
 })
 
 def configure_make_lib(
@@ -73,15 +75,15 @@ def configure_make_lib(
     configure_make(
         name = name,
         configure_command = select({
-            "//conditions:default": "configure",
             "//config:wasm32": "emconfigure.sh",
             "//config:wasm64": "emconfigure.sh",
+            "//conditions:default": "configure",
         }),
         configure_env_vars = configure_env_vars,
         env = select({
-            "//conditions:default": env,
             "//config:wasm32": wasm_env,
             "//config:wasm64": wasm_env,
+            "//conditions:default": env,
         }),
         lib_name = "{}_lib".format(name),
         lib_source = lib_source(name),
@@ -128,9 +130,9 @@ def make_commands(
         wasm_commands += after_emmake
 
     return select({
-        "//conditions:default": commands,
         "//config:wasm32": wasm_commands,
         "//config:wasm64": wasm_commands,
+        "//conditions:default": commands,
     })
 
 def lib_source(lib_name):

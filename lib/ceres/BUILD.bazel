@@ -20,6 +20,11 @@ _SS_LIBS = [
 _CACHE_ENTRIES = {
     "BUILD_EXAMPLES:BOOL": "OFF",
     "BUILD_SHARED_LIBS:BOOL": "OFF",
+
+    # Needed to make #include <SuiteSparse_config.h> work.
+    "CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES:PATH": "${EXT_BUILD_DEPS}/config_lib/include",
+
+    # Dependencies:
     "CXSPARSE_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/cxsparse_lib/include",
     "CXSPARSE_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/cxsparse_lib/lib/libcxsparse.a",
     "EIGEN_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/eigen_lib/include/eigen3",
@@ -36,9 +41,6 @@ _CACHE_ENTRIES = {
         "${{EXT_BUILD_DEPS}}/{}_lib/lib".format(lib)
         for lib in _SS_LIBS
     ]),
-
-    # Needed to make #include <SuiteSparse_config.h> work.
-    "CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES:PATH": "${EXT_BUILD_DEPS}/config_lib/include",
 }
 
 _CLANG_CACHE_ENTRIES = dict(_CACHE_ENTRIES.items() + {
@@ -51,9 +53,9 @@ _CLANG_CACHE_ENTRIES = dict(_CACHE_ENTRIES.items() + {
 cmake_lib(
     name = "ceres",
     cache_entries = select({
-        "//conditions:default": _CLANG_CACHE_ENTRIES,
         "//config:wasm32": _CACHE_ENTRIES,
         "//config:wasm64": _CACHE_ENTRIES,
+        "//conditions:default": _CLANG_CACHE_ENTRIES,
     }),
     deps = [
         "//lib/eigen",

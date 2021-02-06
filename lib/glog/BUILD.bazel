@@ -5,10 +5,10 @@ load("//toolchains/make:configure.bzl", "patch_files")
 package(default_visibility = ["//:__subpackages__"])
 
 _X86_64_CACHE_ENTRIES = {
+    "BUILD_SHARED_LIBS:BOOL": "OFF",
     "WITH_GFLAGS:BOOL": "ON",
     "WITH_THREADS:BOOL": "ON",
     "WITH_TLS:BOOL": "ON",
-    "BUILD_SHARED_LIBS:BOOL": "OFF",
 }
 
 _WASM_CACHE_ENTRIES = dict(_X86_64_CACHE_ENTRIES.items() + {
@@ -30,9 +30,9 @@ cmake_lib(
         "config.h": r"/^#define HAVE_({})\b.*/d".format("|".join(_MASK_HEADERS)),
     }),
     cache_entries = select({
-        "//conditions:default": _X86_64_CACHE_ENTRIES,
         "//config:wasm32": _WASM_CACHE_ENTRIES,
         "//config:wasm64": _WASM_CACHE_ENTRIES,
+        "//conditions:default": _X86_64_CACHE_ENTRIES,
     }),
     deps = [
         "//lib/gflags",

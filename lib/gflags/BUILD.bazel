@@ -6,10 +6,10 @@ package(default_visibility = ["//:__subpackages__"])
 cmake_lib(
     name = "gflags",
     cache_entries = {
+        "GFLAGS_BUILD_PACKAGING:BOOL": "OFF",
         "GFLAGS_BUILD_SHARED_LIBS:BOOL": "OFF",
         "GFLAGS_BUILD_STATIC_LIBS:BOOL": "ON",
         "GFLAGS_BUILD_TESTING:BOOL": "OFF",
-        "GFLAGS_BUILD_PACKAGING:BOOL": "OFF",
     },
     static_libraries = [
         "libgflags.a",
