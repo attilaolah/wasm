@@ -129,8 +129,8 @@ def _rule_impl(ctx):
             "NODE_PATH": node_modules,
             # Python wrapper script:
             "PYTHON": python.path,
-            # Set PYTHONHOME since EXT_BUILD_DEPS is not defined here:
-            "PYTHONHOME": ctx.files._python_runtime[0].path,
+            # Configure ROOT_PATH for //tools/python:
+            "ROOT_PATH": ctx.files._python_runtime[0].path,
         },
         mnemonic = "EMCC",
     )

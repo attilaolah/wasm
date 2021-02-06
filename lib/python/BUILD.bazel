@@ -1,0 +1,52 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//toolchains/make:configure.bzl", "configure_make_lib")
+
+package(default_visibility = ["//:__subpackages__"])
+
+CONFIGURE_OPTIONS = [
+    "--enable-shared=no",
+]
+
+configure_make_lib(
+    name = "python",
+    binaries = select({
+        "//config:wasm32": [],
+        "//config:wasm64": [],
+        "//conditions:default": ["python3"],
+    }),
+    configure_options = select({
+        ":copt": CONFIGURE_OPTIONS + [
+            # TODO: Add llvm-profdata to dependencies for this to work!
+            #"--enable-optimizations",
+        ],
+        "//conditions:default": CONFIGURE_OPTIONS,
+    }),
+    static_libraries = ["libpython3.9.a"],
+    deps = [
+        # Required:
+        "//lib/ffi",
+        "//lib/z",
+    ],
+)
+
+filegroup(
+    name = "runtime",
+    srcs = ["//lib/python"],
+    output_group = "gen_dir",
+    # TODO: Remove when this gets merged:
+    # https://github.com/bazelbuild/rules_foreign_cc/pull/437
+    visibility = ["//visibility:public"],
+)
+
+config_setting(
+    name = "copt",
+    values = {
+        "compilation_mode": "opt",
+    },
+)
+
+bzl_library(
+    name = "package",
+    srcs = ["package.bzl"],
+    deps = ["//:http_archive"],
+)

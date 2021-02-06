@@ -1,75 +1,7 @@
-load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
-load("@rules_foreign_cc//tools/build_defs:configure.bzl", "configure_make")
-
-CONFIGURE_OPTIONS = [
-    "--enable-shared=no",
-]
-
 sh_binary(
     name = "python",
     srcs = ["python.sh"],
-    data = [
-        ":runtime",
-    ],
-    env = {
-        "PYTHONHOME": "$(rootpath :runtime)",
-    },
+    data = ["//lib/python:runtime"],
+    env = {"ROOT_PATH": "$(rootpath //lib/python:runtime)"},
     visibility = ["//visibility:public"],
-)
-
-configure_make(
-    name = "binaries",
-    binaries = [
-        "2to3",
-        "2to3-3.9",
-        "easy_install-3.9",
-        "idle3",
-        "idle3.9",
-        "pip3",
-        "pip3.9",
-        "pydoc3",
-        "pydoc3.9",
-        "python3",
-        "python3-config",
-        "python3.9",
-        "python3.9-config",
-    ],
-    configure_options = select({
-        ":copt": CONFIGURE_OPTIONS + [
-            # TODO: Add llvm-profdata to dependencies for this to work!
-            #"--enable-optimizations",
-        ],
-        "//conditions:default": CONFIGURE_OPTIONS,
-    }),
-    # TODO: Move install_prefix out of build, so it would never clash.
-    install_prefix = "install",
-    lib_source = "@python//:all",
-    deps = [
-        # Required:
-        "//lib/ffi",
-        "//lib/z",
-    ],
-)
-
-filegroup(
-    name = "runtime",
-    srcs = [":binaries"],
-    output_group = "gen_dir",
-    # TODO: Remove when this gets merged:
-    # https://github.com/bazelbuild/rules_foreign_cc/pull/437
-    visibility = ["//visibility:public"],
-)
-
-bzl_library(
-    name = "package",
-    srcs = ["package.bzl"],
-    visibility = ["//tools:__pkg__"],
-    deps = ["//:http_archive"],
-)
-
-config_setting(
-    name = "copt",
-    values = {
-        "compilation_mode": "opt",
-    },
 )
