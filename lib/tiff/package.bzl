@@ -2,11 +2,11 @@
 
 load("//:http_archive.bzl", "http_archive")
 
-VERSION = "4.1.0"
+VERSION = "4.2.0"
 
 URL = "https://download.osgeo.org/libtiff/tiff-{version}.tar.gz"
 
-SHA256 = "5d29f32517dadb6dbcd1255ea5bbc93a2b54b94fbf83653b4d65c7d6775b8634"
+SHA256 = "eb0484e568ead8fa23b513e9b0041df7e327f4ee2d22db5a533929dfc19633cb"
 
 def download_tiff():
     http_archive(
@@ -15,5 +15,4 @@ def download_tiff():
         urls = [URL],
         sha256 = SHA256,
         strip_prefix = "tiff-{version}",
-        patches = ["//lib/tiff:CMakeLists.txt.patch"],
     )
