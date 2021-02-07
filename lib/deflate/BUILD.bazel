@@ -1,0 +1,12 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//toolchains/make:make.bzl", "make_lib")
+
+package(default_visibility = ["//:__subpackages__"])
+
+make_lib(name = "deflate")
+
+bzl_library(
+    name = "package",
+    srcs = ["package.bzl"],
+    deps = ["//:http_archive"],
+)

@@ -2,6 +2,7 @@
 
 load("//lib/ceres:package.bzl", "download_ceres")
 load("//lib/curl:package.bzl", "download_curl")
+load("//lib/deflate:package.bzl", "download_deflate")
 load("//lib/eigen:package.bzl", "download_eigen")
 load("//lib/ffi:package.bzl", "download_ffi")
 load("//lib/fftw:package.bzl", "download_fftw")
@@ -32,6 +33,7 @@ def download_lib():
     """Download all library sources."""
     download_ceres()
     download_curl()
+    download_deflate()
     download_eigen()
     download_ffi()
     download_fftw()
