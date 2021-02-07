@@ -86,9 +86,11 @@ func MDTable(prefix string) (string, error) {
 
 	var b strings.Builder
 	for _, path := range paths {
-		b.WriteString("`")
+		b.WriteString("[`")
 		b.WriteString(label(path))
-		b.WriteString("` | ")
+		b.WriteString("`](")
+		b.WriteString(url(path))
+		b.WriteString(") | ")
 		b.WriteString(vers[path])
 		b.WriteString("\n")
 	}
@@ -137,4 +139,9 @@ func GetVersion(path string) (string, error) {
 func label(path string) string {
 	dir, _ := filepath.Split(path)
 	return "//" + strings.Trim(dir, "/")
+}
+
+func url(path string) string {
+	dir, _ := filepath.Split(path)
+	return fmt.Sprintf("https://github.com/attilaolah/wasm/blob/main/%s/BUILD.bazel", strings.Trim(dir, "/"))
 }
