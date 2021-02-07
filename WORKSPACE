@@ -8,9 +8,9 @@ workspace(
     managed_directories = {"@npm": ["node_modules"]},
 )
 
-load("//:package.bzl", "register_dependencies")
+load("//:workspace.bzl", "workspace_dependencies")
 
-register_dependencies()
+workspace_dependencies()
 
 register_toolchains("//toolchains/cc:all")
 
@@ -34,7 +34,7 @@ npm_install(
 
 load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
 load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
-load("//:package_deps.bzl", "external_dependencies", "go_dependencies")
+load("//:deps.bzl", "external_dependencies", "go_dependencies")
 
 go_rules_dependencies()
 
@@ -43,7 +43,7 @@ go_register_toolchains(version = "1.15.8")
 # gazelle:repo bazel_gazelle
 gazelle_dependencies()
 
-# gazelle:repository_macro package_deps.bzl%go_dependencies
+# gazelle:repository_macro deps.bzl%go_dependencies
 go_dependencies()
 
 external_dependencies()

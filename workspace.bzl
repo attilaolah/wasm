@@ -4,7 +4,7 @@ load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
 load(":http_archive.bzl", "http_archive")
 
-def register_dependencies():
+def workspace_dependencies():
     """Set up dependencies of THIS workspace."""
     _github_repository(
         project = "rules_foreign_cc",

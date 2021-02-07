@@ -10,17 +10,17 @@ exports_files(
 )
 
 bzl_library(
-    name = "package",
-    srcs = ["package.bzl"],
+    name = "workspace",
+    srcs = ["workspace.bzl"],
+)
+
+bzl_library(
+    name = "deps",
+    srcs = ["deps.bzl"],
     deps = [
         "//lib:package",
         "//tools:package",
     ],
-)
-
-bzl_library(
-    name = "package_deps",
-    srcs = ["package_deps.bzl"],
 )
 
 bzl_library(
