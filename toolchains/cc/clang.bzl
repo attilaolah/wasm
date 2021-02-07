@@ -5,6 +5,7 @@ on the downloaded bineries in @llvm.
 """
 
 load("@local_config_cc//:cc_toolchain_config.bzl", "cc_toolchain_config")
+load("@rules_cc//cc:defs.bzl", "cc_toolchain")
 
 LINUX_X86_64 = [
     "@platforms//os:linux",
@@ -33,7 +34,7 @@ def clang_toolchain(name):
 
     # Based on the output of:
     # CC=clang bazel query --output=build @local_config_cc//:cc-compiler-k8
-    native.cc_toolchain(
+    cc_toolchain(
         name = name_cc_toolchain,
         all_files = "@llvm//:all",
         ar_files = "@llvm//:all",
