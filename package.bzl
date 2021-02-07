@@ -1,15 +1,7 @@
-"""Repository rules for downloading all dependencies.
-
-The two functions should be called in the WORKSPACE file this order:
-
-register_dependencies()
-register_repositories()
-"""
+"""Repository rules for downloading all dependencies."""
 
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
-load("//lib:package.bzl", "download_lib")
-load("//tools:package.bzl", "download_tools")
 load(":http_archive.bzl", "http_archive")
 
 def register_dependencies():
@@ -75,11 +67,6 @@ def register_dependencies():
         sha256 = "1c531376ac7e5a180e0237938a2536de0c54d93f5c278634818e0efc952dd56c",
         build_file_content = None,
     )
-
-def register_repositories():
-    """Fetch and set up dependencies."""
-    download_lib()
-    download_tools()
 
 def _github_repository(project, owner, commit, shallow_since, pull_requests = None):
     """Wrapper around git_repository() for GitHub."""
