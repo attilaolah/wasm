@@ -33,6 +33,28 @@ def register_dependencies():
     )
 
     http_archive(
+        name = "io_bazel_rules_go",
+        version = "0.25.1",
+        urls = [
+            "https://mirror.bazel.build/github.com/bazelbuild/rules_go/releases/download/v{version}/rules_go-v{version}.tar.gz",
+            "https://github.com/bazelbuild/rules_go/releases/download/v{version}/rules_go-v{version}.tar.gz",
+        ],
+        sha256 = "7904dbecbaffd068651916dce77ff3437679f9d20e1a7956bff43826e7645fcc",
+        build_file_content = None,
+    )
+
+    http_archive(
+        name = "bazel_gazelle",
+        version = "0.22.3",
+        urls = [
+            "https://mirror.bazel.build/github.com/bazelbuild/bazel-gazelle/releases/download/v{version}/bazel-gazelle-v{version}.tar.gz",
+            "https://github.com/bazelbuild/bazel-gazelle/releases/download/v{version}/bazel-gazelle-v{version}.tar.gz",
+        ],
+        sha256 = "222e49f034ca7a1d1231422cdb67066b885819885c356673cb1f72f748a3c9d4",
+        build_file_content = None,
+    )
+
+    http_archive(
         name = "platforms",
         version = "0.0.2",
         urls = [

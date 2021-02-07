@@ -1,0 +1,15 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "write_me_lib",
+    srcs = ["write_me.go"],
+    importpath = "github.com/attilaolah/wasm/cmd/write_me",
+    visibility = ["//visibility:private"],
+    deps = ["@net_starlark_go//starlark:go_default_library"],
+)
+
+go_binary(
+    name = "write_me",
+    embed = [":write_me_lib"],
+    visibility = ["//visibility:public"],
+)

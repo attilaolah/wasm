@@ -33,3 +33,17 @@ npm_install(
     package_json = "//:package.json",
     package_lock_json = "//:package-lock.json",
 )
+
+load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
+load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
+load("//:package_deps.bzl", "go_dependencies")
+
+go_rules_dependencies()
+
+go_register_toolchains(version = "1.15.8")
+
+# gazelle:repo bazel_gazelle
+gazelle_dependencies()
+
+# gazelle:repository_macro package_deps.bzl%go_dependencies
+go_dependencies()
