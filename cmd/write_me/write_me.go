@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -12,24 +13,36 @@ import (
 )
 
 const (
-	tpl = "README.tpl"
-
 	// Name of the constant holding the version number.
 	ver = "VERSION"
+
+	// Location of the template file.
+	tpl = "cmd/write_me/write_me.tpl"
 )
 
-// Module stubs.
-// We don't really want to load dependencies, but they have to return values they define.
-var modules = map[string]starlark.StringDict{
-	"//:http_archive.bzl": {
-		"http_archive": nil,
-	},
-	"//tools/emscripten:emconfigure.bzl": {
-		"EMCONFIGURE": nil,
-	},
-}
+var (
+	root = flag.String("root", "", "Repo root directory.")
+
+	// Module stubs.
+	// We don't really want to load dependencies, but they have to return values they define.
+	modules = map[string]starlark.StringDict{
+		"//:http_archive.bzl": {
+			"http_archive": nil,
+		},
+		"//tools/emscripten:emconfigure.bzl": {
+			"EMCONFIGURE": nil,
+		},
+	}
+)
 
 func main() {
+	flag.Parse()
+	if *root == "" {
+		fmt.Println("missing required flag: -root")
+		os.Exit(1)
+	}
+
+	os.Chdir(*root)
 	t, err := template.ParseFiles(tpl)
 	if err != nil {
 		fmt.Printf("error loading template %q: %v\n", tpl, err)
