@@ -2,11 +2,11 @@
 
 load("//:http_archive.bzl", "http_archive")
 
-VERSION = "3.3.8"
+VERSION = "3.3.9"
 
 URL = "http://www.fftw.org/fftw-{version}.tar.gz"
 
-SHA256 = "6113262f6e92c5bd474f2875fa1b01054c4ad5040f6b0da7c03c98821d9ae303"
+SHA256 = "bf2c7ce40b04ae811af714deb512510cc2c17b9ab9d6ddcf49fe4487eea7af3d"
 
 def download_fftw():
     http_archive(
