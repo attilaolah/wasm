@@ -205,7 +205,7 @@ wasm_library = rule(
             cfg = "exec",
         ),
         "_python_runtime": attr.label(
-            default = "//tools/python:runtime",
+            default = "//lib/python:runtime",
             cfg = "exec",
         ),
     },

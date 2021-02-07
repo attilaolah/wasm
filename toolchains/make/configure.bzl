@@ -29,9 +29,9 @@ WASM_ENV_VARS = {
 
 WASM_TOOLS = [
     # keep sorted
+    "//lib/python:runtime",
     "//tools:nodejs",
     "//tools/python",
-    "//tools/python:runtime",
     "@emscripten//:all",
     "@emsdk//emscripten_toolchain:emscripten_config",
     "@nodejs_linux_amd64//:node",
