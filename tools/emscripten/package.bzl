@@ -4,11 +4,13 @@ load("//:http_archive.bzl", "http_archive")
 
 VERSION = "2.0.13"
 
+URL = "https://github.com/emscripten-core/emsdk/archive/{version}.tar.gz"
+
 def download_emscripten():
     http_archive(
         name = "emsdk",
         version = VERSION,
-        urls = ["https://github.com/emscripten-core/emsdk/archive/{version}.tar.gz"],
+        urls = [URL],
         sha256 = "1bacabdfa07e8565f269e99bcdfa13bf832d6fa64a784a40114deaca45572542",
         strip_prefix = "emsdk-{version}/bazel",
         build_file_content = None,

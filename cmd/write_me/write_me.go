@@ -12,13 +12,8 @@ import (
 	"go.starlark.net/starlark"
 )
 
-const (
-	// Name of the constant holding the version number.
-	ver = "VERSION"
-
-	// Location of the template file.
-	tpl = "cmd/write_me/write_me.tpl"
-)
+// Location of the template file.
+const tpl = "cmd/write_me/write_me.tpl"
 
 var (
 	root = flag.String("root", "", "Repo root directory.")
@@ -69,9 +64,25 @@ func main() {
 	}
 }
 
+// VersionInfo holds info about the version.
+type VersionInfo struct {
+	version string
+	urls    []string
+}
+
+// Expand replaces {versions} and friends in urls.
+func (v *VersionInfo) Expand() {
+	for i, url := range v.urls {
+		url = strings.ReplaceAll(url, "{version}", v.version)
+		url = strings.ReplaceAll(url, "{version-}", strings.ReplaceAll(v.version, ".", "-"))
+		url = strings.ReplaceAll(url, "{version_}", strings.ReplaceAll(v.version, ".", "_"))
+		v.urls[i] = url
+	}
+}
+
 // MDTable generates a Markdown version table.
 func MDTable(prefix string) (string, error) {
-	vers, err := GetVersions(prefix + "/*/package.bzl")
+	vers, err := GetVersionInfos(prefix + "/*/package.bzl")
 	if err != nil {
 		return "", err
 	}
@@ -86,39 +97,45 @@ func MDTable(prefix string) (string, error) {
 
 	var b strings.Builder
 	for _, path := range paths {
+		v := vers[path]
 		b.WriteString("[`")
 		b.WriteString(label(path))
 		b.WriteString("`](")
 		b.WriteString(url(path))
 		b.WriteString(") | ")
-		b.WriteString(vers[path])
+		b.WriteString(v.version)
+		for _, u := range v.urls {
+			b.WriteString(" [🔗](")
+			b.WriteString(u)
+			b.WriteString(")")
+		}
 		b.WriteString("\n")
 	}
 
 	return b.String(), nil
 }
 
-// GetVersions extracts the version info from all matching files.
+// GetVersionInfos extracts the version info from all matching files.
 // Keys in the returned maps are Starlark file names matching under root/.
-func GetVersions(pattern string) (map[string]string, error) {
-	vers := map[string]string{}
+func GetVersionInfos(pattern string) (map[string]VersionInfo, error) {
+	vers := map[string]VersionInfo{}
 	matches, err := filepath.Glob(pattern)
 	if err != nil {
 		return nil, fmt.Errorf("failed to expand %q: %w", pattern, err)
 	}
 
 	for _, path := range matches {
-		v, err := GetVersion(path)
+		v, err := GetVersionInfo(path)
 		if err != nil {
 			return nil, fmt.Errorf("error extracting versions: %w", err)
 		}
-		vers[path] = v
+		vers[path] = *v
 	}
 	return vers, nil
 }
 
 // GetVersion extracts the version from a single file.
-func GetVersion(path string) (string, error) {
+func GetVersionInfo(path string) (*VersionInfo, error) {
 	t := starlark.Thread{
 		Load: func(t *starlark.Thread, module string) (starlark.StringDict, error) {
 			return modules[module], nil
@@ -126,14 +143,39 @@ func GetVersion(path string) (string, error) {
 	}
 	globals, err := starlark.ExecFile(&t, path, nil, starlark.Universe)
 	if err != nil {
-		return "", fmt.Errorf("failed to execute %q: %w", path, err)
+		return nil, fmt.Errorf("failed to execute %q: %w", path, err)
 	}
-	v, ok := globals[ver]
+	v, ok := globals["VERSION"]
 	if !ok {
-		return "", fmt.Errorf("VERSION not found in %q", path)
+		return nil, fmt.Errorf("VERSION not found in %q", path)
+	}
+	version := strings.Trim(v.String(), `"`)
+
+	urls := []string{}
+	if v, ok = globals["URLS"]; ok {
+		list, ok := v.(*starlark.List)
+		if !ok {
+			return nil, fmt.Errorf("URLS is not a list in %q", path)
+		}
+		i := list.Iterate()
+		var v starlark.Value
+		for i.Next(&v) {
+			urls = append(urls, strings.Trim(v.String(), `"`))
+		}
+		i.Done()
+	} else {
+		if v, ok = globals["URL"]; !ok {
+			return nil, fmt.Errorf("URLS or URL not found in %q", path)
+		}
+		urls = append(urls, strings.Trim(v.String(), `"`))
 	}
 
-	return strings.Trim(v.String(), `"`), nil
+	info := &VersionInfo{
+		version: version,
+		urls:    urls,
+	}
+	info.Expand()
+	return info, nil
 }
 
 func label(path string) string {
