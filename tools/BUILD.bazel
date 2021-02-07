@@ -17,5 +17,8 @@ bzl_library(
     name = "package",
     srcs = ["package.bzl"],
     visibility = ["//:__pkg__"],
-    deps = ["//tools/python:package"],
+    deps = [
+        "//tools/emscripten:package",
+        "//tools/llvm:package",
+    ],
 )
