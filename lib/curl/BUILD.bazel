@@ -8,11 +8,11 @@ cmake_lib(
     cache_entries = {
         "BUILD_CURL_EXE:BOOL": "OFF",
         "BUILD_SHARED_LIBS:BOOL": "OFF",
-        "OPENSSL_CRYPTO_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/openssl_lib/lib/libcrypto.a",
-        "OPENSSL_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/openssl_lib/include",
-        "OPENSSL_SSL_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/openssl_lib/lib/libssl.a",
+        "OPENSSL_CRYPTO_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/open_ssl_lib/lib/libcrypto.a",
+        "OPENSSL_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/open_ssl_lib/include",
+        "OPENSSL_SSL_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/open_ssl_lib/lib/libssl.a",
     },
-    deps = ["//lib/openssl"],
+    deps = ["//lib/open_ssl"],
 )
 
 bzl_library(
