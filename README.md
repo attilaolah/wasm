@@ -1,5 +1,14 @@
 # WebAssembly Playground
 
+<!-- DO NOT EDIT README.md!
+
+This file was auto-generated based on the template file
+`cmd/write_me/write_me.tpl`. Update the template file and then re-generate
+the `README.md` file by running:
+
+$ bazel run //cmd/write_me -- -root="${PWD}" > README.md
+-->
+
 Scripts to compile libraries to [WebAssembly] using [Bazel].
 
 To get (somewhat) reproducible results, run the builds in a Docker container.
