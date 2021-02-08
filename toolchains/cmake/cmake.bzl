@@ -61,3 +61,20 @@ def cmake_lib(
         tools_deps = _tools_deps(tools_deps),
         **kwargs
     )
+
+def on_off(on = None, off = None):
+    """Generates a cache_entries dict of bools.
+
+    Args:
+        on: Cache keys to set to ON.
+        off: Cache keys to set to OFF.
+
+    Returns:
+        A dict to be used for cache_entries.
+    """
+    cache_entries = {}
+    for item in on or []:
+        cache_entries["{}:BOOL".format(item.upper())] = "ON"
+    for item in off or []:
+        cache_entries["{}:BOOL".format(item.upper())] = "OFF"
+    return cache_entries
