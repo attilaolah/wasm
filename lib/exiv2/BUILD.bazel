@@ -1,0 +1,27 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//toolchains/cmake:cmake.bzl", "cmake_lib")
+
+package(default_visibility = ["//:__subpackages__"])
+
+cmake_lib(
+    name = "exiv2",
+    cache_entries = {
+        "BUILD_SHARED_LIBS:BOOL": "OFF",
+
+        # Dependencies:
+        "EXPAT_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/expat_lib/include",
+        "EXPAT_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/expat_lib/lib/libexpat.a",
+        "ZLIB_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/z_lib/include",
+        "ZLIB_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/z_lib/lib/libz.a",
+    },
+    deps = [
+        "//lib/expat",
+        "//lib/z",
+    ],
+)
+
+bzl_library(
+    name = "package",
+    srcs = ["package.bzl"],
+    deps = ["//:http_archive"],
+)
