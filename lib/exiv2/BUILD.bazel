@@ -14,6 +14,10 @@ cmake_lib(
         "ZLIB_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/z_lib/include",
         "ZLIB_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/z_lib/lib/libz.a",
     },
+    static_libraries = [
+        "libexiv2.a",
+        "libexiv2-xmp.a",
+    ],
     deps = [
         "//lib/expat",
         "//lib/z",
