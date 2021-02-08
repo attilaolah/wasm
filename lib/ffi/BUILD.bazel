@@ -5,12 +5,14 @@ package(default_visibility = ["//:__subpackages__"])
 
 configure_make_lib(
     name = "ffi",
+    configure_env_vars = {
+        # Required by //tools/python.
+        "CFLAGS": "-fPIC",
+    },
     configure_options = [
         "--enable-shared=no",
         "--enable-static=yes",
     ],
-    # Required by //tools/python.
-    copts = ["-fPIC"],
 )
 
 bzl_library(

@@ -42,7 +42,6 @@ def configure_make_lib(
         name,
         configure_script = "configure",
         static_libraries = None,
-        copts = None,
         env = None,
         **kwargs):
     """Convenience macro that wraps configure_make().
@@ -52,18 +51,12 @@ def configure_make_lib(
         parameters.
       configure_script: Name of the configure script to run.
       static_libraries: Passed on to configure_make(). Guessed from name.
-      copts: Additional compile options, appended to the CFLAGS configure
-        environment variable.
       env: Passed on to configure_make(). Form Emscripten builds, it is
         pre-populated with environment variables required by the toolchain.
       **kwargs: Passed no configure_make().
     """
     if static_libraries == None:
         static_libraries = ["lib{}.a".format(name)]
-
-    configure_env_vars = {}
-    if copts != None:
-        configure_env_vars["CFLAGS"] = " ".join(copts)
 
     if env == None:
         env = {}
@@ -77,7 +70,6 @@ def configure_make_lib(
             "//config:wasm64": "emconfigure.sh",
             "//conditions:default": configure_script,
         }),
-        configure_env_vars = configure_env_vars,
         env = select({
             "//config:wasm32": wasm_env,
             "//config:wasm64": wasm_env,

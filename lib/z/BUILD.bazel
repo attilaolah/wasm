@@ -8,11 +8,13 @@ package(default_visibility = ["//:__subpackages__"])
 
 configure_make_lib(
     name = "z",
+    configure_env_vars = {
+        # Required by //tools/python.
+        "CFLAGS": "-fPIC",
+    },
     configure_options = [
         "--static",
     ],
-    # Required by //tools/python.
-    copts = ["-fPIC"],
 )
 
 wasm_library(
