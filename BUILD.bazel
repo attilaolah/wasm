@@ -28,3 +28,13 @@ bzl_library(
     srcs = ["http_archive.bzl"],
     visibility = [":__subpackages__"],
 )
+
+sh_test(
+    name = "readme_test",
+    srcs = ["readme_test.sh"],
+    env = {"WRITE_ME": "$(rootpath //cmd/write_me)"},
+    data = [
+        "README.md",
+        "//cmd/write_me",
+    ],
+)

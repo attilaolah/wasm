@@ -6,8 +6,11 @@ RED="\033[0;31m"
 GREEN="\033[0;32m"
 NC="\033[0m"
 
-exec bazel run //cmd/write_me --ui_event_filters=-INFO -- -root="${PWD}" \
-  | diff --unified --color README.md - && (
+# Simulate running as `bazel run //cmd/write_me`:
+BUILD_WORKSPACE_DIRECTORY="$(dirname $(readlink -f "${0}"))" \
+  "${WRITE_ME}" > README.md.golden
+
+diff --unified --color README.md README.md.golden && (
     echo -e "${GREEN}PASS${NC}"
 	exit 0
 ) || (
