@@ -32,9 +32,9 @@ bzl_library(
 sh_test(
     name = "readme_test",
     srcs = ["readme_test.sh"],
-    env = {"WRITE_ME": "$(rootpath //cmd/write_me)"},
     data = [
         "README.md",
         "//cmd/write_me",
     ],
+    env = {"WRITE_ME": "$(rootpath //cmd/write_me)"},
 )
