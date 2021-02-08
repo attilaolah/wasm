@@ -1,0 +1,24 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//toolchains/cmake:cmake.bzl", "cmake_lib", "on_off")
+
+package(default_visibility = ["//:__subpackages__"])
+
+cmake_lib(
+    name = "expat",
+    cache_entries = on_off(
+        off = [
+            # keep sorted
+            "expat_build_docs",
+            "expat_build_examples",
+            "expat_build_tests",
+            "expat_build_tools",
+            "expat_shared_libs",
+        ],
+    ),
+)
+
+bzl_library(
+    name = "package",
+    srcs = ["package.bzl"],
+    deps = ["//:http_archive"],
+)
