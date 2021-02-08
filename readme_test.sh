@@ -8,7 +8,7 @@ NC="\033[0m"
 
 # Simulate running as `bazel run //cmd/write_me`:
 BUILD_WORKSPACE_DIRECTORY="$(dirname $(readlink -f "${0}"))" \
-  "${WRITE_ME}" > README.md.golden
+  "${WRITE_ME}" -output="${PWD}/README.md.golden"
 
 diff --unified --color README.md README.md.golden && (
     echo -e "${GREEN}PASS${NC}"
@@ -16,6 +16,6 @@ diff --unified --color README.md README.md.golden && (
 ) || (
     echo -e "${RED}FAIL${NC}"
 	echo "README.md is out of date! To regenerate it, run:"
-	echo 'bazel run //cmd/write_me --ui_event_filters=-INFO -- -root="${PWD}" > README.md'
+	echo "bazel run //cmd/write_me"
 	exit 1
 )

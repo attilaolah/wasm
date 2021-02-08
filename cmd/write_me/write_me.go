@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -14,18 +15,32 @@ import (
 // Location of the template file.
 const tpl = "cmd/write_me/write_me.tpl"
 
-// Module stubs.
-// We don't really want to load dependencies, but they have to return values they define.
-var modules = map[string]starlark.StringDict{
-	"//:http_archive.bzl": {
-		"http_archive": nil,
-	},
-	"//tools/emscripten:emconfigure.bzl": {
-		"EMCONFIGURE": nil,
-	},
-}
+var (
+	output = flag.String("output",
+		func() string {
+			workspace := os.Getenv("BUILD_WORKSPACE_DIRECTORY")
+			if workspace != "" {
+				return filepath.Join(workspace, "README.md")
+			}
+			return "-"
+		}(),
+		"Where to write the output file.")
+
+	// Module stubs.
+	// We don't really want to load dependencies, but they have to return values they define.
+	modules = map[string]starlark.StringDict{
+		"//:http_archive.bzl": {
+			"http_archive": nil,
+		},
+		"//tools/emscripten:emconfigure.bzl": {
+			"EMCONFIGURE": nil,
+		},
+	}
+)
 
 func main() {
+	flag.Parse()
+
 	root := os.Getenv("BUILD_WORKSPACE_DIRECTORY")
 	if root == "" {
 		fmt.Println("BUILD_WORKSPACE_DIRECTORY not set!")
@@ -51,7 +66,17 @@ func main() {
 		os.Exit(1)
 	}
 
-	if err := t.Execute(os.Stdout, template.FuncMap{
+	var out *os.File = os.Stdout
+	if *output != "-" {
+		f, err := os.Create(*output)
+		if err != nil {
+			fmt.Printf("error creating output file: %v\n", err)
+			os.Exit(1)
+		}
+		out = f
+	}
+
+	if err := t.Execute(out, template.FuncMap{
 		"Libraries": lib,
 		"Tools":     tools,
 	}); err != nil {
