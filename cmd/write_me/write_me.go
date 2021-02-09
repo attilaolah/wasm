@@ -24,7 +24,7 @@ var (
 			}
 			return "-"
 		}(),
-		"Where to write the output file.")
+		"Where to write the output file (- means stdout).")
 
 	// Module stubs.
 	// We don't really want to load dependencies, but they have to return values they define.
