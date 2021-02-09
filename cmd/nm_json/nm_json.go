@@ -33,6 +33,11 @@ func main() {
 		log.Fatal(err)
 	}
 
+	t, err := a.SymbolTable()
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	var out *os.File = os.Stdout
 	if *output != "-" {
 		f, err := os.Create(*output)
@@ -42,7 +47,7 @@ func main() {
 		out = f
 	}
 
-	if err := json.NewEncoder(out).Encode(a); err != nil {
+	if err := json.NewEncoder(out).Encode(t); err != nil {
 		log.Fatal(err)
 	}
 }

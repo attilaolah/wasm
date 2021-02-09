@@ -43,9 +43,9 @@ type Class byte
 func ParseArchive(path string) (*Archive, error) {
 	cmd := exec.Command("nm", "--format=sysv", path)
 
-	out, err := cmd.Output()
+	out, err := cmd.CombinedOutput()
 	if err != nil {
-		return nil, fmt.Errorf("error starting command %q: %w", cmd, err)
+		return nil, fmt.Errorf("error running command %q: %w; output: %s", cmd, err, out)
 	}
 
 	return Parse(bytes.NewBuffer(out))
@@ -127,11 +127,6 @@ func Parse(src io.Reader) (*Archive, error) {
 	}
 
 	return &a, nil
-}
-
-// Defined returns true if the symbol is not undefined.
-func (s Symbol) Defined() bool {
-	return s.Class != 'U'
 }
 
 // String returns the string representation, as displayed by `nm`.

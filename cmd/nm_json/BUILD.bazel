@@ -3,8 +3,9 @@ load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
 go_library(
     name = "nm_json_lib",
     srcs = [
+        "nm_archive.go",
         "nm_json.go",
-        "nm_lib.go",
+        "symbol_table.go",
     ],
     importpath = "github.com/attilaolah/wasm/cmd/nm_json",
     visibility = ["//visibility:private"],
