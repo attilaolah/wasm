@@ -19,13 +19,13 @@ def _find_file(files, name):
             return f
     fail("Failed to find {}!".format(name))
 
-def _transition_impl(settings, attr):
+def _wasm32_transition_impl(settings, attr):
     return {
         # Old C++ CPU/CROSSTOOL toolchain API:
         "//command_line_option:cpu": "wasm32",
     }
 
-def _rule_impl(ctx):
+def _wasm_library_impl(ctx):
     emcc = _find_file(ctx.files._emscripten, "emcc")
     python = _find_file(ctx.files._python, "python.sh")
 
@@ -141,13 +141,13 @@ def _rule_impl(ctx):
     ]
 
 wasm32_transition = transition(
-    implementation = _transition_impl,
+    implementation = _wasm32_transition_impl,
     inputs = [],
     outputs = ["//command_line_option:cpu"],
 )
 
 wasm_library = rule(
-    implementation = _rule_impl,
+    implementation = _wasm_library_impl,
     attrs = {
         "build_settings": attr.string_dict(
             mandatory = False,
