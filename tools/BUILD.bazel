@@ -14,6 +14,11 @@ filegroup(
 )
 
 bzl_library(
+    name = "wasm_library",
+    srcs = ["wasm_library.bzl"],
+)
+
+bzl_library(
     name = "package",
     srcs = ["package.bzl"],
     visibility = ["//:__pkg__"],

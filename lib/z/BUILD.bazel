@@ -2,7 +2,7 @@ load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@npm//@bazel/typescript:index.bzl", "ts_library")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
 load("//tools:mocha_test.bzl", "mocha_test")
-load("//tools/wasm_library:wasm_library.bzl", "wasm_library")
+load("//tools:wasm_library.bzl", "wasm_library")
 
 package(default_visibility = ["//:__subpackages__"])
 
