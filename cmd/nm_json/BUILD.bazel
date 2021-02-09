@@ -1,0 +1,17 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "nm_json_lib",
+    srcs = [
+        "nm_json.go",
+        "nm_lib.go",
+    ],
+    importpath = "github.com/attilaolah/wasm/cmd/nm_json",
+    visibility = ["//visibility:private"],
+)
+
+go_binary(
+    name = "nm_json",
+    embed = [":nm_json_lib"],
+    visibility = ["//visibility:public"],
+)
