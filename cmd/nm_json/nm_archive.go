@@ -41,7 +41,12 @@ type Class byte
 
 // ParseArchive executes `nm` on a single archive.
 func ParseArchive(nm, path string, extern bool) (*Archive, error) {
-	args := []string{"--format=sysv", "--no-sort"}
+	args := []string{
+		"--format=sysv",
+		"--print-file-name",
+		"--print-size",
+		"--no-sort",
+	}
 	if extern {
 		args = append(args, "--extern-only")
 	}
@@ -52,20 +57,13 @@ func ParseArchive(nm, path string, extern bool) (*Archive, error) {
 		return nil, fmt.Errorf("error running command %q: %w; output: %s", cmd, err, out)
 	}
 
-	a, err := Parse(bytes.NewBuffer(out))
-	if err != nil {
-		return nil, err
-	}
-	_, name := filepath.Split(path)
-	a.Name = name
-
-	return a, nil
+	return Parse(bytes.NewBuffer(out))
 }
 
 // Parse parses `nm --format=sysv` output.
 func Parse(src io.Reader) (*Archive, error) {
 	a := Archive{}
-	var o *Object
+	o := Object{}
 
 	ln := 0
 	scanner := bufio.NewScanner(src)
@@ -73,44 +71,28 @@ func Parse(src io.Reader) (*Archive, error) {
 		line := scanner.Text()
 		ln++
 
-		t := strings.TrimSpace(line)
-		if t == "" {
-			continue
-		}
-		if strings.HasPrefix(t, "Symbols from ") && strings.HasSuffix(t, ":") {
-			t = strings.TrimPrefix(t, "Symbols from ")
-			t = strings.TrimSuffix(t, ":")
-			parts := strings.FieldsFunc(t, func(r rune) bool {
-				return r == '[' || r == ']'
-			})
-			if len(parts) == 1 {
-				o = &Object{Name: parts[0]}
-				a.Objects = append(a.Objects, o)
-				continue
-			}
-			if len(parts) != 2 {
-				return nil, fmt.Errorf("line %d: %q: failed to parse as `archive[object]:` or `object:`", ln, line)
-			}
-
-			if _, aname := filepath.Split(parts[0]); a.Name == "" {
-				a.Name = aname
-			} else if a.Name != aname {
-				return nil, fmt.Errorf("line %d: %q: more than one archive in a single stream", ln, line)
-			}
-			o = &Object{Name: parts[1]}
-			a.Objects = append(a.Objects, o)
-			continue
-		}
-		parts := strings.Split(t, "|")
-		if len(parts) == 1 {
-			// Header (Name, Value, Class…)
-			continue
-		}
+		parts := strings.Split(line, "|")
 		if l := len(parts); l != 7 {
 			return nil, fmt.Errorf("line %d: %q: row contains %d columns instead of 7", ln, line, l)
 		}
+		subparts := strings.FieldsFunc(parts[0], func(r rune) bool {
+			return r == ':' || r == ' '
+		})
+		if len(subparts) != 3 {
+			return nil, fmt.Errorf("line %d: %q: failed to parse %q as `archive:object: symbol`", ln, line, strings.TrimSpace(parts[0]))
+		}
+		if _, aname := filepath.Split(subparts[0]); a.Name == "" {
+			a.Name = aname
+		} else if a.Name != aname {
+			return nil, fmt.Errorf("line %d: %q: more than one archive in a single stream: [%q, %q]", ln, line, a.Name, aname)
+		}
+		if o.Name != subparts[1] {
+			o = Object{Name: subparts[1]}
+			a.Objects = append(a.Objects, &o)
+		}
+
 		s := Symbol{
-			Name:    strings.TrimSpace(parts[0]),
+			Name:    strings.TrimSpace(subparts[2]),
 			Type:    strings.TrimSpace(parts[3]),
 			Line:    strings.TrimSpace(parts[5]),
 			Section: strings.TrimSpace(parts[6]),

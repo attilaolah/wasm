@@ -17,7 +17,7 @@ import (
 )
 
 var (
-	nm      = flag.String("nm", "nm", "Which `nm` binary to use.")
+	nm      = flag.String("nm", "llvm-nm", "Which `nm` binary to use.")
 	archive = flag.String("archive", "", "Archive file to read.")
 	extern  = flag.Bool("extern_only", true, "List external symbols only.")
 	output  = flag.String("output", "-", "Where to write the output file (- means stdout).")
