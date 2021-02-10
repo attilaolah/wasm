@@ -33,7 +33,7 @@ type SymbolDef struct {
 }
 
 // SymbolTable normalises an archive into defined and external symbols.
-func (a *Archive) SymbolTable() (*SymbolTable, error) {
+func (a *Archive) SymbolTable(typef string) (*SymbolTable, error) {
 	t := SymbolTable{}
 	defm := map[string][]string{}
 	undefs := []string{}
@@ -41,10 +41,12 @@ func (a *Archive) SymbolTable() (*SymbolTable, error) {
 	for _, o := range a.Objects {
 		for _, s := range o.Symbols {
 			if s.Class != UndefClass {
-				t.Symbols = append(t.Symbols, SymbolDef{
-					Symbol: *s,
-				})
 				defm[s.Name] = append(defm[s.Name], o.Name)
+				if s.Type == typef || typef == "" {
+					t.Symbols = append(t.Symbols, SymbolDef{
+						Symbol: *s,
+					})
+				}
 				continue
 			}
 			if s.Type != UndefType && s.Type != TLSType {

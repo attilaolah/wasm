@@ -19,8 +19,9 @@ import (
 var (
 	nm      = flag.String("nm", "llvm-nm", "Which `nm` binary to use.")
 	archive = flag.String("archive", "", "Archive file to read.")
-	extern  = flag.Bool("extern_only", true, "List external symbols only.")
+	typef   = flag.String("type", "", "Include only symbols of this type (empty means include everything).")
 	output  = flag.String("output", "-", "Where to write the output file (- means stdout).")
+	extern  = flag.Bool("extern_only", false, "List external symbols only.")
 )
 
 func main() {
@@ -35,7 +36,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	t, err := a.SymbolTable()
+	t, err := a.SymbolTable(*typef)
 	if err != nil {
 		log.Fatal(err)
 	}

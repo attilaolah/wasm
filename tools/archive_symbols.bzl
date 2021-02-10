@@ -33,6 +33,8 @@ def _archive_symbols_impl(ctx):
                 args = ctx.actions.args()
                 args.add("-nm", nm)
                 args.add("-archive", lib.static_library)
+                args.add("-type", "FUNC")
+                args.add("-extern_only")
                 args.add("-output", output)
 
                 ctx.actions.run(
