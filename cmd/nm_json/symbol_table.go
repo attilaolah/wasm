@@ -9,9 +9,12 @@ import (
 )
 
 const (
-	UndefClass   Class = 'U'
-	UndefType          = "NOTYPE"
-	UndefSection       = "*UND*"
+	UndefClass Class = 'U'
+
+	UndefType = "NOTYPE"
+	TLSType   = "TLS"
+
+	UndefSection = "*UND*"
 )
 
 // SymbolTable groups symbols in an archive.
@@ -25,42 +28,43 @@ type SymbolDefs []SymbolDef
 
 // SymbolDef represents a unique symbol definition in an archive.
 type SymbolDef struct {
-	Object string `json:"object,omitempty"`
+	Objects []string `json:"objects"`
 	Symbol
 }
 
 // SymbolTable normalises an archive into defined and external symbols.
 func (a *Archive) SymbolTable() (*SymbolTable, error) {
 	t := SymbolTable{}
-	defm := map[string]string{}
+	defm := map[string][]string{}
 	undefs := []string{}
 
 	for _, o := range a.Objects {
 		for _, s := range o.Symbols {
 			if s.Class != UndefClass {
 				t.Symbols = append(t.Symbols, SymbolDef{
-					Object: o.Name,
 					Symbol: *s,
 				})
-				if ex, ok := defm[s.Name]; ok {
-					if s.Extern() {
-						// Externs should not be redefined!
-						return nil, fmt.Errorf("external symbol %q redefined in %q; previous definition in %q", s.Name, o.Name, ex)
-					}
-					// But locals can be redefined.
-					continue
-				}
-				defm[s.Name] = o.Name
+				defm[s.Name] = append(defm[s.Name], o.Name)
 				continue
 			}
-			if s.Type != UndefType {
+			if s.Type != UndefType && s.Type != TLSType {
 				return nil, fmt.Errorf("undefinod symbol %q has unexpected type: %q", s.Name, s.Type)
 			}
 			if s.Section != UndefSection {
-				return nil, fmt.Errorf("undefinod symbol %q has unexpected type: %q", s.Name, s.Type)
+				return nil, fmt.Errorf("undefinod symbol %q found in unexpected section: %q", s.Name, s.Type)
 			}
 			undefs = append(undefs, s.Name)
 		}
+	}
+
+	for i := range t.Symbols {
+		p := &t.Symbols[i]
+		p.Objects = defm[p.Name]
+		// Clear size, value & line.
+		// These can be different depending on where the symbol is defined.
+		p.Value = nil
+		p.Size = nil
+		p.Line = ""
 	}
 
 	undefm := map[string]struct{}{}
