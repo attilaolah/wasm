@@ -18,6 +18,7 @@ import (
 
 var (
 	archive = flag.String("archive", "", "Archive file to read.")
+	extern  = flag.Bool("extern_only", true, "List external symbols only.")
 	output  = flag.String("output", "-", "Where to write the output file (- means stdout).")
 )
 
@@ -28,7 +29,7 @@ func main() {
 		log.Fatal("missing required flag: -archive")
 	}
 
-	a, err := ParseArchive(*archive)
+	a, err := ParseArchive(*archive, *extern)
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -4,6 +4,8 @@ package main
 import (
 	"fmt"
 	"sort"
+	"strings"
+	"unicode"
 )
 
 const (
@@ -14,9 +16,12 @@ const (
 
 // SymbolTable groups symbols in an archive.
 type SymbolTable struct {
-	Defined []SymbolDef `json:"symbols,omitempty"`
-	Externs []string    `json:"externs,omitempty"`
+	Symbols SymbolDefs `json:"symbols,omitempty"`
+	Externs []string   `json:"externs,omitempty"`
 }
+
+// SymbolDefs is a sortable slice of SymbolDef objects.
+type SymbolDefs []SymbolDef
 
 // SymbolDef represents a unique symbol definition in an archive.
 type SymbolDef struct {
@@ -33,13 +38,17 @@ func (a *Archive) SymbolTable() (*SymbolTable, error) {
 	for _, o := range a.Objects {
 		for _, s := range o.Symbols {
 			if s.Class != UndefClass {
-				t.Defined = append(t.Defined, SymbolDef{
+				t.Symbols = append(t.Symbols, SymbolDef{
 					Object: o.Name,
 					Symbol: *s,
 				})
-				// TODO: Check for duplicate symbol defs!
 				if ex, ok := defm[s.Name]; ok {
-					return nil, fmt.Errorf("symbol %q redefined in %q; previous definition in %q", s.Name, o.Name, ex)
+					if s.Extern() {
+						// Externs should not be redefined!
+						return nil, fmt.Errorf("external symbol %q redefined in %q; previous definition in %q", s.Name, o.Name, ex)
+					}
+					// But locals can be redefined.
+					continue
 				}
 				defm[s.Name] = o.Name
 				continue
@@ -54,8 +63,6 @@ func (a *Archive) SymbolTable() (*SymbolTable, error) {
 		}
 	}
 
-	sort.Strings(undefs)
-
 	undefm := map[string]struct{}{}
 	for _, name := range undefs {
 		if _, ok := defm[name]; ok {
@@ -68,5 +75,17 @@ func (a *Archive) SymbolTable() (*SymbolTable, error) {
 		undefm[name] = struct{}{}
 	}
 
+	sort.Sort(t.Symbols)
+	sort.Strings(t.Externs)
+
 	return &t, nil
+}
+
+// Len, Less and Swap implement sort.Interface.
+func (sd SymbolDefs) Len() int           { return len(sd) }
+func (sd SymbolDefs) Less(i, j int) bool { return strings.Compare(sd[i].Name, sd[j].Name) < 0 }
+func (sd SymbolDefs) Swap(i, j int)      { sd[i], sd[j] = sd[j], sd[i] }
+
+func (s *Symbol) Extern() bool {
+	return unicode.IsUpper(rune(s.Class))
 }

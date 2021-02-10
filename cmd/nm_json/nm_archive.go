@@ -40,8 +40,12 @@ type Symbol struct {
 type Class byte
 
 // ParseArchive executes `nm` on a single archive.
-func ParseArchive(path string) (*Archive, error) {
-	cmd := exec.Command("nm", "--format=sysv", path)
+func ParseArchive(path string, extern bool) (*Archive, error) {
+	args := []string{"--format=sysv", "--no-sort"}
+	if extern {
+		args = append(args, "--extern-only")
+	}
+	cmd := exec.Command("nm", append(args, path)...)
 
 	out, err := cmd.CombinedOutput()
 	if err != nil {
