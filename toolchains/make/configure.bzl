@@ -9,6 +9,7 @@ and CMake macros.
 
 load("@bazel_skylib//lib:collections.bzl", "collections")
 load("@rules_foreign_cc//tools/build_defs:configure.bzl", "configure_make")
+load("//tools:archive_symbols.bzl", "archive_symbols")
 
 WASM_ENV_VARS = {
     # Required by the Emscripten config:
@@ -82,6 +83,11 @@ def configure_make_lib(
         static_libraries = static_libraries,
         tools_deps = tools_deps(),
         **kwargs
+    )
+
+    archive_symbols(
+        name = "{}_symbols".format(name),
+        srcs = [":{}".format(name)],
     )
 
 def make_commands(

@@ -4,6 +4,7 @@ Contains a convenience macro that wraps make() from @rules_foreign_cc.
 """
 
 load("@rules_foreign_cc//tools/build_defs:make.bzl", "make")
+load("//tools:archive_symbols.bzl", "archive_symbols")
 load(":configure.bzl", "WASM_ENV_VARS", "tools_deps", _lib_source = "lib_source", _make_commands = "make_commands")
 
 def make_lib(
@@ -63,4 +64,9 @@ def make_lib(
         static_libraries = static_libraries,
         tools_deps = tools_deps(),
         **kwargs
+    )
+
+    archive_symbols(
+        name = "{}_symbols".format(name),
+        srcs = [":{}".format(name)],
     )

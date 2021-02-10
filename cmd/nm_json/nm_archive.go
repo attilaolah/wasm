@@ -40,19 +40,26 @@ type Symbol struct {
 type Class byte
 
 // ParseArchive executes `nm` on a single archive.
-func ParseArchive(path string, extern bool) (*Archive, error) {
+func ParseArchive(nm, path string, extern bool) (*Archive, error) {
 	args := []string{"--format=sysv", "--no-sort"}
 	if extern {
 		args = append(args, "--extern-only")
 	}
-	cmd := exec.Command("nm", append(args, path)...)
+	cmd := exec.Command(nm, append(args, path)...)
 
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		return nil, fmt.Errorf("error running command %q: %w; output: %s", cmd, err, out)
 	}
 
-	return Parse(bytes.NewBuffer(out))
+	a, err := Parse(bytes.NewBuffer(out))
+	if err != nil {
+		return nil, err
+	}
+	_, name := filepath.Split(path)
+	a.Name = name
+
+	return a, nil
 }
 
 // Parse parses `nm --format=sysv` output.
@@ -76,8 +83,13 @@ func Parse(src io.Reader) (*Archive, error) {
 			parts := strings.FieldsFunc(t, func(r rune) bool {
 				return r == '[' || r == ']'
 			})
+			if len(parts) == 1 {
+				o = &Object{Name: parts[0]}
+				a.Objects = append(a.Objects, o)
+				continue
+			}
 			if len(parts) != 2 {
-				return nil, fmt.Errorf("line %d: %q: failed to parse as `archive[object]:`", ln, line)
+				return nil, fmt.Errorf("line %d: %q: failed to parse as `archive[object]:` or `object:`", ln, line)
 			}
 
 			if _, aname := filepath.Split(parts[0]); a.Name == "" {
