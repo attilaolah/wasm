@@ -63,10 +63,7 @@ def cmake_lib(
         **kwargs
     )
 
-    archive_symbols(
-        name = "{}_symbols".format(name),
-        srcs = [":{}".format(name)],
-    )
+    archive_symbols(name, kwargs.get("deps", []))
 
 def on_off(on = None, off = None):
     """Generates a cache_entries dict of bools.

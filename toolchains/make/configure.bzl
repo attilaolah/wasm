@@ -85,10 +85,7 @@ def configure_make_lib(
         **kwargs
     )
 
-    archive_symbols(
-        name = "{}_symbols".format(name),
-        srcs = [":{}".format(name)],
-    )
+    archive_symbols(name, kwargs.get("deps", []))
 
 def make_commands(
         commands = None,
