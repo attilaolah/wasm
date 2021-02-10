@@ -22,6 +22,8 @@ def _archive_symbols_impl(ctx):
     outputs = []
     for src in ctx.attr.srcs:
         for linker_input in src[CcInfo].linking_context.linker_inputs.to_list():
+            if linker_input.owner != src.label:
+                continue
             for lib in linker_input.libraries:
                 output = ctx.actions.declare_file(
                     paths.replace_extension(lib.static_library.basename, ".json"),
