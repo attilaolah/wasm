@@ -19,8 +19,10 @@ const (
 
 // SymbolTable groups symbols in an archive.
 type SymbolTable struct {
+	Name    string     `json:"name"`
 	Symbols SymbolDefs `json:"symbols,omitempty"`
-	Externs []string   `json:"externs,omitempty"`
+	Externs ExternDefs `json:"externs,omitempty"`
+	Undefs  []string   `json:"undefs,omitempty"`
 }
 
 // SymbolDefs is a sortable slice of SymbolDef objects.
@@ -32,9 +34,18 @@ type SymbolDef struct {
 	Symbol
 }
 
+// ExternDefs is a sortable slice of ExternDef objects.
+type ExternDefs []ExternDef
+
+// ExternDef represents a symbol resolved to an external archive.
+type ExternDef struct {
+	Archive string   `json:"archive"`
+	Symbols []string `json:"symbols"`
+}
+
 // SymbolTable normalises an archive into defined and external symbols.
 func (a *Archive) SymbolTable(typef string) (*SymbolTable, error) {
-	t := SymbolTable{}
+	t := SymbolTable{Name: a.Name}
 	defm := map[string][]string{}
 	undefs := []string{}
 
@@ -77,12 +88,12 @@ func (a *Archive) SymbolTable(typef string) (*SymbolTable, error) {
 		if _, ok := undefm[name]; ok {
 			continue // already added to the table
 		}
-		t.Externs = append(t.Externs, name)
+		t.Undefs = append(t.Undefs, name)
 		undefm[name] = struct{}{}
 	}
 
 	sort.Sort(t.Symbols)
-	sort.Strings(t.Externs)
+	sort.Strings(t.Undefs)
 
 	return &t, nil
 }

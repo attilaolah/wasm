@@ -136,3 +136,16 @@ func (c Class) String() string {
 func (c Class) MarshalJSON() ([]byte, error) {
 	return json.Marshal(c.String())
 }
+
+// UnmarshalJSON implements the json.Unmarshaler interface.
+func (c *Class) UnmarshalJSON(data []byte) error {
+	s := ""
+	if err := json.Unmarshal(data, &s); err != nil {
+		return err
+	}
+	if len(s) != 1 {
+		return fmt.Errorf("unknown class: %q", s)
+	}
+	*c = Class(s[0])
+	return nil
+}

@@ -37,10 +37,16 @@ def _archive_symbols_impl(ctx):
                 args.add("-extern_only")
                 args.add("-output", output)
 
+                inputs = [nm, lib.static_library]
+                for dep in ctx.attr.deps:
+                    for f in dep.files.to_list():
+                        args.add("-externs", f)
+                    inputs.extend(dep.files.to_list())
+
                 ctx.actions.run(
                     executable = ctx.executable._nm_json,
                     arguments = [args],
-                    inputs = [nm, lib.static_library],
+                    inputs = inputs,
                     outputs = [output],
                     mnemonic = "A2JSON",
                 )
