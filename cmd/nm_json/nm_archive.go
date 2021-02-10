@@ -63,7 +63,7 @@ func ParseArchive(nm, path string, extern bool) (*Archive, error) {
 // Parse parses `nm --format=sysv` output.
 func Parse(src io.Reader) (*Archive, error) {
 	a := Archive{}
-	o := Object{}
+	o := &Object{}
 
 	ln := 0
 	scanner := bufio.NewScanner(src)
@@ -87,8 +87,8 @@ func Parse(src io.Reader) (*Archive, error) {
 			return nil, fmt.Errorf("line %d: %q: more than one archive in a single stream: [%q, %q]", ln, line, a.Name, aname)
 		}
 		if o.Name != subparts[1] {
-			o = Object{Name: subparts[1]}
-			a.Objects = append(a.Objects, &o)
+			o = &Object{Name: subparts[1]}
+			a.Objects = append(a.Objects, o)
 		}
 
 		s := Symbol{
