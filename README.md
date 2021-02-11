@@ -26,6 +26,7 @@ toolchain, pass `--cpu=wasm32`. Pass `-c opt` for an optimised build.
 
 | Build Label | Version |
 |-------------|---------|
+[`//lib/c`](https://github.com/attilaolah/wasm/blob/main/lib/c/BUILD.bazel) | 2.33 [🔗](https://ftp.gnu.org/gnu/libc/glibc-2.33.tar.xz) [🔗](http://mirror.kumi.systems/gnu/libc/glibc-2.33.tar.xz)
 [`//lib/ceres`](https://github.com/attilaolah/wasm/blob/main/lib/ceres/BUILD.bazel) | 1.14.0 [🔗](https://github.com/ceres-solver/ceres-solver/archive/1.14.0.tar.gz)
 [`//lib/curl`](https://github.com/attilaolah/wasm/blob/main/lib/curl/BUILD.bazel) | 7.75.0 [🔗](https://curl.se/download/curl-7.75.0.tar.xz)
 [`//lib/deflate`](https://github.com/attilaolah/wasm/blob/main/lib/deflate/BUILD.bazel) | 1.7 [🔗](https://github.com/ebiggers/libdeflate/archive/v1.7.tar.gz)
