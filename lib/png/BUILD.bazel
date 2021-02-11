@@ -3,8 +3,17 @@ load("//toolchains/make:configure.bzl", "configure_make_lib")
 
 package(default_visibility = ["//:__subpackages__"])
 
+# The configure script tries to redefine pow() with an incorrect signature.
+# Emscripten will report an error by default; make it more permissive in this case.
+WASM_CFLAGS = "-Wno-incompatible-library-redeclaration"
+
 configure_make_lib(
     name = "png",
+    configure_env_vars = select({
+        "//config:wasm32": {"CFLAGS": WASM_CFLAGS},
+        "//config:wasm64": {"CFLAGS": WASM_CFLAGS},
+        "//conditions:default": {},
+    }),
     configure_options = [
         "--enable-shared=no",
         "--enable-static=yes",
