@@ -56,7 +56,7 @@ func (a *Archive) SymbolTable(typef string) (*SymbolTable, error) {
 				}
 				continue
 			}
-			if s.Section != UndefSection {
+			if s.Section != UndefSection && s.Section != "" {
 				return nil, fmt.Errorf("undefinod symbol %q found in unexpected section: %q", s.Name, s.Type)
 			}
 			undefs = append(undefs, s.Name)
