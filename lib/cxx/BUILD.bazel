@@ -1,8 +1,8 @@
-load(":llvm_cxx_lib.bzl", "llvm_cxx_lib")
+load(":llvm_cxx_symbols.bzl", "llvm_cxx_symbols")
 
 package(default_visibility = ["//lib:__subpackages__"])
 
-llvm_cxx_lib(
-    name = "cxx",
-    deps = ["//lib/c"],
+llvm_cxx_symbols(
+    name = "cxx_symbols",
+    deps = ["//lib/c:c_symbols"],
 )

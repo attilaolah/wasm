@@ -3,7 +3,7 @@
 load("@bazel_skylib//lib:paths.bzl", "paths")
 load("//tools:archive_symbols.bzl", "ArchiveSymbolsInfo")
 
-def _llvm_cxx_lib_impl(ctx):
+def _llvm_cxx_symbols_impl(ctx):
     cxx = None
     cxxabi = None
 
@@ -59,8 +59,8 @@ def _build_symbol(ctx, f, deps = None):
     )
     return output
 
-llvm_cxx_lib = rule(
-    implementation = _llvm_cxx_lib_impl,
+llvm_cxx_symbols = rule(
+    implementation = _llvm_cxx_symbols_impl,
     attrs = {
         "deps": attr.label_list(
             providers = [ArchiveSymbolsInfo],

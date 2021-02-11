@@ -1,9 +1,9 @@
-load(":gnu_c_lib.bzl", "gnu_c_lib")
+load(":gnu_c_symbols.bzl", "gnu_c_symbols")
 
 package(default_visibility = ["//lib:__subpackages__"])
 
-gnu_c_lib(
-    name = "c",
+gnu_c_symbols(
+    name = "c_symbols",
     srcs = glob(["symbols/lib*.json"]),
 )
 
