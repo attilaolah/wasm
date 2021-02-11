@@ -10,7 +10,7 @@ def workspace_dependencies():
         project = "rules_foreign_cc",
         owner = "bazelbuild",
         commit = "da99da47a0befc3dfbf65739190cd374f836f21d",
-        shallow_since = "1612531747 +0000",
+        shallow_since = "1612982021 +0000",
     )
 
     http_archive(
