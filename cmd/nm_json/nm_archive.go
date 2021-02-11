@@ -45,6 +45,7 @@ func ParseArchive(nm, path string, extern bool) (*Archive, error) {
 		"--format=sysv",
 		"--print-file-name",
 		"--print-size",
+		"--demangle",
 		"--no-sort",
 	}
 	if extern {
@@ -75,9 +76,7 @@ func Parse(src io.Reader) (*Archive, error) {
 		if l := len(parts); l != 7 {
 			return nil, fmt.Errorf("line %d: %q: row contains %d columns instead of 7", ln, line, l)
 		}
-		subparts := strings.FieldsFunc(parts[0], func(r rune) bool {
-			return r == ':' || r == ' '
-		})
+		subparts := strings.SplitN(parts[0], ":", 3)
 		if len(subparts) != 3 {
 			return nil, fmt.Errorf("line %d: %q: failed to parse %q as `archive:object: symbol`", ln, line, strings.TrimSpace(parts[0]))
 		}
