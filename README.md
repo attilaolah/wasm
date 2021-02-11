@@ -51,6 +51,7 @@ toolchain, pass `--cpu=wasm32`. Pass `-c opt` for an optimised build.
 [`//lib/proj`](https://github.com/attilaolah/wasm/blob/main/lib/proj/BUILD.bazel) | 7.2.0 [🔗](https://download.osgeo.org/proj/proj-7.2.0.tar.gz)
 [`//lib/python`](https://github.com/attilaolah/wasm/blob/main/lib/python/BUILD.bazel) | 3.9.1 [🔗](https://www.python.org/ftp/python/3.9.1/Python-3.9.1.tar.xz)
 [`//lib/readline`](https://github.com/attilaolah/wasm/blob/main/lib/readline/BUILD.bazel) | 8.0 [🔗](https://ftp.gnu.org/gnu/readline/readline-8.0.tar.gz)
+[`//lib/spatia_lite`](https://github.com/attilaolah/wasm/blob/main/lib/spatia_lite/BUILD.bazel) | 5.0.0 [🔗](http://www.gaia-gis.it/gaia-sins/libspatialite-5.0.0.tar.gz)
 [`//lib/sqlite`](https://github.com/attilaolah/wasm/blob/main/lib/sqlite/BUILD.bazel) | 3.34.1 [🔗](https://www.sqlite.org/2021/sqlite-autoconf-3340100.tar.gz)
 [`//lib/suite_sparse`](https://github.com/attilaolah/wasm/blob/main/lib/suite_sparse/BUILD.bazel) | 5.8.1 [🔗](https://github.com/DrTimothyAldenDavis/SuiteSparse/archive/v5.8.1.tar.gz)
 [`//lib/tiff`](https://github.com/attilaolah/wasm/blob/main/lib/tiff/BUILD.bazel) | 4.2.0 [🔗](https://download.osgeo.org/libtiff/tiff-4.2.0.tar.gz)
