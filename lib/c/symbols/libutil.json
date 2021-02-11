@@ -1,0 +1,74 @@
+{
+  "name": "libutil.a",
+  "symbols": [
+    {
+      "name": ".LC0"
+    },
+    {
+      "name": ".LC1"
+    },
+    {
+      "name": ".LC2"
+    },
+    {
+      "name": "forkpty"
+    },
+    {
+      "name": "login"
+    },
+    {
+      "name": "login_tty"
+    },
+    {
+      "name": "logout"
+    },
+    {
+      "name": "logwtmp"
+    },
+    {
+      "name": "openpty"
+    },
+    {
+      "name": "pts_name.constprop.0"
+    },
+    {
+      "name": "tty_name.constprop.0"
+    }
+  ],
+  "externs": [
+    {
+      "archive": "libc.a",
+      "symbols": [
+        "__clock_gettime",
+        "_exit",
+        "basename",
+        "close",
+        "dup2",
+        "endutent",
+        "errno",
+        "fork",
+        "free",
+        "getpid",
+        "getpt",
+        "getutline_r",
+        "grantpt",
+        "ioctl",
+        "malloc",
+        "memchr",
+        "open",
+        "ptsname_r",
+        "pututline",
+        "realloc",
+        "setsid",
+        "setutent",
+        "strcpy",
+        "strncpy",
+        "tcsetattr",
+        "ttyname_r",
+        "unlockpt",
+        "updwtmp",
+        "utmpname"
+      ]
+    }
+  ]
+}

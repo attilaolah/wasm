@@ -17,7 +17,11 @@ def archive_symbols(name, deps):
     deps = [
         Label("@{}//{}:{}_symbols".format(dep.workspace_name, dep.package, dep.name))
         for dep in deps
-    ] + ["//lib/c:gnu"]
+    ] + [
+        # Implicit dependencies, keep sorted:
+        "//lib/c",
+        "//lib/cxx",
+    ]
 
     _archive_symbols(
         name = "{}_symbols".format(name),
@@ -35,7 +39,9 @@ def _archive_symbols_impl(ctx):
                 continue
             for lib in linker_input.libraries:
                 output = ctx.actions.declare_file(
-                    paths.replace_extension(lib.static_library.basename, ".json"),
+                    "symbols/{}".format(
+                        paths.replace_extension(lib.static_library.basename, ".json"),
+                    ),
                 )
                 outputs.append(output)
 
@@ -47,8 +53,8 @@ def _archive_symbols_impl(ctx):
 
                 inputs = [nm, lib.static_library]
                 for dep in ctx.attr.deps:
-                    for f in dep.files.to_list():
-                        args.add("-externs", f)
+                    for ext in dep.files.to_list():
+                        args.add("-externs", ext)
                     inputs.extend(dep.files.to_list())
 
                 ctx.actions.run(

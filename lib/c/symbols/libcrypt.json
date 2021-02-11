@@ -1,0 +1,228 @@
+{
+  "name": "libcrypt.a",
+  "symbols": [
+    {
+      "name": ".LC0"
+    },
+    {
+      "name": ".LC1"
+    },
+    {
+      "name": "BITMASK"
+    },
+    {
+      "name": "K"
+    },
+    {
+      "name": "__b64_from_24bit"
+    },
+    {
+      "name": "__crypt_r"
+    },
+    {
+      "name": "__init_des"
+    },
+    {
+      "name": "__init_des_r"
+    },
+    {
+      "name": "__md5_buffer"
+    },
+    {
+      "name": "__md5_crypt"
+    },
+    {
+      "name": "__md5_crypt_r"
+    },
+    {
+      "name": "__md5_finish_ctx"
+    },
+    {
+      "name": "__md5_init_ctx"
+    },
+    {
+      "name": "__md5_process_block"
+    },
+    {
+      "name": "__md5_process_bytes"
+    },
+    {
+      "name": "__md5_read_ctx"
+    },
+    {
+      "name": "__md5_stream"
+    },
+    {
+      "name": "__pthread_mutex_lock"
+    },
+    {
+      "name": "__pthread_mutex_unlock"
+    },
+    {
+      "name": "__sha256_crypt"
+    },
+    {
+      "name": "__sha256_crypt_r"
+    },
+    {
+      "name": "__sha256_finish_ctx"
+    },
+    {
+      "name": "__sha256_init_ctx"
+    },
+    {
+      "name": "__sha256_process_block"
+    },
+    {
+      "name": "__sha256_process_bytes"
+    },
+    {
+      "name": "__sha512_crypt"
+    },
+    {
+      "name": "__sha512_crypt_r"
+    },
+    {
+      "name": "__sha512_finish_ctx"
+    },
+    {
+      "name": "__sha512_init_ctx"
+    },
+    {
+      "name": "__sha512_process_block"
+    },
+    {
+      "name": "__sha512_process_bytes"
+    },
+    {
+      "name": "_ufc_dofinalperm_r"
+    },
+    {
+      "name": "_ufc_doit_r"
+    },
+    {
+      "name": "_ufc_foobar"
+    },
+    {
+      "name": "_ufc_mk_keytab_r"
+    },
+    {
+      "name": "_ufc_output_conversion_r"
+    },
+    {
+      "name": "_ufc_setup_salt_r"
+    },
+    {
+      "name": "_ufc_tables_lock"
+    },
+    {
+      "name": "b64t"
+    },
+    {
+      "name": "buffer"
+    },
+    {
+      "name": "buflen.0"
+    },
+    {
+      "name": "bytemask"
+    },
+    {
+      "name": "checked.0"
+    },
+    {
+      "name": "crypt"
+    },
+    {
+      "name": "crypt_r"
+    },
+    {
+      "name": "do_pc1"
+    },
+    {
+      "name": "do_pc2"
+    },
+    {
+      "name": "efp"
+    },
+    {
+      "name": "eperm32tab"
+    },
+    {
+      "name": "esel"
+    },
+    {
+      "name": "fillbuf"
+    },
+    {
+      "name": "final_perm"
+    },
+    {
+      "name": "fips_enabled_p"
+    },
+    {
+      "name": "longmask"
+    },
+    {
+      "name": "md5_salt_prefix"
+    },
+    {
+      "name": "pc1"
+    },
+    {
+      "name": "pc2"
+    },
+    {
+      "name": "perm32"
+    },
+    {
+      "name": "rots"
+    },
+    {
+      "name": "sbox"
+    },
+    {
+      "name": "sha256_rounds_prefix"
+    },
+    {
+      "name": "sha256_salt_prefix"
+    },
+    {
+      "name": "sha512_rounds_prefix"
+    },
+    {
+      "name": "sha512_salt_prefix"
+    },
+    {
+      "name": "small_tables_initialized.0"
+    }
+  ],
+  "externs": [
+    {
+      "archive": "libc.a",
+      "symbols": [
+        "__close_nocancel",
+        "__explicit_bzero_chk",
+        "__libc_alloca_cutoff",
+        "__open_nocancel",
+        "__read_nocancel",
+        "__snprintf",
+        "__stpncpy",
+        "errno",
+        "ferror",
+        "fread",
+        "free",
+        "malloc",
+        "memcpy",
+        "memset",
+        "realloc",
+        "strcspn",
+        "strlen",
+        "strncmp",
+        "strncpy",
+        "strtol",
+        "strtoul"
+      ]
+    }
+  ]
+}

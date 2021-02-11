@@ -1,0 +1,22 @@
+{
+  "name": "",
+  "symbols": [
+    {
+      "name": "__malloc_initialize_hook"
+    },
+    {
+      "name": "__malloc_initialize_hook@GLIBC_2.2.5"
+    },
+    {
+      "name": "turn_on_mcheck"
+    }
+  ],
+  "externs": [
+    {
+      "archive": "libc.a",
+      "symbols": [
+        "mcheck"
+      ]
+    }
+  ]
+}

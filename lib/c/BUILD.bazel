@@ -3,8 +3,8 @@ load(":gnu_c_lib.bzl", "gnu_c_lib")
 package(default_visibility = ["//lib:__subpackages__"])
 
 gnu_c_lib(
-    name = "gnu",
-    srcs = glob(["gnu/*.json"]),
+    name = "c",
+    srcs = glob(["symbols/lib*.json"]),
 )
 
 sh_binary(

@@ -1,0 +1,612 @@
+{
+  "name": "libmvec.a",
+  "symbols": [
+    {
+      "name": "_ZGVbN2v_cos"
+    },
+    {
+      "name": "_ZGVbN2v_cos_ifunc"
+    },
+    {
+      "name": "_ZGVbN2v_cos_sse2"
+    },
+    {
+      "name": "_ZGVbN2v_cos_sse4"
+    },
+    {
+      "name": "_ZGVbN2v_exp"
+    },
+    {
+      "name": "_ZGVbN2v_exp_ifunc"
+    },
+    {
+      "name": "_ZGVbN2v_exp_sse2"
+    },
+    {
+      "name": "_ZGVbN2v_exp_sse4"
+    },
+    {
+      "name": "_ZGVbN2v_log"
+    },
+    {
+      "name": "_ZGVbN2v_log_ifunc"
+    },
+    {
+      "name": "_ZGVbN2v_log_sse2"
+    },
+    {
+      "name": "_ZGVbN2v_log_sse4"
+    },
+    {
+      "name": "_ZGVbN2v_sin"
+    },
+    {
+      "name": "_ZGVbN2v_sin_ifunc"
+    },
+    {
+      "name": "_ZGVbN2v_sin_sse2"
+    },
+    {
+      "name": "_ZGVbN2v_sin_sse4"
+    },
+    {
+      "name": "_ZGVbN2vl8l8_sincos"
+    },
+    {
+      "name": "_ZGVbN2vl8l8_sincos_sse4"
+    },
+    {
+      "name": "_ZGVbN2vv_pow"
+    },
+    {
+      "name": "_ZGVbN2vv_pow_ifunc"
+    },
+    {
+      "name": "_ZGVbN2vv_pow_sse2"
+    },
+    {
+      "name": "_ZGVbN2vv_pow_sse4"
+    },
+    {
+      "name": "_ZGVbN2vvv_sincos"
+    },
+    {
+      "name": "_ZGVbN2vvv_sincos_ifunc"
+    },
+    {
+      "name": "_ZGVbN2vvv_sincos_sse2"
+    },
+    {
+      "name": "_ZGVbN2vvv_sincos_sse4"
+    },
+    {
+      "name": "_ZGVbN4v_cosf"
+    },
+    {
+      "name": "_ZGVbN4v_cosf_ifunc"
+    },
+    {
+      "name": "_ZGVbN4v_cosf_sse2"
+    },
+    {
+      "name": "_ZGVbN4v_cosf_sse4"
+    },
+    {
+      "name": "_ZGVbN4v_expf"
+    },
+    {
+      "name": "_ZGVbN4v_expf_ifunc"
+    },
+    {
+      "name": "_ZGVbN4v_expf_sse2"
+    },
+    {
+      "name": "_ZGVbN4v_expf_sse4"
+    },
+    {
+      "name": "_ZGVbN4v_logf"
+    },
+    {
+      "name": "_ZGVbN4v_logf_ifunc"
+    },
+    {
+      "name": "_ZGVbN4v_logf_sse2"
+    },
+    {
+      "name": "_ZGVbN4v_logf_sse4"
+    },
+    {
+      "name": "_ZGVbN4v_sinf"
+    },
+    {
+      "name": "_ZGVbN4v_sinf_ifunc"
+    },
+    {
+      "name": "_ZGVbN4v_sinf_sse2"
+    },
+    {
+      "name": "_ZGVbN4v_sinf_sse4"
+    },
+    {
+      "name": "_ZGVbN4vl4l4_sincosf"
+    },
+    {
+      "name": "_ZGVbN4vl4l4_sincosf_sse4"
+    },
+    {
+      "name": "_ZGVbN4vv_powf"
+    },
+    {
+      "name": "_ZGVbN4vv_powf_ifunc"
+    },
+    {
+      "name": "_ZGVbN4vv_powf_sse2"
+    },
+    {
+      "name": "_ZGVbN4vv_powf_sse4"
+    },
+    {
+      "name": "_ZGVbN4vvv_sincosf"
+    },
+    {
+      "name": "_ZGVbN4vvv_sincosf_ifunc"
+    },
+    {
+      "name": "_ZGVbN4vvv_sincosf_sse2"
+    },
+    {
+      "name": "_ZGVbN4vvv_sincosf_sse4"
+    },
+    {
+      "name": "_ZGVcN4v_cos"
+    },
+    {
+      "name": "_ZGVcN4v_exp"
+    },
+    {
+      "name": "_ZGVcN4v_log"
+    },
+    {
+      "name": "_ZGVcN4v_sin"
+    },
+    {
+      "name": "_ZGVcN4vl8l8_sincos"
+    },
+    {
+      "name": "_ZGVcN4vv_pow"
+    },
+    {
+      "name": "_ZGVcN4vvv_sincos"
+    },
+    {
+      "name": "_ZGVcN8v_cosf"
+    },
+    {
+      "name": "_ZGVcN8v_expf"
+    },
+    {
+      "name": "_ZGVcN8v_logf"
+    },
+    {
+      "name": "_ZGVcN8v_sinf"
+    },
+    {
+      "name": "_ZGVcN8vl4l4_sincosf"
+    },
+    {
+      "name": "_ZGVcN8vv_powf"
+    },
+    {
+      "name": "_ZGVcN8vvv_sincosf"
+    },
+    {
+      "name": "_ZGVdN4v_cos"
+    },
+    {
+      "name": "_ZGVdN4v_cos_avx2"
+    },
+    {
+      "name": "_ZGVdN4v_cos_ifunc"
+    },
+    {
+      "name": "_ZGVdN4v_cos_sse_wrapper"
+    },
+    {
+      "name": "_ZGVdN4v_exp"
+    },
+    {
+      "name": "_ZGVdN4v_exp_avx2"
+    },
+    {
+      "name": "_ZGVdN4v_exp_ifunc"
+    },
+    {
+      "name": "_ZGVdN4v_exp_sse_wrapper"
+    },
+    {
+      "name": "_ZGVdN4v_log"
+    },
+    {
+      "name": "_ZGVdN4v_log_avx2"
+    },
+    {
+      "name": "_ZGVdN4v_log_ifunc"
+    },
+    {
+      "name": "_ZGVdN4v_log_sse_wrapper"
+    },
+    {
+      "name": "_ZGVdN4v_sin"
+    },
+    {
+      "name": "_ZGVdN4v_sin_avx2"
+    },
+    {
+      "name": "_ZGVdN4v_sin_ifunc"
+    },
+    {
+      "name": "_ZGVdN4v_sin_sse_wrapper"
+    },
+    {
+      "name": "_ZGVdN4vl8l8_sincos"
+    },
+    {
+      "name": "_ZGVdN4vl8l8_sincos_avx2"
+    },
+    {
+      "name": "_ZGVdN4vv_pow"
+    },
+    {
+      "name": "_ZGVdN4vv_pow_avx2"
+    },
+    {
+      "name": "_ZGVdN4vv_pow_ifunc"
+    },
+    {
+      "name": "_ZGVdN4vv_pow_sse_wrapper"
+    },
+    {
+      "name": "_ZGVdN4vvv_sincos"
+    },
+    {
+      "name": "_ZGVdN4vvv_sincos_avx2"
+    },
+    {
+      "name": "_ZGVdN4vvv_sincos_ifunc"
+    },
+    {
+      "name": "_ZGVdN4vvv_sincos_sse_wrapper"
+    },
+    {
+      "name": "_ZGVdN8v_cosf"
+    },
+    {
+      "name": "_ZGVdN8v_cosf_avx2"
+    },
+    {
+      "name": "_ZGVdN8v_cosf_ifunc"
+    },
+    {
+      "name": "_ZGVdN8v_cosf_sse_wrapper"
+    },
+    {
+      "name": "_ZGVdN8v_expf"
+    },
+    {
+      "name": "_ZGVdN8v_expf_avx2"
+    },
+    {
+      "name": "_ZGVdN8v_expf_ifunc"
+    },
+    {
+      "name": "_ZGVdN8v_expf_sse_wrapper"
+    },
+    {
+      "name": "_ZGVdN8v_logf"
+    },
+    {
+      "name": "_ZGVdN8v_logf_avx2"
+    },
+    {
+      "name": "_ZGVdN8v_logf_ifunc"
+    },
+    {
+      "name": "_ZGVdN8v_logf_sse_wrapper"
+    },
+    {
+      "name": "_ZGVdN8v_sinf"
+    },
+    {
+      "name": "_ZGVdN8v_sinf_avx2"
+    },
+    {
+      "name": "_ZGVdN8v_sinf_ifunc"
+    },
+    {
+      "name": "_ZGVdN8v_sinf_sse_wrapper"
+    },
+    {
+      "name": "_ZGVdN8vl4l4_sincosf"
+    },
+    {
+      "name": "_ZGVdN8vl4l4_sincosf_avx2"
+    },
+    {
+      "name": "_ZGVdN8vv_powf"
+    },
+    {
+      "name": "_ZGVdN8vv_powf_avx2"
+    },
+    {
+      "name": "_ZGVdN8vv_powf_ifunc"
+    },
+    {
+      "name": "_ZGVdN8vv_powf_sse_wrapper"
+    },
+    {
+      "name": "_ZGVdN8vvv_sincosf"
+    },
+    {
+      "name": "_ZGVdN8vvv_sincosf_avx2"
+    },
+    {
+      "name": "_ZGVdN8vvv_sincosf_ifunc"
+    },
+    {
+      "name": "_ZGVdN8vvv_sincosf_sse_wrapper"
+    },
+    {
+      "name": "_ZGVeN16v_cosf"
+    },
+    {
+      "name": "_ZGVeN16v_cosf_avx2_wrapper"
+    },
+    {
+      "name": "_ZGVeN16v_cosf_ifunc"
+    },
+    {
+      "name": "_ZGVeN16v_cosf_knl"
+    },
+    {
+      "name": "_ZGVeN16v_cosf_skx"
+    },
+    {
+      "name": "_ZGVeN16v_expf"
+    },
+    {
+      "name": "_ZGVeN16v_expf_avx2_wrapper"
+    },
+    {
+      "name": "_ZGVeN16v_expf_ifunc"
+    },
+    {
+      "name": "_ZGVeN16v_expf_knl"
+    },
+    {
+      "name": "_ZGVeN16v_expf_skx"
+    },
+    {
+      "name": "_ZGVeN16v_logf"
+    },
+    {
+      "name": "_ZGVeN16v_logf_avx2_wrapper"
+    },
+    {
+      "name": "_ZGVeN16v_logf_ifunc"
+    },
+    {
+      "name": "_ZGVeN16v_logf_knl"
+    },
+    {
+      "name": "_ZGVeN16v_logf_skx"
+    },
+    {
+      "name": "_ZGVeN16v_sinf"
+    },
+    {
+      "name": "_ZGVeN16v_sinf_avx2_wrapper"
+    },
+    {
+      "name": "_ZGVeN16v_sinf_ifunc"
+    },
+    {
+      "name": "_ZGVeN16v_sinf_knl"
+    },
+    {
+      "name": "_ZGVeN16v_sinf_skx"
+    },
+    {
+      "name": "_ZGVeN16vl4l4_sincosf"
+    },
+    {
+      "name": "_ZGVeN16vl4l4_sincosf_knl"
+    },
+    {
+      "name": "_ZGVeN16vl4l4_sincosf_skx"
+    },
+    {
+      "name": "_ZGVeN16vv_powf"
+    },
+    {
+      "name": "_ZGVeN16vv_powf_avx2_wrapper"
+    },
+    {
+      "name": "_ZGVeN16vv_powf_ifunc"
+    },
+    {
+      "name": "_ZGVeN16vv_powf_knl"
+    },
+    {
+      "name": "_ZGVeN16vv_powf_skx"
+    },
+    {
+      "name": "_ZGVeN16vvv_sincosf"
+    },
+    {
+      "name": "_ZGVeN16vvv_sincosf_avx2_wrapper"
+    },
+    {
+      "name": "_ZGVeN16vvv_sincosf_ifunc"
+    },
+    {
+      "name": "_ZGVeN16vvv_sincosf_knl"
+    },
+    {
+      "name": "_ZGVeN16vvv_sincosf_skx"
+    },
+    {
+      "name": "_ZGVeN8v_cos"
+    },
+    {
+      "name": "_ZGVeN8v_cos_avx2_wrapper"
+    },
+    {
+      "name": "_ZGVeN8v_cos_ifunc"
+    },
+    {
+      "name": "_ZGVeN8v_cos_knl"
+    },
+    {
+      "name": "_ZGVeN8v_cos_skx"
+    },
+    {
+      "name": "_ZGVeN8v_exp"
+    },
+    {
+      "name": "_ZGVeN8v_exp_avx2_wrapper"
+    },
+    {
+      "name": "_ZGVeN8v_exp_ifunc"
+    },
+    {
+      "name": "_ZGVeN8v_exp_knl"
+    },
+    {
+      "name": "_ZGVeN8v_exp_skx"
+    },
+    {
+      "name": "_ZGVeN8v_log"
+    },
+    {
+      "name": "_ZGVeN8v_log_avx2_wrapper"
+    },
+    {
+      "name": "_ZGVeN8v_log_ifunc"
+    },
+    {
+      "name": "_ZGVeN8v_log_knl"
+    },
+    {
+      "name": "_ZGVeN8v_log_skx"
+    },
+    {
+      "name": "_ZGVeN8v_sin"
+    },
+    {
+      "name": "_ZGVeN8v_sin_avx2_wrapper"
+    },
+    {
+      "name": "_ZGVeN8v_sin_ifunc"
+    },
+    {
+      "name": "_ZGVeN8v_sin_knl"
+    },
+    {
+      "name": "_ZGVeN8v_sin_skx"
+    },
+    {
+      "name": "_ZGVeN8vl8l8_sincos"
+    },
+    {
+      "name": "_ZGVeN8vl8l8_sincos_knl"
+    },
+    {
+      "name": "_ZGVeN8vl8l8_sincos_skx"
+    },
+    {
+      "name": "_ZGVeN8vv_pow"
+    },
+    {
+      "name": "_ZGVeN8vv_pow_avx2_wrapper"
+    },
+    {
+      "name": "_ZGVeN8vv_pow_ifunc"
+    },
+    {
+      "name": "_ZGVeN8vv_pow_knl"
+    },
+    {
+      "name": "_ZGVeN8vv_pow_skx"
+    },
+    {
+      "name": "_ZGVeN8vvv_sincos"
+    },
+    {
+      "name": "_ZGVeN8vvv_sincos_avx2_wrapper"
+    },
+    {
+      "name": "_ZGVeN8vvv_sincos_ifunc"
+    },
+    {
+      "name": "_ZGVeN8vvv_sincos_knl"
+    },
+    {
+      "name": "_ZGVeN8vvv_sincos_skx"
+    },
+    {
+      "name": "__VPACK_ODD_ind.6357.0.1"
+    },
+    {
+      "name": "__VPACK_ODD_ind.6358.0.1"
+    },
+    {
+      "name": "__svml_d_trig_data"
+    },
+    {
+      "name": "__svml_dexp_data"
+    },
+    {
+      "name": "__svml_dlog_data"
+    },
+    {
+      "name": "__svml_dpow_data"
+    },
+    {
+      "name": "__svml_s_trig_data"
+    },
+    {
+      "name": "__svml_sexp_data"
+    },
+    {
+      "name": "__svml_slog_data"
+    },
+    {
+      "name": "__svml_spow_data"
+    }
+  ],
+  "externs": [
+    {
+      "archive": "libc.a",
+      "symbols": [
+        "_dl_x86_cpu_features"
+      ]
+    },
+    {
+      "archive": "libm.a",
+      "symbols": [
+        "cos",
+        "cosf",
+        "exp",
+        "expf",
+        "log",
+        "logf",
+        "pow",
+        "powf",
+        "sin",
+        "sincos",
+        "sincosf",
+        "sinf"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+load(":llvm_cxx_lib.bzl", "llvm_cxx_lib")
+
+package(default_visibility = ["//lib:__subpackages__"])
+
+llvm_cxx_lib(
+    name = "cxx",
+    deps = ["//lib/c"],
+)

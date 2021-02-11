@@ -1,0 +1,602 @@
+{
+  "name": "libresolv.a",
+  "symbols": [
+    {
+      "name": ".LC0"
+    },
+    {
+      "name": ".LC1"
+    },
+    {
+      "name": ".LC10"
+    },
+    {
+      "name": ".LC11"
+    },
+    {
+      "name": ".LC12"
+    },
+    {
+      "name": ".LC13"
+    },
+    {
+      "name": ".LC14"
+    },
+    {
+      "name": ".LC15"
+    },
+    {
+      "name": ".LC16"
+    },
+    {
+      "name": ".LC17"
+    },
+    {
+      "name": ".LC18"
+    },
+    {
+      "name": ".LC19"
+    },
+    {
+      "name": ".LC2"
+    },
+    {
+      "name": ".LC20"
+    },
+    {
+      "name": ".LC21"
+    },
+    {
+      "name": ".LC22"
+    },
+    {
+      "name": ".LC23"
+    },
+    {
+      "name": ".LC24"
+    },
+    {
+      "name": ".LC25"
+    },
+    {
+      "name": ".LC26"
+    },
+    {
+      "name": ".LC27"
+    },
+    {
+      "name": ".LC28"
+    },
+    {
+      "name": ".LC29"
+    },
+    {
+      "name": ".LC3"
+    },
+    {
+      "name": ".LC30"
+    },
+    {
+      "name": ".LC31"
+    },
+    {
+      "name": ".LC32"
+    },
+    {
+      "name": ".LC33"
+    },
+    {
+      "name": ".LC34"
+    },
+    {
+      "name": ".LC35"
+    },
+    {
+      "name": ".LC36"
+    },
+    {
+      "name": ".LC37"
+    },
+    {
+      "name": ".LC38"
+    },
+    {
+      "name": ".LC39"
+    },
+    {
+      "name": ".LC4"
+    },
+    {
+      "name": ".LC40"
+    },
+    {
+      "name": ".LC41"
+    },
+    {
+      "name": ".LC42"
+    },
+    {
+      "name": ".LC43"
+    },
+    {
+      "name": ".LC44"
+    },
+    {
+      "name": ".LC45"
+    },
+    {
+      "name": ".LC46"
+    },
+    {
+      "name": ".LC47"
+    },
+    {
+      "name": ".LC48"
+    },
+    {
+      "name": ".LC49"
+    },
+    {
+      "name": ".LC5"
+    },
+    {
+      "name": ".LC6"
+    },
+    {
+      "name": ".LC7"
+    },
+    {
+      "name": ".LC8"
+    },
+    {
+      "name": ".LC9"
+    },
+    {
+      "name": "Base64"
+    },
+    {
+      "name": "__PRETTY_FUNCTION__.0"
+    },
+    {
+      "name": "__PRETTY_FUNCTION__.1"
+    },
+    {
+      "name": "__PRETTY_FUNCTION__.3"
+    },
+    {
+      "name": "__b64_ntop"
+    },
+    {
+      "name": "__b64_pton"
+    },
+    {
+      "name": "__dn_comp"
+    },
+    {
+      "name": "__dn_count_labels"
+    },
+    {
+      "name": "__dn_expand"
+    },
+    {
+      "name": "__dn_skipname"
+    },
+    {
+      "name": "__fp_nquery"
+    },
+    {
+      "name": "__fp_query"
+    },
+    {
+      "name": "__fp_resstat"
+    },
+    {
+      "name": "__hostalias"
+    },
+    {
+      "name": "__loc_aton"
+    },
+    {
+      "name": "__loc_ntoa"
+    },
+    {
+      "name": "__ns_get16"
+    },
+    {
+      "name": "__ns_get32"
+    },
+    {
+      "name": "__ns_name_ntop"
+    },
+    {
+      "name": "__ns_name_unpack"
+    },
+    {
+      "name": "__p_cdname"
+    },
+    {
+      "name": "__p_cdnname"
+    },
+    {
+      "name": "__p_class"
+    },
+    {
+      "name": "__p_class_syms"
+    },
+    {
+      "name": "__p_default_section_syms"
+    },
+    {
+      "name": "__p_fqname"
+    },
+    {
+      "name": "__p_fqnname"
+    },
+    {
+      "name": "__p_option"
+    },
+    {
+      "name": "__p_query"
+    },
+    {
+      "name": "__p_rcode"
+    },
+    {
+      "name": "__p_rcode_syms"
+    },
+    {
+      "name": "__p_time"
+    },
+    {
+      "name": "__p_type"
+    },
+    {
+      "name": "__p_type_syms"
+    },
+    {
+      "name": "__p_update_section_syms"
+    },
+    {
+      "name": "__putlong"
+    },
+    {
+      "name": "__putshort"
+    },
+    {
+      "name": "__res_close"
+    },
+    {
+      "name": "__res_context_hostalias"
+    },
+    {
+      "name": "__res_context_mkquery"
+    },
+    {
+      "name": "__res_context_query"
+    },
+    {
+      "name": "__res_context_querydomain"
+    },
+    {
+      "name": "__res_context_search"
+    },
+    {
+      "name": "__res_context_send"
+    },
+    {
+      "name": "__res_dnok"
+    },
+    {
+      "name": "__res_enable_icmp"
+    },
+    {
+      "name": "__res_hnok"
+    },
+    {
+      "name": "__res_hostalias"
+    },
+    {
+      "name": "__res_isourserver"
+    },
+    {
+      "name": "__res_mailok"
+    },
+    {
+      "name": "__res_mkquery"
+    },
+    {
+      "name": "__res_nameinquery"
+    },
+    {
+      "name": "__res_nmkquery"
+    },
+    {
+      "name": "__res_nopt"
+    },
+    {
+      "name": "__res_nquery"
+    },
+    {
+      "name": "__res_nquerydomain"
+    },
+    {
+      "name": "__res_nsearch"
+    },
+    {
+      "name": "__res_nsend"
+    },
+    {
+      "name": "__res_ownok"
+    },
+    {
+      "name": "__res_queriesmatch"
+    },
+    {
+      "name": "__res_query"
+    },
+    {
+      "name": "__res_querydomain"
+    },
+    {
+      "name": "__res_search"
+    },
+    {
+      "name": "__res_send"
+    },
+    {
+      "name": "__sym_ntop"
+    },
+    {
+      "name": "__sym_ntos"
+    },
+    {
+      "name": "__sym_ston"
+    },
+    {
+      "name": "_getlong"
+    },
+    {
+      "name": "_getshort"
+    },
+    {
+      "name": "_ns_flagdata"
+    },
+    {
+      "name": "abuf.0"
+    },
+    {
+      "name": "addlen.part.0"
+    },
+    {
+      "name": "addname"
+    },
+    {
+      "name": "addtab"
+    },
+    {
+      "name": "binary_hnok"
+    },
+    {
+      "name": "buflen.7"
+    },
+    {
+      "name": "charstr"
+    },
+    {
+      "name": "days_per_month.0"
+    },
+    {
+      "name": "digits"
+    },
+    {
+      "name": "do_section"
+    },
+    {
+      "name": "error.1"
+    },
+    {
+      "name": "global_offset.2"
+    },
+    {
+      "name": "inet_net_ntop"
+    },
+    {
+      "name": "inet_net_pton"
+    },
+    {
+      "name": "inet_neta"
+    },
+    {
+      "name": "latlon2ul"
+    },
+    {
+      "name": "nbuf.3"
+    },
+    {
+      "name": "nbuf.4"
+    },
+    {
+      "name": "ns_datetosecs"
+    },
+    {
+      "name": "ns_format_ttl"
+    },
+    {
+      "name": "ns_get16"
+    },
+    {
+      "name": "ns_get32"
+    },
+    {
+      "name": "ns_initparse"
+    },
+    {
+      "name": "ns_makecanon"
+    },
+    {
+      "name": "ns_msg_getflag"
+    },
+    {
+      "name": "ns_name_compress"
+    },
+    {
+      "name": "ns_name_ntol"
+    },
+    {
+      "name": "ns_name_ntop"
+    },
+    {
+      "name": "ns_name_pack"
+    },
+    {
+      "name": "ns_name_pton"
+    },
+    {
+      "name": "ns_name_rollback"
+    },
+    {
+      "name": "ns_name_skip"
+    },
+    {
+      "name": "ns_name_uncompress"
+    },
+    {
+      "name": "ns_name_unpack"
+    },
+    {
+      "name": "ns_parse_ttl"
+    },
+    {
+      "name": "ns_parserr"
+    },
+    {
+      "name": "ns_put16"
+    },
+    {
+      "name": "ns_put32"
+    },
+    {
+      "name": "ns_samedomain"
+    },
+    {
+      "name": "ns_samename"
+    },
+    {
+      "name": "ns_skiprr"
+    },
+    {
+      "name": "ns_sprintrr"
+    },
+    {
+      "name": "ns_sprintrrf"
+    },
+    {
+      "name": "ns_subdomain"
+    },
+    {
+      "name": "poweroften"
+    },
+    {
+      "name": "precsize_aton"
+    },
+    {
+      "name": "prune_origin"
+    },
+    {
+      "name": "reopen"
+    },
+    {
+      "name": "res_opcodes"
+    },
+    {
+      "name": "res_ourserver_p"
+    },
+    {
+      "name": "retbuf.0"
+    },
+    {
+      "name": "send_dg"
+    },
+    {
+      "name": "send_dg.cold"
+    },
+    {
+      "name": "send_vc"
+    },
+    {
+      "name": "sock_eq"
+    },
+    {
+      "name": "tmpbuf.2"
+    },
+    {
+      "name": "unname.5"
+    },
+    {
+      "name": "unname.6"
+    },
+    {
+      "name": "xdigits.1"
+    }
+  ],
+  "externs": [
+    {
+      "archive": "libc.a",
+      "symbols": [
+        "__assert_fail",
+        "__clock_gettime",
+        "__ctype_b_loc",
+        "__ctype_tolower_loc",
+        "__ctype_toupper_loc",
+        "__h_errno",
+        "__poll",
+        "__rawmemchr",
+        "__res_iclose",
+        "__resolv_context_get",
+        "__resolv_context_get_override",
+        "__resolv_context_get_preinit",
+        "__resolv_context_put",
+        "__resp",
+        "__sendmmsg",
+        "abort",
+        "connect",
+        "errno",
+        "fclose",
+        "fgets",
+        "fopen",
+        "fprintf",
+        "fputc",
+        "fputs",
+        "free",
+        "fwrite",
+        "getenv",
+        "getpeername",
+        "in6addr_any",
+        "inet_nsap_ntoa",
+        "inet_ntop",
+        "ioctl",
+        "malloc",
+        "memcpy",
+        "putc",
+        "read",
+        "recvfrom",
+        "send",
+        "setbuf",
+        "setsockopt",
+        "snprintf",
+        "socket",
+        "sprintf",
+        "stdout",
+        "strcasecmp",
+        "strchr",
+        "strcpy",
+        "strdup",
+        "strerror",
+        "strlen",
+        "strncasecmp",
+        "strncpy",
+        "writev"
+      ]
+    }
+  ]
+}

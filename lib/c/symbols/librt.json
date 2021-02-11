@@ -1,0 +1,382 @@
+{
+  "name": "librt.a",
+  "symbols": [
+    {
+      "name": ".LC0"
+    },
+    {
+      "name": ".LC1"
+    },
+    {
+      "name": ".LC2"
+    },
+    {
+      "name": ".LC3"
+    },
+    {
+      "name": "DW.ref.__gcc_personality_v0"
+    },
+    {
+      "name": "__PRETTY_FUNCTION__.0"
+    },
+    {
+      "name": "__PRETTY_FUNCTION__.1"
+    },
+    {
+      "name": "__PRETTY_FUNCTION__.2"
+    },
+    {
+      "name": "__active_timer_sigev_thread"
+    },
+    {
+      "name": "__active_timer_sigev_thread_lock"
+    },
+    {
+      "name": "__aio_enqueue_request"
+    },
+    {
+      "name": "__aio_find_req"
+    },
+    {
+      "name": "__aio_find_req_fd"
+    },
+    {
+      "name": "__aio_free_request"
+    },
+    {
+      "name": "__aio_init"
+    },
+    {
+      "name": "__aio_new_request_notification"
+    },
+    {
+      "name": "__aio_notify"
+    },
+    {
+      "name": "__aio_notify_only"
+    },
+    {
+      "name": "__aio_remove_request"
+    },
+    {
+      "name": "__aio_remove_request.part.0"
+    },
+    {
+      "name": "__aio_requests_mutex"
+    },
+    {
+      "name": "__aio_sigqueue"
+    },
+    {
+      "name": "__aio_suspend"
+    },
+    {
+      "name": "__aio_suspend.cold"
+    },
+    {
+      "name": "__elf_set___libc_subfreeres_element_free_res__"
+    },
+    {
+      "name": "__helper_once"
+    },
+    {
+      "name": "__helper_tid"
+    },
+    {
+      "name": "__librt_disable_asynccancel"
+    },
+    {
+      "name": "__librt_enable_asynccancel"
+    },
+    {
+      "name": "__lio_listio64_item_notify"
+    },
+    {
+      "name": "__lio_listio_item_notify"
+    },
+    {
+      "name": "__mq_open"
+    },
+    {
+      "name": "__mq_open_2"
+    },
+    {
+      "name": "__mq_timedreceive"
+    },
+    {
+      "name": "__mq_timedsend"
+    },
+    {
+      "name": "__pthread_unwind"
+    },
+    {
+      "name": "__start_helper_thread"
+    },
+    {
+      "name": "__timer_create_new"
+    },
+    {
+      "name": "__timer_delete_new"
+    },
+    {
+      "name": "__timer_getoverrun_new"
+    },
+    {
+      "name": "__timer_gettime_new"
+    },
+    {
+      "name": "__timer_settime_new"
+    },
+    {
+      "name": "add_request_to_runlist"
+    },
+    {
+      "name": "added_atfork.0"
+    },
+    {
+      "name": "aio_cancel"
+    },
+    {
+      "name": "aio_cancel64"
+    },
+    {
+      "name": "aio_error"
+    },
+    {
+      "name": "aio_error64"
+    },
+    {
+      "name": "aio_fsync"
+    },
+    {
+      "name": "aio_fsync64"
+    },
+    {
+      "name": "aio_init"
+    },
+    {
+      "name": "aio_read"
+    },
+    {
+      "name": "aio_read64"
+    },
+    {
+      "name": "aio_return"
+    },
+    {
+      "name": "aio_return64"
+    },
+    {
+      "name": "aio_suspend"
+    },
+    {
+      "name": "aio_suspend64"
+    },
+    {
+      "name": "aio_write"
+    },
+    {
+      "name": "aio_write64"
+    },
+    {
+      "name": "change_sigmask"
+    },
+    {
+      "name": "do_aio_misc_wait"
+    },
+    {
+      "name": "free_res"
+    },
+    {
+      "name": "freelist"
+    },
+    {
+      "name": "handle_fildes_io"
+    },
+    {
+      "name": "helper_thread"
+    },
+    {
+      "name": "idle_thread_count"
+    },
+    {
+      "name": "init_mq_netlink"
+    },
+    {
+      "name": "lio_listio"
+    },
+    {
+      "name": "lio_listio64"
+    },
+    {
+      "name": "mq_close"
+    },
+    {
+      "name": "mq_getattr"
+    },
+    {
+      "name": "mq_notify"
+    },
+    {
+      "name": "mq_open"
+    },
+    {
+      "name": "mq_receive"
+    },
+    {
+      "name": "mq_send"
+    },
+    {
+      "name": "mq_setattr"
+    },
+    {
+      "name": "mq_timedreceive"
+    },
+    {
+      "name": "mq_timedsend"
+    },
+    {
+      "name": "mq_unlink"
+    },
+    {
+      "name": "netlink_socket"
+    },
+    {
+      "name": "notification_function"
+    },
+    {
+      "name": "notify_barrier"
+    },
+    {
+      "name": "notify_func_wrapper"
+    },
+    {
+      "name": "nthreads"
+    },
+    {
+      "name": "once"
+    },
+    {
+      "name": "optim"
+    },
+    {
+      "name": "pool"
+    },
+    {
+      "name": "pool_max_size"
+    },
+    {
+      "name": "pool_size"
+    },
+    {
+      "name": "requests"
+    },
+    {
+      "name": "reset_helper_control"
+    },
+    {
+      "name": "reset_once"
+    },
+    {
+      "name": "runlist"
+    },
+    {
+      "name": "shm_open"
+    },
+    {
+      "name": "shm_unlink"
+    },
+    {
+      "name": "sigtimer_set"
+    },
+    {
+      "name": "timer_create"
+    },
+    {
+      "name": "timer_delete"
+    },
+    {
+      "name": "timer_getoverrun"
+    },
+    {
+      "name": "timer_gettime"
+    },
+    {
+      "name": "timer_helper_thread"
+    },
+    {
+      "name": "timer_settime"
+    },
+    {
+      "name": "timer_sigev_thread"
+    }
+  ],
+  "externs": [
+    {
+      "archive": "libc.a",
+      "symbols": [
+        "__assert_fail",
+        "__clock_gettime",
+        "__close_nocancel",
+        "__fortify_fail",
+        "__libc_fatal",
+        "__libc_pread",
+        "__libc_pwrite",
+        "__mempcpy",
+        "__pthread_attr_setsigmask_internal",
+        "__recv",
+        "__socket",
+        "calloc",
+        "errno",
+        "fcntl",
+        "fdatasync",
+        "free",
+        "fsync",
+        "getpid",
+        "getuid",
+        "malloc",
+        "memcpy",
+        "open",
+        "pthread_atfork",
+        "pthread_attr_destroy",
+        "pthread_attr_init",
+        "pthread_attr_setdetachstate",
+        "pthread_getschedparam",
+        "pthread_self",
+        "pthread_setschedparam",
+        "pthread_sigmask",
+        "read",
+        "realloc",
+        "sigemptyset",
+        "sigfillset",
+        "sigwaitinfo",
+        "strchr",
+        "strlen",
+        "unlink",
+        "write"
+      ]
+    },
+    {
+      "archive": "libpthread.a",
+      "symbols": [
+        "__futex_abstimed_wait64",
+        "__futex_abstimed_wait_cancelable64",
+        "__pthread_barrier_init",
+        "__pthread_barrier_wait",
+        "__pthread_get_minstack",
+        "__shm_directory",
+        "pthread_attr_setstacksize",
+        "pthread_cancel",
+        "pthread_cond_signal",
+        "pthread_cond_timedwait",
+        "pthread_create",
+        "pthread_detach",
+        "pthread_exit",
+        "pthread_mutex_lock",
+        "pthread_mutex_unlock",
+        "pthread_once",
+        "pthread_setcancelstate"
+      ]
+    }
+  ]
+}

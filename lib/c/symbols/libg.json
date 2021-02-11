@@ -1,0 +1,9 @@
+{
+  "name": "libg.a",
+  "symbols": [
+    {
+      "name": "__dummy__"
+    }
+  ],
+  "externs": null
+}
