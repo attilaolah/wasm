@@ -26,5 +26,6 @@ ts_library(
 mocha_test(
     name = "png_test",
     srcs = ["png_api.spec.ts"],
+    args = ["--node_options=--experimental-wasm-threads"],
     deps = [":png_wasm"],
 )
