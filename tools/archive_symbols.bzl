@@ -1,6 +1,15 @@
+"""Contains a rule and helper macro for extracting archive symbols.
+
+The generated symbols are stored in JSON format and can be used for symbol
+resolution checking or generating dependency graphs.
+"""
+
 load("@bazel_skylib//lib:paths.bzl", "paths")
 
-ArchiveSymbolsInfo = provider()
+ArchiveSymbolsInfo = provider(
+    "Marker for rules that generate archive symbol files.",
+    fields = None,
+)
 
 def archive_symbols(name, deps):
     """Convenience macro for generating archive symbols for a library."""
@@ -8,7 +17,7 @@ def archive_symbols(name, deps):
     deps = [
         Label("@{}//{}:{}_symbols".format(dep.workspace_name, dep.package, dep.name))
         for dep in deps
-    ]
+    ] + ["//lib/c:gnu"]
 
     _archive_symbols(
         name = "{}_symbols".format(name),
@@ -33,7 +42,6 @@ def _archive_symbols_impl(ctx):
                 args = ctx.actions.args()
                 args.add("-nm", nm)
                 args.add("-archive", lib.static_library)
-                args.add("-type", "FUNC")
                 args.add("-extern_only")
                 args.add("-output", output)
 

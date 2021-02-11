@@ -1,0 +1,21 @@
+load(":gnu_c_lib.bzl", "gnu_c_lib")
+
+package(default_visibility = ["//lib:__subpackages__"])
+
+gnu_c_lib(
+    name = "gnu",
+    srcs = glob(["gnu/*.json"]),
+)
+
+sh_binary(
+    name = "regenerate_symbols",
+    srcs = ["regenerate_symbols.sh"],
+    data = [
+        "//cmd/nm_json",
+        "@llvm//:nm",
+    ],
+    env = {
+        "NM": "$(execpath @llvm//:nm)",
+        "NM_JSON": "$(rootpath //cmd/nm_json)",
+    },
+)

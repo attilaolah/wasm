@@ -8,6 +8,20 @@ URL = "https://github.com/{name}/{name}-project/releases/download/{name}org-{ver
 
 SHA256 = "b60f68581182ace5f7d4a72e5cce61c01adc88050acb72b2070ad298c25071bc"
 
+BUILD = """
+package(default_visibility = ["//visibility:public"])
+
+filegroup(
+    name = "all",
+    srcs = glob(["**"]),
+)
+
+filegroup(
+    name = "nm",
+    srcs = ["bin/llvm-nm"],
+)
+"""
+
 def download_llvm():
     http_archive(
         name = "llvm",
@@ -15,4 +29,5 @@ def download_llvm():
         urls = [URL],
         sha256 = SHA256,
         strip_prefix = "clang+{name}-{version}-x86_64-linux-gnu-ubuntu-20.10",
+        build_file_content = BUILD,
     )
