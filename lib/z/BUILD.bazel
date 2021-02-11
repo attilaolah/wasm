@@ -1,8 +1,5 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
-load("@npm//@bazel/typescript:index.bzl", "ts_library")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
-load("//tools:mocha_test.bzl", "mocha_test")
-load("//tools:wasm_library.bzl", "wasm_library")
 
 package(default_visibility = ["//:__subpackages__"])
 
@@ -14,37 +11,6 @@ configure_make_lib(
     },
     configure_options = [
         "--static",
-    ],
-)
-
-wasm_library(
-    name = "z_wasm",
-    srcs = [":z_api"],
-    build_settings = {
-        "ALLOW_MEMORY_GROWTH": "1",
-    },
-    exported_functions = [
-        # keep sorted
-        "compress",
-        "compressBound",
-        "zlibCompileFlags",
-        "zlibVersion",
-    ],
-    deps = [":z"],
-)
-
-ts_library(
-    name = "z_api",
-    srcs = ["z_api.ts"],
-    deps = ["//tools/emscripten:types"],
-)
-
-mocha_test(
-    name = "z_test",
-    srcs = ["z_api.spec.ts"],
-    deps = [
-        ":z_wasm",
-        "@npm//cross-blob",
     ],
 )
 

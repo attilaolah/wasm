@@ -1,8 +1,5 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
-load("@npm//@bazel/typescript:index.bzl", "ts_library")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
-load("//tools:mocha_test.bzl", "mocha_test")
-load("//tools:wasm_library.bzl", "wasm_library")
 
 package(default_visibility = ["//:__subpackages__"])
 
@@ -15,31 +12,6 @@ cmake_lib(
         "LZ4_BUILD_LEGACY_LZ4C:BOOL": "OFF",
     },
     working_directory = "build/cmake",
-)
-
-wasm_library(
-    name = "lz4_wasm",
-    srcs = [":lz4_api"],
-    build_settings = {
-        "ALLOW_MEMORY_GROWTH": "1",
-    },
-    exported_functions = [
-        # keep sorted
-        "LZ4_versionString",
-    ],
-    deps = [":lz4"],
-)
-
-ts_library(
-    name = "lz4_api",
-    srcs = ["lz4_api.ts"],
-    deps = ["//tools/emscripten:types"],
-)
-
-mocha_test(
-    name = "lz4_test",
-    srcs = ["lz4_api.spec.ts"],
-    deps = [":lz4_wasm"],
 )
 
 bzl_library(
