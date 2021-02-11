@@ -33,7 +33,9 @@ def _build_symbol(ctx, f, deps = None):
         deps = []
 
     output = ctx.actions.declare_file(
-        paths.replace_extension(f.basename, ".json"),
+        "symbols/{}".format(
+            paths.replace_extension(f.basename, ".json"),
+        ),
     )
 
     args = ctx.actions.args()
