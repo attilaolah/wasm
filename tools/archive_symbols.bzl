@@ -1,6 +1,6 @@
 load("@bazel_skylib//lib:paths.bzl", "paths")
 
-ArchiveSymbolInfo = provider()
+ArchiveSymbolsInfo = provider()
 
 def archive_symbols(name, deps):
     """Convenience macro for generating archive symbols for a library."""
@@ -53,14 +53,14 @@ def _archive_symbols_impl(ctx):
 
     return [
         DefaultInfo(files = depset(outputs)),
-        ArchiveSymbolInfo(),
+        ArchiveSymbolsInfo(),
     ]
 
 _archive_symbols = rule(
     implementation = _archive_symbols_impl,
     attrs = {
         "deps": attr.label_list(
-            providers = [ArchiveSymbolInfo],
+            providers = [ArchiveSymbolsInfo],
             doc = "List of dependencies for resolving external symbols.",
         ),
         "srcs": attr.label_list(

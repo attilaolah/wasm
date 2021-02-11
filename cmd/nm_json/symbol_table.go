@@ -9,12 +9,8 @@ import (
 )
 
 const (
-	UndefClass Class = 'U'
-
-	UndefType = "NOTYPE"
-	TLSType   = "TLS"
-
-	UndefSection = "*UND*"
+	UndefClass   Class = 'U'
+	UndefSection       = "*UND*"
 )
 
 // SymbolTable groups symbols in an archive.
@@ -60,9 +56,6 @@ func (a *Archive) SymbolTable(typef string) (*SymbolTable, error) {
 				}
 				continue
 			}
-			if s.Type != UndefType && s.Type != TLSType {
-				return nil, fmt.Errorf("undefinod symbol %q has unexpected type: %q", s.Name, s.Type)
-			}
 			if s.Section != UndefSection {
 				return nil, fmt.Errorf("undefinod symbol %q found in unexpected section: %q", s.Name, s.Type)
 			}
@@ -72,6 +65,7 @@ func (a *Archive) SymbolTable(typef string) (*SymbolTable, error) {
 
 	for i := range t.Symbols {
 		p := &t.Symbols[i]
+		// TODO: de-duplicate!
 		p.Objects = defm[p.Name]
 		// Clear size, value & line.
 		// These can be different depending on where the symbol is defined.

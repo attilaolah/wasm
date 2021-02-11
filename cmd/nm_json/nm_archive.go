@@ -29,11 +29,11 @@ type Object struct {
 type Symbol struct {
 	Name    string  `json:"name"`
 	Value   *uint64 `json:"value,omitempty"`
-	Class   Class   `json:"class"`
-	Type    string  `json:"type"`
+	Class   Class   `json:"class,omitempty"`
+	Type    string  `json:"type,omitempty"`
 	Size    *uint64 `json:"size,omitempty"`
 	Line    string  `json:"line,omitempty"`
-	Section string  `json:"section"`
+	Section string  `json:"section,omitempty"`
 }
 
 // Class is the class column returned by `nm --format=sysv`.
@@ -72,33 +72,49 @@ func Parse(src io.Reader) (*Archive, error) {
 		line := scanner.Text()
 		ln++
 
-		parts := strings.Split(line, "|")
-		if l := len(parts); l != 7 {
-			return nil, fmt.Errorf("line %d: %q: row contains %d columns instead of 7", ln, line, l)
+		if strings.HasSuffix(line, ": no symbols") {
+			continue
 		}
-		subparts := strings.SplitN(parts[0], ":", 3)
-		if len(subparts) != 3 {
+
+		parts := strings.Split(line, "|")
+		if l := len(parts); l < 7 {
+			return nil, fmt.Errorf("line %d: %q: row contains %d columns instead of 7", ln, line, l)
+		} else if l > 7 {
+			// Symbol contains a literal "|", e.g. "operator|=".
+			s := strings.Join(parts[:len(parts)-7], "|")
+			parts = append([]string{s}, parts[len(parts)-6:]...)
+			if len(parts) != 7 {
+				panic(parts)
+			}
+		}
+		subparts := strings.SplitN(parts[0], ": ", 2)
+		if len(subparts) != 2 {
 			return nil, fmt.Errorf("line %d: %q: failed to parse %q as `archive:object: symbol`", ln, line, strings.TrimSpace(parts[0]))
 		}
-		if _, aname := filepath.Split(subparts[0]); a.Name == "" {
+		ao := strings.SplitN(subparts[0], ":", 2)
+		if len(ao) == 1 {
+			// The archive name is missing for some reason.
+			ao = []string{"", ao[0]}
+		}
+		if _, aname := filepath.Split(ao[0]); a.Name == "" {
 			a.Name = aname
-		} else if a.Name != aname {
+		} else if a.Name != aname && aname != "" {
 			return nil, fmt.Errorf("line %d: %q: more than one archive in a single stream: [%q, %q]", ln, line, a.Name, aname)
 		}
-		if o.Name != subparts[1] {
-			o = &Object{Name: subparts[1]}
+		if o.Name != ao[1] {
+			o = &Object{Name: ao[1]}
 			a.Objects = append(a.Objects, o)
 		}
 
 		s := Symbol{
-			Name:    strings.TrimSpace(subparts[2]),
+			Name:    strings.TrimSpace(subparts[1]),
 			Type:    strings.TrimSpace(parts[3]),
 			Line:    strings.TrimSpace(parts[5]),
 			Section: strings.TrimSpace(parts[6]),
 		}
 		if v := strings.TrimSpace(parts[2]); len(v) == 1 {
 			s.Class = Class(v[0])
-		} else {
+		} else if len(v) > 1 {
 			return nil, fmt.Errorf("line %d: %q: unknown class: %q", ln, line, v)
 		}
 		if v := strings.TrimSpace(parts[1]); v != "" {
