@@ -1,0 +1,63 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//toolchains/make:configure.bzl", "configure_make_lib")
+
+package(default_visibility = ["//:__subpackages__"])
+
+configure_make_lib(
+    name = "gdal",
+    configure_env_vars = {
+        "LDFLAGS": " ".join(["-l{}".format(lib) for lib in [
+            # //lib/tiff's transitive dependencies:
+            "turbojpeg",
+            "lzma",
+            "webp",
+            "zstd",
+        ] + [
+            # //lib/proj's transitive dependencies:
+            "sqlite3",
+            "curl",
+            "ssl",
+            "crypto",
+        ]]),
+    },
+    configure_in_place = True,
+    configure_options = [
+        # keep sorted
+        "--enable-shared=no",
+        "--enable-static=yes",
+        "--with-cpp14",
+        '--with-crypto="${EXT_BUILD_DEPS}/open_ssl_lib"',
+        '--with-curl="${EXT_BUILD_DEPS}/curl_lib"',
+        '--with-gif="${EXT_BUILD_DEPS}/gif_lib"',
+        '--with-hdf5="${EXT_BUILD_DEPS}/hdf5_lib"',
+        '--with-jpeg="${EXT_BUILD_DEPS}/jpeg_turbo_lib"',
+        '--with-liblzma="${EXT_BUILD_DEPS}/lzma_lib"',
+        '--with-libtiff="${EXT_BUILD_DEPS}/tiff_lib/lib"',
+        '--with-libz="${EXT_BUILD_DEPS}/z_lib"',
+        '--with-png="${EXT_BUILD_DEPS}/png_lib"',
+        '--with-proj="${EXT_BUILD_DEPS}/proj_lib"',
+        '--with-sqlite3="${EXT_BUILD_DEPS}/sqlite_lib"',
+        '--with-zstd="${EXT_BUILD_DEPS}/zstd_lib"',
+    ],
+    deps = [
+        "//lib/curl",
+        "//lib/gif",
+        "//lib/hdf5",
+        "//lib/jpeg_turbo",
+        "//lib/lzma",
+        "//lib/open_jpeg",
+        "//lib/open_ssl",
+        "//lib/png",
+        "//lib/proj",
+        "//lib/sqlite",
+        "//lib/tiff",
+        "//lib/z",
+        "//lib/zstd",
+    ],
+)
+
+bzl_library(
+    name = "package",
+    srcs = ["package.bzl"],
+    deps = ["//:http_archive"],
+)

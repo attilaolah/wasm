@@ -35,6 +35,7 @@ toolchain, pass `--cpu=wasm32`. Pass `-c opt` for an optimised build.
 [`//lib/expat`](https://github.com/attilaolah/wasm/blob/main/lib/expat/BUILD.bazel) | 2.2.10 [🔗](https://github.com/libexpat/libexpat/releases/download/R_2_2_10/expat-2.2.10.tar.xz)
 [`//lib/ffi`](https://github.com/attilaolah/wasm/blob/main/lib/ffi/BUILD.bazel) | 3.3 [🔗](https://github.com/libffi/libffi/releases/download/v3.3/libffi-3.3.tar.gz)
 [`//lib/fftw`](https://github.com/attilaolah/wasm/blob/main/lib/fftw/BUILD.bazel) | 3.3.9 [🔗](http://www.fftw.org/fftw-3.3.9.tar.gz)
+[`//lib/gdal`](https://github.com/attilaolah/wasm/blob/main/lib/gdal/BUILD.bazel) | 3.2.1 [🔗](https://github.com/OSGeo/gdal/releases/download/v3.2.1/gdal-3.2.1.tar.gz)
 [`//lib/gflags`](https://github.com/attilaolah/wasm/blob/main/lib/gflags/BUILD.bazel) | 2.2.2 [🔗](https://github.com/gflags/gflags/archive/v2.2.2.tar.gz)
 [`//lib/gif`](https://github.com/attilaolah/wasm/blob/main/lib/gif/BUILD.bazel) | 5.2.1 [🔗](https://downloads.sourceforge.net/project/giflib/giflib-5.2.1.tar.gz)
 [`//lib/glog`](https://github.com/attilaolah/wasm/blob/main/lib/glog/BUILD.bazel) | 0.4.0 [🔗](https://github.com/google/glog/archive/v0.4.0.tar.gz)
