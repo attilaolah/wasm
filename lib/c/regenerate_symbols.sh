@@ -26,17 +26,17 @@ if [ ! -f "${TEMPDIR}/glibc-${VERSION}.tar.xz" ]; then
 fi
 
 pushd "${BUILD}"
-#"${SRC}/configure" \
-#  --enable-static-nss=no \
-#  --enable-static-pie=yes \
-#  --prefix="${INSTALL}"
-#make
-#make install
+"${SRC}/configure" \
+  --enable-static-nss=no \
+  --enable-static-pie=yes \
+  --prefix="${INSTALL}"
+make
+make install
 popd
 
 # First pass, without externs:
 for archive in "${INSTALL}"/lib/*.a; do
-  "${NM_JSON}" \
+  "${ARCHIVE_SYMBOLS}" \
     -nm "${NM}" \
     -archive "${archive}" \
     -output "${BUILD_WORKSPACE_DIRECTORY}/lib/c/gnu/$(basename "${archive}" .a).json"
@@ -45,7 +45,7 @@ done
 # Second pass, using all externs:
 echo "#!/usr/bin/env bash" > "${TEMPDIR}/regen.sh"
 for archive in "${INSTALL}"/lib/*.a; do
-  echo "${NM_JSON}" \
+  echo "${ARCHIVE_SYMBOLS}" \
     -nm "${NM}" \
     -archive "${archive}" \
     "$(

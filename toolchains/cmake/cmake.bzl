@@ -6,7 +6,7 @@ Contains a convenience macro that wraps cmake_external() from
 
 load("@rules_foreign_cc//tools/build_defs:cmake.bzl", "cmake_external")
 load("//toolchains/make:configure.bzl", "WASM_ENV_VARS", "make_commands", _lib_source = "lib_source", _tools_deps = "tools_deps")
-load("//tools:archive_symbols.bzl", "archive_symbols")
+load("//tools/archive_symbols:archive_symbols.bzl", "archive_symbols")
 
 def cmake_lib(
         name,

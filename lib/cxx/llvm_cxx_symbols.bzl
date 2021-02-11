@@ -1,7 +1,7 @@
 """Extract a symbol table from LLVM libc++."""
 
 load("@bazel_skylib//lib:paths.bzl", "paths")
-load("//tools:archive_symbols.bzl", "ArchiveSymbolsInfo")
+load("//tools/archive_symbols:archive_symbols.bzl", "ArchiveSymbolsInfo")
 
 def _llvm_cxx_symbols_impl(ctx):
     cxx = None
@@ -53,7 +53,7 @@ def _build_symbol(ctx, f, deps = None):
     inputs.extend(deps)
 
     ctx.actions.run(
-        executable = ctx.executable._nm_json,
+        executable = ctx.executable._archive_symbols,
         arguments = [args],
         inputs = inputs,
         outputs = [output],
@@ -68,17 +68,17 @@ llvm_cxx_symbols = rule(
             providers = [ArchiveSymbolsInfo],
             doc = "List of dependencies for resolving external symbols.",
         ),
+        "_archive_symbols": attr.label(
+            default = "//tools/archive_symbols",
+            executable = True,
+            cfg = "exec",
+        ),
         "_llvm": attr.label(
             default = "@llvm//:all",
         ),
         "_nm": attr.label(
             allow_single_file = True,
             default = "@llvm//:nm",
-        ),
-        "_nm_json": attr.label(
-            default = "//cmd/nm_json",
-            executable = True,
-            cfg = "exec",
         ),
     },
 )

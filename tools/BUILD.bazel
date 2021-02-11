@@ -14,11 +14,6 @@ filegroup(
 )
 
 bzl_library(
-    name = "archive_symbols",
-    srcs = ["archive_symbols.bzl"],
-)
-
-bzl_library(
     name = "wasm_library",
     srcs = ["wasm_library.bzl"],
 )

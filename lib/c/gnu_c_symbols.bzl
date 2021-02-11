@@ -1,6 +1,6 @@
 """Extract a symbol table from gnu libc."""
 
-load("//tools:archive_symbols.bzl", "ArchiveSymbolsInfo")
+load("//tools/archive_symbols:archive_symbols.bzl", "ArchiveSymbolsInfo")
 
 def _gnu_c_symbols_impl(ctx):
     return [

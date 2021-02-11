@@ -11,11 +11,11 @@ sh_binary(
     name = "regenerate_symbols",
     srcs = ["regenerate_symbols.sh"],
     data = [
-        "//cmd/nm_json",
+        "//tools/archive_symbols",
         "@llvm//:nm",
     ],
     env = {
+        "ARCHIVE_SYMBOLS": "$(rootpath //tools/archive_symbols)",
         "NM": "$(execpath @llvm//:nm)",
-        "NM_JSON": "$(rootpath //cmd/nm_json)",
     },
 )

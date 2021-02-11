@@ -30,8 +30,6 @@ def archive_symbols(name, deps):
     )
 
 def _archive_symbols_impl(ctx):
-    nm = [f for f in ctx.files._llvm if f.basename == "llvm-nm"][0]
-
     outputs = []
     for src in ctx.attr.srcs:
         for linker_input in src[CcInfo].linking_context.linker_inputs.to_list():
@@ -46,19 +44,19 @@ def _archive_symbols_impl(ctx):
                 outputs.append(output)
 
                 args = ctx.actions.args()
-                args.add("-nm", nm)
+                args.add("-nm", ctx.file._nm)
                 args.add("-archive", lib.static_library)
                 args.add("-extern_only")
                 args.add("-output", output)
 
-                inputs = [nm, lib.static_library]
+                inputs = [ctx.file._nm, lib.static_library]
                 for dep in ctx.attr.deps:
                     for ext in dep.files.to_list():
                         args.add("-externs", ext)
                     inputs.extend(dep.files.to_list())
 
                 ctx.actions.run(
-                    executable = ctx.executable._nm_json,
+                    executable = ctx.executable._archive_symbols,
                     arguments = [args],
                     inputs = inputs,
                     outputs = [output],
@@ -82,13 +80,14 @@ _archive_symbols = rule(
             providers = [CcInfo],
             doc = "List of archive files to process.",
         ),
-        "_llvm": attr.label(
-            default = "@llvm//:all",
-        ),
-        "_nm_json": attr.label(
-            default = "//cmd/nm_json",
+        "_archive_symbols": attr.label(
+            default = "//tools/archive_symbols",
             executable = True,
             cfg = "exec",
+        ),
+        "_nm": attr.label(
+            allow_single_file = True,
+            default = "@llvm//:nm",
         ),
     },
 )
