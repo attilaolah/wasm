@@ -15,9 +15,9 @@ def workspace_dependencies():
 
     http_archive(
         name = "build_bazel_rules_nodejs",
-        version = "3.0.0",
+        version = "3.1.0",
         urls = ["https://github.com/bazelbuild/rules_nodejs/releases/download/{version}/rules_nodejs-{version}.tar.gz"],
-        sha256 = "6142e9586162b179fdd570a55e50d1332e7d9c030efd853453438d607569721d",
+        sha256 = "dd4dc46066e2ce034cba0c81aa3e862b27e8e8d95871f567359f7a534cccb666",
         build_file_content = None,
     )
 
