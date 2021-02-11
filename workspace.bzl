@@ -9,11 +9,8 @@ def workspace_dependencies():
     _github_repository(
         project = "rules_foreign_cc",
         owner = "bazelbuild",
-        commit = "466c32c70f6262f43eac06ad5e9dc2cbecbba228",
+        commit = "da99da47a0befc3dfbf65739190cd374f836f21d",
         shallow_since = "1612531747 +0000",
-        pull_requests = {
-            481: "ee6536a9cec2844197b2cf4d9476a7be3bb43d99c3ec2231b5833bb17fe5f909",
-        },
     )
 
     http_archive(
