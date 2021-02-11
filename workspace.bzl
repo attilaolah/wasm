@@ -45,12 +45,12 @@ def workspace_dependencies():
 
     http_archive(
         name = "platforms",
-        version = "0.0.2",
+        version = "0.0.3",
         urls = [
             "https://mirror.bazel.build/github.com/bazelbuild/{name}/releases/download/{version}/{name}-{version}.tar.gz",
             "https://github.com/bazelbuild/{name}/releases/download/{version}/{name}-{version}.tar.gz",
         ],
-        sha256 = "48a2d8d343863989c232843e01afc8a986eb8738766bfd8611420a7db8f6f0c3",
+        sha256 = "460caee0fa583b908c622913334ec3c1b842572b9c23cf0d3da0c2543a1a157d",
         build_file_content = None,
     )
 
