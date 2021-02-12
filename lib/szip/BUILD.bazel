@@ -1,0 +1,18 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//toolchains/cmake:cmake.bzl", "cmake_lib")
+
+package(default_visibility = ["//:__subpackages__"])
+
+cmake_lib(
+    name = "szip",
+    cache_entries = {
+        "BUILD_SHARED_LIBS": False,
+        "BUILD_TESTING": False,
+    },
+)
+
+bzl_library(
+    name = "package",
+    srcs = ["package.bzl"],
+    deps = ["//:http_archive"],
+)

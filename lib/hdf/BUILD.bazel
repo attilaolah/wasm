@@ -13,13 +13,23 @@ cmake_lib(
         "HDF4_BUILD_FORTRAN": False,
         "HDF4_BUILD_JAVA": False,
         "HDF4_ENABLE_DEPRECATED_SYMBOLS": False,
+        "HDF4_ENABLE_SZIP_SUPPORT": True,
         "JPEG_INCLUDE_DIR": "${EXT_BUILD_DEPS}/jpeg_turbo_lib/include",
         "JPEG_LIBRARY": "${EXT_BUILD_DEPS}/jpeg_turbo_lib/lib/libjpeg.a",
+        "SZIP_INCLUDE_DIR": "${EXT_BUILD_DEPS}/szip_lib/include",
+        "SZIP_LIBRARY": "${EXT_BUILD_DEPS}/szip_lib/lib/libszip.a",
         "ZLIB_INCLUDE_DIR": "${EXT_BUILD_DEPS}/z_lib/include",
         "ZLIB_LIBRARY": "${EXT_BUILD_DEPS}/z_lib/lib/libz.a",
     },
+    static_libraries = [
+        # keep sorted
+        "libhdf.a",
+        "libmfhdf.a",
+        "libxdr.a",
+    ],
     deps = [
         "//lib/jpeg_turbo",
+        "//lib/szip",
         "//lib/z",
     ],
 )
