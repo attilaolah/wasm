@@ -6,11 +6,11 @@ package(default_visibility = ["//:__subpackages__"])
 cmake_lib(
     name = "curl",
     cache_entries = {
-        "BUILD_CURL_EXE:BOOL": "OFF",
-        "BUILD_SHARED_LIBS:BOOL": "OFF",
-        "OPENSSL_CRYPTO_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/open_ssl_lib/lib/libcrypto.a",
-        "OPENSSL_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/open_ssl_lib/include",
-        "OPENSSL_SSL_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/open_ssl_lib/lib/libssl.a",
+        "BUILD_CURL_EXE": False,
+        "BUILD_SHARED_LIBS": False,
+        "OPENSSL_CRYPTO_LIBRARY": "${EXT_BUILD_DEPS}/open_ssl_lib/lib/libcrypto.a",
+        "OPENSSL_INCLUDE_DIR": "${EXT_BUILD_DEPS}/open_ssl_lib/include",
+        "OPENSSL_SSL_LIBRARY": "${EXT_BUILD_DEPS}/open_ssl_lib/lib/libssl.a",
     },
     deps = ["//lib/open_ssl"],
 )

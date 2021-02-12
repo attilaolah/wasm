@@ -6,9 +6,9 @@ package(default_visibility = ["//:__subpackages__"])
 cmake_lib(
     name = "zstd",
     cache_entries = {
-        "ZSTD_BUILD_PROGRAMS:BOOL": "OFF",
-        "ZSTD_BUILD_SHARED:BOOL": "OFF",
-        "ZSTD_BUILD_STATIC:BOOL": "ON",
+        "ZSTD_BUILD_PROGRAMS": False,
+        "ZSTD_BUILD_SHARED": False,
+        "ZSTD_BUILD_STATIC": True,
     },
     working_directory = "build/cmake",
 )

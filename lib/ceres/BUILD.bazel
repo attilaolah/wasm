@@ -18,18 +18,18 @@ _SS_LIBS = [
 ]
 
 _CACHE_ENTRIES = {
-    "BUILD_EXAMPLES:BOOL": "OFF",
-    "BUILD_SHARED_LIBS:BOOL": "OFF",
+    "BUILD_EXAMPLES": False,
+    "BUILD_SHARED_LIBS": False,
 
     # Needed to make #include <SuiteSparse_config.h> work.
-    "CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES:PATH": "${EXT_BUILD_DEPS}/config_lib/include",
+    "CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES": "${EXT_BUILD_DEPS}/config_lib/include",
 
     # Dependencies:
-    "CXSPARSE_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/cxsparse_lib/include",
-    "CXSPARSE_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/cxsparse_lib/lib/libcxsparse.a",
-    "EIGEN_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/eigen_lib/include/eigen3",
-    "GLOG_INCLUDE_DIR:PATH": "${EXT_BUILD_DEPS}/glog_lib/include",
-    "GLOG_LIBRARY:FILEPATH": "${EXT_BUILD_DEPS}/glog_lib/lib/libglog.a",
+    "CXSPARSE_INCLUDE_DIR": "${EXT_BUILD_DEPS}/cxsparse_lib/include",
+    "CXSPARSE_LIBRARY": "${EXT_BUILD_DEPS}/cxsparse_lib/lib/libcxsparse.a",
+    "EIGEN_INCLUDE_DIR": "${EXT_BUILD_DEPS}/eigen_lib/include/eigen3",
+    "GLOG_INCLUDE_DIR": "${EXT_BUILD_DEPS}/glog_lib/include",
+    "GLOG_LIBRARY": "${EXT_BUILD_DEPS}/glog_lib/lib/libglog.a",
 
     # SuiteSparse hints.
     # We must list each component since we put them in separate directories.
@@ -46,17 +46,17 @@ _CACHE_ENTRIES = {
 _CLANG_CACHE_ENTRIES = dict(_CACHE_ENTRIES.items() + {
     # Add -pthread and -lsupc++ to try_compile() commands.
     # These are only needed when compiling with Clang (GCC works fine without these.)
-    "CMAKE_REQUIRED_FLAGS:STRING": "-pthread",
-    "CMAKE_REQUIRED_LIBRARIES:STRING": "-lsupc++",
+    "CMAKE_REQUIRED_FLAGS": "-pthread",
+    "CMAKE_REQUIRED_LIBRARIES": "-lsupc++",
 }.items())
 
 cmake_lib(
     name = "ceres",
-    cache_entries = select({
+    cache_entries = {
         "//config:wasm32": _CACHE_ENTRIES,
         "//config:wasm64": _CACHE_ENTRIES,
         "//conditions:default": _CLANG_CACHE_ENTRIES,
-    }),
+    },
     deps = [
         "//lib/eigen",
         "//lib/glog",

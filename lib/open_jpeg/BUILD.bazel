@@ -1,17 +1,14 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
-load("//toolchains/cmake:cmake.bzl", "cmake_lib", "on_off")
+load("//toolchains/cmake:cmake.bzl", "cmake_lib")
 
 package(default_visibility = ["//:__subpackages__"])
 
 cmake_lib(
     name = "open_jpeg",
-    cache_entries = on_off(
-        off = [
-            # keep sorted
-            "build_codec",
-            "build_shared_libs",
-        ],
-    ),
+    cache_entries = {
+        "BUILD_CODEC": False,
+        "BUILD_SHARED_LIBS": False,
+    },
     linkopts = ["lopenjp2"],
     static_libraries = ["libopenjp2.a"],
 )

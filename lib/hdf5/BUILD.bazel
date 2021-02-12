@@ -6,11 +6,11 @@ package(default_visibility = ["//:__subpackages__"])
 cmake_lib(
     name = "hdf5",
     cache_entries = {
-        "BUILD_SHARED_LIBS:BOOL": "OFF",
-        "BUILD_STATIC_LIBS:BOOL": "ON",
-        "BUILD_TESTING:BOOL": "OFF",
-        "HDF5_BUILD_EXAMPLES:BOOL": "OFF",
-        "HDF5_BUILD_TOOLS:BOOL": "OFF",
+        "BUILD_SHARED_LIBS": False,
+        "BUILD_STATIC_LIBS": True,
+        "BUILD_TESTING": False,
+        "HDF5_BUILD_EXAMPLES": False,
+        "HDF5_BUILD_TOOLS": False,
     },
 )
 

@@ -6,12 +6,12 @@ package(default_visibility = ["//:__subpackages__"])
 cmake_lib(
     name = "fftw",
     cache_entries = {
-        "BUILD_SHARED_LIBS:BOOL": "OFF",
-        "BUILD_TESTS:BOOL": "OFF",
-        "DISABLE_FORTRAN:BOOL": "ON",
-        "ENABLE_FLOAT:BOOL": "ON",
-        "ENABLE_LONG_DOUBLE:BOOL": "ON",
-        "ENABLE_QUAD_PRECISION:BOOL": "ON",
+        "BUILD_SHARED_LIBS": False,
+        "BUILD_TESTS": False,
+        "DISABLE_FORTRAN": True,
+        "ENABLE_FLOAT": True,
+        "ENABLE_LONG_DOUBLE": True,
+        "ENABLE_QUAD_PRECISION": True,
     },
     linkopts = ["-lfftw3q"],
     static_libraries = ["libfftw3q.a"],

@@ -6,10 +6,10 @@ package(default_visibility = ["//:__subpackages__"])
 cmake_lib(
     name = "lz4",
     cache_entries = {
-        "BUILD_SHARED_LIBS:BOOL": "OFF",
-        "BUILD_STATIC_LIBS:BOOL": "ON",
-        "LZ4_BUILD_CLI:BOOL": "OFF",
-        "LZ4_BUILD_LEGACY_LZ4C:BOOL": "OFF",
+        "BUILD_SHARED_LIBS": False,
+        "BUILD_STATIC_LIBS": True,
+        "LZ4_BUILD_CLI": False,
+        "LZ4_BUILD_LEGACY_LZ4C": False,
     },
     working_directory = "build/cmake",
 )

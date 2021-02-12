@@ -6,8 +6,8 @@ package(default_visibility = ["//:__subpackages__"])
 cmake_lib(
     name = "lzo",
     cache_entries = {
-        "ENABLE_SHARED:BOOL": "OFF",
-        "ENABLE_STATIC:BOOL": "ON",
+        "ENABLE_SHARED": False,
+        "ENABLE_STATIC": True,
     },
     linkopts = ["-llzo2"],
     static_libraries = ["liblzo2.a"],

@@ -57,7 +57,7 @@ cmake_lib(
 cmake_lib(
     name = "graphblas",
     cache_entries = {
-        "BUILD_GRB_STATIC_LIBRARY:BOOL": "ON",
+        "BUILD_GRB_STATIC_LIBRARY": True,
     },
     lib_source = LIB_SOURCE,
     working_directory = "GraphBLAS",
@@ -70,8 +70,8 @@ suite_sparse_lib(name = "ldl")
 cmake_lib(
     name = "metis",
     cache_entries = {
-        "GKLIB_PATH:PATH": "{}/{}".format(PREFIX, GK_PATH),
-        "SHARED:BOOL": "OFF",
+        "GKLIB_PATH": "{}/{}".format(PREFIX, GK_PATH),
+        "SHARED": False,
     },
     lib_source = LIB_SOURCE,
     working_directory = METIS_PATH,

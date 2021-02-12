@@ -6,7 +6,7 @@ package(default_visibility = ["//:__subpackages__"])
 cmake_lib(
     name = "eigen",
     cache_entries = {
-        "BUILD_TESTING:BOOL": "OFF",
+        "BUILD_TESTING": False,
     },
     headers_only = True,
     static_libraries = [],

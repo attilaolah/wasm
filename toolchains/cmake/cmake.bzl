@@ -16,6 +16,7 @@ def cmake_lib(
         linkopts = None,
         static_libraries = None,
         tools_deps = None,
+        cache_entries = None,
         env = None,
         **kwargs):
     """Convenience macro that wraps cmake_external().
@@ -30,9 +31,11 @@ def cmake_lib(
       static_libraries: Passed on to cmake_external(). Guessed from name.
       tools_deps: Additional build-time dependencies, compiled with cfg =
         "exec".
+      cache_entries: Convert True/False to "ON"/"OFF", then passed on to
+        cmake_external().
       env: Passed on to cmake_external(). Form Emscripten builds, it is
         pre-populated with environment variables required by the toolchain.
-      **kwargs: Passed no cmake_external().
+      **kwargs: Passed on to cmake_external().
     """
     if lib_source == None:
         lib_source = _lib_source(name)
@@ -43,6 +46,16 @@ def cmake_lib(
     if env == None:
         env = {}
     wasm_env = dict(WASM_ENV_VARS.items() + env.items())
+
+    if cache_entries != None:
+        if "//conditions:default" in cache_entries:
+            # See: https://docs.bazel.build/versions/master/configurable-attributes.html#can-i-read-select-like-a-dict
+            for val in cache_entries.values():
+                _prepare_cache_entries(val)
+            cache_entries = select(cache_entries)
+        else:
+            _prepare_cache_entries(cache_entries)
+        kwargs["cache_entries"] = cache_entries
 
     cmake_external(
         name = name,
@@ -65,19 +78,7 @@ def cmake_lib(
 
     archive_symbols(name, kwargs.get("deps", []))
 
-def on_off(on = None, off = None):
-    """Generates a cache_entries dict of bools.
-
-    Args:
-        on: Cache keys to set to ON.
-        off: Cache keys to set to OFF.
-
-    Returns:
-        A dict to be used for cache_entries.
-    """
-    cache_entries = {}
-    for item in on or []:
-        cache_entries["{}:BOOL".format(item.upper())] = "ON"
-    for item in off or []:
-        cache_entries["{}:BOOL".format(item.upper())] = "OFF"
-    return cache_entries
+def _prepare_cache_entries(cache_entries):
+    for key, val in cache_entries.items():
+        if val in (True, False):
+            cache_entries[key] = "ON" if val else "OFF"
