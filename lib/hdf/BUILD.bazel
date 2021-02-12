@@ -1,0 +1,31 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//toolchains/cmake:cmake.bzl", "cmake_lib")
+
+package(default_visibility = ["//:__subpackages__"])
+
+cmake_lib(
+    name = "hdf",
+    cache_entries = {
+        "BUILD_SHARED_LIBS": False,
+        "BUILD_STATIC_LIBS": True,
+        "BUILD_TESTING": False,
+        "HDF4_BUILD_EXAMPLES": False,
+        "HDF4_BUILD_FORTRAN": False,
+        "HDF4_BUILD_JAVA": False,
+        "HDF4_ENABLE_DEPRECATED_SYMBOLS": False,
+        "JPEG_INCLUDE_DIR": "${EXT_BUILD_DEPS}/jpeg_turbo_lib/include",
+        "JPEG_LIBRARY": "${EXT_BUILD_DEPS}/jpeg_turbo_lib/lib/libjpeg.a",
+        "ZLIB_INCLUDE_DIR": "${EXT_BUILD_DEPS}/z_lib/include",
+        "ZLIB_LIBRARY": "${EXT_BUILD_DEPS}/z_lib/lib/libz.a",
+    },
+    deps = [
+        "//lib/jpeg_turbo",
+        "//lib/z",
+    ],
+)
+
+bzl_library(
+    name = "package",
+    srcs = ["package.bzl"],
+    deps = ["//:http_archive"],
+)
