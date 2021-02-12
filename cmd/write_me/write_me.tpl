@@ -6,7 +6,7 @@ This file was auto-generated based on the template file
 `cmd/write_me/write_me.tpl`. Update the template file and then re-generate
 the `README.md` file by running:
 
-$ bazel run //cmd/write_me -- -root="${PWD}" > README.md
+$ bazel run //cmd/write_me
 -->
 
 Scripts to compile libraries to [WebAssembly] using [Bazel].
