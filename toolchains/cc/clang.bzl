@@ -100,7 +100,7 @@ def clang_toolchain(name):
             # TODO: Load LLVM/Clang version from another .bzl file!
             "{}/lib/clang/11.0.1/include".format(LLVM_PATH),
         ],
-        cxx_flags = ["-std=c++0x"],
+        cxx_flags = ["-std=c++17"],
         dbg_compile_flags = ["-g"],
         host_system_name = "local",
         link_flags = [

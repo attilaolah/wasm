@@ -25,7 +25,6 @@ configure_make_lib(
         # keep sorted
         "--enable-shared=no",
         "--enable-static=yes",
-        "--with-cpp14",
         '--with-crypto="${EXT_BUILD_DEPS}/open_ssl_lib"',
         '--with-curl="${EXT_BUILD_DEPS}/curl_lib"',
         '--with-gif="${EXT_BUILD_DEPS}/gif_lib"',
