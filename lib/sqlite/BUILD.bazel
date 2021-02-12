@@ -6,8 +6,7 @@ package(default_visibility = ["//:__subpackages__"])
 configure_make_lib(
     name = "sqlite",
     binaries = select({
-        "//config:wasm32": [],
-        "//config:wasm64": [],
+        "//config:wasm": [],
         "//conditions:default": ["sqlite3"],
     }),
     configure_options = [

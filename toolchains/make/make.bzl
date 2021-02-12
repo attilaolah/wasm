@@ -44,7 +44,6 @@ def make_lib(
         static_libraries = ["lib{}.a".format(name)]
     if env == None:
         env = {}
-    wasm_env = dict(WASM_ENV_VARS.items() + env.items())
 
     make(
         name = name,
@@ -57,8 +56,7 @@ def make_lib(
             after_emmake = install_commands,
         ),
         env = select({
-            "//config:wasm32": wasm_env,
-            "//config:wasm64": wasm_env,
+            "//config:wasm": dict(WASM_ENV_VARS.items() + env.items()),
             "//conditions:default": env,
         }),
         static_libraries = static_libraries,

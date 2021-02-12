@@ -1,3 +1,13 @@
+load("@bazel_skylib//lib:selects.bzl", "selects")
+
+selects.config_setting_group(
+    name = "wasm",
+    match_any = [
+        ":wasm32",
+        ":wasm64",
+    ],
+)
+
 config_setting(
     name = "wasm32",
     values = {"cpu": "wasm32"},

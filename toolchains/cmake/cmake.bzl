@@ -45,7 +45,6 @@ def cmake_lib(
         static_libraries = ["lib{}.a".format(name)]
     if env == None:
         env = {}
-    wasm_env = dict(WASM_ENV_VARS.items() + env.items())
 
     if cache_entries != None:
         if "//conditions:default" in cache_entries:
@@ -60,8 +59,7 @@ def cmake_lib(
     cmake_external(
         name = name,
         env = select({
-            "//config:wasm32": wasm_env,
-            "//config:wasm64": wasm_env,
+            "//config:wasm": dict(WASM_ENV_VARS.items() + env.items()),
             "//conditions:default": env,
         }),
         lib_name = "{}_lib".format(name),

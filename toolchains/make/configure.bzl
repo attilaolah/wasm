@@ -67,13 +67,11 @@ def configure_make_lib(
     configure_make(
         name = name,
         configure_command = select({
-            "//config:wasm32": "emconfigure.sh",
-            "//config:wasm64": "emconfigure.sh",
+            "//config:wasm": "emconfigure.sh",
             "//conditions:default": configure_script,
         }),
         env = select({
-            "//config:wasm32": wasm_env,
-            "//config:wasm64": wasm_env,
+            "//config:wasm": wasm_env,
             "//conditions:default": env,
         }),
         lib_name = "{}_lib".format(name),
@@ -123,8 +121,7 @@ def make_commands(
         wasm_commands += after_emmake
 
     return select({
-        "//config:wasm32": wasm_commands,
-        "//config:wasm64": wasm_commands,
+        "//config:wasm": wasm_commands,
         "//conditions:default": commands,
     })
 
@@ -143,11 +140,8 @@ def tools_deps(extras = None):
     if extras == None:
         extras = []
 
-    wasm_tools = collections.uniq(WASM_TOOLS + extras)
-
     return select({
-        "//config:wasm32": wasm_tools,
-        "//config:wasm64": wasm_tools,
+        "//config:wasm": collections.uniq(WASM_TOOLS + extras),
         "//conditions:default": extras,
     })
 

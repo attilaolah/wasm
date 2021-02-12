@@ -10,8 +10,7 @@ CONFIGURE_OPTIONS = [
 configure_make_lib(
     name = "python",
     binaries = select({
-        "//config:wasm32": [],
-        "//config:wasm64": [],
+        "//config:wasm": [],
         "//conditions:default": ["python3"],
     }),
     configure_options = select({

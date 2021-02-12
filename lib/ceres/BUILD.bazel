@@ -53,8 +53,7 @@ _CLANG_CACHE_ENTRIES = dict(_CACHE_ENTRIES.items() + {
 cmake_lib(
     name = "ceres",
     cache_entries = {
-        "//config:wasm32": _CACHE_ENTRIES,
-        "//config:wasm64": _CACHE_ENTRIES,
+        "//config:wasm": _CACHE_ENTRIES,
         "//conditions:default": _CLANG_CACHE_ENTRIES,
     },
     deps = [
