@@ -1,1485 +1,499 @@
 {
   "name": "libpthread.a",
   "symbols": [
-    {
-      "name": ".LC0"
-    },
-    {
-      "name": ".LC1"
-    },
-    {
-      "name": ".LC10"
-    },
-    {
-      "name": ".LC11"
-    },
-    {
-      "name": ".LC12"
-    },
-    {
-      "name": ".LC13"
-    },
-    {
-      "name": ".LC14"
-    },
-    {
-      "name": ".LC15"
-    },
-    {
-      "name": ".LC16"
-    },
-    {
-      "name": ".LC2"
-    },
-    {
-      "name": ".LC3"
-    },
-    {
-      "name": ".LC4"
-    },
-    {
-      "name": ".LC5"
-    },
-    {
-      "name": ".LC6"
-    },
-    {
-      "name": ".LC7"
-    },
-    {
-      "name": ".LC8"
-    },
-    {
-      "name": ".LC9"
-    },
-    {
-      "name": "_IO_flockfile"
-    },
-    {
-      "name": "_IO_ftrylockfile"
-    },
-    {
-      "name": "_IO_funlockfile"
-    },
-    {
-      "name": "__PRETTY_FUNCTION__.0"
-    },
-    {
-      "name": "__PRETTY_FUNCTION__.1"
-    },
-    {
-      "name": "__PRETTY_FUNCTION__.2"
-    },
-    {
-      "name": "__PRETTY_FUNCTION__.3"
-    },
-    {
-      "name": "__PRETTY_FUNCTION__.4"
-    },
-    {
-      "name": "__call_tls_dtors"
-    },
-    {
-      "name": "__close"
-    },
-    {
-      "name": "__cnd_timedwait"
-    },
-    {
-      "name": "__concurrency_level"
-    },
-    {
-      "name": "__condvar_cancel_waiting"
-    },
-    {
-      "name": "__condvar_cleanup_waiting"
-    },
-    {
-      "name": "__condvar_confirm_wakeup"
-    },
-    {
-      "name": "__condvar_dec_grefs"
-    },
-    {
-      "name": "__condvar_release_lock"
-    },
-    {
-      "name": "__connect"
-    },
-    {
-      "name": "__deallocate_stack"
-    },
-    {
-      "name": "__default_pthread_attr"
-    },
-    {
-      "name": "__default_pthread_attr_freeres"
-    },
-    {
-      "name": "__default_pthread_attr_lock"
-    },
-    {
-      "name": "__elision_aconf"
-    },
-    {
-      "name": "__errno_location"
-    },
-    {
-      "name": "__evoke_link_warning_pthread_attr_getstackaddr"
-    },
-    {
-      "name": "__evoke_link_warning_pthread_attr_setstackaddr"
-    },
-    {
-      "name": "__find_in_stack_list"
-    },
-    {
-      "name": "__flockfile"
-    },
-    {
-      "name": "__fork_generation"
-    },
-    {
-      "name": "__free_tcb"
-    },
-    {
-      "name": "__ftrylockfile"
-    },
-    {
-      "name": "__funlockfile"
-    },
-    {
-      "name": "__futex_abstimed_wait64"
-    },
-    {
-      "name": "__futex_abstimed_wait_cancelable64"
-    },
-    {
-      "name": "__futex_abstimed_wait_common64"
-    },
-    {
-      "name": "__h_errno_location"
-    },
-    {
-      "name": "__init_sched_fifo_prio"
-    },
-    {
-      "name": "__libc_accept"
-    },
-    {
-      "name": "__libc_close"
-    },
-    {
-      "name": "__libc_connect"
-    },
-    {
-      "name": "__libc_lseek"
-    },
-    {
-      "name": "__libc_lseek64"
-    },
-    {
-      "name": "__libc_msgrcv"
-    },
-    {
-      "name": "__libc_msgsnd"
-    },
-    {
-      "name": "__libc_multiple_threads_ptr"
-    },
-    {
-      "name": "__libc_open"
-    },
-    {
-      "name": "__libc_open64"
-    },
-    {
-      "name": "__libc_pause"
-    },
-    {
-      "name": "__libc_pread"
-    },
-    {
-      "name": "__libc_pread64"
-    },
-    {
-      "name": "__libc_pwrite"
-    },
-    {
-      "name": "__libc_pwrite64"
-    },
-    {
-      "name": "__libc_read"
-    },
-    {
-      "name": "__libc_recv"
-    },
-    {
-      "name": "__libc_recvfrom"
-    },
-    {
-      "name": "__libc_recvmsg"
-    },
-    {
-      "name": "__libc_send"
-    },
-    {
-      "name": "__libc_sendmsg"
-    },
-    {
-      "name": "__libc_sendto"
-    },
-    {
-      "name": "__libc_sigaction"
-    },
-    {
-      "name": "__libc_sigsuspend"
-    },
-    {
-      "name": "__libc_sigwait"
-    },
-    {
-      "name": "__libc_tcdrain"
-    },
-    {
-      "name": "__libc_write"
-    },
-    {
-      "name": "__libpthread_freeres"
-    },
-    {
-      "name": "__lll_clocklock_elision"
-    },
-    {
-      "name": "__lll_lock_elision"
-    },
-    {
-      "name": "__lll_lock_wait"
-    },
-    {
-      "name": "__lll_lock_wait_private"
-    },
-    {
-      "name": "__lll_trylock_elision"
-    },
-    {
-      "name": "__lll_unlock_elision"
-    },
-    {
-      "name": "__lseek"
-    },
-    {
-      "name": "__lseek64"
-    },
-    {
-      "name": "__make_stacks_executable"
-    },
-    {
-      "name": "__mtx_timedlock"
-    },
-    {
-      "name": "__mutex_aconf"
-    },
-    {
-      "name": "__new_sem_destroy"
-    },
-    {
-      "name": "__new_sem_getvalue"
-    },
-    {
-      "name": "__new_sem_init"
-    },
-    {
-      "name": "__new_sem_post"
-    },
-    {
-      "name": "__new_sem_trywait"
-    },
-    {
-      "name": "__new_sem_wait"
-    },
-    {
-      "name": "__new_sem_wait_slow64"
-    },
-    {
-      "name": "__new_sem_wait_slow64.constprop.0"
-    },
-    {
-      "name": "__nptl_create_event"
-    },
-    {
-      "name": "__nptl_deallocate_tsd"
-    },
-    {
-      "name": "__nptl_deallocate_tsd.part.0"
-    },
-    {
-      "name": "__nptl_death_event"
-    },
-    {
-      "name": "__nptl_initial_report_events"
-    },
-    {
-      "name": "__nptl_last_event"
-    },
-    {
-      "name": "__nptl_nthreads"
-    },
-    {
-      "name": "__nptl_set_robust"
-    },
-    {
-      "name": "__nptl_setxid"
-    },
-    {
-      "name": "__nptl_setxid.cold"
-    },
-    {
-      "name": "__nptl_setxid_error"
-    },
-    {
-      "name": "__nptl_setxid_error.cold"
-    },
-    {
-      "name": "__nptl_stacks_freeres"
-    },
-    {
-      "name": "__nptl_threads_events"
-    },
-    {
-      "name": "__nptl_unwind_freeres"
-    },
-    {
-      "name": "__open"
-    },
-    {
-      "name": "__open64"
-    },
-    {
-      "name": "__pread"
-    },
-    {
-      "name": "__pread64"
-    },
-    {
-      "name": "__pthread_attr_getaffinity_new"
-    },
-    {
-      "name": "__pthread_attr_getstack"
-    },
-    {
-      "name": "__pthread_attr_getstackaddr"
-    },
-    {
-      "name": "__pthread_attr_getstacksize"
-    },
-    {
-      "name": "__pthread_attr_setstack"
-    },
-    {
-      "name": "__pthread_attr_setstackaddr"
-    },
-    {
-      "name": "__pthread_attr_setstacksize"
-    },
-    {
-      "name": "__pthread_barrier_init"
-    },
-    {
-      "name": "__pthread_barrier_wait"
-    },
-    {
-      "name": "__pthread_cancel"
-    },
-    {
-      "name": "__pthread_cleanup_pop"
-    },
-    {
-      "name": "__pthread_cleanup_pop_restore"
-    },
-    {
-      "name": "__pthread_cleanup_push"
-    },
-    {
-      "name": "__pthread_cleanup_push_defer"
-    },
-    {
-      "name": "__pthread_cleanup_routine"
-    },
-    {
-      "name": "__pthread_cleanup_upto"
-    },
-    {
-      "name": "__pthread_clockjoin_ex"
-    },
-    {
-      "name": "__pthread_clockjoin_np"
-    },
-    {
-      "name": "__pthread_cond_broadcast"
-    },
-    {
-      "name": "__pthread_cond_clockwait"
-    },
-    {
-      "name": "__pthread_cond_signal"
-    },
-    {
-      "name": "__pthread_cond_timedwait"
-    },
-    {
-      "name": "__pthread_cond_wait"
-    },
-    {
-      "name": "__pthread_create_2_1"
-    },
-    {
-      "name": "__pthread_create_2_1.cold"
-    },
-    {
-      "name": "__pthread_current_priority"
-    },
-    {
-      "name": "__pthread_debug"
-    },
-    {
-      "name": "__pthread_detach"
-    },
-    {
-      "name": "__pthread_disable_asynccancel"
-    },
-    {
-      "name": "__pthread_enable_asynccancel"
-    },
-    {
-      "name": "__pthread_exit"
-    },
-    {
-      "name": "__pthread_force_elision"
-    },
-    {
-      "name": "__pthread_get_minstack"
-    },
-    {
-      "name": "__pthread_getattr_default_np"
-    },
-    {
-      "name": "__pthread_getspecific"
-    },
-    {
-      "name": "__pthread_init_array"
-    },
-    {
-      "name": "__pthread_init_static_tls"
-    },
-    {
-      "name": "__pthread_initialize_minimal"
-    },
-    {
-      "name": "__pthread_initialize_minimal_internal"
-    },
-    {
-      "name": "__pthread_join"
-    },
-    {
-      "name": "__pthread_key_create"
-    },
-    {
-      "name": "__pthread_key_delete"
-    },
-    {
-      "name": "__pthread_keys"
-    },
-    {
-      "name": "__pthread_kill"
-    },
-    {
-      "name": "__pthread_multiple_threads"
-    },
-    {
-      "name": "__pthread_mutex_clocklock"
-    },
-    {
-      "name": "__pthread_mutex_clocklock_common"
-    },
-    {
-      "name": "__pthread_mutex_cond_lock"
-    },
-    {
-      "name": "__pthread_mutex_cond_lock_adjust"
-    },
-    {
-      "name": "__pthread_mutex_cond_lock_full"
-    },
-    {
-      "name": "__pthread_mutex_destroy"
-    },
-    {
-      "name": "__pthread_mutex_init"
-    },
-    {
-      "name": "__pthread_mutex_lock"
-    },
-    {
-      "name": "__pthread_mutex_lock_full"
-    },
-    {
-      "name": "__pthread_mutex_timedlock"
-    },
-    {
-      "name": "__pthread_mutex_trylock"
-    },
-    {
-      "name": "__pthread_mutex_unlock"
-    },
-    {
-      "name": "__pthread_mutex_unlock_full"
-    },
-    {
-      "name": "__pthread_mutex_unlock_usercnt"
-    },
-    {
-      "name": "__pthread_mutexattr_destroy"
-    },
-    {
-      "name": "__pthread_mutexattr_init"
-    },
-    {
-      "name": "__pthread_mutexattr_settype"
-    },
-    {
-      "name": "__pthread_once"
-    },
-    {
-      "name": "__pthread_once_slow"
-    },
-    {
-      "name": "__pthread_register_cancel"
-    },
-    {
-      "name": "__pthread_register_cancel_defer"
-    },
-    {
-      "name": "__pthread_rwlock_clockrdlock"
-    },
-    {
-      "name": "__pthread_rwlock_clockwrlock"
-    },
-    {
-      "name": "__pthread_rwlock_destroy"
-    },
-    {
-      "name": "__pthread_rwlock_init"
-    },
-    {
-      "name": "__pthread_rwlock_rdlock"
-    },
-    {
-      "name": "__pthread_rwlock_timedrdlock"
-    },
-    {
-      "name": "__pthread_rwlock_timedwrlock"
-    },
-    {
-      "name": "__pthread_rwlock_tryrdlock"
-    },
-    {
-      "name": "__pthread_rwlock_trywrlock"
-    },
-    {
-      "name": "__pthread_rwlock_unlock"
-    },
-    {
-      "name": "__pthread_rwlock_wrlock"
-    },
-    {
-      "name": "__pthread_setaffinity_new"
-    },
-    {
-      "name": "__pthread_setcancelstate"
-    },
-    {
-      "name": "__pthread_setcanceltype"
-    },
-    {
-      "name": "__pthread_setspecific"
-    },
-    {
-      "name": "__pthread_testcancel"
-    },
-    {
-      "name": "__pthread_timedjoin_np"
-    },
-    {
-      "name": "__pthread_tpp_change_priority"
-    },
-    {
-      "name": "__pthread_tunables_init"
-    },
-    {
-      "name": "__pthread_unregister_cancel"
-    },
-    {
-      "name": "__pthread_unregister_cancel_restore"
-    },
-    {
-      "name": "__pthread_unwind"
-    },
-    {
-      "name": "__pthread_unwind_next"
-    },
-    {
-      "name": "__pwrite"
-    },
-    {
-      "name": "__pwrite64"
-    },
-    {
-      "name": "__read"
-    },
-    {
-      "name": "__reclaim_stacks"
-    },
-    {
-      "name": "__recv"
-    },
-    {
-      "name": "__recvfrom"
-    },
-    {
-      "name": "__recvmsg"
-    },
-    {
-      "name": "__res_state"
-    },
-    {
-      "name": "__restore_rt"
-    },
-    {
-      "name": "__sched_fifo_max_prio"
-    },
-    {
-      "name": "__sched_fifo_min_prio"
-    },
-    {
-      "name": "__sem_clockwait"
-    },
-    {
-      "name": "__sem_mappings"
-    },
-    {
-      "name": "__sem_mappings_lock"
-    },
-    {
-      "name": "__sem_search"
-    },
-    {
-      "name": "__sem_timedwait"
-    },
-    {
-      "name": "__sem_wait_cleanup"
-    },
-    {
-      "name": "__send"
-    },
-    {
-      "name": "__sendmsg"
-    },
-    {
-      "name": "__sendto"
-    },
-    {
-      "name": "__shm_directory"
-    },
-    {
-      "name": "__shm_directory_freeres"
-    },
-    {
-      "name": "__sigaction"
-    },
-    {
-      "name": "__sigsuspend"
-    },
-    {
-      "name": "__sigwait"
-    },
-    {
-      "name": "__static_tls_align_m1"
-    },
-    {
-      "name": "__static_tls_size"
-    },
-    {
-      "name": "__write"
-    },
-    {
-      "name": "__xidcmd"
-    },
-    {
-      "name": "_dl_tunable_set_elision_enable"
-    },
-    {
-      "name": "_dl_tunable_set_elision_retry_try_xbegin"
-    },
-    {
-      "name": "_dl_tunable_set_elision_skip_lock_busy"
-    },
-    {
-      "name": "_dl_tunable_set_elision_skip_lock_internal_abort"
-    },
-    {
-      "name": "_dl_tunable_set_elision_skip_trylock_internal_abort"
-    },
-    {
-      "name": "_dl_tunable_set_mutex_spin_count"
-    },
-    {
-      "name": "_pthread_cleanup_pop"
-    },
-    {
-      "name": "_pthread_cleanup_pop_restore"
-    },
-    {
-      "name": "_pthread_cleanup_push"
-    },
-    {
-      "name": "_pthread_cleanup_push_defer"
-    },
-    {
-      "name": "_thread_db___nptl_initial_report_events"
-    },
-    {
-      "name": "_thread_db___nptl_last_event"
-    },
-    {
-      "name": "_thread_db___nptl_nthreads"
-    },
-    {
-      "name": "_thread_db___pthread_keys"
-    },
-    {
-      "name": "_thread_db__dl_stack_used"
-    },
-    {
-      "name": "_thread_db__dl_stack_user"
-    },
-    {
-      "name": "_thread_db__dl_tls_dtv_slotinfo_list"
-    },
-    {
-      "name": "_thread_db_const_thread_area"
-    },
-    {
-      "name": "_thread_db_dtv_dtv"
-    },
-    {
-      "name": "_thread_db_dtv_slotinfo_gen"
-    },
-    {
-      "name": "_thread_db_dtv_slotinfo_list_len"
-    },
-    {
-      "name": "_thread_db_dtv_slotinfo_list_next"
-    },
-    {
-      "name": "_thread_db_dtv_slotinfo_list_slotinfo"
-    },
-    {
-      "name": "_thread_db_dtv_slotinfo_map"
-    },
-    {
-      "name": "_thread_db_dtv_t_counter"
-    },
-    {
-      "name": "_thread_db_dtv_t_pointer_val"
-    },
-    {
-      "name": "_thread_db_link_map_l_tls_modid"
-    },
-    {
-      "name": "_thread_db_link_map_l_tls_offset"
-    },
-    {
-      "name": "_thread_db_list_t_next"
-    },
-    {
-      "name": "_thread_db_list_t_prev"
-    },
-    {
-      "name": "_thread_db_pthread_cancelhandling"
-    },
-    {
-      "name": "_thread_db_pthread_dtvp"
-    },
-    {
-      "name": "_thread_db_pthread_eventbuf"
-    },
-    {
-      "name": "_thread_db_pthread_eventbuf_eventmask"
-    },
-    {
-      "name": "_thread_db_pthread_eventbuf_eventmask_event_bits"
-    },
-    {
-      "name": "_thread_db_pthread_key_data_data"
-    },
-    {
-      "name": "_thread_db_pthread_key_data_level2_data"
-    },
-    {
-      "name": "_thread_db_pthread_key_data_seq"
-    },
-    {
-      "name": "_thread_db_pthread_key_struct_destr"
-    },
-    {
-      "name": "_thread_db_pthread_key_struct_seq"
-    },
-    {
-      "name": "_thread_db_pthread_list"
-    },
-    {
-      "name": "_thread_db_pthread_nextevent"
-    },
-    {
-      "name": "_thread_db_pthread_report_events"
-    },
-    {
-      "name": "_thread_db_pthread_schedparam_sched_priority"
-    },
-    {
-      "name": "_thread_db_pthread_schedpolicy"
-    },
-    {
-      "name": "_thread_db_pthread_specific"
-    },
-    {
-      "name": "_thread_db_pthread_start_routine"
-    },
-    {
-      "name": "_thread_db_pthread_tid"
-    },
-    {
-      "name": "_thread_db_sizeof_dtv_slotinfo"
-    },
-    {
-      "name": "_thread_db_sizeof_dtv_slotinfo_list"
-    },
-    {
-      "name": "_thread_db_sizeof_list_t"
-    },
-    {
-      "name": "_thread_db_sizeof_pthread"
-    },
-    {
-      "name": "_thread_db_sizeof_pthread_key_data"
-    },
-    {
-      "name": "_thread_db_sizeof_pthread_key_data_level2"
-    },
-    {
-      "name": "_thread_db_sizeof_pthread_key_struct"
-    },
-    {
-      "name": "_thread_db_sizeof_td_eventbuf_t"
-    },
-    {
-      "name": "_thread_db_sizeof_td_thr_events_t"
-    },
-    {
-      "name": "_thread_db_td_eventbuf_t_eventdata"
-    },
-    {
-      "name": "_thread_db_td_eventbuf_t_eventnum"
-    },
-    {
-      "name": "_thread_db_td_thr_events_t_event_bits"
-    },
-    {
-      "name": "accept"
-    },
-    {
-      "name": "call_once"
-    },
-    {
-      "name": "check_add_mapping"
-    },
-    {
-      "name": "cleanup"
-    },
-    {
-      "name": "clear_once_control"
-    },
-    {
-      "name": "close"
-    },
-    {
-      "name": "cnd_broadcast"
-    },
-    {
-      "name": "cnd_destroy"
-    },
-    {
-      "name": "cnd_init"
-    },
-    {
-      "name": "cnd_signal"
-    },
-    {
-      "name": "cnd_timedwait"
-    },
-    {
-      "name": "cnd_wait"
-    },
-    {
-      "name": "connect"
-    },
-    {
-      "name": "create_thread"
-    },
-    {
-      "name": "default_rwlockattr"
-    },
-    {
-      "name": "defaultdir"
-    },
-    {
-      "name": "do_futex_wait"
-    },
-    {
-      "name": "do_futex_wait.constprop.0"
-    },
-    {
-      "name": "elision_init"
-    },
-    {
-      "name": "flockfile"
-    },
-    {
-      "name": "free_stacks"
-    },
-    {
-      "name": "free_stacks.cold"
-    },
-    {
-      "name": "fsync"
-    },
-    {
-      "name": "ftrylockfile"
-    },
-    {
-      "name": "funlockfile"
-    },
-    {
-      "name": "gsignal"
-    },
-    {
-      "name": "in_flight_stack"
-    },
-    {
-      "name": "lseek"
-    },
-    {
-      "name": "lseek64"
-    },
-    {
-      "name": "mountpoint"
-    },
-    {
-      "name": "msgrcv"
-    },
-    {
-      "name": "msgsnd"
-    },
-    {
-      "name": "msync"
-    },
-    {
-      "name": "mtx_destroy"
-    },
-    {
-      "name": "mtx_init"
-    },
-    {
-      "name": "mtx_lock"
-    },
-    {
-      "name": "mtx_timedlock"
-    },
-    {
-      "name": "mtx_trylock"
-    },
-    {
-      "name": "mtx_unlock"
-    },
-    {
-      "name": "nptl_version"
-    },
-    {
-      "name": "once"
-    },
-    {
-      "name": "open"
-    },
-    {
-      "name": "open64"
-    },
-    {
-      "name": "pause"
-    },
-    {
-      "name": "pread"
-    },
-    {
-      "name": "pread64"
-    },
-    {
-      "name": "pthread_attr_getaffinity_np"
-    },
-    {
-      "name": "pthread_attr_getguardsize"
-    },
-    {
-      "name": "pthread_attr_getstack"
-    },
-    {
-      "name": "pthread_attr_getstackaddr"
-    },
-    {
-      "name": "pthread_attr_getstacksize"
-    },
-    {
-      "name": "pthread_attr_setguardsize"
-    },
-    {
-      "name": "pthread_attr_setstack"
-    },
-    {
-      "name": "pthread_attr_setstackaddr"
-    },
-    {
-      "name": "pthread_attr_setstacksize"
-    },
-    {
-      "name": "pthread_barrier_destroy"
-    },
-    {
-      "name": "pthread_barrier_init"
-    },
-    {
-      "name": "pthread_barrier_wait"
-    },
-    {
-      "name": "pthread_barrierattr_destroy"
-    },
-    {
-      "name": "pthread_barrierattr_getpshared"
-    },
-    {
-      "name": "pthread_barrierattr_init"
-    },
-    {
-      "name": "pthread_barrierattr_setpshared"
-    },
-    {
-      "name": "pthread_cancel"
-    },
-    {
-      "name": "pthread_clockjoin_np"
-    },
-    {
-      "name": "pthread_cond_broadcast"
-    },
-    {
-      "name": "pthread_cond_clockwait"
-    },
-    {
-      "name": "pthread_cond_signal"
-    },
-    {
-      "name": "pthread_cond_timedwait"
-    },
-    {
-      "name": "pthread_cond_wait"
-    },
-    {
-      "name": "pthread_condattr_getclock"
-    },
-    {
-      "name": "pthread_condattr_getpshared"
-    },
-    {
-      "name": "pthread_condattr_setclock"
-    },
-    {
-      "name": "pthread_condattr_setpshared"
-    },
-    {
-      "name": "pthread_create"
-    },
-    {
-      "name": "pthread_detach"
-    },
-    {
-      "name": "pthread_exit"
-    },
-    {
-      "name": "pthread_getattr_default_np"
-    },
-    {
-      "name": "pthread_getconcurrency"
-    },
-    {
-      "name": "pthread_getcpuclockid"
-    },
-    {
-      "name": "pthread_getname_np"
-    },
-    {
-      "name": "pthread_getspecific"
-    },
-    {
-      "name": "pthread_join"
-    },
-    {
-      "name": "pthread_key_create"
-    },
-    {
-      "name": "pthread_key_delete"
-    },
-    {
-      "name": "pthread_kill"
-    },
-    {
-      "name": "pthread_mutex_clocklock"
-    },
-    {
-      "name": "pthread_mutex_consistent"
-    },
-    {
-      "name": "pthread_mutex_consistent_np"
-    },
-    {
-      "name": "pthread_mutex_destroy"
-    },
-    {
-      "name": "pthread_mutex_getprioceiling"
-    },
-    {
-      "name": "pthread_mutex_init"
-    },
-    {
-      "name": "pthread_mutex_lock"
-    },
-    {
-      "name": "pthread_mutex_setprioceiling"
-    },
-    {
-      "name": "pthread_mutex_timedlock"
-    },
-    {
-      "name": "pthread_mutex_trylock"
-    },
-    {
-      "name": "pthread_mutex_unlock"
-    },
-    {
-      "name": "pthread_mutexattr_destroy"
-    },
-    {
-      "name": "pthread_mutexattr_getkind_np"
-    },
-    {
-      "name": "pthread_mutexattr_getprioceiling"
-    },
-    {
-      "name": "pthread_mutexattr_getprotocol"
-    },
-    {
-      "name": "pthread_mutexattr_getpshared"
-    },
-    {
-      "name": "pthread_mutexattr_getrobust"
-    },
-    {
-      "name": "pthread_mutexattr_getrobust_np"
-    },
-    {
-      "name": "pthread_mutexattr_gettype"
-    },
-    {
-      "name": "pthread_mutexattr_init"
-    },
-    {
-      "name": "pthread_mutexattr_setkind_np"
-    },
-    {
-      "name": "pthread_mutexattr_setprioceiling"
-    },
-    {
-      "name": "pthread_mutexattr_setprotocol"
-    },
-    {
-      "name": "pthread_mutexattr_setpshared"
-    },
-    {
-      "name": "pthread_mutexattr_setrobust"
-    },
-    {
-      "name": "pthread_mutexattr_setrobust_np"
-    },
-    {
-      "name": "pthread_mutexattr_settype"
-    },
-    {
-      "name": "pthread_once"
-    },
-    {
-      "name": "pthread_rwlock_clockrdlock"
-    },
-    {
-      "name": "pthread_rwlock_clockwrlock"
-    },
-    {
-      "name": "pthread_rwlock_destroy"
-    },
-    {
-      "name": "pthread_rwlock_init"
-    },
-    {
-      "name": "pthread_rwlock_rdlock"
-    },
-    {
-      "name": "pthread_rwlock_timedrdlock"
-    },
-    {
-      "name": "pthread_rwlock_timedwrlock"
-    },
-    {
-      "name": "pthread_rwlock_tryrdlock"
-    },
-    {
-      "name": "pthread_rwlock_trywrlock"
-    },
-    {
-      "name": "pthread_rwlock_unlock"
-    },
-    {
-      "name": "pthread_rwlock_wrlock"
-    },
-    {
-      "name": "pthread_rwlockattr_destroy"
-    },
-    {
-      "name": "pthread_rwlockattr_getkind_np"
-    },
-    {
-      "name": "pthread_rwlockattr_getpshared"
-    },
-    {
-      "name": "pthread_rwlockattr_init"
-    },
-    {
-      "name": "pthread_rwlockattr_setkind_np"
-    },
-    {
-      "name": "pthread_rwlockattr_setpshared"
-    },
-    {
-      "name": "pthread_setaffinity_np"
-    },
-    {
-      "name": "pthread_setattr_default_np"
-    },
-    {
-      "name": "pthread_setcancelstate"
-    },
-    {
-      "name": "pthread_setcanceltype"
-    },
-    {
-      "name": "pthread_setconcurrency"
-    },
-    {
-      "name": "pthread_setname_np"
-    },
-    {
-      "name": "pthread_setschedprio"
-    },
-    {
-      "name": "pthread_setspecific"
-    },
-    {
-      "name": "pthread_sigqueue"
-    },
-    {
-      "name": "pthread_spin_destroy"
-    },
-    {
-      "name": "pthread_spin_init"
-    },
-    {
-      "name": "pthread_spin_lock"
-    },
-    {
-      "name": "pthread_spin_trylock"
-    },
-    {
-      "name": "pthread_spin_unlock"
-    },
-    {
-      "name": "pthread_testcancel"
-    },
-    {
-      "name": "pthread_timedjoin_np"
-    },
-    {
-      "name": "pthread_tryjoin_np"
-    },
-    {
-      "name": "pthread_yield"
-    },
-    {
-      "name": "pwrite"
-    },
-    {
-      "name": "pwrite64"
-    },
-    {
-      "name": "raise"
-    },
-    {
-      "name": "read"
-    },
-    {
-      "name": "recv"
-    },
-    {
-      "name": "recvfrom"
-    },
-    {
-      "name": "recvmsg"
-    },
-    {
-      "name": "sem_clockwait"
-    },
-    {
-      "name": "sem_close"
-    },
-    {
-      "name": "sem_destroy"
-    },
-    {
-      "name": "sem_getvalue"
-    },
-    {
-      "name": "sem_init"
-    },
-    {
-      "name": "sem_open"
-    },
-    {
-      "name": "sem_post"
-    },
-    {
-      "name": "sem_timedwait"
-    },
-    {
-      "name": "sem_trywait"
-    },
-    {
-      "name": "sem_unlink"
-    },
-    {
-      "name": "sem_wait"
-    },
-    {
-      "name": "send"
-    },
-    {
-      "name": "sendmsg"
-    },
-    {
-      "name": "sendto"
-    },
-    {
-      "name": "setxid_mark_thread.constprop.0"
-    },
-    {
-      "name": "setxid_unmark_thread.constprop.0"
-    },
-    {
-      "name": "sigaction"
-    },
-    {
-      "name": "sigall_set"
-    },
-    {
-      "name": "sigcancel_handler"
-    },
-    {
-      "name": "sighandler_setxid"
-    },
-    {
-      "name": "sigsuspend"
-    },
-    {
-      "name": "sigwait"
-    },
-    {
-      "name": "stack_cache"
-    },
-    {
-      "name": "stack_cache_actsize"
-    },
-    {
-      "name": "start_thread"
-    },
-    {
-      "name": "tcdrain"
-    },
-    {
-      "name": "thrd_create"
-    },
-    {
-      "name": "thrd_detach"
-    },
-    {
-      "name": "thrd_exit"
-    },
-    {
-      "name": "thrd_join"
-    },
-    {
-      "name": "tpi_supported.0"
-    },
-    {
-      "name": "tss_create"
-    },
-    {
-      "name": "tss_delete"
-    },
-    {
-      "name": "tss_get"
-    },
-    {
-      "name": "tss_set"
-    },
-    {
-      "name": "unwind_cleanup"
-    },
-    {
-      "name": "unwind_stop"
-    },
-    {
-      "name": "walker"
-    },
-    {
-      "name": "where_is_shmfs"
-    },
-    {
-      "name": "write"
-    }
+    ".LC0",
+    ".LC1",
+    ".LC10",
+    ".LC11",
+    ".LC12",
+    ".LC13",
+    ".LC14",
+    ".LC15",
+    ".LC16",
+    ".LC2",
+    ".LC3",
+    ".LC4",
+    ".LC5",
+    ".LC6",
+    ".LC7",
+    ".LC8",
+    ".LC9",
+    "_IO_flockfile",
+    "_IO_ftrylockfile",
+    "_IO_funlockfile",
+    "__PRETTY_FUNCTION__.0",
+    "__PRETTY_FUNCTION__.1",
+    "__PRETTY_FUNCTION__.2",
+    "__PRETTY_FUNCTION__.3",
+    "__PRETTY_FUNCTION__.4",
+    "__call_tls_dtors",
+    "__close",
+    "__cnd_timedwait",
+    "__concurrency_level",
+    "__condvar_cancel_waiting",
+    "__condvar_cleanup_waiting",
+    "__condvar_confirm_wakeup",
+    "__condvar_dec_grefs",
+    "__condvar_release_lock",
+    "__connect",
+    "__deallocate_stack",
+    "__default_pthread_attr",
+    "__default_pthread_attr_freeres",
+    "__default_pthread_attr_lock",
+    "__elision_aconf",
+    "__errno_location",
+    "__evoke_link_warning_pthread_attr_getstackaddr",
+    "__evoke_link_warning_pthread_attr_setstackaddr",
+    "__find_in_stack_list",
+    "__flockfile",
+    "__fork_generation",
+    "__free_tcb",
+    "__ftrylockfile",
+    "__funlockfile",
+    "__futex_abstimed_wait64",
+    "__futex_abstimed_wait_cancelable64",
+    "__futex_abstimed_wait_common64",
+    "__h_errno_location",
+    "__init_sched_fifo_prio",
+    "__libc_accept",
+    "__libc_close",
+    "__libc_connect",
+    "__libc_lseek",
+    "__libc_lseek64",
+    "__libc_msgrcv",
+    "__libc_msgsnd",
+    "__libc_multiple_threads_ptr",
+    "__libc_open",
+    "__libc_open64",
+    "__libc_pause",
+    "__libc_pread",
+    "__libc_pread64",
+    "__libc_pwrite",
+    "__libc_pwrite64",
+    "__libc_read",
+    "__libc_recv",
+    "__libc_recvfrom",
+    "__libc_recvmsg",
+    "__libc_send",
+    "__libc_sendmsg",
+    "__libc_sendto",
+    "__libc_sigaction",
+    "__libc_sigsuspend",
+    "__libc_sigwait",
+    "__libc_tcdrain",
+    "__libc_write",
+    "__libpthread_freeres",
+    "__lll_clocklock_elision",
+    "__lll_lock_elision",
+    "__lll_lock_wait",
+    "__lll_lock_wait_private",
+    "__lll_trylock_elision",
+    "__lll_unlock_elision",
+    "__lseek",
+    "__lseek64",
+    "__make_stacks_executable",
+    "__mtx_timedlock",
+    "__mutex_aconf",
+    "__new_sem_destroy",
+    "__new_sem_getvalue",
+    "__new_sem_init",
+    "__new_sem_post",
+    "__new_sem_trywait",
+    "__new_sem_wait",
+    "__new_sem_wait_slow64",
+    "__new_sem_wait_slow64.constprop.0",
+    "__nptl_create_event",
+    "__nptl_deallocate_tsd",
+    "__nptl_deallocate_tsd.part.0",
+    "__nptl_death_event",
+    "__nptl_initial_report_events",
+    "__nptl_last_event",
+    "__nptl_nthreads",
+    "__nptl_set_robust",
+    "__nptl_setxid",
+    "__nptl_setxid.cold",
+    "__nptl_setxid_error",
+    "__nptl_setxid_error.cold",
+    "__nptl_stacks_freeres",
+    "__nptl_threads_events",
+    "__nptl_unwind_freeres",
+    "__open",
+    "__open64",
+    "__pread",
+    "__pread64",
+    "__pthread_attr_getaffinity_new",
+    "__pthread_attr_getstack",
+    "__pthread_attr_getstackaddr",
+    "__pthread_attr_getstacksize",
+    "__pthread_attr_setstack",
+    "__pthread_attr_setstackaddr",
+    "__pthread_attr_setstacksize",
+    "__pthread_barrier_init",
+    "__pthread_barrier_wait",
+    "__pthread_cancel",
+    "__pthread_cleanup_pop",
+    "__pthread_cleanup_pop_restore",
+    "__pthread_cleanup_push",
+    "__pthread_cleanup_push_defer",
+    "__pthread_cleanup_routine",
+    "__pthread_cleanup_upto",
+    "__pthread_clockjoin_ex",
+    "__pthread_clockjoin_np",
+    "__pthread_cond_broadcast",
+    "__pthread_cond_clockwait",
+    "__pthread_cond_signal",
+    "__pthread_cond_timedwait",
+    "__pthread_cond_wait",
+    "__pthread_create_2_1",
+    "__pthread_create_2_1.cold",
+    "__pthread_current_priority",
+    "__pthread_debug",
+    "__pthread_detach",
+    "__pthread_disable_asynccancel",
+    "__pthread_enable_asynccancel",
+    "__pthread_exit",
+    "__pthread_force_elision",
+    "__pthread_get_minstack",
+    "__pthread_getattr_default_np",
+    "__pthread_getspecific",
+    "__pthread_init_array",
+    "__pthread_init_static_tls",
+    "__pthread_initialize_minimal",
+    "__pthread_initialize_minimal_internal",
+    "__pthread_join",
+    "__pthread_key_create",
+    "__pthread_key_delete",
+    "__pthread_keys",
+    "__pthread_kill",
+    "__pthread_multiple_threads",
+    "__pthread_mutex_clocklock",
+    "__pthread_mutex_clocklock_common",
+    "__pthread_mutex_cond_lock",
+    "__pthread_mutex_cond_lock_adjust",
+    "__pthread_mutex_cond_lock_full",
+    "__pthread_mutex_destroy",
+    "__pthread_mutex_init",
+    "__pthread_mutex_lock",
+    "__pthread_mutex_lock_full",
+    "__pthread_mutex_timedlock",
+    "__pthread_mutex_trylock",
+    "__pthread_mutex_unlock",
+    "__pthread_mutex_unlock_full",
+    "__pthread_mutex_unlock_usercnt",
+    "__pthread_mutexattr_destroy",
+    "__pthread_mutexattr_init",
+    "__pthread_mutexattr_settype",
+    "__pthread_once",
+    "__pthread_once_slow",
+    "__pthread_register_cancel",
+    "__pthread_register_cancel_defer",
+    "__pthread_rwlock_clockrdlock",
+    "__pthread_rwlock_clockwrlock",
+    "__pthread_rwlock_destroy",
+    "__pthread_rwlock_init",
+    "__pthread_rwlock_rdlock",
+    "__pthread_rwlock_timedrdlock",
+    "__pthread_rwlock_timedwrlock",
+    "__pthread_rwlock_tryrdlock",
+    "__pthread_rwlock_trywrlock",
+    "__pthread_rwlock_unlock",
+    "__pthread_rwlock_wrlock",
+    "__pthread_setaffinity_new",
+    "__pthread_setcancelstate",
+    "__pthread_setcanceltype",
+    "__pthread_setspecific",
+    "__pthread_testcancel",
+    "__pthread_timedjoin_np",
+    "__pthread_tpp_change_priority",
+    "__pthread_tunables_init",
+    "__pthread_unregister_cancel",
+    "__pthread_unregister_cancel_restore",
+    "__pthread_unwind",
+    "__pthread_unwind_next",
+    "__pwrite",
+    "__pwrite64",
+    "__read",
+    "__reclaim_stacks",
+    "__recv",
+    "__recvfrom",
+    "__recvmsg",
+    "__res_state",
+    "__restore_rt",
+    "__sched_fifo_max_prio",
+    "__sched_fifo_min_prio",
+    "__sem_clockwait",
+    "__sem_mappings",
+    "__sem_mappings_lock",
+    "__sem_search",
+    "__sem_timedwait",
+    "__sem_wait_cleanup",
+    "__send",
+    "__sendmsg",
+    "__sendto",
+    "__shm_directory",
+    "__shm_directory_freeres",
+    "__sigaction",
+    "__sigsuspend",
+    "__sigwait",
+    "__static_tls_align_m1",
+    "__static_tls_size",
+    "__write",
+    "__xidcmd",
+    "_dl_tunable_set_elision_enable",
+    "_dl_tunable_set_elision_retry_try_xbegin",
+    "_dl_tunable_set_elision_skip_lock_busy",
+    "_dl_tunable_set_elision_skip_lock_internal_abort",
+    "_dl_tunable_set_elision_skip_trylock_internal_abort",
+    "_dl_tunable_set_mutex_spin_count",
+    "_pthread_cleanup_pop",
+    "_pthread_cleanup_pop_restore",
+    "_pthread_cleanup_push",
+    "_pthread_cleanup_push_defer",
+    "_thread_db___nptl_initial_report_events",
+    "_thread_db___nptl_last_event",
+    "_thread_db___nptl_nthreads",
+    "_thread_db___pthread_keys",
+    "_thread_db__dl_stack_used",
+    "_thread_db__dl_stack_user",
+    "_thread_db__dl_tls_dtv_slotinfo_list",
+    "_thread_db_const_thread_area",
+    "_thread_db_dtv_dtv",
+    "_thread_db_dtv_slotinfo_gen",
+    "_thread_db_dtv_slotinfo_list_len",
+    "_thread_db_dtv_slotinfo_list_next",
+    "_thread_db_dtv_slotinfo_list_slotinfo",
+    "_thread_db_dtv_slotinfo_map",
+    "_thread_db_dtv_t_counter",
+    "_thread_db_dtv_t_pointer_val",
+    "_thread_db_link_map_l_tls_modid",
+    "_thread_db_link_map_l_tls_offset",
+    "_thread_db_list_t_next",
+    "_thread_db_list_t_prev",
+    "_thread_db_pthread_cancelhandling",
+    "_thread_db_pthread_dtvp",
+    "_thread_db_pthread_eventbuf",
+    "_thread_db_pthread_eventbuf_eventmask",
+    "_thread_db_pthread_eventbuf_eventmask_event_bits",
+    "_thread_db_pthread_key_data_data",
+    "_thread_db_pthread_key_data_level2_data",
+    "_thread_db_pthread_key_data_seq",
+    "_thread_db_pthread_key_struct_destr",
+    "_thread_db_pthread_key_struct_seq",
+    "_thread_db_pthread_list",
+    "_thread_db_pthread_nextevent",
+    "_thread_db_pthread_report_events",
+    "_thread_db_pthread_schedparam_sched_priority",
+    "_thread_db_pthread_schedpolicy",
+    "_thread_db_pthread_specific",
+    "_thread_db_pthread_start_routine",
+    "_thread_db_pthread_tid",
+    "_thread_db_sizeof_dtv_slotinfo",
+    "_thread_db_sizeof_dtv_slotinfo_list",
+    "_thread_db_sizeof_list_t",
+    "_thread_db_sizeof_pthread",
+    "_thread_db_sizeof_pthread_key_data",
+    "_thread_db_sizeof_pthread_key_data_level2",
+    "_thread_db_sizeof_pthread_key_struct",
+    "_thread_db_sizeof_td_eventbuf_t",
+    "_thread_db_sizeof_td_thr_events_t",
+    "_thread_db_td_eventbuf_t_eventdata",
+    "_thread_db_td_eventbuf_t_eventnum",
+    "_thread_db_td_thr_events_t_event_bits",
+    "accept",
+    "call_once",
+    "check_add_mapping",
+    "cleanup",
+    "clear_once_control",
+    "close",
+    "cnd_broadcast",
+    "cnd_destroy",
+    "cnd_init",
+    "cnd_signal",
+    "cnd_timedwait",
+    "cnd_wait",
+    "connect",
+    "create_thread",
+    "default_rwlockattr",
+    "defaultdir",
+    "do_futex_wait",
+    "do_futex_wait.constprop.0",
+    "elision_init",
+    "flockfile",
+    "free_stacks",
+    "free_stacks.cold",
+    "fsync",
+    "ftrylockfile",
+    "funlockfile",
+    "gsignal",
+    "in_flight_stack",
+    "lseek",
+    "lseek64",
+    "mountpoint",
+    "msgrcv",
+    "msgsnd",
+    "msync",
+    "mtx_destroy",
+    "mtx_init",
+    "mtx_lock",
+    "mtx_timedlock",
+    "mtx_trylock",
+    "mtx_unlock",
+    "nptl_version",
+    "once",
+    "open",
+    "open64",
+    "pause",
+    "pread",
+    "pread64",
+    "pthread_attr_getaffinity_np",
+    "pthread_attr_getguardsize",
+    "pthread_attr_getstack",
+    "pthread_attr_getstackaddr",
+    "pthread_attr_getstacksize",
+    "pthread_attr_setguardsize",
+    "pthread_attr_setstack",
+    "pthread_attr_setstackaddr",
+    "pthread_attr_setstacksize",
+    "pthread_barrier_destroy",
+    "pthread_barrier_init",
+    "pthread_barrier_wait",
+    "pthread_barrierattr_destroy",
+    "pthread_barrierattr_getpshared",
+    "pthread_barrierattr_init",
+    "pthread_barrierattr_setpshared",
+    "pthread_cancel",
+    "pthread_clockjoin_np",
+    "pthread_cond_broadcast",
+    "pthread_cond_clockwait",
+    "pthread_cond_signal",
+    "pthread_cond_timedwait",
+    "pthread_cond_wait",
+    "pthread_condattr_getclock",
+    "pthread_condattr_getpshared",
+    "pthread_condattr_setclock",
+    "pthread_condattr_setpshared",
+    "pthread_create",
+    "pthread_detach",
+    "pthread_exit",
+    "pthread_getattr_default_np",
+    "pthread_getconcurrency",
+    "pthread_getcpuclockid",
+    "pthread_getname_np",
+    "pthread_getspecific",
+    "pthread_join",
+    "pthread_key_create",
+    "pthread_key_delete",
+    "pthread_kill",
+    "pthread_mutex_clocklock",
+    "pthread_mutex_consistent",
+    "pthread_mutex_consistent_np",
+    "pthread_mutex_destroy",
+    "pthread_mutex_getprioceiling",
+    "pthread_mutex_init",
+    "pthread_mutex_lock",
+    "pthread_mutex_setprioceiling",
+    "pthread_mutex_timedlock",
+    "pthread_mutex_trylock",
+    "pthread_mutex_unlock",
+    "pthread_mutexattr_destroy",
+    "pthread_mutexattr_getkind_np",
+    "pthread_mutexattr_getprioceiling",
+    "pthread_mutexattr_getprotocol",
+    "pthread_mutexattr_getpshared",
+    "pthread_mutexattr_getrobust",
+    "pthread_mutexattr_getrobust_np",
+    "pthread_mutexattr_gettype",
+    "pthread_mutexattr_init",
+    "pthread_mutexattr_setkind_np",
+    "pthread_mutexattr_setprioceiling",
+    "pthread_mutexattr_setprotocol",
+    "pthread_mutexattr_setpshared",
+    "pthread_mutexattr_setrobust",
+    "pthread_mutexattr_setrobust_np",
+    "pthread_mutexattr_settype",
+    "pthread_once",
+    "pthread_rwlock_clockrdlock",
+    "pthread_rwlock_clockwrlock",
+    "pthread_rwlock_destroy",
+    "pthread_rwlock_init",
+    "pthread_rwlock_rdlock",
+    "pthread_rwlock_timedrdlock",
+    "pthread_rwlock_timedwrlock",
+    "pthread_rwlock_tryrdlock",
+    "pthread_rwlock_trywrlock",
+    "pthread_rwlock_unlock",
+    "pthread_rwlock_wrlock",
+    "pthread_rwlockattr_destroy",
+    "pthread_rwlockattr_getkind_np",
+    "pthread_rwlockattr_getpshared",
+    "pthread_rwlockattr_init",
+    "pthread_rwlockattr_setkind_np",
+    "pthread_rwlockattr_setpshared",
+    "pthread_setaffinity_np",
+    "pthread_setattr_default_np",
+    "pthread_setcancelstate",
+    "pthread_setcanceltype",
+    "pthread_setconcurrency",
+    "pthread_setname_np",
+    "pthread_setschedprio",
+    "pthread_setspecific",
+    "pthread_sigqueue",
+    "pthread_spin_destroy",
+    "pthread_spin_init",
+    "pthread_spin_lock",
+    "pthread_spin_trylock",
+    "pthread_spin_unlock",
+    "pthread_testcancel",
+    "pthread_timedjoin_np",
+    "pthread_tryjoin_np",
+    "pthread_yield",
+    "pwrite",
+    "pwrite64",
+    "raise",
+    "read",
+    "recv",
+    "recvfrom",
+    "recvmsg",
+    "sem_clockwait",
+    "sem_close",
+    "sem_destroy",
+    "sem_getvalue",
+    "sem_init",
+    "sem_open",
+    "sem_post",
+    "sem_timedwait",
+    "sem_trywait",
+    "sem_unlink",
+    "sem_wait",
+    "send",
+    "sendmsg",
+    "sendto",
+    "setxid_mark_thread.constprop.0",
+    "setxid_unmark_thread.constprop.0",
+    "sigaction",
+    "sigall_set",
+    "sigcancel_handler",
+    "sighandler_setxid",
+    "sigsuspend",
+    "sigwait",
+    "stack_cache",
+    "stack_cache_actsize",
+    "start_thread",
+    "tcdrain",
+    "thrd_create",
+    "thrd_detach",
+    "thrd_exit",
+    "thrd_join",
+    "tpi_supported.0",
+    "tss_create",
+    "tss_delete",
+    "tss_get",
+    "tss_set",
+    "unwind_cleanup",
+    "unwind_stop",
+    "walker",
+    "where_is_shmfs",
+    "write"
   ],
   "externs": [
     {

@@ -1,9 +1,7 @@
 {
   "name": "libBrokenLocale.a",
   "symbols": [
-    {
-      "name": "__ctype_get_mb_cur_max"
-    }
+    "__ctype_get_mb_cur_max"
   ],
   "externs": [
     {

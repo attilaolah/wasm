@@ -1,2166 +1,726 @@
 {
   "name": "libgcc.a",
   "symbols": [
-    {
-      "name": ".LC0"
-    },
-    {
-      "name": ".LC1"
-    },
-    {
-      "name": ".LC2"
-    },
-    {
-      "name": ".LC3"
-    },
-    {
-      "name": ".LC4"
-    },
-    {
-      "name": ".LC5"
-    },
-    {
-      "name": ".LC6"
-    },
-    {
-      "name": ".LC7"
-    },
-    {
-      "name": ".LC8"
-    },
-    {
-      "name": "DW.ref.__gcc_personality_v0"
-    },
-    {
-      "name": "__CTOR_LIST__"
-    },
-    {
-      "name": "__DTOR_LIST__"
-    },
-    {
-      "name": "__absvdi2"
-    },
-    {
-      "name": "__absvdi2.cold"
-    },
-    {
-      "name": "__absvsi2"
-    },
-    {
-      "name": "__absvsi2.cold"
-    },
-    {
-      "name": "__absvti2"
-    },
-    {
-      "name": "__absvti2.cold"
-    },
-    {
-      "name": "__addtf3"
-    },
-    {
-      "name": "__addvdi3"
-    },
-    {
-      "name": "__addvdi3.cold"
-    },
-    {
-      "name": "__addvsi3"
-    },
-    {
-      "name": "__addvsi3.cold"
-    },
-    {
-      "name": "__addvti3"
-    },
-    {
-      "name": "__addvti3.cold"
-    },
-    {
-      "name": "__ashlti3"
-    },
-    {
-      "name": "__ashrti3"
-    },
-    {
-      "name": "__avx_resms64_12"
-    },
-    {
-      "name": "__avx_resms64_13"
-    },
-    {
-      "name": "__avx_resms64_14"
-    },
-    {
-      "name": "__avx_resms64_15"
-    },
-    {
-      "name": "__avx_resms64_16"
-    },
-    {
-      "name": "__avx_resms64_17"
-    },
-    {
-      "name": "__avx_resms64_18"
-    },
-    {
-      "name": "__avx_resms64f_12"
-    },
-    {
-      "name": "__avx_resms64f_13"
-    },
-    {
-      "name": "__avx_resms64f_14"
-    },
-    {
-      "name": "__avx_resms64f_15"
-    },
-    {
-      "name": "__avx_resms64f_16"
-    },
-    {
-      "name": "__avx_resms64f_17"
-    },
-    {
-      "name": "__avx_resms64fx_12"
-    },
-    {
-      "name": "__avx_resms64fx_13"
-    },
-    {
-      "name": "__avx_resms64fx_14"
-    },
-    {
-      "name": "__avx_resms64fx_15"
-    },
-    {
-      "name": "__avx_resms64fx_16"
-    },
-    {
-      "name": "__avx_resms64fx_17"
-    },
-    {
-      "name": "__avx_resms64x_12"
-    },
-    {
-      "name": "__avx_resms64x_13"
-    },
-    {
-      "name": "__avx_resms64x_14"
-    },
-    {
-      "name": "__avx_resms64x_15"
-    },
-    {
-      "name": "__avx_resms64x_16"
-    },
-    {
-      "name": "__avx_resms64x_17"
-    },
-    {
-      "name": "__avx_resms64x_18"
-    },
-    {
-      "name": "__avx_savms64_12"
-    },
-    {
-      "name": "__avx_savms64_13"
-    },
-    {
-      "name": "__avx_savms64_14"
-    },
-    {
-      "name": "__avx_savms64_15"
-    },
-    {
-      "name": "__avx_savms64_16"
-    },
-    {
-      "name": "__avx_savms64_17"
-    },
-    {
-      "name": "__avx_savms64_18"
-    },
-    {
-      "name": "__avx_savms64f_12"
-    },
-    {
-      "name": "__avx_savms64f_13"
-    },
-    {
-      "name": "__avx_savms64f_14"
-    },
-    {
-      "name": "__avx_savms64f_15"
-    },
-    {
-      "name": "__avx_savms64f_16"
-    },
-    {
-      "name": "__avx_savms64f_17"
-    },
-    {
-      "name": "__bid128_abs"
-    },
-    {
-      "name": "__bid128_add"
-    },
-    {
-      "name": "__bid128_class"
-    },
-    {
-      "name": "__bid128_copy"
-    },
-    {
-      "name": "__bid128_copySign"
-    },
-    {
-      "name": "__bid128_div"
-    },
-    {
-      "name": "__bid128_fma"
-    },
-    {
-      "name": "__bid128_from_int32"
-    },
-    {
-      "name": "__bid128_from_int64"
-    },
-    {
-      "name": "__bid128_from_uint32"
-    },
-    {
-      "name": "__bid128_from_uint64"
-    },
-    {
-      "name": "__bid128_isCanonical"
-    },
-    {
-      "name": "__bid128_isFinite"
-    },
-    {
-      "name": "__bid128_isInf"
-    },
-    {
-      "name": "__bid128_isNaN"
-    },
-    {
-      "name": "__bid128_isNormal"
-    },
-    {
-      "name": "__bid128_isSignaling"
-    },
-    {
-      "name": "__bid128_isSigned"
-    },
-    {
-      "name": "__bid128_isSubnormal"
-    },
-    {
-      "name": "__bid128_isZero"
-    },
-    {
-      "name": "__bid128_mul"
-    },
-    {
-      "name": "__bid128_negate"
-    },
-    {
-      "name": "__bid128_quiet_equal"
-    },
-    {
-      "name": "__bid128_quiet_greater"
-    },
-    {
-      "name": "__bid128_quiet_greater_equal"
-    },
-    {
-      "name": "__bid128_quiet_greater_unordered"
-    },
-    {
-      "name": "__bid128_quiet_less"
-    },
-    {
-      "name": "__bid128_quiet_less_equal"
-    },
-    {
-      "name": "__bid128_quiet_less_unordered"
-    },
-    {
-      "name": "__bid128_quiet_not_equal"
-    },
-    {
-      "name": "__bid128_quiet_not_greater"
-    },
-    {
-      "name": "__bid128_quiet_not_less"
-    },
-    {
-      "name": "__bid128_quiet_ordered"
-    },
-    {
-      "name": "__bid128_quiet_unordered"
-    },
-    {
-      "name": "__bid128_radix"
-    },
-    {
-      "name": "__bid128_sameQuantum"
-    },
-    {
-      "name": "__bid128_signaling_greater"
-    },
-    {
-      "name": "__bid128_signaling_greater_equal"
-    },
-    {
-      "name": "__bid128_signaling_greater_unordered"
-    },
-    {
-      "name": "__bid128_signaling_less"
-    },
-    {
-      "name": "__bid128_signaling_less_equal"
-    },
-    {
-      "name": "__bid128_signaling_less_unordered"
-    },
-    {
-      "name": "__bid128_signaling_not_greater"
-    },
-    {
-      "name": "__bid128_signaling_not_less"
-    },
-    {
-      "name": "__bid128_sub"
-    },
-    {
-      "name": "__bid128_to_bid32"
-    },
-    {
-      "name": "__bid128_to_bid64"
-    },
-    {
-      "name": "__bid128_to_binary128"
-    },
-    {
-      "name": "__bid128_to_binary32"
-    },
-    {
-      "name": "__bid128_to_binary64"
-    },
-    {
-      "name": "__bid128_to_binary80"
-    },
-    {
-      "name": "__bid128_to_int32_ceil"
-    },
-    {
-      "name": "__bid128_to_int32_floor"
-    },
-    {
-      "name": "__bid128_to_int32_int"
-    },
-    {
-      "name": "__bid128_to_int32_rnint"
-    },
-    {
-      "name": "__bid128_to_int32_rninta"
-    },
-    {
-      "name": "__bid128_to_int32_xceil"
-    },
-    {
-      "name": "__bid128_to_int32_xfloor"
-    },
-    {
-      "name": "__bid128_to_int32_xint"
-    },
-    {
-      "name": "__bid128_to_int32_xrnint"
-    },
-    {
-      "name": "__bid128_to_int32_xrninta"
-    },
-    {
-      "name": "__bid128_to_int64_ceil"
-    },
-    {
-      "name": "__bid128_to_int64_floor"
-    },
-    {
-      "name": "__bid128_to_int64_int"
-    },
-    {
-      "name": "__bid128_to_int64_rnint"
-    },
-    {
-      "name": "__bid128_to_int64_rninta"
-    },
-    {
-      "name": "__bid128_to_int64_xceil"
-    },
-    {
-      "name": "__bid128_to_int64_xfloor"
-    },
-    {
-      "name": "__bid128_to_int64_xint"
-    },
-    {
-      "name": "__bid128_to_int64_xrnint"
-    },
-    {
-      "name": "__bid128_to_int64_xrninta"
-    },
-    {
-      "name": "__bid128_to_uint32_ceil"
-    },
-    {
-      "name": "__bid128_to_uint32_floor"
-    },
-    {
-      "name": "__bid128_to_uint32_int"
-    },
-    {
-      "name": "__bid128_to_uint32_rnint"
-    },
-    {
-      "name": "__bid128_to_uint32_rninta"
-    },
-    {
-      "name": "__bid128_to_uint32_xceil"
-    },
-    {
-      "name": "__bid128_to_uint32_xfloor"
-    },
-    {
-      "name": "__bid128_to_uint32_xint"
-    },
-    {
-      "name": "__bid128_to_uint32_xrnint"
-    },
-    {
-      "name": "__bid128_to_uint32_xrninta"
-    },
-    {
-      "name": "__bid128_to_uint64_ceil"
-    },
-    {
-      "name": "__bid128_to_uint64_floor"
-    },
-    {
-      "name": "__bid128_to_uint64_int"
-    },
-    {
-      "name": "__bid128_to_uint64_rnint"
-    },
-    {
-      "name": "__bid128_to_uint64_rninta"
-    },
-    {
-      "name": "__bid128_to_uint64_xceil"
-    },
-    {
-      "name": "__bid128_to_uint64_xfloor"
-    },
-    {
-      "name": "__bid128_to_uint64_xint"
-    },
-    {
-      "name": "__bid128_to_uint64_xrnint"
-    },
-    {
-      "name": "__bid128_to_uint64_xrninta"
-    },
-    {
-      "name": "__bid128_totalOrder"
-    },
-    {
-      "name": "__bid128_totalOrderMag"
-    },
-    {
-      "name": "__bid128dd_add"
-    },
-    {
-      "name": "__bid128dd_div"
-    },
-    {
-      "name": "__bid128dd_mul"
-    },
-    {
-      "name": "__bid128dd_sub"
-    },
-    {
-      "name": "__bid128ddd_fma"
-    },
-    {
-      "name": "__bid128ddq_fma"
-    },
-    {
-      "name": "__bid128dq_add"
-    },
-    {
-      "name": "__bid128dq_div"
-    },
-    {
-      "name": "__bid128dq_mul"
-    },
-    {
-      "name": "__bid128dq_sub"
-    },
-    {
-      "name": "__bid128dqd_fma"
-    },
-    {
-      "name": "__bid128dqq_fma"
-    },
-    {
-      "name": "__bid128qd_add"
-    },
-    {
-      "name": "__bid128qd_div"
-    },
-    {
-      "name": "__bid128qd_mul"
-    },
-    {
-      "name": "__bid128qd_sub"
-    },
-    {
-      "name": "__bid128qdd_fma"
-    },
-    {
-      "name": "__bid128qdq_fma"
-    },
-    {
-      "name": "__bid128qqd_fma"
-    },
-    {
-      "name": "__bid32_to_bid128"
-    },
-    {
-      "name": "__bid32_to_bid64"
-    },
-    {
-      "name": "__bid32_to_binary128"
-    },
-    {
-      "name": "__bid32_to_binary32"
-    },
-    {
-      "name": "__bid32_to_binary64"
-    },
-    {
-      "name": "__bid32_to_binary80"
-    },
-    {
-      "name": "__bid64_abs"
-    },
-    {
-      "name": "__bid64_add"
-    },
-    {
-      "name": "__bid64_class"
-    },
-    {
-      "name": "__bid64_copy"
-    },
-    {
-      "name": "__bid64_copySign"
-    },
-    {
-      "name": "__bid64_div"
-    },
-    {
-      "name": "__bid64_from_int32"
-    },
-    {
-      "name": "__bid64_from_int64"
-    },
-    {
-      "name": "__bid64_from_uint32"
-    },
-    {
-      "name": "__bid64_from_uint64"
-    },
-    {
-      "name": "__bid64_isCanonical"
-    },
-    {
-      "name": "__bid64_isFinite"
-    },
-    {
-      "name": "__bid64_isInf"
-    },
-    {
-      "name": "__bid64_isNaN"
-    },
-    {
-      "name": "__bid64_isNormal"
-    },
-    {
-      "name": "__bid64_isSignaling"
-    },
-    {
-      "name": "__bid64_isSigned"
-    },
-    {
-      "name": "__bid64_isSubnormal"
-    },
-    {
-      "name": "__bid64_isZero"
-    },
-    {
-      "name": "__bid64_mul"
-    },
-    {
-      "name": "__bid64_negate"
-    },
-    {
-      "name": "__bid64_quiet_equal"
-    },
-    {
-      "name": "__bid64_quiet_greater"
-    },
-    {
-      "name": "__bid64_quiet_greater_equal"
-    },
-    {
-      "name": "__bid64_quiet_greater_unordered"
-    },
-    {
-      "name": "__bid64_quiet_less"
-    },
-    {
-      "name": "__bid64_quiet_less_equal"
-    },
-    {
-      "name": "__bid64_quiet_less_unordered"
-    },
-    {
-      "name": "__bid64_quiet_not_equal"
-    },
-    {
-      "name": "__bid64_quiet_not_greater"
-    },
-    {
-      "name": "__bid64_quiet_not_less"
-    },
-    {
-      "name": "__bid64_quiet_ordered"
-    },
-    {
-      "name": "__bid64_quiet_unordered"
-    },
-    {
-      "name": "__bid64_radix"
-    },
-    {
-      "name": "__bid64_sameQuantum"
-    },
-    {
-      "name": "__bid64_signaling_greater"
-    },
-    {
-      "name": "__bid64_signaling_greater_equal"
-    },
-    {
-      "name": "__bid64_signaling_greater_unordered"
-    },
-    {
-      "name": "__bid64_signaling_less"
-    },
-    {
-      "name": "__bid64_signaling_less_equal"
-    },
-    {
-      "name": "__bid64_signaling_less_unordered"
-    },
-    {
-      "name": "__bid64_signaling_not_greater"
-    },
-    {
-      "name": "__bid64_signaling_not_less"
-    },
-    {
-      "name": "__bid64_sub"
-    },
-    {
-      "name": "__bid64_to_bid128"
-    },
-    {
-      "name": "__bid64_to_bid32"
-    },
-    {
-      "name": "__bid64_to_binary128"
-    },
-    {
-      "name": "__bid64_to_binary32"
-    },
-    {
-      "name": "__bid64_to_binary64"
-    },
-    {
-      "name": "__bid64_to_binary80"
-    },
-    {
-      "name": "__bid64_to_int32_ceil"
-    },
-    {
-      "name": "__bid64_to_int32_floor"
-    },
-    {
-      "name": "__bid64_to_int32_int"
-    },
-    {
-      "name": "__bid64_to_int32_rnint"
-    },
-    {
-      "name": "__bid64_to_int32_rninta"
-    },
-    {
-      "name": "__bid64_to_int32_xceil"
-    },
-    {
-      "name": "__bid64_to_int32_xfloor"
-    },
-    {
-      "name": "__bid64_to_int32_xint"
-    },
-    {
-      "name": "__bid64_to_int32_xrnint"
-    },
-    {
-      "name": "__bid64_to_int32_xrninta"
-    },
-    {
-      "name": "__bid64_to_int64_ceil"
-    },
-    {
-      "name": "__bid64_to_int64_floor"
-    },
-    {
-      "name": "__bid64_to_int64_int"
-    },
-    {
-      "name": "__bid64_to_int64_rnint"
-    },
-    {
-      "name": "__bid64_to_int64_rninta"
-    },
-    {
-      "name": "__bid64_to_int64_xceil"
-    },
-    {
-      "name": "__bid64_to_int64_xfloor"
-    },
-    {
-      "name": "__bid64_to_int64_xint"
-    },
-    {
-      "name": "__bid64_to_int64_xrnint"
-    },
-    {
-      "name": "__bid64_to_int64_xrninta"
-    },
-    {
-      "name": "__bid64_to_uint32_ceil"
-    },
-    {
-      "name": "__bid64_to_uint32_floor"
-    },
-    {
-      "name": "__bid64_to_uint32_int"
-    },
-    {
-      "name": "__bid64_to_uint32_rnint"
-    },
-    {
-      "name": "__bid64_to_uint32_rninta"
-    },
-    {
-      "name": "__bid64_to_uint32_xceil"
-    },
-    {
-      "name": "__bid64_to_uint32_xfloor"
-    },
-    {
-      "name": "__bid64_to_uint32_xint"
-    },
-    {
-      "name": "__bid64_to_uint32_xrnint"
-    },
-    {
-      "name": "__bid64_to_uint32_xrninta"
-    },
-    {
-      "name": "__bid64_to_uint64_ceil"
-    },
-    {
-      "name": "__bid64_to_uint64_floor"
-    },
-    {
-      "name": "__bid64_to_uint64_int"
-    },
-    {
-      "name": "__bid64_to_uint64_rnint"
-    },
-    {
-      "name": "__bid64_to_uint64_rninta"
-    },
-    {
-      "name": "__bid64_to_uint64_xceil"
-    },
-    {
-      "name": "__bid64_to_uint64_xfloor"
-    },
-    {
-      "name": "__bid64_to_uint64_xint"
-    },
-    {
-      "name": "__bid64_to_uint64_xrnint"
-    },
-    {
-      "name": "__bid64_to_uint64_xrninta"
-    },
-    {
-      "name": "__bid64_totalOrder"
-    },
-    {
-      "name": "__bid64_totalOrderMag"
-    },
-    {
-      "name": "__bid64ddq_fma"
-    },
-    {
-      "name": "__bid64dq_add"
-    },
-    {
-      "name": "__bid64dq_div"
-    },
-    {
-      "name": "__bid64dq_mul"
-    },
-    {
-      "name": "__bid64dq_sub"
-    },
-    {
-      "name": "__bid64dqd_fma"
-    },
-    {
-      "name": "__bid64dqq_fma"
-    },
-    {
-      "name": "__bid64qd_add"
-    },
-    {
-      "name": "__bid64qd_div"
-    },
-    {
-      "name": "__bid64qd_mul"
-    },
-    {
-      "name": "__bid64qd_sub"
-    },
-    {
-      "name": "__bid64qdd_fma"
-    },
-    {
-      "name": "__bid64qdq_fma"
-    },
-    {
-      "name": "__bid64qq_add"
-    },
-    {
-      "name": "__bid64qq_div"
-    },
-    {
-      "name": "__bid64qq_mul"
-    },
-    {
-      "name": "__bid64qq_sub"
-    },
-    {
-      "name": "__bid64qqd_fma"
-    },
-    {
-      "name": "__bid64qqq_fma"
-    },
-    {
-      "name": "__bid_Ex128m128"
-    },
-    {
-      "name": "__bid_Ex192m192"
-    },
-    {
-      "name": "__bid_Ex256m256"
-    },
-    {
-      "name": "__bid_Ex64m64"
-    },
-    {
-      "name": "__bid_IDEC_glbflags"
-    },
-    {
-      "name": "__bid_IDEC_glbround"
-    },
-    {
-      "name": "__bid_Kx128"
-    },
-    {
-      "name": "__bid_Kx192"
-    },
-    {
-      "name": "__bid_Kx256"
-    },
-    {
-      "name": "__bid_Kx64"
-    },
-    {
-      "name": "__bid_adddd3"
-    },
-    {
-      "name": "__bid_addsd3"
-    },
-    {
-      "name": "__bid_addtd3"
-    },
-    {
-      "name": "__bid_char_table2"
-    },
-    {
-      "name": "__bid_char_table3"
-    },
-    {
-      "name": "__bid_convert_table"
-    },
-    {
-      "name": "__bid_divdd3"
-    },
-    {
-      "name": "__bid_divsd3"
-    },
-    {
-      "name": "__bid_divtd3"
-    },
-    {
-      "name": "__bid_eqdd2"
-    },
-    {
-      "name": "__bid_eqsd2"
-    },
-    {
-      "name": "__bid_eqtd2"
-    },
-    {
-      "name": "__bid_estimate_bin_expon"
-    },
-    {
-      "name": "__bid_estimate_decimal_digits"
-    },
-    {
-      "name": "__bid_extendddtd2"
-    },
-    {
-      "name": "__bid_extendddtf"
-    },
-    {
-      "name": "__bid_extendddxf"
-    },
-    {
-      "name": "__bid_extenddfdd"
-    },
-    {
-      "name": "__bid_extenddftd"
-    },
-    {
-      "name": "__bid_extendsddd2"
-    },
-    {
-      "name": "__bid_extendsddf"
-    },
-    {
-      "name": "__bid_extendsdtd2"
-    },
-    {
-      "name": "__bid_extendsdtf"
-    },
-    {
-      "name": "__bid_extendsdxf"
-    },
-    {
-      "name": "__bid_extendsfdd"
-    },
-    {
-      "name": "__bid_extendsfsd"
-    },
-    {
-      "name": "__bid_extendsftd"
-    },
-    {
-      "name": "__bid_extendtftd"
-    },
-    {
-      "name": "__bid_extendxftd"
-    },
-    {
-      "name": "__bid_factors"
-    },
-    {
-      "name": "__bid_fixdddi"
-    },
-    {
-      "name": "__bid_fixddsi"
-    },
-    {
-      "name": "__bid_fixsddi"
-    },
-    {
-      "name": "__bid_fixsdsi"
-    },
-    {
-      "name": "__bid_fixtddi"
-    },
-    {
-      "name": "__bid_fixtdsi"
-    },
-    {
-      "name": "__bid_fixunsdddi"
-    },
-    {
-      "name": "__bid_fixunsddsi"
-    },
-    {
-      "name": "__bid_fixunssddi"
-    },
-    {
-      "name": "__bid_fixunssdsi"
-    },
-    {
-      "name": "__bid_fixunstddi"
-    },
-    {
-      "name": "__bid_fixunstdsi"
-    },
-    {
-      "name": "__bid_floatdidd"
-    },
-    {
-      "name": "__bid_floatdisd"
-    },
-    {
-      "name": "__bid_floatditd"
-    },
-    {
-      "name": "__bid_floatsidd"
-    },
-    {
-      "name": "__bid_floatsisd"
-    },
-    {
-      "name": "__bid_floatsitd"
-    },
-    {
-      "name": "__bid_floatunsdidd"
-    },
-    {
-      "name": "__bid_floatunsdisd"
-    },
-    {
-      "name": "__bid_floatunsditd"
-    },
-    {
-      "name": "__bid_floatunssidd"
-    },
-    {
-      "name": "__bid_floatunssisd"
-    },
-    {
-      "name": "__bid_floatunssitd"
-    },
-    {
-      "name": "__bid_gedd2"
-    },
-    {
-      "name": "__bid_gesd2"
-    },
-    {
-      "name": "__bid_getd2"
-    },
-    {
-      "name": "__bid_gtdd2"
-    },
-    {
-      "name": "__bid_gtsd2"
-    },
-    {
-      "name": "__bid_gttd2"
-    },
-    {
-      "name": "__bid_half128"
-    },
-    {
-      "name": "__bid_half192"
-    },
-    {
-      "name": "__bid_half256"
-    },
-    {
-      "name": "__bid_half64"
-    },
-    {
-      "name": "__bid_ledd2"
-    },
-    {
-      "name": "__bid_lesd2"
-    },
-    {
-      "name": "__bid_letd2"
-    },
-    {
-      "name": "__bid_ltdd2"
-    },
-    {
-      "name": "__bid_ltsd2"
-    },
-    {
-      "name": "__bid_lttd2"
-    },
-    {
-      "name": "__bid_mask128"
-    },
-    {
-      "name": "__bid_mask192"
-    },
-    {
-      "name": "__bid_mask256"
-    },
-    {
-      "name": "__bid_mask64"
-    },
-    {
-      "name": "__bid_maskhigh128"
-    },
-    {
-      "name": "__bid_maskhigh128M"
-    },
-    {
-      "name": "__bid_maskhigh192M"
-    },
-    {
-      "name": "__bid_maskhigh256M"
-    },
-    {
-      "name": "__bid_midpoint128"
-    },
-    {
-      "name": "__bid_midpoint192"
-    },
-    {
-      "name": "__bid_midpoint256"
-    },
-    {
-      "name": "__bid_midpoint64"
-    },
-    {
-      "name": "__bid_muldd3"
-    },
-    {
-      "name": "__bid_mulsd3"
-    },
-    {
-      "name": "__bid_multd3"
-    },
-    {
-      "name": "__bid_nedd2"
-    },
-    {
-      "name": "__bid_nesd2"
-    },
-    {
-      "name": "__bid_netd2"
-    },
-    {
-      "name": "__bid_nr_digits"
-    },
-    {
-      "name": "__bid_onehalf128"
-    },
-    {
-      "name": "__bid_onehalf128M"
-    },
-    {
-      "name": "__bid_onehalf192M"
-    },
-    {
-      "name": "__bid_onehalf256M"
-    },
-    {
-      "name": "__bid_packed_10000_zeros"
-    },
-    {
-      "name": "__bid_power10_index_binexp"
-    },
-    {
-      "name": "__bid_power10_index_binexp_128"
-    },
-    {
-      "name": "__bid_power10_table_128"
-    },
-    {
-      "name": "__bid_recip_scale"
-    },
-    {
-      "name": "__bid_reciprocals10_128"
-    },
-    {
-      "name": "__bid_reciprocals10_64"
-    },
-    {
-      "name": "__bid_round128_19_38"
-    },
-    {
-      "name": "__bid_round192_39_57"
-    },
-    {
-      "name": "__bid_round256_58_76"
-    },
-    {
-      "name": "__bid_round64_2_18"
-    },
-    {
-      "name": "__bid_round_const_table"
-    },
-    {
-      "name": "__bid_round_const_table_128"
-    },
-    {
-      "name": "__bid_shift_ten2m3k128"
-    },
-    {
-      "name": "__bid_shift_ten2m3k64"
-    },
-    {
-      "name": "__bid_shiftright128"
-    },
-    {
-      "name": "__bid_shiftright128M"
-    },
-    {
-      "name": "__bid_shiftright192M"
-    },
-    {
-      "name": "__bid_shiftright256M"
-    },
-    {
-      "name": "__bid_short_recip_scale"
-    },
-    {
-      "name": "__bid_subdd3"
-    },
-    {
-      "name": "__bid_subsd3"
-    },
-    {
-      "name": "__bid_subtd3"
-    },
-    {
-      "name": "__bid_ten2k128"
-    },
-    {
-      "name": "__bid_ten2k256"
-    },
-    {
-      "name": "__bid_ten2k64"
-    },
-    {
-      "name": "__bid_ten2m3k128"
-    },
-    {
-      "name": "__bid_ten2m3k64"
-    },
-    {
-      "name": "__bid_ten2mk128"
-    },
-    {
-      "name": "__bid_ten2mk128M"
-    },
-    {
-      "name": "__bid_ten2mk128trunc"
-    },
-    {
-      "name": "__bid_ten2mk128truncM"
-    },
-    {
-      "name": "__bid_ten2mk192M"
-    },
-    {
-      "name": "__bid_ten2mk192truncM"
-    },
-    {
-      "name": "__bid_ten2mk256M"
-    },
-    {
-      "name": "__bid_ten2mk256truncM"
-    },
-    {
-      "name": "__bid_ten2mk64"
-    },
-    {
-      "name": "__bid_ten2mxtrunc128"
-    },
-    {
-      "name": "__bid_ten2mxtrunc192"
-    },
-    {
-      "name": "__bid_ten2mxtrunc256"
-    },
-    {
-      "name": "__bid_ten2mxtrunc64"
-    },
-    {
-      "name": "__bid_truncdddf"
-    },
-    {
-      "name": "__bid_truncddsd2"
-    },
-    {
-      "name": "__bid_truncddsf"
-    },
-    {
-      "name": "__bid_truncdfsd"
-    },
-    {
-      "name": "__bid_truncsdsf"
-    },
-    {
-      "name": "__bid_trunctddd2"
-    },
-    {
-      "name": "__bid_trunctddf"
-    },
-    {
-      "name": "__bid_trunctdsd2"
-    },
-    {
-      "name": "__bid_trunctdsf"
-    },
-    {
-      "name": "__bid_trunctdtf"
-    },
-    {
-      "name": "__bid_trunctdxf"
-    },
-    {
-      "name": "__bid_trunctfdd"
-    },
-    {
-      "name": "__bid_trunctfsd"
-    },
-    {
-      "name": "__bid_truncxfdd"
-    },
-    {
-      "name": "__bid_truncxfsd"
-    },
-    {
-      "name": "__bid_unorddd2"
-    },
-    {
-      "name": "__bid_unordsd2"
-    },
-    {
-      "name": "__bid_unordtd2"
-    },
-    {
-      "name": "__binary128_to_bid128"
-    },
-    {
-      "name": "__binary128_to_bid32"
-    },
-    {
-      "name": "__binary128_to_bid64"
-    },
-    {
-      "name": "__binary32_to_bid128"
-    },
-    {
-      "name": "__binary32_to_bid32"
-    },
-    {
-      "name": "__binary32_to_bid64"
-    },
-    {
-      "name": "__binary64_to_bid128"
-    },
-    {
-      "name": "__binary64_to_bid32"
-    },
-    {
-      "name": "__binary64_to_bid64"
-    },
-    {
-      "name": "__binary80_to_bid128"
-    },
-    {
-      "name": "__binary80_to_bid32"
-    },
-    {
-      "name": "__binary80_to_bid64"
-    },
-    {
-      "name": "__bswapdi2"
-    },
-    {
-      "name": "__bswapsi2"
-    },
-    {
-      "name": "__clear_cache"
-    },
-    {
-      "name": "__clrsbdi2"
-    },
-    {
-      "name": "__clrsbti2"
-    },
-    {
-      "name": "__clz_tab"
-    },
-    {
-      "name": "__clzdi2"
-    },
-    {
-      "name": "__clzti2"
-    },
-    {
-      "name": "__cmpti2"
-    },
-    {
-      "name": "__cpu_features2"
-    },
-    {
-      "name": "__cpu_indicator_init"
-    },
-    {
-      "name": "__cpu_model"
-    },
-    {
-      "name": "__ctzdi2"
-    },
-    {
-      "name": "__ctzti2"
-    },
-    {
-      "name": "__dfp_clear_except"
-    },
-    {
-      "name": "__dfp_get_round"
-    },
-    {
-      "name": "__dfp_raise_except"
-    },
-    {
-      "name": "__dfp_set_round"
-    },
-    {
-      "name": "__dfp_test_except"
-    },
-    {
-      "name": "__div_128_by_128"
-    },
-    {
-      "name": "__div_256_by_128"
-    },
-    {
-      "name": "__divdc3"
-    },
-    {
-      "name": "__divmodti4"
-    },
-    {
-      "name": "__divsc3"
-    },
-    {
-      "name": "__divtc3"
-    },
-    {
-      "name": "__divtf3"
-    },
-    {
-      "name": "__divti3"
-    },
-    {
-      "name": "__divxc3"
-    },
-    {
-      "name": "__enable_execute_stack"
-    },
-    {
-      "name": "__eprintf"
-    },
-    {
-      "name": "__eqtf2"
-    },
-    {
-      "name": "__extenddftf2"
-    },
-    {
-      "name": "__extendsftf2"
-    },
-    {
-      "name": "__extendxftf2"
-    },
-    {
-      "name": "__ffsdi2"
-    },
-    {
-      "name": "__ffsti2"
-    },
-    {
-      "name": "__fixdfti"
-    },
-    {
-      "name": "__fixsfti"
-    },
-    {
-      "name": "__fixtfdi"
-    },
-    {
-      "name": "__fixtfsi"
-    },
-    {
-      "name": "__fixtfti"
-    },
-    {
-      "name": "__fixunsdfdi"
-    },
-    {
-      "name": "__fixunsdfti"
-    },
-    {
-      "name": "__fixunssfdi"
-    },
-    {
-      "name": "__fixunssfti"
-    },
-    {
-      "name": "__fixunstfdi"
-    },
-    {
-      "name": "__fixunstfsi"
-    },
-    {
-      "name": "__fixunstfti"
-    },
-    {
-      "name": "__fixunsxfdi"
-    },
-    {
-      "name": "__fixunsxfti"
-    },
-    {
-      "name": "__fixxfti"
-    },
-    {
-      "name": "__floatditf"
-    },
-    {
-      "name": "__floatsitf"
-    },
-    {
-      "name": "__floattidf"
-    },
-    {
-      "name": "__floattisf"
-    },
-    {
-      "name": "__floattitf"
-    },
-    {
-      "name": "__floattixf"
-    },
-    {
-      "name": "__floatunditf"
-    },
-    {
-      "name": "__floatunsitf"
-    },
-    {
-      "name": "__floatuntidf"
-    },
-    {
-      "name": "__floatuntisf"
-    },
-    {
-      "name": "__floatuntitf"
-    },
-    {
-      "name": "__floatuntixf"
-    },
-    {
-      "name": "__gcc_bcmp"
-    },
-    {
-      "name": "__generic_findstack"
-    },
-    {
-      "name": "__generic_morestack"
-    },
-    {
-      "name": "__generic_morestack_set_initial_sp"
-    },
-    {
-      "name": "__generic_releasestack"
-    },
-    {
-      "name": "__getf2"
-    },
-    {
-      "name": "__gttf2"
-    },
-    {
-      "name": "__letf2"
-    },
-    {
-      "name": "__lshrti3"
-    },
-    {
-      "name": "__lttf2"
-    },
-    {
-      "name": "__modti3"
-    },
-    {
-      "name": "__morestack"
-    },
-    {
-      "name": "__morestack_allocate_stack_space"
-    },
-    {
-      "name": "__morestack_allocate_stack_space.cold"
-    },
-    {
-      "name": "__morestack_block_signals"
-    },
-    {
-      "name": "__morestack_current_segment"
-    },
-    {
-      "name": "__morestack_fail"
-    },
-    {
-      "name": "__morestack_fullmask"
-    },
-    {
-      "name": "__morestack_get_guard"
-    },
-    {
-      "name": "__morestack_initial_sp"
-    },
-    {
-      "name": "__morestack_large_model"
-    },
-    {
-      "name": "__morestack_load_mmap"
-    },
-    {
-      "name": "__morestack_make_guard"
-    },
-    {
-      "name": "__morestack_non_split"
-    },
-    {
-      "name": "__morestack_release_segments"
-    },
-    {
-      "name": "__morestack_segments"
-    },
-    {
-      "name": "__morestack_set_guard"
-    },
-    {
-      "name": "__morestack_unblock_signals"
-    },
-    {
-      "name": "__muldc3"
-    },
-    {
-      "name": "__mulsc3"
-    },
-    {
-      "name": "__multc3"
-    },
-    {
-      "name": "__multf3"
-    },
-    {
-      "name": "__multi3"
-    },
-    {
-      "name": "__mulvdi3"
-    },
-    {
-      "name": "__mulvdi3.cold"
-    },
-    {
-      "name": "__mulvsi3"
-    },
-    {
-      "name": "__mulvsi3.cold"
-    },
-    {
-      "name": "__mulvti3"
-    },
-    {
-      "name": "__mulvti3.cold"
-    },
-    {
-      "name": "__mulxc3"
-    },
-    {
-      "name": "__negtf2"
-    },
-    {
-      "name": "__negti2"
-    },
-    {
-      "name": "__negvdi2"
-    },
-    {
-      "name": "__negvdi2.cold"
-    },
-    {
-      "name": "__negvsi2"
-    },
-    {
-      "name": "__negvsi2.cold"
-    },
-    {
-      "name": "__negvti2"
-    },
-    {
-      "name": "__negvti2.cold"
-    },
-    {
-      "name": "__netf2"
-    },
-    {
-      "name": "__paritydi2"
-    },
-    {
-      "name": "__parityti2"
-    },
-    {
-      "name": "__popcount_tab"
-    },
-    {
-      "name": "__popcountdi2"
-    },
-    {
-      "name": "__popcountti2"
-    },
-    {
-      "name": "__powidf2"
-    },
-    {
-      "name": "__powisf2"
-    },
-    {
-      "name": "__powitf2"
-    },
-    {
-      "name": "__powixf2"
-    },
-    {
-      "name": "__real_pthread_create"
-    },
-    {
-      "name": "__sfp_handle_exceptions"
-    },
-    {
-      "name": "__splitstack_block_signals"
-    },
-    {
-      "name": "__splitstack_block_signals_context"
-    },
-    {
-      "name": "__splitstack_find"
-    },
-    {
-      "name": "__splitstack_find_context"
-    },
-    {
-      "name": "__splitstack_getcontext"
-    },
-    {
-      "name": "__splitstack_makecontext"
-    },
-    {
-      "name": "__splitstack_releasecontext"
-    },
-    {
-      "name": "__splitstack_resetcontext"
-    },
-    {
-      "name": "__splitstack_setcontext"
-    },
-    {
-      "name": "__sse_resms64_12"
-    },
-    {
-      "name": "__sse_resms64_13"
-    },
-    {
-      "name": "__sse_resms64_14"
-    },
-    {
-      "name": "__sse_resms64_15"
-    },
-    {
-      "name": "__sse_resms64_16"
-    },
-    {
-      "name": "__sse_resms64_17"
-    },
-    {
-      "name": "__sse_resms64_18"
-    },
-    {
-      "name": "__sse_resms64f_12"
-    },
-    {
-      "name": "__sse_resms64f_13"
-    },
-    {
-      "name": "__sse_resms64f_14"
-    },
-    {
-      "name": "__sse_resms64f_15"
-    },
-    {
-      "name": "__sse_resms64f_16"
-    },
-    {
-      "name": "__sse_resms64f_17"
-    },
-    {
-      "name": "__sse_resms64fx_12"
-    },
-    {
-      "name": "__sse_resms64fx_13"
-    },
-    {
-      "name": "__sse_resms64fx_14"
-    },
-    {
-      "name": "__sse_resms64fx_15"
-    },
-    {
-      "name": "__sse_resms64fx_16"
-    },
-    {
-      "name": "__sse_resms64fx_17"
-    },
-    {
-      "name": "__sse_resms64x_12"
-    },
-    {
-      "name": "__sse_resms64x_13"
-    },
-    {
-      "name": "__sse_resms64x_14"
-    },
-    {
-      "name": "__sse_resms64x_15"
-    },
-    {
-      "name": "__sse_resms64x_16"
-    },
-    {
-      "name": "__sse_resms64x_17"
-    },
-    {
-      "name": "__sse_resms64x_18"
-    },
-    {
-      "name": "__sse_savms64_12"
-    },
-    {
-      "name": "__sse_savms64_13"
-    },
-    {
-      "name": "__sse_savms64_14"
-    },
-    {
-      "name": "__sse_savms64_15"
-    },
-    {
-      "name": "__sse_savms64_16"
-    },
-    {
-      "name": "__sse_savms64_17"
-    },
-    {
-      "name": "__sse_savms64_18"
-    },
-    {
-      "name": "__sse_savms64f_12"
-    },
-    {
-      "name": "__sse_savms64f_13"
-    },
-    {
-      "name": "__sse_savms64f_14"
-    },
-    {
-      "name": "__sse_savms64f_15"
-    },
-    {
-      "name": "__sse_savms64f_16"
-    },
-    {
-      "name": "__sse_savms64f_17"
-    },
-    {
-      "name": "__stack_split_initialize"
-    },
-    {
-      "name": "__subtf3"
-    },
-    {
-      "name": "__subvdi3"
-    },
-    {
-      "name": "__subvdi3.cold"
-    },
-    {
-      "name": "__subvsi3"
-    },
-    {
-      "name": "__subvsi3.cold"
-    },
-    {
-      "name": "__subvti3"
-    },
-    {
-      "name": "__subvti3.cold"
-    },
-    {
-      "name": "__trunctfdf2"
-    },
-    {
-      "name": "__trunctfsf2"
-    },
-    {
-      "name": "__trunctfxf2"
-    },
-    {
-      "name": "__ucmpti2"
-    },
-    {
-      "name": "__udiv_w_sdiv"
-    },
-    {
-      "name": "__udivmodti4"
-    },
-    {
-      "name": "__udivti3"
-    },
-    {
-      "name": "__umodti3"
-    },
-    {
-      "name": "__unordtf2"
-    },
-    {
-      "name": "__wrap_pthread_create"
-    },
-    {
-      "name": "add_and_round.constprop.0"
-    },
-    {
-      "name": "bid128_ext_fma"
-    },
-    {
-      "name": "breakpoints_bid32"
-    },
-    {
-      "name": "breakpoints_bid64"
-    },
-    {
-      "name": "breakpoints_binary128"
-    },
-    {
-      "name": "breakpoints_binary32"
-    },
-    {
-      "name": "breakpoints_binary64"
-    },
-    {
-      "name": "breakpoints_binary80"
-    },
-    {
-      "name": "coefflimits_bid128"
-    },
-    {
-      "name": "coefflimits_bid32"
-    },
-    {
-      "name": "coefflimits_bid64"
-    },
-    {
-      "name": "create_key"
-    },
-    {
-      "name": "create_key_once"
-    },
-    {
-      "name": "exponents_bid32"
-    },
-    {
-      "name": "exponents_bid64"
-    },
-    {
-      "name": "exponents_binary128"
-    },
-    {
-      "name": "exponents_binary32"
-    },
-    {
-      "name": "exponents_binary64"
-    },
-    {
-      "name": "exponents_binary80"
-    },
-    {
-      "name": "free_segments"
-    },
-    {
-      "name": "get_BID64.constprop.0"
-    },
-    {
-      "name": "get_BID64_UF.part.0.constprop.0"
-    },
-    {
-      "name": "get_available_features"
-    },
-    {
-      "name": "handle_UF_128.constprop.0.isra.0"
-    },
-    {
-      "name": "handle_UF_128_rem.constprop.0.isra.0"
-    },
-    {
-      "name": "innertable_exp"
-    },
-    {
-      "name": "innertable_sig"
-    },
-    {
-      "name": "isinfd128"
-    },
-    {
-      "name": "isinfd32"
-    },
-    {
-      "name": "isinfd64"
-    },
-    {
-      "name": "msg.0"
-    },
-    {
-      "name": "msg.1"
-    },
-    {
-      "name": "msg.2"
-    },
-    {
-      "name": "mult_factor"
-    },
-    {
-      "name": "multipliers1_bid32"
-    },
-    {
-      "name": "multipliers1_bid64"
-    },
-    {
-      "name": "multipliers1_binary128"
-    },
-    {
-      "name": "multipliers1_binary32"
-    },
-    {
-      "name": "multipliers1_binary64"
-    },
-    {
-      "name": "multipliers1_binary80"
-    },
-    {
-      "name": "multipliers2_bid32"
-    },
-    {
-      "name": "multipliers2_bid64"
-    },
-    {
-      "name": "multipliers2_binary128"
-    },
-    {
-      "name": "multipliers2_binary32"
-    },
-    {
-      "name": "multipliers2_binary64"
-    },
-    {
-      "name": "multipliers2_binary80"
-    },
-    {
-      "name": "nl.2"
-    },
-    {
-      "name": "nr_digits256"
-    },
-    {
-      "name": "outertable_exp"
-    },
-    {
-      "name": "outertable_sig"
-    },
-    {
-      "name": "power_five"
-    },
-    {
-      "name": "pthread_key_create"
-    },
-    {
-      "name": "pthread_once"
-    },
-    {
-      "name": "pthread_setspecific"
-    },
-    {
-      "name": "pthread_sigmask"
-    },
-    {
-      "name": "roundbound_128"
-    },
-    {
-      "name": "rounding_correction.constprop.0"
-    },
-    {
-      "name": "segment_list_key"
-    },
-    {
-      "name": "stack_split_initialize_thread"
-    },
-    {
-      "name": "static_pagesize"
-    },
-    {
-      "name": "sub256"
-    },
-    {
-      "name": "use_guard_page"
-    }
+    ".LC0",
+    ".LC1",
+    ".LC2",
+    ".LC3",
+    ".LC4",
+    ".LC5",
+    ".LC6",
+    ".LC7",
+    ".LC8",
+    "DW.ref.__gcc_personality_v0",
+    "__CTOR_LIST__",
+    "__DTOR_LIST__",
+    "__absvdi2",
+    "__absvdi2.cold",
+    "__absvsi2",
+    "__absvsi2.cold",
+    "__absvti2",
+    "__absvti2.cold",
+    "__addtf3",
+    "__addvdi3",
+    "__addvdi3.cold",
+    "__addvsi3",
+    "__addvsi3.cold",
+    "__addvti3",
+    "__addvti3.cold",
+    "__ashlti3",
+    "__ashrti3",
+    "__avx_resms64_12",
+    "__avx_resms64_13",
+    "__avx_resms64_14",
+    "__avx_resms64_15",
+    "__avx_resms64_16",
+    "__avx_resms64_17",
+    "__avx_resms64_18",
+    "__avx_resms64f_12",
+    "__avx_resms64f_13",
+    "__avx_resms64f_14",
+    "__avx_resms64f_15",
+    "__avx_resms64f_16",
+    "__avx_resms64f_17",
+    "__avx_resms64fx_12",
+    "__avx_resms64fx_13",
+    "__avx_resms64fx_14",
+    "__avx_resms64fx_15",
+    "__avx_resms64fx_16",
+    "__avx_resms64fx_17",
+    "__avx_resms64x_12",
+    "__avx_resms64x_13",
+    "__avx_resms64x_14",
+    "__avx_resms64x_15",
+    "__avx_resms64x_16",
+    "__avx_resms64x_17",
+    "__avx_resms64x_18",
+    "__avx_savms64_12",
+    "__avx_savms64_13",
+    "__avx_savms64_14",
+    "__avx_savms64_15",
+    "__avx_savms64_16",
+    "__avx_savms64_17",
+    "__avx_savms64_18",
+    "__avx_savms64f_12",
+    "__avx_savms64f_13",
+    "__avx_savms64f_14",
+    "__avx_savms64f_15",
+    "__avx_savms64f_16",
+    "__avx_savms64f_17",
+    "__bid128_abs",
+    "__bid128_add",
+    "__bid128_class",
+    "__bid128_copy",
+    "__bid128_copySign",
+    "__bid128_div",
+    "__bid128_fma",
+    "__bid128_from_int32",
+    "__bid128_from_int64",
+    "__bid128_from_uint32",
+    "__bid128_from_uint64",
+    "__bid128_isCanonical",
+    "__bid128_isFinite",
+    "__bid128_isInf",
+    "__bid128_isNaN",
+    "__bid128_isNormal",
+    "__bid128_isSignaling",
+    "__bid128_isSigned",
+    "__bid128_isSubnormal",
+    "__bid128_isZero",
+    "__bid128_mul",
+    "__bid128_negate",
+    "__bid128_quiet_equal",
+    "__bid128_quiet_greater",
+    "__bid128_quiet_greater_equal",
+    "__bid128_quiet_greater_unordered",
+    "__bid128_quiet_less",
+    "__bid128_quiet_less_equal",
+    "__bid128_quiet_less_unordered",
+    "__bid128_quiet_not_equal",
+    "__bid128_quiet_not_greater",
+    "__bid128_quiet_not_less",
+    "__bid128_quiet_ordered",
+    "__bid128_quiet_unordered",
+    "__bid128_radix",
+    "__bid128_sameQuantum",
+    "__bid128_signaling_greater",
+    "__bid128_signaling_greater_equal",
+    "__bid128_signaling_greater_unordered",
+    "__bid128_signaling_less",
+    "__bid128_signaling_less_equal",
+    "__bid128_signaling_less_unordered",
+    "__bid128_signaling_not_greater",
+    "__bid128_signaling_not_less",
+    "__bid128_sub",
+    "__bid128_to_bid32",
+    "__bid128_to_bid64",
+    "__bid128_to_binary128",
+    "__bid128_to_binary32",
+    "__bid128_to_binary64",
+    "__bid128_to_binary80",
+    "__bid128_to_int32_ceil",
+    "__bid128_to_int32_floor",
+    "__bid128_to_int32_int",
+    "__bid128_to_int32_rnint",
+    "__bid128_to_int32_rninta",
+    "__bid128_to_int32_xceil",
+    "__bid128_to_int32_xfloor",
+    "__bid128_to_int32_xint",
+    "__bid128_to_int32_xrnint",
+    "__bid128_to_int32_xrninta",
+    "__bid128_to_int64_ceil",
+    "__bid128_to_int64_floor",
+    "__bid128_to_int64_int",
+    "__bid128_to_int64_rnint",
+    "__bid128_to_int64_rninta",
+    "__bid128_to_int64_xceil",
+    "__bid128_to_int64_xfloor",
+    "__bid128_to_int64_xint",
+    "__bid128_to_int64_xrnint",
+    "__bid128_to_int64_xrninta",
+    "__bid128_to_uint32_ceil",
+    "__bid128_to_uint32_floor",
+    "__bid128_to_uint32_int",
+    "__bid128_to_uint32_rnint",
+    "__bid128_to_uint32_rninta",
+    "__bid128_to_uint32_xceil",
+    "__bid128_to_uint32_xfloor",
+    "__bid128_to_uint32_xint",
+    "__bid128_to_uint32_xrnint",
+    "__bid128_to_uint32_xrninta",
+    "__bid128_to_uint64_ceil",
+    "__bid128_to_uint64_floor",
+    "__bid128_to_uint64_int",
+    "__bid128_to_uint64_rnint",
+    "__bid128_to_uint64_rninta",
+    "__bid128_to_uint64_xceil",
+    "__bid128_to_uint64_xfloor",
+    "__bid128_to_uint64_xint",
+    "__bid128_to_uint64_xrnint",
+    "__bid128_to_uint64_xrninta",
+    "__bid128_totalOrder",
+    "__bid128_totalOrderMag",
+    "__bid128dd_add",
+    "__bid128dd_div",
+    "__bid128dd_mul",
+    "__bid128dd_sub",
+    "__bid128ddd_fma",
+    "__bid128ddq_fma",
+    "__bid128dq_add",
+    "__bid128dq_div",
+    "__bid128dq_mul",
+    "__bid128dq_sub",
+    "__bid128dqd_fma",
+    "__bid128dqq_fma",
+    "__bid128qd_add",
+    "__bid128qd_div",
+    "__bid128qd_mul",
+    "__bid128qd_sub",
+    "__bid128qdd_fma",
+    "__bid128qdq_fma",
+    "__bid128qqd_fma",
+    "__bid32_to_bid128",
+    "__bid32_to_bid64",
+    "__bid32_to_binary128",
+    "__bid32_to_binary32",
+    "__bid32_to_binary64",
+    "__bid32_to_binary80",
+    "__bid64_abs",
+    "__bid64_add",
+    "__bid64_class",
+    "__bid64_copy",
+    "__bid64_copySign",
+    "__bid64_div",
+    "__bid64_from_int32",
+    "__bid64_from_int64",
+    "__bid64_from_uint32",
+    "__bid64_from_uint64",
+    "__bid64_isCanonical",
+    "__bid64_isFinite",
+    "__bid64_isInf",
+    "__bid64_isNaN",
+    "__bid64_isNormal",
+    "__bid64_isSignaling",
+    "__bid64_isSigned",
+    "__bid64_isSubnormal",
+    "__bid64_isZero",
+    "__bid64_mul",
+    "__bid64_negate",
+    "__bid64_quiet_equal",
+    "__bid64_quiet_greater",
+    "__bid64_quiet_greater_equal",
+    "__bid64_quiet_greater_unordered",
+    "__bid64_quiet_less",
+    "__bid64_quiet_less_equal",
+    "__bid64_quiet_less_unordered",
+    "__bid64_quiet_not_equal",
+    "__bid64_quiet_not_greater",
+    "__bid64_quiet_not_less",
+    "__bid64_quiet_ordered",
+    "__bid64_quiet_unordered",
+    "__bid64_radix",
+    "__bid64_sameQuantum",
+    "__bid64_signaling_greater",
+    "__bid64_signaling_greater_equal",
+    "__bid64_signaling_greater_unordered",
+    "__bid64_signaling_less",
+    "__bid64_signaling_less_equal",
+    "__bid64_signaling_less_unordered",
+    "__bid64_signaling_not_greater",
+    "__bid64_signaling_not_less",
+    "__bid64_sub",
+    "__bid64_to_bid128",
+    "__bid64_to_bid32",
+    "__bid64_to_binary128",
+    "__bid64_to_binary32",
+    "__bid64_to_binary64",
+    "__bid64_to_binary80",
+    "__bid64_to_int32_ceil",
+    "__bid64_to_int32_floor",
+    "__bid64_to_int32_int",
+    "__bid64_to_int32_rnint",
+    "__bid64_to_int32_rninta",
+    "__bid64_to_int32_xceil",
+    "__bid64_to_int32_xfloor",
+    "__bid64_to_int32_xint",
+    "__bid64_to_int32_xrnint",
+    "__bid64_to_int32_xrninta",
+    "__bid64_to_int64_ceil",
+    "__bid64_to_int64_floor",
+    "__bid64_to_int64_int",
+    "__bid64_to_int64_rnint",
+    "__bid64_to_int64_rninta",
+    "__bid64_to_int64_xceil",
+    "__bid64_to_int64_xfloor",
+    "__bid64_to_int64_xint",
+    "__bid64_to_int64_xrnint",
+    "__bid64_to_int64_xrninta",
+    "__bid64_to_uint32_ceil",
+    "__bid64_to_uint32_floor",
+    "__bid64_to_uint32_int",
+    "__bid64_to_uint32_rnint",
+    "__bid64_to_uint32_rninta",
+    "__bid64_to_uint32_xceil",
+    "__bid64_to_uint32_xfloor",
+    "__bid64_to_uint32_xint",
+    "__bid64_to_uint32_xrnint",
+    "__bid64_to_uint32_xrninta",
+    "__bid64_to_uint64_ceil",
+    "__bid64_to_uint64_floor",
+    "__bid64_to_uint64_int",
+    "__bid64_to_uint64_rnint",
+    "__bid64_to_uint64_rninta",
+    "__bid64_to_uint64_xceil",
+    "__bid64_to_uint64_xfloor",
+    "__bid64_to_uint64_xint",
+    "__bid64_to_uint64_xrnint",
+    "__bid64_to_uint64_xrninta",
+    "__bid64_totalOrder",
+    "__bid64_totalOrderMag",
+    "__bid64ddq_fma",
+    "__bid64dq_add",
+    "__bid64dq_div",
+    "__bid64dq_mul",
+    "__bid64dq_sub",
+    "__bid64dqd_fma",
+    "__bid64dqq_fma",
+    "__bid64qd_add",
+    "__bid64qd_div",
+    "__bid64qd_mul",
+    "__bid64qd_sub",
+    "__bid64qdd_fma",
+    "__bid64qdq_fma",
+    "__bid64qq_add",
+    "__bid64qq_div",
+    "__bid64qq_mul",
+    "__bid64qq_sub",
+    "__bid64qqd_fma",
+    "__bid64qqq_fma",
+    "__bid_Ex128m128",
+    "__bid_Ex192m192",
+    "__bid_Ex256m256",
+    "__bid_Ex64m64",
+    "__bid_IDEC_glbflags",
+    "__bid_IDEC_glbround",
+    "__bid_Kx128",
+    "__bid_Kx192",
+    "__bid_Kx256",
+    "__bid_Kx64",
+    "__bid_adddd3",
+    "__bid_addsd3",
+    "__bid_addtd3",
+    "__bid_char_table2",
+    "__bid_char_table3",
+    "__bid_convert_table",
+    "__bid_divdd3",
+    "__bid_divsd3",
+    "__bid_divtd3",
+    "__bid_eqdd2",
+    "__bid_eqsd2",
+    "__bid_eqtd2",
+    "__bid_estimate_bin_expon",
+    "__bid_estimate_decimal_digits",
+    "__bid_extendddtd2",
+    "__bid_extendddtf",
+    "__bid_extendddxf",
+    "__bid_extenddfdd",
+    "__bid_extenddftd",
+    "__bid_extendsddd2",
+    "__bid_extendsddf",
+    "__bid_extendsdtd2",
+    "__bid_extendsdtf",
+    "__bid_extendsdxf",
+    "__bid_extendsfdd",
+    "__bid_extendsfsd",
+    "__bid_extendsftd",
+    "__bid_extendtftd",
+    "__bid_extendxftd",
+    "__bid_factors",
+    "__bid_fixdddi",
+    "__bid_fixddsi",
+    "__bid_fixsddi",
+    "__bid_fixsdsi",
+    "__bid_fixtddi",
+    "__bid_fixtdsi",
+    "__bid_fixunsdddi",
+    "__bid_fixunsddsi",
+    "__bid_fixunssddi",
+    "__bid_fixunssdsi",
+    "__bid_fixunstddi",
+    "__bid_fixunstdsi",
+    "__bid_floatdidd",
+    "__bid_floatdisd",
+    "__bid_floatditd",
+    "__bid_floatsidd",
+    "__bid_floatsisd",
+    "__bid_floatsitd",
+    "__bid_floatunsdidd",
+    "__bid_floatunsdisd",
+    "__bid_floatunsditd",
+    "__bid_floatunssidd",
+    "__bid_floatunssisd",
+    "__bid_floatunssitd",
+    "__bid_gedd2",
+    "__bid_gesd2",
+    "__bid_getd2",
+    "__bid_gtdd2",
+    "__bid_gtsd2",
+    "__bid_gttd2",
+    "__bid_half128",
+    "__bid_half192",
+    "__bid_half256",
+    "__bid_half64",
+    "__bid_ledd2",
+    "__bid_lesd2",
+    "__bid_letd2",
+    "__bid_ltdd2",
+    "__bid_ltsd2",
+    "__bid_lttd2",
+    "__bid_mask128",
+    "__bid_mask192",
+    "__bid_mask256",
+    "__bid_mask64",
+    "__bid_maskhigh128",
+    "__bid_maskhigh128M",
+    "__bid_maskhigh192M",
+    "__bid_maskhigh256M",
+    "__bid_midpoint128",
+    "__bid_midpoint192",
+    "__bid_midpoint256",
+    "__bid_midpoint64",
+    "__bid_muldd3",
+    "__bid_mulsd3",
+    "__bid_multd3",
+    "__bid_nedd2",
+    "__bid_nesd2",
+    "__bid_netd2",
+    "__bid_nr_digits",
+    "__bid_onehalf128",
+    "__bid_onehalf128M",
+    "__bid_onehalf192M",
+    "__bid_onehalf256M",
+    "__bid_packed_10000_zeros",
+    "__bid_power10_index_binexp",
+    "__bid_power10_index_binexp_128",
+    "__bid_power10_table_128",
+    "__bid_recip_scale",
+    "__bid_reciprocals10_128",
+    "__bid_reciprocals10_64",
+    "__bid_round128_19_38",
+    "__bid_round192_39_57",
+    "__bid_round256_58_76",
+    "__bid_round64_2_18",
+    "__bid_round_const_table",
+    "__bid_round_const_table_128",
+    "__bid_shift_ten2m3k128",
+    "__bid_shift_ten2m3k64",
+    "__bid_shiftright128",
+    "__bid_shiftright128M",
+    "__bid_shiftright192M",
+    "__bid_shiftright256M",
+    "__bid_short_recip_scale",
+    "__bid_subdd3",
+    "__bid_subsd3",
+    "__bid_subtd3",
+    "__bid_ten2k128",
+    "__bid_ten2k256",
+    "__bid_ten2k64",
+    "__bid_ten2m3k128",
+    "__bid_ten2m3k64",
+    "__bid_ten2mk128",
+    "__bid_ten2mk128M",
+    "__bid_ten2mk128trunc",
+    "__bid_ten2mk128truncM",
+    "__bid_ten2mk192M",
+    "__bid_ten2mk192truncM",
+    "__bid_ten2mk256M",
+    "__bid_ten2mk256truncM",
+    "__bid_ten2mk64",
+    "__bid_ten2mxtrunc128",
+    "__bid_ten2mxtrunc192",
+    "__bid_ten2mxtrunc256",
+    "__bid_ten2mxtrunc64",
+    "__bid_truncdddf",
+    "__bid_truncddsd2",
+    "__bid_truncddsf",
+    "__bid_truncdfsd",
+    "__bid_truncsdsf",
+    "__bid_trunctddd2",
+    "__bid_trunctddf",
+    "__bid_trunctdsd2",
+    "__bid_trunctdsf",
+    "__bid_trunctdtf",
+    "__bid_trunctdxf",
+    "__bid_trunctfdd",
+    "__bid_trunctfsd",
+    "__bid_truncxfdd",
+    "__bid_truncxfsd",
+    "__bid_unorddd2",
+    "__bid_unordsd2",
+    "__bid_unordtd2",
+    "__binary128_to_bid128",
+    "__binary128_to_bid32",
+    "__binary128_to_bid64",
+    "__binary32_to_bid128",
+    "__binary32_to_bid32",
+    "__binary32_to_bid64",
+    "__binary64_to_bid128",
+    "__binary64_to_bid32",
+    "__binary64_to_bid64",
+    "__binary80_to_bid128",
+    "__binary80_to_bid32",
+    "__binary80_to_bid64",
+    "__bswapdi2",
+    "__bswapsi2",
+    "__clear_cache",
+    "__clrsbdi2",
+    "__clrsbti2",
+    "__clz_tab",
+    "__clzdi2",
+    "__clzti2",
+    "__cmpti2",
+    "__cpu_features2",
+    "__cpu_indicator_init",
+    "__cpu_model",
+    "__ctzdi2",
+    "__ctzti2",
+    "__dfp_clear_except",
+    "__dfp_get_round",
+    "__dfp_raise_except",
+    "__dfp_set_round",
+    "__dfp_test_except",
+    "__div_128_by_128",
+    "__div_256_by_128",
+    "__divdc3",
+    "__divmodti4",
+    "__divsc3",
+    "__divtc3",
+    "__divtf3",
+    "__divti3",
+    "__divxc3",
+    "__enable_execute_stack",
+    "__eprintf",
+    "__eqtf2",
+    "__extenddftf2",
+    "__extendsftf2",
+    "__extendxftf2",
+    "__ffsdi2",
+    "__ffsti2",
+    "__fixdfti",
+    "__fixsfti",
+    "__fixtfdi",
+    "__fixtfsi",
+    "__fixtfti",
+    "__fixunsdfdi",
+    "__fixunsdfti",
+    "__fixunssfdi",
+    "__fixunssfti",
+    "__fixunstfdi",
+    "__fixunstfsi",
+    "__fixunstfti",
+    "__fixunsxfdi",
+    "__fixunsxfti",
+    "__fixxfti",
+    "__floatditf",
+    "__floatsitf",
+    "__floattidf",
+    "__floattisf",
+    "__floattitf",
+    "__floattixf",
+    "__floatunditf",
+    "__floatunsitf",
+    "__floatuntidf",
+    "__floatuntisf",
+    "__floatuntitf",
+    "__floatuntixf",
+    "__gcc_bcmp",
+    "__generic_findstack",
+    "__generic_morestack",
+    "__generic_morestack_set_initial_sp",
+    "__generic_releasestack",
+    "__getf2",
+    "__gttf2",
+    "__letf2",
+    "__lshrti3",
+    "__lttf2",
+    "__modti3",
+    "__morestack",
+    "__morestack_allocate_stack_space",
+    "__morestack_allocate_stack_space.cold",
+    "__morestack_block_signals",
+    "__morestack_current_segment",
+    "__morestack_fail",
+    "__morestack_fullmask",
+    "__morestack_get_guard",
+    "__morestack_initial_sp",
+    "__morestack_large_model",
+    "__morestack_load_mmap",
+    "__morestack_make_guard",
+    "__morestack_non_split",
+    "__morestack_release_segments",
+    "__morestack_segments",
+    "__morestack_set_guard",
+    "__morestack_unblock_signals",
+    "__muldc3",
+    "__mulsc3",
+    "__multc3",
+    "__multf3",
+    "__multi3",
+    "__mulvdi3",
+    "__mulvdi3.cold",
+    "__mulvsi3",
+    "__mulvsi3.cold",
+    "__mulvti3",
+    "__mulvti3.cold",
+    "__mulxc3",
+    "__negtf2",
+    "__negti2",
+    "__negvdi2",
+    "__negvdi2.cold",
+    "__negvsi2",
+    "__negvsi2.cold",
+    "__negvti2",
+    "__negvti2.cold",
+    "__netf2",
+    "__paritydi2",
+    "__parityti2",
+    "__popcount_tab",
+    "__popcountdi2",
+    "__popcountti2",
+    "__powidf2",
+    "__powisf2",
+    "__powitf2",
+    "__powixf2",
+    "__real_pthread_create",
+    "__sfp_handle_exceptions",
+    "__splitstack_block_signals",
+    "__splitstack_block_signals_context",
+    "__splitstack_find",
+    "__splitstack_find_context",
+    "__splitstack_getcontext",
+    "__splitstack_makecontext",
+    "__splitstack_releasecontext",
+    "__splitstack_resetcontext",
+    "__splitstack_setcontext",
+    "__sse_resms64_12",
+    "__sse_resms64_13",
+    "__sse_resms64_14",
+    "__sse_resms64_15",
+    "__sse_resms64_16",
+    "__sse_resms64_17",
+    "__sse_resms64_18",
+    "__sse_resms64f_12",
+    "__sse_resms64f_13",
+    "__sse_resms64f_14",
+    "__sse_resms64f_15",
+    "__sse_resms64f_16",
+    "__sse_resms64f_17",
+    "__sse_resms64fx_12",
+    "__sse_resms64fx_13",
+    "__sse_resms64fx_14",
+    "__sse_resms64fx_15",
+    "__sse_resms64fx_16",
+    "__sse_resms64fx_17",
+    "__sse_resms64x_12",
+    "__sse_resms64x_13",
+    "__sse_resms64x_14",
+    "__sse_resms64x_15",
+    "__sse_resms64x_16",
+    "__sse_resms64x_17",
+    "__sse_resms64x_18",
+    "__sse_savms64_12",
+    "__sse_savms64_13",
+    "__sse_savms64_14",
+    "__sse_savms64_15",
+    "__sse_savms64_16",
+    "__sse_savms64_17",
+    "__sse_savms64_18",
+    "__sse_savms64f_12",
+    "__sse_savms64f_13",
+    "__sse_savms64f_14",
+    "__sse_savms64f_15",
+    "__sse_savms64f_16",
+    "__sse_savms64f_17",
+    "__stack_split_initialize",
+    "__subtf3",
+    "__subvdi3",
+    "__subvdi3.cold",
+    "__subvsi3",
+    "__subvsi3.cold",
+    "__subvti3",
+    "__subvti3.cold",
+    "__trunctfdf2",
+    "__trunctfsf2",
+    "__trunctfxf2",
+    "__ucmpti2",
+    "__udiv_w_sdiv",
+    "__udivmodti4",
+    "__udivti3",
+    "__umodti3",
+    "__unordtf2",
+    "__wrap_pthread_create",
+    "add_and_round.constprop.0",
+    "bid128_ext_fma",
+    "breakpoints_bid32",
+    "breakpoints_bid64",
+    "breakpoints_binary128",
+    "breakpoints_binary32",
+    "breakpoints_binary64",
+    "breakpoints_binary80",
+    "coefflimits_bid128",
+    "coefflimits_bid32",
+    "coefflimits_bid64",
+    "create_key",
+    "create_key_once",
+    "exponents_bid32",
+    "exponents_bid64",
+    "exponents_binary128",
+    "exponents_binary32",
+    "exponents_binary64",
+    "exponents_binary80",
+    "free_segments",
+    "get_BID64.constprop.0",
+    "get_BID64_UF.part.0.constprop.0",
+    "get_available_features",
+    "handle_UF_128.constprop.0.isra.0",
+    "handle_UF_128_rem.constprop.0.isra.0",
+    "innertable_exp",
+    "innertable_sig",
+    "isinfd128",
+    "isinfd32",
+    "isinfd64",
+    "msg.0",
+    "msg.1",
+    "msg.2",
+    "mult_factor",
+    "multipliers1_bid32",
+    "multipliers1_bid64",
+    "multipliers1_binary128",
+    "multipliers1_binary32",
+    "multipliers1_binary64",
+    "multipliers1_binary80",
+    "multipliers2_bid32",
+    "multipliers2_bid64",
+    "multipliers2_binary128",
+    "multipliers2_binary32",
+    "multipliers2_binary64",
+    "multipliers2_binary80",
+    "nl.2",
+    "nr_digits256",
+    "outertable_exp",
+    "outertable_sig",
+    "power_five",
+    "pthread_key_create",
+    "pthread_once",
+    "pthread_setspecific",
+    "pthread_sigmask",
+    "roundbound_128",
+    "rounding_correction.constprop.0",
+    "segment_list_key",
+    "stack_split_initialize_thread",
+    "static_pagesize",
+    "sub256",
+    "use_guard_page"
   ],
   "externs": [
     {

@@ -1,600 +1,204 @@
 {
   "name": "libc_nonshared.a",
   "symbols": [
-    {
-      "name": ".LC0"
-    },
-    {
-      "name": ".LC1"
-    },
-    {
-      "name": ".LC10"
-    },
-    {
-      "name": ".LC11"
-    },
-    {
-      "name": ".LC12"
-    },
-    {
-      "name": ".LC13"
-    },
-    {
-      "name": ".LC14"
-    },
-    {
-      "name": ".LC15"
-    },
-    {
-      "name": ".LC16"
-    },
-    {
-      "name": ".LC17"
-    },
-    {
-      "name": ".LC18"
-    },
-    {
-      "name": ".LC19"
-    },
-    {
-      "name": ".LC2"
-    },
-    {
-      "name": ".LC20"
-    },
-    {
-      "name": ".LC21"
-    },
-    {
-      "name": ".LC22"
-    },
-    {
-      "name": ".LC23"
-    },
-    {
-      "name": ".LC24"
-    },
-    {
-      "name": ".LC25"
-    },
-    {
-      "name": ".LC26"
-    },
-    {
-      "name": ".LC27"
-    },
-    {
-      "name": ".LC28"
-    },
-    {
-      "name": ".LC29"
-    },
-    {
-      "name": ".LC3"
-    },
-    {
-      "name": ".LC30"
-    },
-    {
-      "name": ".LC31"
-    },
-    {
-      "name": ".LC32"
-    },
-    {
-      "name": ".LC33"
-    },
-    {
-      "name": ".LC34"
-    },
-    {
-      "name": ".LC35"
-    },
-    {
-      "name": ".LC36"
-    },
-    {
-      "name": ".LC37"
-    },
-    {
-      "name": ".LC38"
-    },
-    {
-      "name": ".LC39"
-    },
-    {
-      "name": ".LC4"
-    },
-    {
-      "name": ".LC40"
-    },
-    {
-      "name": ".LC41"
-    },
-    {
-      "name": ".LC42"
-    },
-    {
-      "name": ".LC43"
-    },
-    {
-      "name": ".LC44"
-    },
-    {
-      "name": ".LC5"
-    },
-    {
-      "name": ".LC6"
-    },
-    {
-      "name": ".LC7"
-    },
-    {
-      "name": ".LC8"
-    },
-    {
-      "name": ".LC9"
-    },
-    {
-      "name": "Base64"
-    },
-    {
-      "name": "__PRETTY_FUNCTION__.0"
-    },
-    {
-      "name": "__PRETTY_FUNCTION__.1"
-    },
-    {
-      "name": "__PRETTY_FUNCTION__.3"
-    },
-    {
-      "name": "__b64_ntop"
-    },
-    {
-      "name": "__b64_pton"
-    },
-    {
-      "name": "__dn_comp"
-    },
-    {
-      "name": "__dn_count_labels"
-    },
-    {
-      "name": "__dn_expand"
-    },
-    {
-      "name": "__dn_skipname"
-    },
-    {
-      "name": "__fp_nquery"
-    },
-    {
-      "name": "__fp_query"
-    },
-    {
-      "name": "__fp_resstat"
-    },
-    {
-      "name": "__hostalias"
-    },
-    {
-      "name": "__libc_csu_fini"
-    },
-    {
-      "name": "__libc_csu_init"
-    },
-    {
-      "name": "__loc_aton"
-    },
-    {
-      "name": "__loc_ntoa"
-    },
-    {
-      "name": "__ns_get16"
-    },
-    {
-      "name": "__ns_get32"
-    },
-    {
-      "name": "__ns_name_ntop"
-    },
-    {
-      "name": "__ns_name_unpack"
-    },
-    {
-      "name": "__p_cdname"
-    },
-    {
-      "name": "__p_cdnname"
-    },
-    {
-      "name": "__p_class"
-    },
-    {
-      "name": "__p_class_syms"
-    },
-    {
-      "name": "__p_default_section_syms"
-    },
-    {
-      "name": "__p_fqname"
-    },
-    {
-      "name": "__p_fqnname"
-    },
-    {
-      "name": "__p_option"
-    },
-    {
-      "name": "__p_query"
-    },
-    {
-      "name": "__p_rcode"
-    },
-    {
-      "name": "__p_rcode_syms"
-    },
-    {
-      "name": "__p_time"
-    },
-    {
-      "name": "__p_type"
-    },
-    {
-      "name": "__p_type_syms"
-    },
-    {
-      "name": "__p_update_section_syms"
-    },
-    {
-      "name": "__pthread_atfork"
-    },
-    {
-      "name": "__putlong"
-    },
-    {
-      "name": "__putshort"
-    },
-    {
-      "name": "__res_close"
-    },
-    {
-      "name": "__res_context_hostalias"
-    },
-    {
-      "name": "__res_context_mkquery"
-    },
-    {
-      "name": "__res_context_query"
-    },
-    {
-      "name": "__res_context_querydomain"
-    },
-    {
-      "name": "__res_context_search"
-    },
-    {
-      "name": "__res_context_send"
-    },
-    {
-      "name": "__res_dnok"
-    },
-    {
-      "name": "__res_enable_icmp"
-    },
-    {
-      "name": "__res_hnok"
-    },
-    {
-      "name": "__res_hostalias"
-    },
-    {
-      "name": "__res_isourserver"
-    },
-    {
-      "name": "__res_mailok"
-    },
-    {
-      "name": "__res_mkquery"
-    },
-    {
-      "name": "__res_nameinquery"
-    },
-    {
-      "name": "__res_nmkquery"
-    },
-    {
-      "name": "__res_nopt"
-    },
-    {
-      "name": "__res_nquery"
-    },
-    {
-      "name": "__res_nquerydomain"
-    },
-    {
-      "name": "__res_nsearch"
-    },
-    {
-      "name": "__res_nsend"
-    },
-    {
-      "name": "__res_ownok"
-    },
-    {
-      "name": "__res_queriesmatch"
-    },
-    {
-      "name": "__res_query"
-    },
-    {
-      "name": "__res_querydomain"
-    },
-    {
-      "name": "__res_search"
-    },
-    {
-      "name": "__res_send"
-    },
-    {
-      "name": "__stack_chk_fail_local"
-    },
-    {
-      "name": "__sym_ntop"
-    },
-    {
-      "name": "__sym_ntos"
-    },
-    {
-      "name": "__sym_ston"
-    },
-    {
-      "name": "_getlong"
-    },
-    {
-      "name": "_getshort"
-    },
-    {
-      "name": "_ns_flagdata"
-    },
-    {
-      "name": "_nss_dns_getcanonname_r"
-    },
-    {
-      "name": "_nss_dns_gethostbyaddr2_r"
-    },
-    {
-      "name": "_nss_dns_gethostbyaddr_r"
-    },
-    {
-      "name": "_nss_dns_gethostbyname2_r"
-    },
-    {
-      "name": "_nss_dns_gethostbyname3_r"
-    },
-    {
-      "name": "_nss_dns_gethostbyname4_r"
-    },
-    {
-      "name": "_nss_dns_gethostbyname_r"
-    },
-    {
-      "name": "_nss_dns_getnetbyaddr_r"
-    },
-    {
-      "name": "_nss_dns_getnetbyname_r"
-    },
-    {
-      "name": "abuf.0"
-    },
-    {
-      "name": "addlen.part.0"
-    },
-    {
-      "name": "addname"
-    },
-    {
-      "name": "addtab"
-    },
-    {
-      "name": "at_quick_exit"
-    },
-    {
-      "name": "atexit"
-    },
-    {
-      "name": "binary_hnok"
-    },
-    {
-      "name": "buflen.7"
-    },
-    {
-      "name": "charstr"
-    },
-    {
-      "name": "days_per_month.0"
-    },
-    {
-      "name": "digits"
-    },
-    {
-      "name": "do_section"
-    },
-    {
-      "name": "error.1"
-    },
-    {
-      "name": "gaih_getanswer_slice.constprop.0"
-    },
-    {
-      "name": "getanswer_r"
-    },
-    {
-      "name": "getanswer_r.constprop.0"
-    },
-    {
-      "name": "getanswer_r.constprop.0.cold"
-    },
-    {
-      "name": "gethostbyname3_context"
-    },
-    {
-      "name": "global_offset.2"
-    },
-    {
-      "name": "inet_net_ntop"
-    },
-    {
-      "name": "inet_net_pton"
-    },
-    {
-      "name": "inet_neta"
-    },
-    {
-      "name": "latlon2ul"
-    },
-    {
-      "name": "mapped.3"
-    },
-    {
-      "name": "nbuf.3"
-    },
-    {
-      "name": "nbuf.4"
-    },
-    {
-      "name": "nibblechar.0"
-    },
-    {
-      "name": "ns_datetosecs"
-    },
-    {
-      "name": "ns_format_ttl"
-    },
-    {
-      "name": "ns_get16"
-    },
-    {
-      "name": "ns_get32"
-    },
-    {
-      "name": "ns_initparse"
-    },
-    {
-      "name": "ns_makecanon"
-    },
-    {
-      "name": "ns_msg_getflag"
-    },
-    {
-      "name": "ns_name_compress"
-    },
-    {
-      "name": "ns_name_ntol"
-    },
-    {
-      "name": "ns_name_ntop"
-    },
-    {
-      "name": "ns_name_pack"
-    },
-    {
-      "name": "ns_name_pton"
-    },
-    {
-      "name": "ns_name_rollback"
-    },
-    {
-      "name": "ns_name_skip"
-    },
-    {
-      "name": "ns_name_uncompress"
-    },
-    {
-      "name": "ns_name_unpack"
-    },
-    {
-      "name": "ns_parse_ttl"
-    },
-    {
-      "name": "ns_parserr"
-    },
-    {
-      "name": "ns_put16"
-    },
-    {
-      "name": "ns_put32"
-    },
-    {
-      "name": "ns_samedomain"
-    },
-    {
-      "name": "ns_samename"
-    },
-    {
-      "name": "ns_skiprr"
-    },
-    {
-      "name": "ns_sprintrr"
-    },
-    {
-      "name": "ns_sprintrrf"
-    },
-    {
-      "name": "ns_subdomain"
-    },
-    {
-      "name": "poweroften"
-    },
-    {
-      "name": "precsize_aton"
-    },
-    {
-      "name": "prune_origin"
-    },
-    {
-      "name": "pthread_atfork"
-    },
-    {
-      "name": "reopen"
-    },
-    {
-      "name": "res_opcodes"
-    },
-    {
-      "name": "res_ourserver_p"
-    },
-    {
-      "name": "retbuf.0"
-    },
-    {
-      "name": "send_dg"
-    },
-    {
-      "name": "send_dg.cold"
-    },
-    {
-      "name": "send_vc"
-    },
-    {
-      "name": "sock_eq"
-    },
-    {
-      "name": "tmpbuf.2"
-    },
-    {
-      "name": "tunnelled.2"
-    },
-    {
-      "name": "unname.5"
-    },
-    {
-      "name": "unname.6"
-    },
-    {
-      "name": "xdigits.1"
-    }
+    ".LC0",
+    ".LC1",
+    ".LC10",
+    ".LC11",
+    ".LC12",
+    ".LC13",
+    ".LC14",
+    ".LC15",
+    ".LC16",
+    ".LC17",
+    ".LC18",
+    ".LC19",
+    ".LC2",
+    ".LC20",
+    ".LC21",
+    ".LC22",
+    ".LC23",
+    ".LC24",
+    ".LC25",
+    ".LC26",
+    ".LC27",
+    ".LC28",
+    ".LC29",
+    ".LC3",
+    ".LC30",
+    ".LC31",
+    ".LC32",
+    ".LC33",
+    ".LC34",
+    ".LC35",
+    ".LC36",
+    ".LC37",
+    ".LC38",
+    ".LC39",
+    ".LC4",
+    ".LC40",
+    ".LC41",
+    ".LC42",
+    ".LC43",
+    ".LC44",
+    ".LC5",
+    ".LC6",
+    ".LC7",
+    ".LC8",
+    ".LC9",
+    "Base64",
+    "__PRETTY_FUNCTION__.0",
+    "__PRETTY_FUNCTION__.1",
+    "__PRETTY_FUNCTION__.3",
+    "__b64_ntop",
+    "__b64_pton",
+    "__dn_comp",
+    "__dn_count_labels",
+    "__dn_expand",
+    "__dn_skipname",
+    "__fp_nquery",
+    "__fp_query",
+    "__fp_resstat",
+    "__hostalias",
+    "__libc_csu_fini",
+    "__libc_csu_init",
+    "__loc_aton",
+    "__loc_ntoa",
+    "__ns_get16",
+    "__ns_get32",
+    "__ns_name_ntop",
+    "__ns_name_unpack",
+    "__p_cdname",
+    "__p_cdnname",
+    "__p_class",
+    "__p_class_syms",
+    "__p_default_section_syms",
+    "__p_fqname",
+    "__p_fqnname",
+    "__p_option",
+    "__p_query",
+    "__p_rcode",
+    "__p_rcode_syms",
+    "__p_time",
+    "__p_type",
+    "__p_type_syms",
+    "__p_update_section_syms",
+    "__pthread_atfork",
+    "__putlong",
+    "__putshort",
+    "__res_close",
+    "__res_context_hostalias",
+    "__res_context_mkquery",
+    "__res_context_query",
+    "__res_context_querydomain",
+    "__res_context_search",
+    "__res_context_send",
+    "__res_dnok",
+    "__res_enable_icmp",
+    "__res_hnok",
+    "__res_hostalias",
+    "__res_isourserver",
+    "__res_mailok",
+    "__res_mkquery",
+    "__res_nameinquery",
+    "__res_nmkquery",
+    "__res_nopt",
+    "__res_nquery",
+    "__res_nquerydomain",
+    "__res_nsearch",
+    "__res_nsend",
+    "__res_ownok",
+    "__res_queriesmatch",
+    "__res_query",
+    "__res_querydomain",
+    "__res_search",
+    "__res_send",
+    "__stack_chk_fail_local",
+    "__sym_ntop",
+    "__sym_ntos",
+    "__sym_ston",
+    "_getlong",
+    "_getshort",
+    "_ns_flagdata",
+    "_nss_dns_getcanonname_r",
+    "_nss_dns_gethostbyaddr2_r",
+    "_nss_dns_gethostbyaddr_r",
+    "_nss_dns_gethostbyname2_r",
+    "_nss_dns_gethostbyname3_r",
+    "_nss_dns_gethostbyname4_r",
+    "_nss_dns_gethostbyname_r",
+    "_nss_dns_getnetbyaddr_r",
+    "_nss_dns_getnetbyname_r",
+    "abuf.0",
+    "addlen.part.0",
+    "addname",
+    "addtab",
+    "at_quick_exit",
+    "atexit",
+    "binary_hnok",
+    "buflen.7",
+    "charstr",
+    "days_per_month.0",
+    "digits",
+    "do_section",
+    "error.1",
+    "gaih_getanswer_slice.constprop.0",
+    "getanswer_r",
+    "getanswer_r.constprop.0",
+    "getanswer_r.constprop.0.cold",
+    "gethostbyname3_context",
+    "global_offset.2",
+    "inet_net_ntop",
+    "inet_net_pton",
+    "inet_neta",
+    "latlon2ul",
+    "mapped.3",
+    "nbuf.3",
+    "nbuf.4",
+    "nibblechar.0",
+    "ns_datetosecs",
+    "ns_format_ttl",
+    "ns_get16",
+    "ns_get32",
+    "ns_initparse",
+    "ns_makecanon",
+    "ns_msg_getflag",
+    "ns_name_compress",
+    "ns_name_ntol",
+    "ns_name_ntop",
+    "ns_name_pack",
+    "ns_name_pton",
+    "ns_name_rollback",
+    "ns_name_skip",
+    "ns_name_uncompress",
+    "ns_name_unpack",
+    "ns_parse_ttl",
+    "ns_parserr",
+    "ns_put16",
+    "ns_put32",
+    "ns_samedomain",
+    "ns_samename",
+    "ns_skiprr",
+    "ns_sprintrr",
+    "ns_sprintrrf",
+    "ns_subdomain",
+    "poweroften",
+    "precsize_aton",
+    "prune_origin",
+    "pthread_atfork",
+    "reopen",
+    "res_opcodes",
+    "res_ourserver_p",
+    "retbuf.0",
+    "send_dg",
+    "send_dg.cold",
+    "send_vc",
+    "sock_eq",
+    "tmpbuf.2",
+    "tunnelled.2",
+    "unname.5",
+    "unname.6",
+    "xdigits.1"
   ],
   "externs": [
     {

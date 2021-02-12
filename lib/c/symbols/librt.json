@@ -1,315 +1,109 @@
 {
   "name": "librt.a",
   "symbols": [
-    {
-      "name": ".LC0"
-    },
-    {
-      "name": ".LC1"
-    },
-    {
-      "name": ".LC2"
-    },
-    {
-      "name": ".LC3"
-    },
-    {
-      "name": "DW.ref.__gcc_personality_v0"
-    },
-    {
-      "name": "__PRETTY_FUNCTION__.0"
-    },
-    {
-      "name": "__PRETTY_FUNCTION__.1"
-    },
-    {
-      "name": "__PRETTY_FUNCTION__.2"
-    },
-    {
-      "name": "__active_timer_sigev_thread"
-    },
-    {
-      "name": "__active_timer_sigev_thread_lock"
-    },
-    {
-      "name": "__aio_enqueue_request"
-    },
-    {
-      "name": "__aio_find_req"
-    },
-    {
-      "name": "__aio_find_req_fd"
-    },
-    {
-      "name": "__aio_free_request"
-    },
-    {
-      "name": "__aio_init"
-    },
-    {
-      "name": "__aio_new_request_notification"
-    },
-    {
-      "name": "__aio_notify"
-    },
-    {
-      "name": "__aio_notify_only"
-    },
-    {
-      "name": "__aio_remove_request"
-    },
-    {
-      "name": "__aio_remove_request.part.0"
-    },
-    {
-      "name": "__aio_requests_mutex"
-    },
-    {
-      "name": "__aio_sigqueue"
-    },
-    {
-      "name": "__aio_suspend"
-    },
-    {
-      "name": "__aio_suspend.cold"
-    },
-    {
-      "name": "__elf_set___libc_subfreeres_element_free_res__"
-    },
-    {
-      "name": "__helper_once"
-    },
-    {
-      "name": "__helper_tid"
-    },
-    {
-      "name": "__librt_disable_asynccancel"
-    },
-    {
-      "name": "__librt_enable_asynccancel"
-    },
-    {
-      "name": "__lio_listio64_item_notify"
-    },
-    {
-      "name": "__lio_listio_item_notify"
-    },
-    {
-      "name": "__mq_open"
-    },
-    {
-      "name": "__mq_open_2"
-    },
-    {
-      "name": "__mq_timedreceive"
-    },
-    {
-      "name": "__mq_timedsend"
-    },
-    {
-      "name": "__pthread_unwind"
-    },
-    {
-      "name": "__start_helper_thread"
-    },
-    {
-      "name": "__timer_create_new"
-    },
-    {
-      "name": "__timer_delete_new"
-    },
-    {
-      "name": "__timer_getoverrun_new"
-    },
-    {
-      "name": "__timer_gettime_new"
-    },
-    {
-      "name": "__timer_settime_new"
-    },
-    {
-      "name": "add_request_to_runlist"
-    },
-    {
-      "name": "added_atfork.0"
-    },
-    {
-      "name": "aio_cancel"
-    },
-    {
-      "name": "aio_cancel64"
-    },
-    {
-      "name": "aio_error"
-    },
-    {
-      "name": "aio_error64"
-    },
-    {
-      "name": "aio_fsync"
-    },
-    {
-      "name": "aio_fsync64"
-    },
-    {
-      "name": "aio_init"
-    },
-    {
-      "name": "aio_read"
-    },
-    {
-      "name": "aio_read64"
-    },
-    {
-      "name": "aio_return"
-    },
-    {
-      "name": "aio_return64"
-    },
-    {
-      "name": "aio_suspend"
-    },
-    {
-      "name": "aio_suspend64"
-    },
-    {
-      "name": "aio_write"
-    },
-    {
-      "name": "aio_write64"
-    },
-    {
-      "name": "change_sigmask"
-    },
-    {
-      "name": "do_aio_misc_wait"
-    },
-    {
-      "name": "free_res"
-    },
-    {
-      "name": "freelist"
-    },
-    {
-      "name": "handle_fildes_io"
-    },
-    {
-      "name": "helper_thread"
-    },
-    {
-      "name": "idle_thread_count"
-    },
-    {
-      "name": "init_mq_netlink"
-    },
-    {
-      "name": "lio_listio"
-    },
-    {
-      "name": "lio_listio64"
-    },
-    {
-      "name": "mq_close"
-    },
-    {
-      "name": "mq_getattr"
-    },
-    {
-      "name": "mq_notify"
-    },
-    {
-      "name": "mq_open"
-    },
-    {
-      "name": "mq_receive"
-    },
-    {
-      "name": "mq_send"
-    },
-    {
-      "name": "mq_setattr"
-    },
-    {
-      "name": "mq_timedreceive"
-    },
-    {
-      "name": "mq_timedsend"
-    },
-    {
-      "name": "mq_unlink"
-    },
-    {
-      "name": "netlink_socket"
-    },
-    {
-      "name": "notification_function"
-    },
-    {
-      "name": "notify_barrier"
-    },
-    {
-      "name": "notify_func_wrapper"
-    },
-    {
-      "name": "nthreads"
-    },
-    {
-      "name": "once"
-    },
-    {
-      "name": "optim"
-    },
-    {
-      "name": "pool"
-    },
-    {
-      "name": "pool_max_size"
-    },
-    {
-      "name": "pool_size"
-    },
-    {
-      "name": "requests"
-    },
-    {
-      "name": "reset_helper_control"
-    },
-    {
-      "name": "reset_once"
-    },
-    {
-      "name": "runlist"
-    },
-    {
-      "name": "shm_open"
-    },
-    {
-      "name": "shm_unlink"
-    },
-    {
-      "name": "sigtimer_set"
-    },
-    {
-      "name": "timer_create"
-    },
-    {
-      "name": "timer_delete"
-    },
-    {
-      "name": "timer_getoverrun"
-    },
-    {
-      "name": "timer_gettime"
-    },
-    {
-      "name": "timer_helper_thread"
-    },
-    {
-      "name": "timer_settime"
-    },
-    {
-      "name": "timer_sigev_thread"
-    }
+    ".LC0",
+    ".LC1",
+    ".LC2",
+    ".LC3",
+    "DW.ref.__gcc_personality_v0",
+    "__PRETTY_FUNCTION__.0",
+    "__PRETTY_FUNCTION__.1",
+    "__PRETTY_FUNCTION__.2",
+    "__active_timer_sigev_thread",
+    "__active_timer_sigev_thread_lock",
+    "__aio_enqueue_request",
+    "__aio_find_req",
+    "__aio_find_req_fd",
+    "__aio_free_request",
+    "__aio_init",
+    "__aio_new_request_notification",
+    "__aio_notify",
+    "__aio_notify_only",
+    "__aio_remove_request",
+    "__aio_remove_request.part.0",
+    "__aio_requests_mutex",
+    "__aio_sigqueue",
+    "__aio_suspend",
+    "__aio_suspend.cold",
+    "__elf_set___libc_subfreeres_element_free_res__",
+    "__helper_once",
+    "__helper_tid",
+    "__librt_disable_asynccancel",
+    "__librt_enable_asynccancel",
+    "__lio_listio64_item_notify",
+    "__lio_listio_item_notify",
+    "__mq_open",
+    "__mq_open_2",
+    "__mq_timedreceive",
+    "__mq_timedsend",
+    "__pthread_unwind",
+    "__start_helper_thread",
+    "__timer_create_new",
+    "__timer_delete_new",
+    "__timer_getoverrun_new",
+    "__timer_gettime_new",
+    "__timer_settime_new",
+    "add_request_to_runlist",
+    "added_atfork.0",
+    "aio_cancel",
+    "aio_cancel64",
+    "aio_error",
+    "aio_error64",
+    "aio_fsync",
+    "aio_fsync64",
+    "aio_init",
+    "aio_read",
+    "aio_read64",
+    "aio_return",
+    "aio_return64",
+    "aio_suspend",
+    "aio_suspend64",
+    "aio_write",
+    "aio_write64",
+    "change_sigmask",
+    "do_aio_misc_wait",
+    "free_res",
+    "freelist",
+    "handle_fildes_io",
+    "helper_thread",
+    "idle_thread_count",
+    "init_mq_netlink",
+    "lio_listio",
+    "lio_listio64",
+    "mq_close",
+    "mq_getattr",
+    "mq_notify",
+    "mq_open",
+    "mq_receive",
+    "mq_send",
+    "mq_setattr",
+    "mq_timedreceive",
+    "mq_timedsend",
+    "mq_unlink",
+    "netlink_socket",
+    "notification_function",
+    "notify_barrier",
+    "notify_func_wrapper",
+    "nthreads",
+    "once",
+    "optim",
+    "pool",
+    "pool_max_size",
+    "pool_size",
+    "requests",
+    "reset_helper_control",
+    "reset_once",
+    "runlist",
+    "shm_open",
+    "shm_unlink",
+    "sigtimer_set",
+    "timer_create",
+    "timer_delete",
+    "timer_getoverrun",
+    "timer_gettime",
+    "timer_helper_thread",
+    "timer_settime",
+    "timer_sigev_thread"
   ],
   "externs": [
     {

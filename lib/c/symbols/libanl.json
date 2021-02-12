@@ -1,99 +1,37 @@
 {
   "name": "libanl.a",
   "symbols": [
-    {
-      "name": ".LC0"
-    },
-    {
-      "name": ".LC1"
-    },
-    {
-      "name": ".LC2"
-    },
-    {
-      "name": ".LC3"
-    },
-    {
-      "name": "__PRETTY_FUNCTION__.0"
-    },
-    {
-      "name": "__PRETTY_FUNCTION__.1"
-    },
-    {
-      "name": "__PRETTY_FUNCTION__.2"
-    },
-    {
-      "name": "__elf_set___libc_subfreeres_element_free_res__"
-    },
-    {
-      "name": "__gai_enqueue_request"
-    },
-    {
-      "name": "__gai_find_request"
-    },
-    {
-      "name": "__gai_new_request_notification"
-    },
-    {
-      "name": "__gai_notify"
-    },
-    {
-      "name": "__gai_notify_only"
-    },
-    {
-      "name": "__gai_remove_request"
-    },
-    {
-      "name": "__gai_requests_mutex"
-    },
-    {
-      "name": "__gai_suspend"
-    },
-    {
-      "name": "free_res"
-    },
-    {
-      "name": "freelist"
-    },
-    {
-      "name": "gai_cancel"
-    },
-    {
-      "name": "gai_error"
-    },
-    {
-      "name": "gai_suspend"
-    },
-    {
-      "name": "getaddrinfo_a"
-    },
-    {
-      "name": "handle_requests"
-    },
-    {
-      "name": "idle_thread_count"
-    },
-    {
-      "name": "notify_func_wrapper"
-    },
-    {
-      "name": "nthreads"
-    },
-    {
-      "name": "pool"
-    },
-    {
-      "name": "pool_max_size"
-    },
-    {
-      "name": "pool_size"
-    },
-    {
-      "name": "requests"
-    },
-    {
-      "name": "requests_tail"
-    }
+    ".LC0",
+    ".LC1",
+    ".LC2",
+    ".LC3",
+    "__PRETTY_FUNCTION__.0",
+    "__PRETTY_FUNCTION__.1",
+    "__PRETTY_FUNCTION__.2",
+    "__elf_set___libc_subfreeres_element_free_res__",
+    "__gai_enqueue_request",
+    "__gai_find_request",
+    "__gai_new_request_notification",
+    "__gai_notify",
+    "__gai_notify_only",
+    "__gai_remove_request",
+    "__gai_requests_mutex",
+    "__gai_suspend",
+    "free_res",
+    "freelist",
+    "gai_cancel",
+    "gai_error",
+    "gai_suspend",
+    "getaddrinfo_a",
+    "handle_requests",
+    "idle_thread_count",
+    "notify_func_wrapper",
+    "nthreads",
+    "pool",
+    "pool_max_size",
+    "pool_size",
+    "requests",
+    "requests_tail"
   ],
   "externs": [
     {

@@ -1,39 +1,17 @@
 {
   "name": "libutil.a",
   "symbols": [
-    {
-      "name": ".LC0"
-    },
-    {
-      "name": ".LC1"
-    },
-    {
-      "name": ".LC2"
-    },
-    {
-      "name": "forkpty"
-    },
-    {
-      "name": "login"
-    },
-    {
-      "name": "login_tty"
-    },
-    {
-      "name": "logout"
-    },
-    {
-      "name": "logwtmp"
-    },
-    {
-      "name": "openpty"
-    },
-    {
-      "name": "pts_name.constprop.0"
-    },
-    {
-      "name": "tty_name.constprop.0"
-    }
+    ".LC0",
+    ".LC1",
+    ".LC2",
+    "forkpty",
+    "login",
+    "login_tty",
+    "logout",
+    "logwtmp",
+    "openpty",
+    "pts_name.constprop.0",
+    "tty_name.constprop.0"
   ],
   "externs": [
     {

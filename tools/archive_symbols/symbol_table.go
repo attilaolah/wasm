@@ -2,6 +2,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"sort"
 	"strings"
@@ -25,7 +26,10 @@ type SymbolTable struct {
 type SymbolDefs []SymbolDef
 
 // SymbolDef represents a unique symbol definition in an archive.
-type SymbolDef struct {
+type SymbolDef jSymbolDef
+
+// Like SymbolDef, but without the custom JSON decoder.
+type jSymbolDef struct {
 	Objects []string `json:"objects"`
 	Symbol
 }
@@ -96,6 +100,21 @@ func (a *Archive) SymbolTable(typef string) (*SymbolTable, error) {
 func (sd SymbolDefs) Len() int           { return len(sd) }
 func (sd SymbolDefs) Less(i, j int) bool { return strings.Compare(sd[i].Name, sd[j].Name) < 0 }
 func (sd SymbolDefs) Swap(i, j int)      { sd[i], sd[j] = sd[j], sd[i] }
+
+// UnmarshalJSON implements the json.Unmarshaler interface.
+func (sd *SymbolDef) UnmarshalJSON(data []byte) error {
+	j := jSymbolDef{}
+	if err := json.Unmarshal(data, &j); err != nil {
+		s := "" // just the name
+		if json.Unmarshal(data, &s) != nil {
+			return err // keep outer error
+		}
+		sd.Name = s
+		return nil
+	}
+	*sd = SymbolDef(j)
+	return nil
+}
 
 func (s *Symbol) Extern() bool {
 	return unicode.IsUpper(rune(s.Class))

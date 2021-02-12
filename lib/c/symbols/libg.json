@@ -1,9 +1,7 @@
 {
   "name": "libg.a",
   "symbols": [
-    {
-      "name": "__dummy__"
-    }
+    "__dummy__"
   ],
   "externs": null,
   "undefs": null
