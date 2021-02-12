@@ -39,7 +39,7 @@ for archive in "${INSTALL}"/lib/*.a; do
   "${ARCHIVE_SYMBOLS}" \
     -nm "${NM}" \
     -archive "${archive}" \
-    -output "${BUILD_WORKSPACE_DIRECTORY}/lib/c/gnu/$(basename "${archive}" .a).json"
+    -output "${BUILD_WORKSPACE_DIRECTORY}/lib/c/symbols/$(basename "${archive}" .a).json"
 done
 
 # Second pass, using all externs:
@@ -49,19 +49,27 @@ for archive in "${INSTALL}"/lib/*.a; do
     -nm "${NM}" \
     -archive "${archive}" \
     "$(
-      ls -1 "${BUILD_WORKSPACE_DIRECTORY}"/lib/c/gnu/*.json \
+      ls -1 \
+	"${BUILD_WORKSPACE_DIRECTORY}"/lib/c/symbols/*.json \
+	"${BUILD_WORKSPACE_DIRECTORY}"/lib/gcc/symbols/*.json \
         | grep -v "${archive}" \
 	| awk '{print "-externs " $0}' \
 	| tr '\n' ' '\
     )" \
-    -output "${BUILD_WORKSPACE_DIRECTORY}/lib/c/gnu/$(basename "${archive}" .a).json" \
+    -output "${BUILD_WORKSPACE_DIRECTORY}/lib/c/symbols/$(basename "${archive}" .a).json" \
     >> "${TEMPDIR}/regen.sh"
 done
-
 source "${TEMPDIR}/regen.sh"
 
-for result in "${BUILD_WORKSPACE_DIRECTORY}"/lib/c/gnu/*.json; do
-  jq "{name: .name, symbols: ([{name: .symbols[].name}] | unique), externs: .externs}" \
+# Pretty-print, remove unnecessary fields:
+for result in "${BUILD_WORKSPACE_DIRECTORY}"/lib/c/symbols/*.json; do
+  jq "{name: .name, symbols: ([{name: .symbols[].name}] | unique), externs: .externs, undefs: .undefs}" \
     < "${result}" > "${result}.pp"
   mv "${result}.pp" "${result}"
 done
+
+# Special-case libm which is an ld script:
+mv "${BUILD_WORKSPACE_DIRECTORY}/lib/c/symbols/libm-${VERSION}.json" \
+   "${BUILD_WORKSPACE_DIRECTORY}/lib/c/symbols/libm.json"
+sed -e "s/libm-${VERSION}/libm/g" \
+  -i "${BUILD_WORKSPACE_DIRECTORY}"/lib/c/symbols/*.json

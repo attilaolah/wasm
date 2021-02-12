@@ -91,3 +91,19 @@ _archive_symbols = rule(
         ),
     },
 )
+
+def _static_symbols_impl(ctx):
+    return [
+        DefaultInfo(files = depset(ctx.files.srcs)),
+        ArchiveSymbolsInfo(),
+    ]
+
+static_symbols = rule(
+    implementation = _static_symbols_impl,
+    attrs = {
+        "srcs": attr.label_list(
+            mandatory = True,
+            allow_files = [".json"],
+        ),
+    },
+)

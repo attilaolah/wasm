@@ -15044,5 +15044,46 @@
       "name": "zone_names"
     }
   ],
-  "externs": null
+  "externs": [
+    {
+      "archive": "libgcc.a",
+      "symbols": [
+        "__addtf3",
+        "__divtf3",
+        "__eqtf2",
+        "__floatsitf",
+        "__getf2",
+        "__gttf2",
+        "__letf2",
+        "__lttf2",
+        "__multf3",
+        "__popcountdi2",
+        "__subtf3",
+        "__unordtf2"
+      ]
+    },
+    {
+      "archive": "libgcc_eh.a",
+      "symbols": [
+        "_Unwind_Backtrace",
+        "_Unwind_GetCFA",
+        "_Unwind_GetIP",
+        "_Unwind_Resume",
+        "__gcc_personality_v0"
+      ]
+    }
+  ],
+  "undefs": [
+    "_DYNAMIC",
+    "_GLOBAL_OFFSET_TABLE_",
+    "__ehdr_start",
+    "__fini_array_end",
+    "__fini_array_start",
+    "__init_array_end",
+    "__init_array_start",
+    "__preinit_array_end",
+    "__preinit_array_start",
+    "_fini",
+    "_init"
+  ]
 }

@@ -1,0 +1,354 @@
+{
+  "name": "libgcc_eh.a",
+  "symbols": [
+    {
+      "name": "_Unwind_Backtrace"
+    },
+    {
+      "name": "_Unwind_Backtrace.cold"
+    },
+    {
+      "name": "_Unwind_DebugHook"
+    },
+    {
+      "name": "_Unwind_DeleteException"
+    },
+    {
+      "name": "_Unwind_FindEnclosingFunction"
+    },
+    {
+      "name": "_Unwind_Find_FDE"
+    },
+    {
+      "name": "_Unwind_Find_FDE.cold"
+    },
+    {
+      "name": "_Unwind_ForcedUnwind"
+    },
+    {
+      "name": "_Unwind_ForcedUnwind_Phase2"
+    },
+    {
+      "name": "_Unwind_ForcedUnwind_Phase2.cold"
+    },
+    {
+      "name": "_Unwind_GetCFA"
+    },
+    {
+      "name": "_Unwind_GetDataRelBase"
+    },
+    {
+      "name": "_Unwind_GetGR"
+    },
+    {
+      "name": "_Unwind_GetGR.cold"
+    },
+    {
+      "name": "_Unwind_GetIP"
+    },
+    {
+      "name": "_Unwind_GetIPInfo"
+    },
+    {
+      "name": "_Unwind_GetLanguageSpecificData"
+    },
+    {
+      "name": "_Unwind_GetRegionStart"
+    },
+    {
+      "name": "_Unwind_GetTextRelBase"
+    },
+    {
+      "name": "_Unwind_IteratePhdrCallback"
+    },
+    {
+      "name": "_Unwind_IteratePhdrCallback.cold"
+    },
+    {
+      "name": "_Unwind_RaiseException"
+    },
+    {
+      "name": "_Unwind_RaiseException.cold"
+    },
+    {
+      "name": "_Unwind_RaiseException_Phase2"
+    },
+    {
+      "name": "_Unwind_RaiseException_Phase2.cold"
+    },
+    {
+      "name": "_Unwind_Resume"
+    },
+    {
+      "name": "_Unwind_Resume.cold"
+    },
+    {
+      "name": "_Unwind_Resume_or_Rethrow"
+    },
+    {
+      "name": "_Unwind_Resume_or_Rethrow.cold"
+    },
+    {
+      "name": "_Unwind_SetGR"
+    },
+    {
+      "name": "_Unwind_SetGR.cold"
+    },
+    {
+      "name": "_Unwind_SetIP"
+    },
+    {
+      "name": "__deregister_frame"
+    },
+    {
+      "name": "__deregister_frame_info"
+    },
+    {
+      "name": "__deregister_frame_info_bases"
+    },
+    {
+      "name": "__emutls_get_address"
+    },
+    {
+      "name": "__emutls_get_address.cold"
+    },
+    {
+      "name": "__emutls_register_common"
+    },
+    {
+      "name": "__frame_state_for"
+    },
+    {
+      "name": "__gcc_personality_v0"
+    },
+    {
+      "name": "__gcc_personality_v0.cold"
+    },
+    {
+      "name": "__pthread_key_create"
+    },
+    {
+      "name": "__register_frame"
+    },
+    {
+      "name": "__register_frame_info"
+    },
+    {
+      "name": "__register_frame_info_bases"
+    },
+    {
+      "name": "__register_frame_info_table"
+    },
+    {
+      "name": "__register_frame_info_table_bases"
+    },
+    {
+      "name": "__register_frame_table"
+    },
+    {
+      "name": "add_fdes"
+    },
+    {
+      "name": "add_fdes.cold"
+    },
+    {
+      "name": "adds.1"
+    },
+    {
+      "name": "any_objects_registered"
+    },
+    {
+      "name": "base_of_encoded_value"
+    },
+    {
+      "name": "base_of_encoded_value.cold"
+    },
+    {
+      "name": "classify_object_over_fdes"
+    },
+    {
+      "name": "classify_object_over_fdes.cold"
+    },
+    {
+      "name": "dwarf_reg_size_table"
+    },
+    {
+      "name": "emutls_alloc"
+    },
+    {
+      "name": "emutls_alloc.cold"
+    },
+    {
+      "name": "emutls_destroy"
+    },
+    {
+      "name": "emutls_init"
+    },
+    {
+      "name": "emutls_init.cold"
+    },
+    {
+      "name": "emutls_key"
+    },
+    {
+      "name": "emutls_mutex"
+    },
+    {
+      "name": "emutls_size"
+    },
+    {
+      "name": "execute_cfa_program"
+    },
+    {
+      "name": "execute_cfa_program.cold"
+    },
+    {
+      "name": "execute_stack_op"
+    },
+    {
+      "name": "execute_stack_op.cold"
+    },
+    {
+      "name": "fde_mixed_encoding_compare"
+    },
+    {
+      "name": "fde_mixed_encoding_compare.cold"
+    },
+    {
+      "name": "fde_single_encoding_compare"
+    },
+    {
+      "name": "fde_single_encoding_compare.cold"
+    },
+    {
+      "name": "fde_unencoded_compare"
+    },
+    {
+      "name": "frame_downheap"
+    },
+    {
+      "name": "frame_hdr_cache"
+    },
+    {
+      "name": "frame_hdr_cache_head"
+    },
+    {
+      "name": "frame_heapsort"
+    },
+    {
+      "name": "get_cie_encoding"
+    },
+    {
+      "name": "init_dwarf_reg_size_table"
+    },
+    {
+      "name": "linear_search_fdes"
+    },
+    {
+      "name": "linear_search_fdes.cold"
+    },
+    {
+      "name": "marker.4"
+    },
+    {
+      "name": "object_mutex"
+    },
+    {
+      "name": "once.0"
+    },
+    {
+      "name": "once_regsizes.0"
+    },
+    {
+      "name": "pthread_getspecific"
+    },
+    {
+      "name": "pthread_key_create"
+    },
+    {
+      "name": "pthread_mutex_lock"
+    },
+    {
+      "name": "pthread_mutex_unlock"
+    },
+    {
+      "name": "pthread_once"
+    },
+    {
+      "name": "pthread_setspecific"
+    },
+    {
+      "name": "read_encoded_value"
+    },
+    {
+      "name": "read_encoded_value.cold"
+    },
+    {
+      "name": "read_encoded_value_with_base"
+    },
+    {
+      "name": "read_encoded_value_with_base.cold"
+    },
+    {
+      "name": "search_object"
+    },
+    {
+      "name": "search_object.cold"
+    },
+    {
+      "name": "seen_objects"
+    },
+    {
+      "name": "subs.2"
+    },
+    {
+      "name": "terminator.3"
+    },
+    {
+      "name": "unseen_objects"
+    },
+    {
+      "name": "uw_frame_state_for"
+    },
+    {
+      "name": "uw_frame_state_for.cold"
+    },
+    {
+      "name": "uw_init_context_1"
+    },
+    {
+      "name": "uw_init_context_1.cold"
+    },
+    {
+      "name": "uw_install_context_1"
+    },
+    {
+      "name": "uw_install_context_1.cold"
+    },
+    {
+      "name": "uw_update_context_1"
+    },
+    {
+      "name": "uw_update_context_1.cold"
+    }
+  ],
+  "externs": [
+    {
+      "archive": "libc.a",
+      "symbols": [
+        "abort",
+        "calloc",
+        "dl_iterate_phdr",
+        "free",
+        "malloc",
+        "memcpy",
+        "memset",
+        "realloc",
+        "strlen"
+      ]
+    }
+  ],
+  "undefs": [
+    "_GLOBAL_OFFSET_TABLE_"
+  ]
+}

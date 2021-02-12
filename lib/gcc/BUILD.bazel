@@ -1,0 +1,8 @@
+load("//tools/archive_symbols:archive_symbols.bzl", "static_symbols")
+
+package(default_visibility = ["//lib:__subpackages__"])
+
+static_symbols(
+    name = "gcc_symbols",
+    srcs = glob(["symbols/lib*.json"]),
+)

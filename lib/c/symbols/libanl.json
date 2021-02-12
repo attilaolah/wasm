@@ -134,5 +134,8 @@
         "pthread_setcancelstate"
       ]
     }
+  ],
+  "undefs": [
+    "_GLOBAL_OFFSET_TABLE_"
   ]
 }

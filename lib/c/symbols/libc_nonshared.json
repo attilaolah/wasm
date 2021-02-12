@@ -660,5 +660,11 @@
         "writev"
       ]
     }
+  ],
+  "undefs": [
+    "_GLOBAL_OFFSET_TABLE_",
+    "__init_array_end",
+    "__init_array_start",
+    "_init"
   ]
 }

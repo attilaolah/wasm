@@ -1,0 +1,2199 @@
+{
+  "name": "libgcc.a",
+  "symbols": [
+    {
+      "name": ".LC0"
+    },
+    {
+      "name": ".LC1"
+    },
+    {
+      "name": ".LC2"
+    },
+    {
+      "name": ".LC3"
+    },
+    {
+      "name": ".LC4"
+    },
+    {
+      "name": ".LC5"
+    },
+    {
+      "name": ".LC6"
+    },
+    {
+      "name": ".LC7"
+    },
+    {
+      "name": ".LC8"
+    },
+    {
+      "name": "DW.ref.__gcc_personality_v0"
+    },
+    {
+      "name": "__CTOR_LIST__"
+    },
+    {
+      "name": "__DTOR_LIST__"
+    },
+    {
+      "name": "__absvdi2"
+    },
+    {
+      "name": "__absvdi2.cold"
+    },
+    {
+      "name": "__absvsi2"
+    },
+    {
+      "name": "__absvsi2.cold"
+    },
+    {
+      "name": "__absvti2"
+    },
+    {
+      "name": "__absvti2.cold"
+    },
+    {
+      "name": "__addtf3"
+    },
+    {
+      "name": "__addvdi3"
+    },
+    {
+      "name": "__addvdi3.cold"
+    },
+    {
+      "name": "__addvsi3"
+    },
+    {
+      "name": "__addvsi3.cold"
+    },
+    {
+      "name": "__addvti3"
+    },
+    {
+      "name": "__addvti3.cold"
+    },
+    {
+      "name": "__ashlti3"
+    },
+    {
+      "name": "__ashrti3"
+    },
+    {
+      "name": "__avx_resms64_12"
+    },
+    {
+      "name": "__avx_resms64_13"
+    },
+    {
+      "name": "__avx_resms64_14"
+    },
+    {
+      "name": "__avx_resms64_15"
+    },
+    {
+      "name": "__avx_resms64_16"
+    },
+    {
+      "name": "__avx_resms64_17"
+    },
+    {
+      "name": "__avx_resms64_18"
+    },
+    {
+      "name": "__avx_resms64f_12"
+    },
+    {
+      "name": "__avx_resms64f_13"
+    },
+    {
+      "name": "__avx_resms64f_14"
+    },
+    {
+      "name": "__avx_resms64f_15"
+    },
+    {
+      "name": "__avx_resms64f_16"
+    },
+    {
+      "name": "__avx_resms64f_17"
+    },
+    {
+      "name": "__avx_resms64fx_12"
+    },
+    {
+      "name": "__avx_resms64fx_13"
+    },
+    {
+      "name": "__avx_resms64fx_14"
+    },
+    {
+      "name": "__avx_resms64fx_15"
+    },
+    {
+      "name": "__avx_resms64fx_16"
+    },
+    {
+      "name": "__avx_resms64fx_17"
+    },
+    {
+      "name": "__avx_resms64x_12"
+    },
+    {
+      "name": "__avx_resms64x_13"
+    },
+    {
+      "name": "__avx_resms64x_14"
+    },
+    {
+      "name": "__avx_resms64x_15"
+    },
+    {
+      "name": "__avx_resms64x_16"
+    },
+    {
+      "name": "__avx_resms64x_17"
+    },
+    {
+      "name": "__avx_resms64x_18"
+    },
+    {
+      "name": "__avx_savms64_12"
+    },
+    {
+      "name": "__avx_savms64_13"
+    },
+    {
+      "name": "__avx_savms64_14"
+    },
+    {
+      "name": "__avx_savms64_15"
+    },
+    {
+      "name": "__avx_savms64_16"
+    },
+    {
+      "name": "__avx_savms64_17"
+    },
+    {
+      "name": "__avx_savms64_18"
+    },
+    {
+      "name": "__avx_savms64f_12"
+    },
+    {
+      "name": "__avx_savms64f_13"
+    },
+    {
+      "name": "__avx_savms64f_14"
+    },
+    {
+      "name": "__avx_savms64f_15"
+    },
+    {
+      "name": "__avx_savms64f_16"
+    },
+    {
+      "name": "__avx_savms64f_17"
+    },
+    {
+      "name": "__bid128_abs"
+    },
+    {
+      "name": "__bid128_add"
+    },
+    {
+      "name": "__bid128_class"
+    },
+    {
+      "name": "__bid128_copy"
+    },
+    {
+      "name": "__bid128_copySign"
+    },
+    {
+      "name": "__bid128_div"
+    },
+    {
+      "name": "__bid128_fma"
+    },
+    {
+      "name": "__bid128_from_int32"
+    },
+    {
+      "name": "__bid128_from_int64"
+    },
+    {
+      "name": "__bid128_from_uint32"
+    },
+    {
+      "name": "__bid128_from_uint64"
+    },
+    {
+      "name": "__bid128_isCanonical"
+    },
+    {
+      "name": "__bid128_isFinite"
+    },
+    {
+      "name": "__bid128_isInf"
+    },
+    {
+      "name": "__bid128_isNaN"
+    },
+    {
+      "name": "__bid128_isNormal"
+    },
+    {
+      "name": "__bid128_isSignaling"
+    },
+    {
+      "name": "__bid128_isSigned"
+    },
+    {
+      "name": "__bid128_isSubnormal"
+    },
+    {
+      "name": "__bid128_isZero"
+    },
+    {
+      "name": "__bid128_mul"
+    },
+    {
+      "name": "__bid128_negate"
+    },
+    {
+      "name": "__bid128_quiet_equal"
+    },
+    {
+      "name": "__bid128_quiet_greater"
+    },
+    {
+      "name": "__bid128_quiet_greater_equal"
+    },
+    {
+      "name": "__bid128_quiet_greater_unordered"
+    },
+    {
+      "name": "__bid128_quiet_less"
+    },
+    {
+      "name": "__bid128_quiet_less_equal"
+    },
+    {
+      "name": "__bid128_quiet_less_unordered"
+    },
+    {
+      "name": "__bid128_quiet_not_equal"
+    },
+    {
+      "name": "__bid128_quiet_not_greater"
+    },
+    {
+      "name": "__bid128_quiet_not_less"
+    },
+    {
+      "name": "__bid128_quiet_ordered"
+    },
+    {
+      "name": "__bid128_quiet_unordered"
+    },
+    {
+      "name": "__bid128_radix"
+    },
+    {
+      "name": "__bid128_sameQuantum"
+    },
+    {
+      "name": "__bid128_signaling_greater"
+    },
+    {
+      "name": "__bid128_signaling_greater_equal"
+    },
+    {
+      "name": "__bid128_signaling_greater_unordered"
+    },
+    {
+      "name": "__bid128_signaling_less"
+    },
+    {
+      "name": "__bid128_signaling_less_equal"
+    },
+    {
+      "name": "__bid128_signaling_less_unordered"
+    },
+    {
+      "name": "__bid128_signaling_not_greater"
+    },
+    {
+      "name": "__bid128_signaling_not_less"
+    },
+    {
+      "name": "__bid128_sub"
+    },
+    {
+      "name": "__bid128_to_bid32"
+    },
+    {
+      "name": "__bid128_to_bid64"
+    },
+    {
+      "name": "__bid128_to_binary128"
+    },
+    {
+      "name": "__bid128_to_binary32"
+    },
+    {
+      "name": "__bid128_to_binary64"
+    },
+    {
+      "name": "__bid128_to_binary80"
+    },
+    {
+      "name": "__bid128_to_int32_ceil"
+    },
+    {
+      "name": "__bid128_to_int32_floor"
+    },
+    {
+      "name": "__bid128_to_int32_int"
+    },
+    {
+      "name": "__bid128_to_int32_rnint"
+    },
+    {
+      "name": "__bid128_to_int32_rninta"
+    },
+    {
+      "name": "__bid128_to_int32_xceil"
+    },
+    {
+      "name": "__bid128_to_int32_xfloor"
+    },
+    {
+      "name": "__bid128_to_int32_xint"
+    },
+    {
+      "name": "__bid128_to_int32_xrnint"
+    },
+    {
+      "name": "__bid128_to_int32_xrninta"
+    },
+    {
+      "name": "__bid128_to_int64_ceil"
+    },
+    {
+      "name": "__bid128_to_int64_floor"
+    },
+    {
+      "name": "__bid128_to_int64_int"
+    },
+    {
+      "name": "__bid128_to_int64_rnint"
+    },
+    {
+      "name": "__bid128_to_int64_rninta"
+    },
+    {
+      "name": "__bid128_to_int64_xceil"
+    },
+    {
+      "name": "__bid128_to_int64_xfloor"
+    },
+    {
+      "name": "__bid128_to_int64_xint"
+    },
+    {
+      "name": "__bid128_to_int64_xrnint"
+    },
+    {
+      "name": "__bid128_to_int64_xrninta"
+    },
+    {
+      "name": "__bid128_to_uint32_ceil"
+    },
+    {
+      "name": "__bid128_to_uint32_floor"
+    },
+    {
+      "name": "__bid128_to_uint32_int"
+    },
+    {
+      "name": "__bid128_to_uint32_rnint"
+    },
+    {
+      "name": "__bid128_to_uint32_rninta"
+    },
+    {
+      "name": "__bid128_to_uint32_xceil"
+    },
+    {
+      "name": "__bid128_to_uint32_xfloor"
+    },
+    {
+      "name": "__bid128_to_uint32_xint"
+    },
+    {
+      "name": "__bid128_to_uint32_xrnint"
+    },
+    {
+      "name": "__bid128_to_uint32_xrninta"
+    },
+    {
+      "name": "__bid128_to_uint64_ceil"
+    },
+    {
+      "name": "__bid128_to_uint64_floor"
+    },
+    {
+      "name": "__bid128_to_uint64_int"
+    },
+    {
+      "name": "__bid128_to_uint64_rnint"
+    },
+    {
+      "name": "__bid128_to_uint64_rninta"
+    },
+    {
+      "name": "__bid128_to_uint64_xceil"
+    },
+    {
+      "name": "__bid128_to_uint64_xfloor"
+    },
+    {
+      "name": "__bid128_to_uint64_xint"
+    },
+    {
+      "name": "__bid128_to_uint64_xrnint"
+    },
+    {
+      "name": "__bid128_to_uint64_xrninta"
+    },
+    {
+      "name": "__bid128_totalOrder"
+    },
+    {
+      "name": "__bid128_totalOrderMag"
+    },
+    {
+      "name": "__bid128dd_add"
+    },
+    {
+      "name": "__bid128dd_div"
+    },
+    {
+      "name": "__bid128dd_mul"
+    },
+    {
+      "name": "__bid128dd_sub"
+    },
+    {
+      "name": "__bid128ddd_fma"
+    },
+    {
+      "name": "__bid128ddq_fma"
+    },
+    {
+      "name": "__bid128dq_add"
+    },
+    {
+      "name": "__bid128dq_div"
+    },
+    {
+      "name": "__bid128dq_mul"
+    },
+    {
+      "name": "__bid128dq_sub"
+    },
+    {
+      "name": "__bid128dqd_fma"
+    },
+    {
+      "name": "__bid128dqq_fma"
+    },
+    {
+      "name": "__bid128qd_add"
+    },
+    {
+      "name": "__bid128qd_div"
+    },
+    {
+      "name": "__bid128qd_mul"
+    },
+    {
+      "name": "__bid128qd_sub"
+    },
+    {
+      "name": "__bid128qdd_fma"
+    },
+    {
+      "name": "__bid128qdq_fma"
+    },
+    {
+      "name": "__bid128qqd_fma"
+    },
+    {
+      "name": "__bid32_to_bid128"
+    },
+    {
+      "name": "__bid32_to_bid64"
+    },
+    {
+      "name": "__bid32_to_binary128"
+    },
+    {
+      "name": "__bid32_to_binary32"
+    },
+    {
+      "name": "__bid32_to_binary64"
+    },
+    {
+      "name": "__bid32_to_binary80"
+    },
+    {
+      "name": "__bid64_abs"
+    },
+    {
+      "name": "__bid64_add"
+    },
+    {
+      "name": "__bid64_class"
+    },
+    {
+      "name": "__bid64_copy"
+    },
+    {
+      "name": "__bid64_copySign"
+    },
+    {
+      "name": "__bid64_div"
+    },
+    {
+      "name": "__bid64_from_int32"
+    },
+    {
+      "name": "__bid64_from_int64"
+    },
+    {
+      "name": "__bid64_from_uint32"
+    },
+    {
+      "name": "__bid64_from_uint64"
+    },
+    {
+      "name": "__bid64_isCanonical"
+    },
+    {
+      "name": "__bid64_isFinite"
+    },
+    {
+      "name": "__bid64_isInf"
+    },
+    {
+      "name": "__bid64_isNaN"
+    },
+    {
+      "name": "__bid64_isNormal"
+    },
+    {
+      "name": "__bid64_isSignaling"
+    },
+    {
+      "name": "__bid64_isSigned"
+    },
+    {
+      "name": "__bid64_isSubnormal"
+    },
+    {
+      "name": "__bid64_isZero"
+    },
+    {
+      "name": "__bid64_mul"
+    },
+    {
+      "name": "__bid64_negate"
+    },
+    {
+      "name": "__bid64_quiet_equal"
+    },
+    {
+      "name": "__bid64_quiet_greater"
+    },
+    {
+      "name": "__bid64_quiet_greater_equal"
+    },
+    {
+      "name": "__bid64_quiet_greater_unordered"
+    },
+    {
+      "name": "__bid64_quiet_less"
+    },
+    {
+      "name": "__bid64_quiet_less_equal"
+    },
+    {
+      "name": "__bid64_quiet_less_unordered"
+    },
+    {
+      "name": "__bid64_quiet_not_equal"
+    },
+    {
+      "name": "__bid64_quiet_not_greater"
+    },
+    {
+      "name": "__bid64_quiet_not_less"
+    },
+    {
+      "name": "__bid64_quiet_ordered"
+    },
+    {
+      "name": "__bid64_quiet_unordered"
+    },
+    {
+      "name": "__bid64_radix"
+    },
+    {
+      "name": "__bid64_sameQuantum"
+    },
+    {
+      "name": "__bid64_signaling_greater"
+    },
+    {
+      "name": "__bid64_signaling_greater_equal"
+    },
+    {
+      "name": "__bid64_signaling_greater_unordered"
+    },
+    {
+      "name": "__bid64_signaling_less"
+    },
+    {
+      "name": "__bid64_signaling_less_equal"
+    },
+    {
+      "name": "__bid64_signaling_less_unordered"
+    },
+    {
+      "name": "__bid64_signaling_not_greater"
+    },
+    {
+      "name": "__bid64_signaling_not_less"
+    },
+    {
+      "name": "__bid64_sub"
+    },
+    {
+      "name": "__bid64_to_bid128"
+    },
+    {
+      "name": "__bid64_to_bid32"
+    },
+    {
+      "name": "__bid64_to_binary128"
+    },
+    {
+      "name": "__bid64_to_binary32"
+    },
+    {
+      "name": "__bid64_to_binary64"
+    },
+    {
+      "name": "__bid64_to_binary80"
+    },
+    {
+      "name": "__bid64_to_int32_ceil"
+    },
+    {
+      "name": "__bid64_to_int32_floor"
+    },
+    {
+      "name": "__bid64_to_int32_int"
+    },
+    {
+      "name": "__bid64_to_int32_rnint"
+    },
+    {
+      "name": "__bid64_to_int32_rninta"
+    },
+    {
+      "name": "__bid64_to_int32_xceil"
+    },
+    {
+      "name": "__bid64_to_int32_xfloor"
+    },
+    {
+      "name": "__bid64_to_int32_xint"
+    },
+    {
+      "name": "__bid64_to_int32_xrnint"
+    },
+    {
+      "name": "__bid64_to_int32_xrninta"
+    },
+    {
+      "name": "__bid64_to_int64_ceil"
+    },
+    {
+      "name": "__bid64_to_int64_floor"
+    },
+    {
+      "name": "__bid64_to_int64_int"
+    },
+    {
+      "name": "__bid64_to_int64_rnint"
+    },
+    {
+      "name": "__bid64_to_int64_rninta"
+    },
+    {
+      "name": "__bid64_to_int64_xceil"
+    },
+    {
+      "name": "__bid64_to_int64_xfloor"
+    },
+    {
+      "name": "__bid64_to_int64_xint"
+    },
+    {
+      "name": "__bid64_to_int64_xrnint"
+    },
+    {
+      "name": "__bid64_to_int64_xrninta"
+    },
+    {
+      "name": "__bid64_to_uint32_ceil"
+    },
+    {
+      "name": "__bid64_to_uint32_floor"
+    },
+    {
+      "name": "__bid64_to_uint32_int"
+    },
+    {
+      "name": "__bid64_to_uint32_rnint"
+    },
+    {
+      "name": "__bid64_to_uint32_rninta"
+    },
+    {
+      "name": "__bid64_to_uint32_xceil"
+    },
+    {
+      "name": "__bid64_to_uint32_xfloor"
+    },
+    {
+      "name": "__bid64_to_uint32_xint"
+    },
+    {
+      "name": "__bid64_to_uint32_xrnint"
+    },
+    {
+      "name": "__bid64_to_uint32_xrninta"
+    },
+    {
+      "name": "__bid64_to_uint64_ceil"
+    },
+    {
+      "name": "__bid64_to_uint64_floor"
+    },
+    {
+      "name": "__bid64_to_uint64_int"
+    },
+    {
+      "name": "__bid64_to_uint64_rnint"
+    },
+    {
+      "name": "__bid64_to_uint64_rninta"
+    },
+    {
+      "name": "__bid64_to_uint64_xceil"
+    },
+    {
+      "name": "__bid64_to_uint64_xfloor"
+    },
+    {
+      "name": "__bid64_to_uint64_xint"
+    },
+    {
+      "name": "__bid64_to_uint64_xrnint"
+    },
+    {
+      "name": "__bid64_to_uint64_xrninta"
+    },
+    {
+      "name": "__bid64_totalOrder"
+    },
+    {
+      "name": "__bid64_totalOrderMag"
+    },
+    {
+      "name": "__bid64ddq_fma"
+    },
+    {
+      "name": "__bid64dq_add"
+    },
+    {
+      "name": "__bid64dq_div"
+    },
+    {
+      "name": "__bid64dq_mul"
+    },
+    {
+      "name": "__bid64dq_sub"
+    },
+    {
+      "name": "__bid64dqd_fma"
+    },
+    {
+      "name": "__bid64dqq_fma"
+    },
+    {
+      "name": "__bid64qd_add"
+    },
+    {
+      "name": "__bid64qd_div"
+    },
+    {
+      "name": "__bid64qd_mul"
+    },
+    {
+      "name": "__bid64qd_sub"
+    },
+    {
+      "name": "__bid64qdd_fma"
+    },
+    {
+      "name": "__bid64qdq_fma"
+    },
+    {
+      "name": "__bid64qq_add"
+    },
+    {
+      "name": "__bid64qq_div"
+    },
+    {
+      "name": "__bid64qq_mul"
+    },
+    {
+      "name": "__bid64qq_sub"
+    },
+    {
+      "name": "__bid64qqd_fma"
+    },
+    {
+      "name": "__bid64qqq_fma"
+    },
+    {
+      "name": "__bid_Ex128m128"
+    },
+    {
+      "name": "__bid_Ex192m192"
+    },
+    {
+      "name": "__bid_Ex256m256"
+    },
+    {
+      "name": "__bid_Ex64m64"
+    },
+    {
+      "name": "__bid_IDEC_glbflags"
+    },
+    {
+      "name": "__bid_IDEC_glbround"
+    },
+    {
+      "name": "__bid_Kx128"
+    },
+    {
+      "name": "__bid_Kx192"
+    },
+    {
+      "name": "__bid_Kx256"
+    },
+    {
+      "name": "__bid_Kx64"
+    },
+    {
+      "name": "__bid_adddd3"
+    },
+    {
+      "name": "__bid_addsd3"
+    },
+    {
+      "name": "__bid_addtd3"
+    },
+    {
+      "name": "__bid_char_table2"
+    },
+    {
+      "name": "__bid_char_table3"
+    },
+    {
+      "name": "__bid_convert_table"
+    },
+    {
+      "name": "__bid_divdd3"
+    },
+    {
+      "name": "__bid_divsd3"
+    },
+    {
+      "name": "__bid_divtd3"
+    },
+    {
+      "name": "__bid_eqdd2"
+    },
+    {
+      "name": "__bid_eqsd2"
+    },
+    {
+      "name": "__bid_eqtd2"
+    },
+    {
+      "name": "__bid_estimate_bin_expon"
+    },
+    {
+      "name": "__bid_estimate_decimal_digits"
+    },
+    {
+      "name": "__bid_extendddtd2"
+    },
+    {
+      "name": "__bid_extendddtf"
+    },
+    {
+      "name": "__bid_extendddxf"
+    },
+    {
+      "name": "__bid_extenddfdd"
+    },
+    {
+      "name": "__bid_extenddftd"
+    },
+    {
+      "name": "__bid_extendsddd2"
+    },
+    {
+      "name": "__bid_extendsddf"
+    },
+    {
+      "name": "__bid_extendsdtd2"
+    },
+    {
+      "name": "__bid_extendsdtf"
+    },
+    {
+      "name": "__bid_extendsdxf"
+    },
+    {
+      "name": "__bid_extendsfdd"
+    },
+    {
+      "name": "__bid_extendsfsd"
+    },
+    {
+      "name": "__bid_extendsftd"
+    },
+    {
+      "name": "__bid_extendtftd"
+    },
+    {
+      "name": "__bid_extendxftd"
+    },
+    {
+      "name": "__bid_factors"
+    },
+    {
+      "name": "__bid_fixdddi"
+    },
+    {
+      "name": "__bid_fixddsi"
+    },
+    {
+      "name": "__bid_fixsddi"
+    },
+    {
+      "name": "__bid_fixsdsi"
+    },
+    {
+      "name": "__bid_fixtddi"
+    },
+    {
+      "name": "__bid_fixtdsi"
+    },
+    {
+      "name": "__bid_fixunsdddi"
+    },
+    {
+      "name": "__bid_fixunsddsi"
+    },
+    {
+      "name": "__bid_fixunssddi"
+    },
+    {
+      "name": "__bid_fixunssdsi"
+    },
+    {
+      "name": "__bid_fixunstddi"
+    },
+    {
+      "name": "__bid_fixunstdsi"
+    },
+    {
+      "name": "__bid_floatdidd"
+    },
+    {
+      "name": "__bid_floatdisd"
+    },
+    {
+      "name": "__bid_floatditd"
+    },
+    {
+      "name": "__bid_floatsidd"
+    },
+    {
+      "name": "__bid_floatsisd"
+    },
+    {
+      "name": "__bid_floatsitd"
+    },
+    {
+      "name": "__bid_floatunsdidd"
+    },
+    {
+      "name": "__bid_floatunsdisd"
+    },
+    {
+      "name": "__bid_floatunsditd"
+    },
+    {
+      "name": "__bid_floatunssidd"
+    },
+    {
+      "name": "__bid_floatunssisd"
+    },
+    {
+      "name": "__bid_floatunssitd"
+    },
+    {
+      "name": "__bid_gedd2"
+    },
+    {
+      "name": "__bid_gesd2"
+    },
+    {
+      "name": "__bid_getd2"
+    },
+    {
+      "name": "__bid_gtdd2"
+    },
+    {
+      "name": "__bid_gtsd2"
+    },
+    {
+      "name": "__bid_gttd2"
+    },
+    {
+      "name": "__bid_half128"
+    },
+    {
+      "name": "__bid_half192"
+    },
+    {
+      "name": "__bid_half256"
+    },
+    {
+      "name": "__bid_half64"
+    },
+    {
+      "name": "__bid_ledd2"
+    },
+    {
+      "name": "__bid_lesd2"
+    },
+    {
+      "name": "__bid_letd2"
+    },
+    {
+      "name": "__bid_ltdd2"
+    },
+    {
+      "name": "__bid_ltsd2"
+    },
+    {
+      "name": "__bid_lttd2"
+    },
+    {
+      "name": "__bid_mask128"
+    },
+    {
+      "name": "__bid_mask192"
+    },
+    {
+      "name": "__bid_mask256"
+    },
+    {
+      "name": "__bid_mask64"
+    },
+    {
+      "name": "__bid_maskhigh128"
+    },
+    {
+      "name": "__bid_maskhigh128M"
+    },
+    {
+      "name": "__bid_maskhigh192M"
+    },
+    {
+      "name": "__bid_maskhigh256M"
+    },
+    {
+      "name": "__bid_midpoint128"
+    },
+    {
+      "name": "__bid_midpoint192"
+    },
+    {
+      "name": "__bid_midpoint256"
+    },
+    {
+      "name": "__bid_midpoint64"
+    },
+    {
+      "name": "__bid_muldd3"
+    },
+    {
+      "name": "__bid_mulsd3"
+    },
+    {
+      "name": "__bid_multd3"
+    },
+    {
+      "name": "__bid_nedd2"
+    },
+    {
+      "name": "__bid_nesd2"
+    },
+    {
+      "name": "__bid_netd2"
+    },
+    {
+      "name": "__bid_nr_digits"
+    },
+    {
+      "name": "__bid_onehalf128"
+    },
+    {
+      "name": "__bid_onehalf128M"
+    },
+    {
+      "name": "__bid_onehalf192M"
+    },
+    {
+      "name": "__bid_onehalf256M"
+    },
+    {
+      "name": "__bid_packed_10000_zeros"
+    },
+    {
+      "name": "__bid_power10_index_binexp"
+    },
+    {
+      "name": "__bid_power10_index_binexp_128"
+    },
+    {
+      "name": "__bid_power10_table_128"
+    },
+    {
+      "name": "__bid_recip_scale"
+    },
+    {
+      "name": "__bid_reciprocals10_128"
+    },
+    {
+      "name": "__bid_reciprocals10_64"
+    },
+    {
+      "name": "__bid_round128_19_38"
+    },
+    {
+      "name": "__bid_round192_39_57"
+    },
+    {
+      "name": "__bid_round256_58_76"
+    },
+    {
+      "name": "__bid_round64_2_18"
+    },
+    {
+      "name": "__bid_round_const_table"
+    },
+    {
+      "name": "__bid_round_const_table_128"
+    },
+    {
+      "name": "__bid_shift_ten2m3k128"
+    },
+    {
+      "name": "__bid_shift_ten2m3k64"
+    },
+    {
+      "name": "__bid_shiftright128"
+    },
+    {
+      "name": "__bid_shiftright128M"
+    },
+    {
+      "name": "__bid_shiftright192M"
+    },
+    {
+      "name": "__bid_shiftright256M"
+    },
+    {
+      "name": "__bid_short_recip_scale"
+    },
+    {
+      "name": "__bid_subdd3"
+    },
+    {
+      "name": "__bid_subsd3"
+    },
+    {
+      "name": "__bid_subtd3"
+    },
+    {
+      "name": "__bid_ten2k128"
+    },
+    {
+      "name": "__bid_ten2k256"
+    },
+    {
+      "name": "__bid_ten2k64"
+    },
+    {
+      "name": "__bid_ten2m3k128"
+    },
+    {
+      "name": "__bid_ten2m3k64"
+    },
+    {
+      "name": "__bid_ten2mk128"
+    },
+    {
+      "name": "__bid_ten2mk128M"
+    },
+    {
+      "name": "__bid_ten2mk128trunc"
+    },
+    {
+      "name": "__bid_ten2mk128truncM"
+    },
+    {
+      "name": "__bid_ten2mk192M"
+    },
+    {
+      "name": "__bid_ten2mk192truncM"
+    },
+    {
+      "name": "__bid_ten2mk256M"
+    },
+    {
+      "name": "__bid_ten2mk256truncM"
+    },
+    {
+      "name": "__bid_ten2mk64"
+    },
+    {
+      "name": "__bid_ten2mxtrunc128"
+    },
+    {
+      "name": "__bid_ten2mxtrunc192"
+    },
+    {
+      "name": "__bid_ten2mxtrunc256"
+    },
+    {
+      "name": "__bid_ten2mxtrunc64"
+    },
+    {
+      "name": "__bid_truncdddf"
+    },
+    {
+      "name": "__bid_truncddsd2"
+    },
+    {
+      "name": "__bid_truncddsf"
+    },
+    {
+      "name": "__bid_truncdfsd"
+    },
+    {
+      "name": "__bid_truncsdsf"
+    },
+    {
+      "name": "__bid_trunctddd2"
+    },
+    {
+      "name": "__bid_trunctddf"
+    },
+    {
+      "name": "__bid_trunctdsd2"
+    },
+    {
+      "name": "__bid_trunctdsf"
+    },
+    {
+      "name": "__bid_trunctdtf"
+    },
+    {
+      "name": "__bid_trunctdxf"
+    },
+    {
+      "name": "__bid_trunctfdd"
+    },
+    {
+      "name": "__bid_trunctfsd"
+    },
+    {
+      "name": "__bid_truncxfdd"
+    },
+    {
+      "name": "__bid_truncxfsd"
+    },
+    {
+      "name": "__bid_unorddd2"
+    },
+    {
+      "name": "__bid_unordsd2"
+    },
+    {
+      "name": "__bid_unordtd2"
+    },
+    {
+      "name": "__binary128_to_bid128"
+    },
+    {
+      "name": "__binary128_to_bid32"
+    },
+    {
+      "name": "__binary128_to_bid64"
+    },
+    {
+      "name": "__binary32_to_bid128"
+    },
+    {
+      "name": "__binary32_to_bid32"
+    },
+    {
+      "name": "__binary32_to_bid64"
+    },
+    {
+      "name": "__binary64_to_bid128"
+    },
+    {
+      "name": "__binary64_to_bid32"
+    },
+    {
+      "name": "__binary64_to_bid64"
+    },
+    {
+      "name": "__binary80_to_bid128"
+    },
+    {
+      "name": "__binary80_to_bid32"
+    },
+    {
+      "name": "__binary80_to_bid64"
+    },
+    {
+      "name": "__bswapdi2"
+    },
+    {
+      "name": "__bswapsi2"
+    },
+    {
+      "name": "__clear_cache"
+    },
+    {
+      "name": "__clrsbdi2"
+    },
+    {
+      "name": "__clrsbti2"
+    },
+    {
+      "name": "__clz_tab"
+    },
+    {
+      "name": "__clzdi2"
+    },
+    {
+      "name": "__clzti2"
+    },
+    {
+      "name": "__cmpti2"
+    },
+    {
+      "name": "__cpu_features2"
+    },
+    {
+      "name": "__cpu_indicator_init"
+    },
+    {
+      "name": "__cpu_model"
+    },
+    {
+      "name": "__ctzdi2"
+    },
+    {
+      "name": "__ctzti2"
+    },
+    {
+      "name": "__dfp_clear_except"
+    },
+    {
+      "name": "__dfp_get_round"
+    },
+    {
+      "name": "__dfp_raise_except"
+    },
+    {
+      "name": "__dfp_set_round"
+    },
+    {
+      "name": "__dfp_test_except"
+    },
+    {
+      "name": "__div_128_by_128"
+    },
+    {
+      "name": "__div_256_by_128"
+    },
+    {
+      "name": "__divdc3"
+    },
+    {
+      "name": "__divmodti4"
+    },
+    {
+      "name": "__divsc3"
+    },
+    {
+      "name": "__divtc3"
+    },
+    {
+      "name": "__divtf3"
+    },
+    {
+      "name": "__divti3"
+    },
+    {
+      "name": "__divxc3"
+    },
+    {
+      "name": "__enable_execute_stack"
+    },
+    {
+      "name": "__eprintf"
+    },
+    {
+      "name": "__eqtf2"
+    },
+    {
+      "name": "__extenddftf2"
+    },
+    {
+      "name": "__extendsftf2"
+    },
+    {
+      "name": "__extendxftf2"
+    },
+    {
+      "name": "__ffsdi2"
+    },
+    {
+      "name": "__ffsti2"
+    },
+    {
+      "name": "__fixdfti"
+    },
+    {
+      "name": "__fixsfti"
+    },
+    {
+      "name": "__fixtfdi"
+    },
+    {
+      "name": "__fixtfsi"
+    },
+    {
+      "name": "__fixtfti"
+    },
+    {
+      "name": "__fixunsdfdi"
+    },
+    {
+      "name": "__fixunsdfti"
+    },
+    {
+      "name": "__fixunssfdi"
+    },
+    {
+      "name": "__fixunssfti"
+    },
+    {
+      "name": "__fixunstfdi"
+    },
+    {
+      "name": "__fixunstfsi"
+    },
+    {
+      "name": "__fixunstfti"
+    },
+    {
+      "name": "__fixunsxfdi"
+    },
+    {
+      "name": "__fixunsxfti"
+    },
+    {
+      "name": "__fixxfti"
+    },
+    {
+      "name": "__floatditf"
+    },
+    {
+      "name": "__floatsitf"
+    },
+    {
+      "name": "__floattidf"
+    },
+    {
+      "name": "__floattisf"
+    },
+    {
+      "name": "__floattitf"
+    },
+    {
+      "name": "__floattixf"
+    },
+    {
+      "name": "__floatunditf"
+    },
+    {
+      "name": "__floatunsitf"
+    },
+    {
+      "name": "__floatuntidf"
+    },
+    {
+      "name": "__floatuntisf"
+    },
+    {
+      "name": "__floatuntitf"
+    },
+    {
+      "name": "__floatuntixf"
+    },
+    {
+      "name": "__gcc_bcmp"
+    },
+    {
+      "name": "__generic_findstack"
+    },
+    {
+      "name": "__generic_morestack"
+    },
+    {
+      "name": "__generic_morestack_set_initial_sp"
+    },
+    {
+      "name": "__generic_releasestack"
+    },
+    {
+      "name": "__getf2"
+    },
+    {
+      "name": "__gttf2"
+    },
+    {
+      "name": "__letf2"
+    },
+    {
+      "name": "__lshrti3"
+    },
+    {
+      "name": "__lttf2"
+    },
+    {
+      "name": "__modti3"
+    },
+    {
+      "name": "__morestack"
+    },
+    {
+      "name": "__morestack_allocate_stack_space"
+    },
+    {
+      "name": "__morestack_allocate_stack_space.cold"
+    },
+    {
+      "name": "__morestack_block_signals"
+    },
+    {
+      "name": "__morestack_current_segment"
+    },
+    {
+      "name": "__morestack_fail"
+    },
+    {
+      "name": "__morestack_fullmask"
+    },
+    {
+      "name": "__morestack_get_guard"
+    },
+    {
+      "name": "__morestack_initial_sp"
+    },
+    {
+      "name": "__morestack_large_model"
+    },
+    {
+      "name": "__morestack_load_mmap"
+    },
+    {
+      "name": "__morestack_make_guard"
+    },
+    {
+      "name": "__morestack_non_split"
+    },
+    {
+      "name": "__morestack_release_segments"
+    },
+    {
+      "name": "__morestack_segments"
+    },
+    {
+      "name": "__morestack_set_guard"
+    },
+    {
+      "name": "__morestack_unblock_signals"
+    },
+    {
+      "name": "__muldc3"
+    },
+    {
+      "name": "__mulsc3"
+    },
+    {
+      "name": "__multc3"
+    },
+    {
+      "name": "__multf3"
+    },
+    {
+      "name": "__multi3"
+    },
+    {
+      "name": "__mulvdi3"
+    },
+    {
+      "name": "__mulvdi3.cold"
+    },
+    {
+      "name": "__mulvsi3"
+    },
+    {
+      "name": "__mulvsi3.cold"
+    },
+    {
+      "name": "__mulvti3"
+    },
+    {
+      "name": "__mulvti3.cold"
+    },
+    {
+      "name": "__mulxc3"
+    },
+    {
+      "name": "__negtf2"
+    },
+    {
+      "name": "__negti2"
+    },
+    {
+      "name": "__negvdi2"
+    },
+    {
+      "name": "__negvdi2.cold"
+    },
+    {
+      "name": "__negvsi2"
+    },
+    {
+      "name": "__negvsi2.cold"
+    },
+    {
+      "name": "__negvti2"
+    },
+    {
+      "name": "__negvti2.cold"
+    },
+    {
+      "name": "__netf2"
+    },
+    {
+      "name": "__paritydi2"
+    },
+    {
+      "name": "__parityti2"
+    },
+    {
+      "name": "__popcount_tab"
+    },
+    {
+      "name": "__popcountdi2"
+    },
+    {
+      "name": "__popcountti2"
+    },
+    {
+      "name": "__powidf2"
+    },
+    {
+      "name": "__powisf2"
+    },
+    {
+      "name": "__powitf2"
+    },
+    {
+      "name": "__powixf2"
+    },
+    {
+      "name": "__real_pthread_create"
+    },
+    {
+      "name": "__sfp_handle_exceptions"
+    },
+    {
+      "name": "__splitstack_block_signals"
+    },
+    {
+      "name": "__splitstack_block_signals_context"
+    },
+    {
+      "name": "__splitstack_find"
+    },
+    {
+      "name": "__splitstack_find_context"
+    },
+    {
+      "name": "__splitstack_getcontext"
+    },
+    {
+      "name": "__splitstack_makecontext"
+    },
+    {
+      "name": "__splitstack_releasecontext"
+    },
+    {
+      "name": "__splitstack_resetcontext"
+    },
+    {
+      "name": "__splitstack_setcontext"
+    },
+    {
+      "name": "__sse_resms64_12"
+    },
+    {
+      "name": "__sse_resms64_13"
+    },
+    {
+      "name": "__sse_resms64_14"
+    },
+    {
+      "name": "__sse_resms64_15"
+    },
+    {
+      "name": "__sse_resms64_16"
+    },
+    {
+      "name": "__sse_resms64_17"
+    },
+    {
+      "name": "__sse_resms64_18"
+    },
+    {
+      "name": "__sse_resms64f_12"
+    },
+    {
+      "name": "__sse_resms64f_13"
+    },
+    {
+      "name": "__sse_resms64f_14"
+    },
+    {
+      "name": "__sse_resms64f_15"
+    },
+    {
+      "name": "__sse_resms64f_16"
+    },
+    {
+      "name": "__sse_resms64f_17"
+    },
+    {
+      "name": "__sse_resms64fx_12"
+    },
+    {
+      "name": "__sse_resms64fx_13"
+    },
+    {
+      "name": "__sse_resms64fx_14"
+    },
+    {
+      "name": "__sse_resms64fx_15"
+    },
+    {
+      "name": "__sse_resms64fx_16"
+    },
+    {
+      "name": "__sse_resms64fx_17"
+    },
+    {
+      "name": "__sse_resms64x_12"
+    },
+    {
+      "name": "__sse_resms64x_13"
+    },
+    {
+      "name": "__sse_resms64x_14"
+    },
+    {
+      "name": "__sse_resms64x_15"
+    },
+    {
+      "name": "__sse_resms64x_16"
+    },
+    {
+      "name": "__sse_resms64x_17"
+    },
+    {
+      "name": "__sse_resms64x_18"
+    },
+    {
+      "name": "__sse_savms64_12"
+    },
+    {
+      "name": "__sse_savms64_13"
+    },
+    {
+      "name": "__sse_savms64_14"
+    },
+    {
+      "name": "__sse_savms64_15"
+    },
+    {
+      "name": "__sse_savms64_16"
+    },
+    {
+      "name": "__sse_savms64_17"
+    },
+    {
+      "name": "__sse_savms64_18"
+    },
+    {
+      "name": "__sse_savms64f_12"
+    },
+    {
+      "name": "__sse_savms64f_13"
+    },
+    {
+      "name": "__sse_savms64f_14"
+    },
+    {
+      "name": "__sse_savms64f_15"
+    },
+    {
+      "name": "__sse_savms64f_16"
+    },
+    {
+      "name": "__sse_savms64f_17"
+    },
+    {
+      "name": "__stack_split_initialize"
+    },
+    {
+      "name": "__subtf3"
+    },
+    {
+      "name": "__subvdi3"
+    },
+    {
+      "name": "__subvdi3.cold"
+    },
+    {
+      "name": "__subvsi3"
+    },
+    {
+      "name": "__subvsi3.cold"
+    },
+    {
+      "name": "__subvti3"
+    },
+    {
+      "name": "__subvti3.cold"
+    },
+    {
+      "name": "__trunctfdf2"
+    },
+    {
+      "name": "__trunctfsf2"
+    },
+    {
+      "name": "__trunctfxf2"
+    },
+    {
+      "name": "__ucmpti2"
+    },
+    {
+      "name": "__udiv_w_sdiv"
+    },
+    {
+      "name": "__udivmodti4"
+    },
+    {
+      "name": "__udivti3"
+    },
+    {
+      "name": "__umodti3"
+    },
+    {
+      "name": "__unordtf2"
+    },
+    {
+      "name": "__wrap_pthread_create"
+    },
+    {
+      "name": "add_and_round.constprop.0"
+    },
+    {
+      "name": "bid128_ext_fma"
+    },
+    {
+      "name": "breakpoints_bid32"
+    },
+    {
+      "name": "breakpoints_bid64"
+    },
+    {
+      "name": "breakpoints_binary128"
+    },
+    {
+      "name": "breakpoints_binary32"
+    },
+    {
+      "name": "breakpoints_binary64"
+    },
+    {
+      "name": "breakpoints_binary80"
+    },
+    {
+      "name": "coefflimits_bid128"
+    },
+    {
+      "name": "coefflimits_bid32"
+    },
+    {
+      "name": "coefflimits_bid64"
+    },
+    {
+      "name": "create_key"
+    },
+    {
+      "name": "create_key_once"
+    },
+    {
+      "name": "exponents_bid32"
+    },
+    {
+      "name": "exponents_bid64"
+    },
+    {
+      "name": "exponents_binary128"
+    },
+    {
+      "name": "exponents_binary32"
+    },
+    {
+      "name": "exponents_binary64"
+    },
+    {
+      "name": "exponents_binary80"
+    },
+    {
+      "name": "free_segments"
+    },
+    {
+      "name": "get_BID64.constprop.0"
+    },
+    {
+      "name": "get_BID64_UF.part.0.constprop.0"
+    },
+    {
+      "name": "get_available_features"
+    },
+    {
+      "name": "handle_UF_128.constprop.0.isra.0"
+    },
+    {
+      "name": "handle_UF_128_rem.constprop.0.isra.0"
+    },
+    {
+      "name": "innertable_exp"
+    },
+    {
+      "name": "innertable_sig"
+    },
+    {
+      "name": "isinfd128"
+    },
+    {
+      "name": "isinfd32"
+    },
+    {
+      "name": "isinfd64"
+    },
+    {
+      "name": "msg.0"
+    },
+    {
+      "name": "msg.1"
+    },
+    {
+      "name": "msg.2"
+    },
+    {
+      "name": "mult_factor"
+    },
+    {
+      "name": "multipliers1_bid32"
+    },
+    {
+      "name": "multipliers1_bid64"
+    },
+    {
+      "name": "multipliers1_binary128"
+    },
+    {
+      "name": "multipliers1_binary32"
+    },
+    {
+      "name": "multipliers1_binary64"
+    },
+    {
+      "name": "multipliers1_binary80"
+    },
+    {
+      "name": "multipliers2_bid32"
+    },
+    {
+      "name": "multipliers2_bid64"
+    },
+    {
+      "name": "multipliers2_binary128"
+    },
+    {
+      "name": "multipliers2_binary32"
+    },
+    {
+      "name": "multipliers2_binary64"
+    },
+    {
+      "name": "multipliers2_binary80"
+    },
+    {
+      "name": "nl.2"
+    },
+    {
+      "name": "nr_digits256"
+    },
+    {
+      "name": "outertable_exp"
+    },
+    {
+      "name": "outertable_sig"
+    },
+    {
+      "name": "power_five"
+    },
+    {
+      "name": "pthread_key_create"
+    },
+    {
+      "name": "pthread_once"
+    },
+    {
+      "name": "pthread_setspecific"
+    },
+    {
+      "name": "pthread_sigmask"
+    },
+    {
+      "name": "roundbound_128"
+    },
+    {
+      "name": "rounding_correction.constprop.0"
+    },
+    {
+      "name": "segment_list_key"
+    },
+    {
+      "name": "stack_split_initialize_thread"
+    },
+    {
+      "name": "static_pagesize"
+    },
+    {
+      "name": "sub256"
+    },
+    {
+      "name": "use_guard_page"
+    }
+  ],
+  "externs": [
+    {
+      "archive": "libc.a",
+      "symbols": [
+        "__errno_location",
+        "abort",
+        "fflush",
+        "fprintf",
+        "free",
+        "getenv",
+        "getpagesize",
+        "malloc",
+        "mprotect",
+        "sigdelset",
+        "sigemptyset",
+        "sigfillset",
+        "sigprocmask",
+        "stderr",
+        "syscall",
+        "writev"
+      ]
+    },
+    {
+      "archive": "libgcc_eh.a",
+      "symbols": [
+        "_Unwind_Resume",
+        "__gcc_personality_v0"
+      ]
+    }
+  ],
+  "undefs": [
+    "_GLOBAL_OFFSET_TABLE_",
+    "__tls_get_addr"
+  ]
+}

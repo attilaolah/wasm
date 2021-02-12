@@ -608,5 +608,8 @@
         "sinf"
       ]
     }
+  ],
+  "undefs": [
+    "_GLOBAL_OFFSET_TABLE_"
   ]
 }

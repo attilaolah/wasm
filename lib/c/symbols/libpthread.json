@@ -1565,6 +1565,17 @@
         "strlen",
         "unlink"
       ]
+    },
+    {
+      "archive": "libgcc_eh.a",
+      "symbols": [
+        "_Unwind_ForcedUnwind",
+        "_Unwind_GetCFA"
+      ]
     }
+  ],
+  "undefs": [
+    "_GLOBAL_OFFSET_TABLE_",
+    "__pthread_create"
   ]
 }

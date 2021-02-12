@@ -6428,6 +6428,39 @@
         "memset",
         "qsort"
       ]
+    },
+    {
+      "archive": "libgcc.a",
+      "symbols": [
+        "__addtf3",
+        "__divtf3",
+        "__eqtf2",
+        "__extenddftf2",
+        "__fixtfdi",
+        "__fixtfsi",
+        "__floatditf",
+        "__floatsitf",
+        "__floatunsitf",
+        "__getf2",
+        "__gttf2",
+        "__letf2",
+        "__lttf2",
+        "__muldc3",
+        "__mulsc3",
+        "__multc3",
+        "__multf3",
+        "__mulxc3",
+        "__netf2",
+        "__sfp_handle_exceptions",
+        "__subtf3",
+        "__trunctfdf2",
+        "__trunctfsf2",
+        "__trunctfxf2",
+        "__unordtf2"
+      ]
     }
+  ],
+  "undefs": [
+    "_GLOBAL_OFFSET_TABLE_"
   ]
 }

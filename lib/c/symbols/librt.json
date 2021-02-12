@@ -357,6 +357,13 @@
       ]
     },
     {
+      "archive": "libgcc_eh.a",
+      "symbols": [
+        "_Unwind_Resume",
+        "__gcc_personality_v0"
+      ]
+    },
+    {
       "archive": "libpthread.a",
       "symbols": [
         "__futex_abstimed_wait64",
@@ -378,5 +385,8 @@
         "pthread_setcancelstate"
       ]
     }
+  ],
+  "undefs": [
+    "_GLOBAL_OFFSET_TABLE_"
   ]
 }

@@ -1,8 +1,8 @@
-load(":gnu_c_symbols.bzl", "gnu_c_symbols")
+load("//tools/archive_symbols:archive_symbols.bzl", "static_symbols")
 
 package(default_visibility = ["//lib:__subpackages__"])
 
-gnu_c_symbols(
+static_symbols(
     name = "c_symbols",
     srcs = glob(["symbols/lib*.json"]),
 )
