@@ -14,28 +14,35 @@ TEMPDIR=/tmp/glibc
 SRC="${TEMPDIR}/src"
 BUILD="${TEMPDIR}/build"
 INSTALL="${TEMPDIR}/install"
-mkdir -p "${TEMPDIR}" "${SRC}" "${BUILD}" "${INSTALL}"
 
-apt-get --yes install build-essential python3 gawk bison wget jq 2>&1
+if [[ ! -f "${INSTALL}/lib/libc.a" ]]; then
+  mkdir -p "${TEMPDIR}" "${SRC}" "${BUILD}" "${INSTALL}"
 
-if [ ! -f "${TEMPDIR}/glibc-${VERSION}.tar.xz" ]; then
-  wget "https://ftp.gnu.org/gnu/libc/glibc-${VERSION}.tar.xz" \
-    -O "${TEMPDIR}/glibc-${VERSION}.tar.xz"
-  tar --extract --directory="${SRC}" --strip-components=1 \
-    -f "${TEMPDIR}/glibc-${VERSION}.tar.xz"
+  apt-get --yes install build-essential python3 gawk bison wget jq 2>&1
+
+  if [ ! -f "${TEMPDIR}/glibc-${VERSION}.tar.xz" ]; then
+    wget "https://ftp.gnu.org/gnu/libc/glibc-${VERSION}.tar.xz" \
+      -O "${TEMPDIR}/glibc-${VERSION}.tar.xz"
+    tar --extract --directory="${SRC}" --strip-components=1 \
+      -f "${TEMPDIR}/glibc-${VERSION}.tar.xz"
+  fi
+
+  pushd "${BUILD}"
+  "${SRC}/configure" \
+    --enable-static-nss=no \
+    --enable-static-pie=yes \
+    --prefix="${INSTALL}"
+  make
+  make install
+  popd
 fi
 
-pushd "${BUILD}"
-"${SRC}/configure" \
-  --enable-static-nss=no \
-  --enable-static-pie=yes \
-  --prefix="${INSTALL}"
-make
-make install
-popd
-
 # First pass, without externs:
+rm "${BUILD_WORKSPACE_DIRECTORY}"/lib/c/symbols/*.json
 for archive in "${INSTALL}"/lib/*.a; do
+  if [[ "$(basename "${archive}")" == "libm.a" ]]; then
+    continue
+  fi
   "${ARCHIVE_SYMBOLS}" \
     -nm "${NM}" \
     -archive "${archive}" \
@@ -45,6 +52,9 @@ done
 # Second pass, using all externs:
 echo "#!/usr/bin/env bash" > "${TEMPDIR}/regen.sh"
 for archive in "${INSTALL}"/lib/*.a; do
+  if [[ "$(basename "${archive}")" == "libm.a" ]]; then
+    continue
+  fi
   echo "${ARCHIVE_SYMBOLS}" \
     -nm "${NM}" \
     -archive "${archive}" \
@@ -63,7 +73,7 @@ source "${TEMPDIR}/regen.sh"
 
 # Pretty-print, remove unnecessary fields:
 for result in "${BUILD_WORKSPACE_DIRECTORY}"/lib/c/symbols/*.json; do
-  jq "{name: .name, symbols: ([{name: .symbols[].name}] | unique), externs: .externs, undefs: .undefs}" \
+  jq "{name: .name, symbols: ([.symbols[].name] | unique), externs: .externs, undefs: .undefs}" \
     < "${result}" > "${result}.pp"
   mv "${result}.pp" "${result}"
 done
