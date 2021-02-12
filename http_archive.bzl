@@ -47,6 +47,8 @@ def http_archive(
         "version": version,
         "version-": version.replace(".", "-"),
         "version_": version.replace(".", "_"),
+        "versionm": version.split(".")[0],
+        "versionmm": ".".join(version.split(".")[:2]),
     }
 
     if strip_prefix != None:
