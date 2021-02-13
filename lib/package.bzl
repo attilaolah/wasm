@@ -1,5 +1,6 @@
 """Workspace rule for downloading subpackage dependencies."""
 
+load("//lib/bz2:package.bzl", "download_bz2")
 load("//lib/ceres:package.bzl", "download_ceres")
 load("//lib/curl:package.bzl", "download_curl")
 load("//lib/deflate:package.bzl", "download_deflate")
@@ -39,6 +40,7 @@ load("//lib/zstd:package.bzl", "download_zstd")
 
 def download_lib():
     """Download all library sources."""
+    download_bz2()
     download_ceres()
     download_curl()
     download_deflate()

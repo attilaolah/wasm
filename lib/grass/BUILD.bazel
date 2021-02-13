@@ -5,7 +5,6 @@ package(default_visibility = ["//:__subpackages__"])
 
 configure_make_lib(
     name = "grass",
-    configure_in_place = True,
     configure_env_vars = {
         # Transitive dependencies:
         "LDFLAGS": " ".join(["-l{}".format(lib) for lib in [
@@ -24,9 +23,11 @@ configure_make_lib(
             "zstd",
         ]]),
     },
+    configure_in_place = True,
     configure_options = [
         # keep sorted
         "--enable-shared=no",
+        "--with-bzlib",
         "--with-cxx",
         "--with-fftw",
         "--with-nls",
@@ -37,7 +38,6 @@ configure_make_lib(
         "--with-tiff",
         "--with-zstd",
         "--without-blas",
-        "--without-bzlib",
         "--without-cairo",
         "--without-freetype",
         "--without-gdal",
@@ -52,6 +52,7 @@ configure_make_lib(
         "--without-readline",
     ],
     deps = [
+        "//lib/bz2",
         "//lib/fftw",
         "//lib/png",
         "//lib/proj",
