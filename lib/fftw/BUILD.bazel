@@ -1,18 +1,52 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
+load("//toolchains/make:configure.bzl", "lib_source")
 
 package(default_visibility = ["//:__subpackages__"])
 
+CACHE_ENTRIES = {
+    "BUILD_SHARED_LIBS": False,
+    "BUILD_TESTS": False,
+    "DISABLE_FORTRAN": True,
+    "ENABLE_OPENMP": False,
+    "ENABLE_THREADS": True,
+}
+
 cmake_lib(
     name = "fftw",
-    cache_entries = {
-        "BUILD_SHARED_LIBS": False,
-        "BUILD_TESTS": False,
-        "DISABLE_FORTRAN": True,
+    cache_entries = CACHE_ENTRIES,
+    linkopts = ["-lfftw3"],
+    static_libraries = ["libfftw3.a"],
+)
+
+cmake_lib(
+    name = "fftwf",
+    cache_entries = dict(CACHE_ENTRIES.items() + {
+        "ENABLE_FLOAT": True,
+    }.items()),
+    lib_source = lib_source("fftw"),
+    linkopts = ["-lfftw3f"],
+    static_libraries = ["libfftw3f.a"],
+)
+
+cmake_lib(
+    name = "fftwl",
+    cache_entries = dict(CACHE_ENTRIES.items() + {
+        "ENABLE_LONG_DOUBLE": True,
+    }.items()),
+    lib_source = lib_source("fftw"),
+    linkopts = ["-lfftw3l"],
+    static_libraries = ["libfftw3l.a"],
+)
+
+cmake_lib(
+    name = "fftwq",
+    cache_entries = dict(CACHE_ENTRIES.items() + {
         "ENABLE_FLOAT": True,
         "ENABLE_LONG_DOUBLE": True,
         "ENABLE_QUAD_PRECISION": True,
-    },
+    }.items()),
+    lib_source = lib_source("fftw"),
     linkopts = ["-lfftw3q"],
     static_libraries = ["libfftw3q.a"],
 )
