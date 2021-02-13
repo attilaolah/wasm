@@ -27,7 +27,7 @@ toolchain, pass `--cpu=wasm32`. Pass `-c opt` for an optimised build.
 | Build Label | Version |
 |-------------|---------|
 [`//lib/bz2`](https://github.com/attilaolah/wasm/blob/main/lib/bz2/BUILD.bazel) | 1.0.8 [🔗](https://sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz)
-[`//lib/c`](https://github.com/attilaolah/wasm/blob/main/lib/c/BUILD.bazel) | 2.33 [🔗](https://ftp.gnu.org/gnu/libc/glibc-2.33.tar.xz) [🔗](http://mirror.kumi.systems/gnu/libc/glibc-2.33.tar.xz)
+[`//lib/c`](https://github.com/attilaolah/wasm/blob/main/lib/c/BUILD.bazel) | 2.33 [🔗](https://ftp.gnu.org/gnu/libc/glibc-2.33.tar.xz) [🔗](https://mirror.kumi.systems/gnu/libc/glibc-2.33.tar.xz)
 [`//lib/ceres`](https://github.com/attilaolah/wasm/blob/main/lib/ceres/BUILD.bazel) | 1.14.0 [🔗](https://github.com/ceres-solver/ceres-solver/archive/1.14.0.tar.gz)
 [`//lib/curl`](https://github.com/attilaolah/wasm/blob/main/lib/curl/BUILD.bazel) | 7.75.0 [🔗](https://curl.se/download/curl-7.75.0.tar.xz)
 [`//lib/deflate`](https://github.com/attilaolah/wasm/blob/main/lib/deflate/BUILD.bazel) | 1.7 [🔗](https://github.com/ebiggers/libdeflate/archive/v1.7.tar.gz)
@@ -36,7 +36,7 @@ toolchain, pass `--cpu=wasm32`. Pass `-c opt` for an optimised build.
 [`//lib/expat`](https://github.com/attilaolah/wasm/blob/main/lib/expat/BUILD.bazel) | 2.2.10 [🔗](https://github.com/libexpat/libexpat/releases/download/R_2_2_10/expat-2.2.10.tar.xz)
 [`//lib/ffi`](https://github.com/attilaolah/wasm/blob/main/lib/ffi/BUILD.bazel) | 3.3 [🔗](https://github.com/libffi/libffi/releases/download/v3.3/libffi-3.3.tar.gz)
 [`//lib/fftw`](https://github.com/attilaolah/wasm/blob/main/lib/fftw/BUILD.bazel) | 3.3.9 [🔗](http://www.fftw.org/fftw-3.3.9.tar.gz)
-[`//lib/gcc`](https://github.com/attilaolah/wasm/blob/main/lib/gcc/BUILD.bazel) | 10.2.0 [🔗](ftp://ftp.gnu.org/gnu/gcc/gcc-10.2.0/gcc-10.2.0.tar.xz) [🔗](http://mirror.kumi.systems/gnu/gcc/gcc-10.2.0/gcc-10.2.0.tar.xz)
+[`//lib/gcc`](https://github.com/attilaolah/wasm/blob/main/lib/gcc/BUILD.bazel) | 10.2.0 [🔗](ftp://ftp.gnu.org/gnu/gcc/gcc-10.2.0/gcc-10.2.0.tar.xz) [🔗](https://mirror.kumi.systems/gnu/gcc/gcc-10.2.0/gcc-10.2.0.tar.xz)
 [`//lib/gdal`](https://github.com/attilaolah/wasm/blob/main/lib/gdal/BUILD.bazel) | 3.2.1 [🔗](https://github.com/OSGeo/gdal/releases/download/v3.2.1/gdal-3.2.1.tar.gz)
 [`//lib/gflags`](https://github.com/attilaolah/wasm/blob/main/lib/gflags/BUILD.bazel) | 2.2.2 [🔗](https://github.com/gflags/gflags/archive/v2.2.2.tar.gz)
 [`//lib/gif`](https://github.com/attilaolah/wasm/blob/main/lib/gif/BUILD.bazel) | 5.2.1 [🔗](https://downloads.sourceforge.net/project/giflib/giflib-5.2.1.tar.gz)
@@ -48,7 +48,7 @@ toolchain, pass `--cpu=wasm32`. Pass `-c opt` for an optimised build.
 [`//lib/jpeg_turbo`](https://github.com/attilaolah/wasm/blob/main/lib/jpeg_turbo/BUILD.bazel) | 2.0.90 [🔗](https://github.com/libjpeg-turbo/libjpeg-turbo/archive/2.0.90.tar.gz)
 [`//lib/lz4`](https://github.com/attilaolah/wasm/blob/main/lib/lz4/BUILD.bazel) | 1.9.3 [🔗](https://github.com/lz4/lz4/archive/v1.9.3.tar.gz)
 [`//lib/lzma`](https://github.com/attilaolah/wasm/blob/main/lib/lzma/BUILD.bazel) | 5.2.5 [🔗](https://tukaani.org/xz/xz-5.2.5.tar.xz)
-[`//lib/lzo`](https://github.com/attilaolah/wasm/blob/main/lib/lzo/BUILD.bazel) | 2.10 [🔗](http://www.oberhumer.com/opensource/lzo/download/lzo-2.10.tar.gz)
+[`//lib/lzo`](https://github.com/attilaolah/wasm/blob/main/lib/lzo/BUILD.bazel) | 2.10 [🔗](https://www.oberhumer.com/opensource/lzo/download/lzo-2.10.tar.gz)
 [`//lib/mpfr`](https://github.com/attilaolah/wasm/blob/main/lib/mpfr/BUILD.bazel) | 4.1.0 [🔗](https://www.mpfr.org/mpfr-current/mpfr-4.1.0.tar.xz) [🔗](https://ftp.gnu.org/gnu/mpfr/mpfr-4.1.0.tar.xz)
 [`//lib/open_jpeg`](https://github.com/attilaolah/wasm/blob/main/lib/open_jpeg/BUILD.bazel) | 2.4.0 [🔗](https://github.com/uclouvain/openjpeg/archive/v2.4.0.tar.gz)
 [`//lib/open_ssl`](https://github.com/attilaolah/wasm/blob/main/lib/open_ssl/BUILD.bazel) | 1.1.1i [🔗](https://www.openssl.org/source/openssl-1.1.1i.tar.gz)

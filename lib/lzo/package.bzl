@@ -4,7 +4,7 @@ load("//:http_archive.bzl", "http_archive")
 
 VERSION = "2.10"
 
-URL = "http://www.oberhumer.com/opensource/lzo/download/lzo-{version}.tar.gz"
+URL = "https://www.oberhumer.com/opensource/lzo/download/lzo-{version}.tar.gz"
 
 SHA256 = "c0f892943208266f9b6543b3ae308fab6284c5c90e627931446fb49b4221a072"
 

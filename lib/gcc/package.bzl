@@ -9,5 +9,5 @@ VERSION = "10.2.0"
 
 URLS = [
     "ftp://ftp.gnu.org/gnu/gcc/gcc-{version}/gcc-{version}.tar.xz",
-    "http://mirror.kumi.systems/gnu/gcc/gcc-{version}/gcc-{version}.tar.xz",
+    "https://mirror.kumi.systems/gnu/gcc/gcc-{version}/gcc-{version}.tar.xz",
 ]

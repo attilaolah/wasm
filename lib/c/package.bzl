@@ -12,5 +12,5 @@ VERSION = "2.33"
 
 URLS = [
     "https://ftp.gnu.org/gnu/libc/glibc-{version}.tar.xz",
-    "http://mirror.kumi.systems/gnu/libc/glibc-{version}.tar.xz",
+    "https://mirror.kumi.systems/gnu/libc/glibc-{version}.tar.xz",
 ]
