@@ -6,18 +6,17 @@ package(default_visibility = ["//:__subpackages__"])
 configure_make_lib(
     name = "gdal",
     configure_env_vars = {
+        # Transitive dependencies:
         "LDFLAGS": " ".join(["-l{}".format(lib) for lib in [
-            # //lib/tiff's transitive dependencies:
-            "turbojpeg",
+            # keep sorted
+            "crypto",
+            "curl",
             "lzma",
+            "sqlite3",
+            "ssl",
+            "turbojpeg",
             "webp",
             "zstd",
-        ] + [
-            # //lib/proj's transitive dependencies:
-            "sqlite3",
-            "curl",
-            "ssl",
-            "crypto",
         ]]),
     },
     configure_in_place = True,
@@ -28,6 +27,8 @@ configure_make_lib(
         '--with-crypto="${EXT_BUILD_DEPS}/open_ssl_lib"',
         '--with-curl="${EXT_BUILD_DEPS}/curl_lib"',
         '--with-gif="${EXT_BUILD_DEPS}/gif_lib"',
+        "--with-grass",
+        '--with-hdf4="${EXT_BUILD_DEPS}/hdf_lib"',
         '--with-hdf5="${EXT_BUILD_DEPS}/hdf5_lib"',
         '--with-jpeg="${EXT_BUILD_DEPS}/jpeg_turbo_lib"',
         '--with-libdeflate="${EXT_BUILD_DEPS}/deflate_lib"',
@@ -44,6 +45,8 @@ configure_make_lib(
         "//lib/curl",
         "//lib/deflate",
         "//lib/gif",
+        "//lib/grass",
+        "//lib/hdf",
         "//lib/hdf5",
         "//lib/jpeg_turbo",
         "//lib/lzma",
