@@ -1,0 +1,20 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//toolchains/cmake:cmake.bzl", "cmake_lib")
+
+package(default_visibility = ["//:__subpackages__"])
+
+cmake_lib(
+    name = "oniguruma",
+    cache_entries = {
+        "BUILD_SHARED_LIBS": False,
+        "ENABLE_POSIX_API": True,
+    },
+    linkopts = ["-lonig"],
+    static_libraries = ["libonig.a"],
+)
+
+bzl_library(
+    name = "package",
+    srcs = ["package.bzl"],
+    deps = ["//:http_archive"],
+)
