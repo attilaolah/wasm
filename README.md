@@ -42,7 +42,6 @@ toolchain, pass `--cpu=wasm32`. Pass `-c opt` for an optimised build.
 [`//lib/gif`](https://github.com/attilaolah/wasm/blob/main/lib/gif/BUILD.bazel) | 5.2.1 [🔗](https://downloads.sourceforge.net/project/giflib/giflib-5.2.1.tar.gz)
 [`//lib/glog`](https://github.com/attilaolah/wasm/blob/main/lib/glog/BUILD.bazel) | 0.4.0 [🔗](https://github.com/google/glog/archive/v0.4.0.tar.gz)
 [`//lib/gmp`](https://github.com/attilaolah/wasm/blob/main/lib/gmp/BUILD.bazel) | 6.2.1 [🔗](https://gmplib.org/download/gmp/gmp-6.2.1.tar.xz)
-[`//lib/grass`](https://github.com/attilaolah/wasm/blob/main/lib/grass/BUILD.bazel) | 7.8.5 [🔗](https://grass.osgeo.org/grass78/source/grass-7.8.5.tar.gz)
 [`//lib/hdf`](https://github.com/attilaolah/wasm/blob/main/lib/hdf/BUILD.bazel) | 4.2.15 [🔗](https://support.hdfgroup.org/ftp/HDF/releases/HDF4.2.15/src/hdf-4.2.15.tar.gz)
 [`//lib/hdf5`](https://github.com/attilaolah/wasm/blob/main/lib/hdf5/BUILD.bazel) | 1.12.0 [🔗](https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.12/hdf5-1.12.0/src/hdf5-1.12.0.tar.gz) [🔗](https://hdf-wordpress-1.s3.amazonaws.com/wp-content/uploads/manual/HDF5/HDF5_1_12_0/source/hdf5-1.12.0.tar.gz)
 [`//lib/jpeg_turbo`](https://github.com/attilaolah/wasm/blob/main/lib/jpeg_turbo/BUILD.bazel) | 2.0.90 [🔗](https://github.com/libjpeg-turbo/libjpeg-turbo/archive/2.0.90.tar.gz)
