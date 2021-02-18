@@ -1,0 +1,28 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//toolchains/make:configure.bzl", "configure_make_lib")
+
+package(default_visibility = ["//:__subpackages__"])
+
+configure_make_lib(
+    name = "lcms",
+    configure_options = [
+        # keep sorted
+        "--enable-shared=no",
+        "--enable-static=yes",
+        "--with-fastfloat",
+        '--with-jpeg="${EXT_BUILD_DEPS}/jpeg_turbo_lib"',
+        '--with-tiff="${EXT_BUILD_DEPS}/tiff_lib/lib"',
+    ],
+    linkopts = ["-lcms2"],
+    static_libraries = ["liblcms2.a"],
+    deps = [
+        "//lib/jpeg_turbo",
+        "//lib/tiff",
+    ],
+)
+
+bzl_library(
+    name = "package",
+    srcs = ["package.bzl"],
+    deps = ["//:http_archive"],
+)

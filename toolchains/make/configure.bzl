@@ -43,6 +43,7 @@ def configure_make_lib(
         name,
         configure_script = "configure",
         make_commands = None,
+        linkopts = None,
         static_libraries = None,
         env = None,
         **kwargs):
@@ -54,6 +55,7 @@ def configure_make_lib(
       configure_script: Name of the configure script to run.
       make_commands: Wrapped in a select() for Emscripten, then passed on to
         make().
+      linkopts: Passed on to cmake_external(). Guessed from name.
       static_libraries: Passed on to configure_make(). Guessed from name.
       env: Passed on to configure_make(). Form Emscripten builds, it is
         pre-populated with environment variables required by the toolchain.
@@ -64,6 +66,8 @@ def configure_make_lib(
             "make",
             "make install",
         ]
+    if linkopts == None:
+        linkopts = ["-l{}".format(name)]
     if static_libraries == None:
         static_libraries = ["lib{}.a".format(name)]
 
@@ -84,7 +88,7 @@ def configure_make_lib(
         }),
         lib_name = "{}_lib".format(name),
         lib_source = lib_source(name),
-        linkopts = ["-l{}".format(name)],
+        linkopts = linkopts,
         make_commands = _make_commands(commands = make_commands),
         static_libraries = static_libraries,
         tools_deps = tools_deps(),
