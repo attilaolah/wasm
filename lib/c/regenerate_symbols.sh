@@ -18,7 +18,7 @@ INSTALL="${TEMPDIR}/install"
 if [[ ! -f "${INSTALL}/lib/libc.a" ]]; then
   mkdir -p "${TEMPDIR}" "${SRC}" "${BUILD}" "${INSTALL}"
 
-  apt-get --yes install build-essential python3 gawk bison wget jq 2>&1
+  apt-get --yes install build-essential python3 gawk bison wget 2>&1
 
   if [ ! -f "${TEMPDIR}/glibc-${VERSION}.tar.xz" ]; then
     wget "https://ftp.gnu.org/gnu/libc/glibc-${VERSION}.tar.xz" \
@@ -73,7 +73,7 @@ source "${TEMPDIR}/regen.sh"
 
 # Pretty-print, remove unnecessary fields:
 for result in "${BUILD_WORKSPACE_DIRECTORY}"/lib/c/symbols/*.json; do
-  jq "{name: .name, symbols: ([.symbols[].name] | unique), externs: .externs, undefs: .undefs}" \
+  "${JQ}" "{name: .name, symbols: ([.symbols[].name] | unique), externs: .externs, undefs: .undefs}" \
     < "${result}" > "${result}.pp"
   mv "${result}.pp" "${result}"
 done
