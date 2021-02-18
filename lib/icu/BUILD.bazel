@@ -1,0 +1,29 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//toolchains/make:configure.bzl", "configure_make_lib")
+
+package(default_visibility = ["//:__subpackages__"])
+
+configure_make_lib(
+    name = "icu",
+    configure_options = [
+        # keep sorted
+        "--enable-shared=no",
+        "--enable-static=yes",
+    ],
+    configure_script = "source/configure",
+    static_libraries = [
+        # keep sorted
+        "libicudata.a",
+        "libicui18n.a",
+        "libicuio.a",
+        "libicutest.a",
+        "libicutu.a",
+        "libicuuc.a",
+    ],
+)
+
+bzl_library(
+    name = "package",
+    srcs = ["package.bzl"],
+    deps = ["//:http_archive"],
+)

@@ -44,6 +44,7 @@ toolchain, pass `--cpu=wasm32`. Pass `-c opt` for an optimised build.
 [`//lib/gmp`](https://github.com/attilaolah/wasm/blob/main/lib/gmp/BUILD.bazel) | 6.2.1 [🔗](https://gmplib.org/download/gmp/gmp-6.2.1.tar.xz)
 [`//lib/hdf`](https://github.com/attilaolah/wasm/blob/main/lib/hdf/BUILD.bazel) | 4.2.15 [🔗](https://support.hdfgroup.org/ftp/HDF/releases/HDF4.2.15/src/hdf-4.2.15.tar.gz)
 [`//lib/hdf5`](https://github.com/attilaolah/wasm/blob/main/lib/hdf5/BUILD.bazel) | 1.12.0 [🔗](https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.12/hdf5-1.12.0/src/hdf5-1.12.0.tar.gz) [🔗](https://hdf-wordpress-1.s3.amazonaws.com/wp-content/uploads/manual/HDF5/HDF5_1_12_0/source/hdf5-1.12.0.tar.gz)
+[`//lib/icu`](https://github.com/attilaolah/wasm/blob/main/lib/icu/BUILD.bazel) | 68.2 [🔗](https://github.com/unicode-org/icu/releases/download/release-68-2/icu4c-68_2-src.tgz)
 [`//lib/jpeg_turbo`](https://github.com/attilaolah/wasm/blob/main/lib/jpeg_turbo/BUILD.bazel) | 2.0.90 [🔗](https://github.com/libjpeg-turbo/libjpeg-turbo/archive/2.0.90.tar.gz)
 [`//lib/jq`](https://github.com/attilaolah/wasm/blob/main/lib/jq/BUILD.bazel) | 1.6 [🔗](https://github.com/stedolan/jq/releases/download/jq-1.6/jq-1.6.tar.gz)
 [`//lib/lz4`](https://github.com/attilaolah/wasm/blob/main/lib/lz4/BUILD.bazel) | 1.9.3 [🔗](https://github.com/lz4/lz4/archive/v1.9.3.tar.gz)
