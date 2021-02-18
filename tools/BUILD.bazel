@@ -8,6 +8,12 @@ filegroup(
 )
 
 filegroup(
+    name = "jq",
+    srcs = ["//lib/jq"],
+    output_group = "jq",
+)
+
+filegroup(
     name = "sqlite",
     srcs = ["//lib/sqlite"],
     output_group = "sqlite3",
