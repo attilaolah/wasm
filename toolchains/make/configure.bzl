@@ -42,6 +42,7 @@ WASM_TOOLS = [
 def configure_make_lib(
         name,
         configure_script = "configure",
+        make_commands = None,
         static_libraries = None,
         env = None,
         **kwargs):
@@ -51,11 +52,18 @@ def configure_make_lib(
       name: Passed on to configure_make(). Also used for guessing other
         parameters.
       configure_script: Name of the configure script to run.
+      make_commands: Wrapped in a select() for Emscripten, then passed on to
+        make().
       static_libraries: Passed on to configure_make(). Guessed from name.
       env: Passed on to configure_make(). Form Emscripten builds, it is
         pre-populated with environment variables required by the toolchain.
       **kwargs: Passed no configure_make().
     """
+    if make_commands == None:
+        make_commands = [
+            "make",
+            "make install",
+        ]
     if static_libraries == None:
         static_libraries = ["lib{}.a".format(name)]
 
@@ -77,7 +85,7 @@ def configure_make_lib(
         lib_name = "{}_lib".format(name),
         lib_source = lib_source(name),
         linkopts = ["-l{}".format(name)],
-        make_commands = make_commands(),
+        make_commands = _make_commands(commands = make_commands),
         static_libraries = static_libraries,
         tools_deps = tools_deps(),
         **kwargs
@@ -124,6 +132,8 @@ def make_commands(
         "//config:wasm": wasm_commands,
         "//conditions:default": commands,
     })
+
+_make_commands = make_commands
 
 def tools_deps(extras = None):
     """Extends tools_deps with extras.

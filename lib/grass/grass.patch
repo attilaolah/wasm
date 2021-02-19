@@ -1,0 +1,52 @@
+diff --git a/display/d.where/main.c b/display/d.where/main.c
+index a72b63ac0..951bc7094 100644
+--- a/display/d.where/main.c
++++ b/display/d.where/main.c
+@@ -19,6 +19,7 @@
+  *               for details.
+  *
+  *****************************************************************************/
++#include <stdlib.h>
+ #include <string.h>
+ #include <grass/gis.h>
+ #include <grass/gprojects.h>
+diff --git a/lib/gis/env.c b/lib/gis/env.c
+index 6518ff77c..5f364307a 100644
+--- a/lib/gis/env.c
++++ b/lib/gis/env.c
+@@ -115,8 +115,8 @@ void G__read_gisrc_env(void)
+ }
+ 
+ static void parse_env(FILE *fd, int loc)
+-{    
+-    char buf[200];
++{
++    char buf[GPATH_MAX + strlen("GISDBASE: \0\n")];
+     char *name;
+     char *value;
+ 
+diff --git a/lib/raster/vrt.c b/lib/raster/vrt.c
+index 10ae1ffae..96be29114 100644
+--- a/lib/raster/vrt.c
++++ b/lib/raster/vrt.c
+@@ -18,7 +18,7 @@
+ 
+ #include "R.h"
+ 
+-int cmp_wnd(const void *a, const void *b)
++static int cmp_wnd(const void *a, const void *b)
+ {
+     struct Cell_head *cellhda = &((struct tileinfo *) a)->cellhd;
+     struct Cell_head *cellhdb = &((struct tileinfo *) b)->cellhd;
+diff --git a/raster/r.mapcalc/map.c b/raster/r.mapcalc/map.c
+index eedf19c6c..68ec6ec8e 100644
+--- a/raster/r.mapcalc/map.c
++++ b/raster/r.mapcalc/map.c
+@@ -23,7 +23,6 @@
+ /****************************************************************************/
+ 
+ static void prepare_region_from_maps(expression **, int, int);
+-int columns;
+ struct Cell_head current_region2;
+ 
+ void setup_region(void)

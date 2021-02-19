@@ -14,7 +14,10 @@ apt-get --yes install curl gnupg 2>&1
 curl -fsSL https://bazel.build/bazel-release.pub.gpg | gpg --dearmor > /etc/apt/trusted.gpg.d/bazel.gpg
 echo "deb [arch=amd64] https://storage.googleapis.com/bazel-apt stable jdk1.8" >> /etc/apt/sources.list.d/bazel.list
 apt-get update
-apt-get --yes install bazel git make cmake m4 bison flex gettext 2>&1
+apt-get --yes install bazel git make cmake m4 2>&1
+
+# TODO: Required by //lib/grass, to be added to the build system.
+apt-get --yes install python3-distutils python3-six bison flex gettext 2>&1
 
 # Self-destruct.
 rm /etc/update.sh

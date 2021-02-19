@@ -15,4 +15,6 @@ def download_grass():
         urls = [URL],
         sha256 = SHA256,
         strip_prefix = "grass-{version}",
+        patches = ["//lib/grass:grass.patch"],
+        patch_args = ["--strip=1"],
     )

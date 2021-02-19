@@ -51,6 +51,13 @@ configure_make_lib(
         "--without-postgres",
         "--without-readline",
     ],
+    make_commands = [
+        # Do not build Python bindings.
+        # These require shared libs and cannot be built with static libs only.
+        r"sed -i lib/python/Makefile -e 's/ ctypes / /'",
+        "make",
+        "make_install",
+    ],
     deps = [
         "//lib/bz2",
         "//lib/fftw",
