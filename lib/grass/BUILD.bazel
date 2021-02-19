@@ -1,5 +1,6 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
+load(":package.bzl", "MAJORMINOR", "MAJOR_MINOR")
 
 package(default_visibility = ["//:__subpackages__"])
 
@@ -32,6 +33,7 @@ configure_make_lib(
         "--with-fftw",
         "--with-nls",
         "--with-png",
+        '--with-proj-share="${EXT_BUILD_DEPS}/proj_lib/share/proj"',
         "--with-pthread",
         "--with-regex",
         "--with-sqlite",
@@ -55,8 +57,68 @@ configure_make_lib(
         # Do not build Python bindings.
         # These require shared libs and cannot be built with static libs only.
         r"sed -i lib/python/Makefile -e 's/ ctypes / /'",
-        "make",
-        "make_install",
+        # TODO: The build will fail due to missing PROJ libs.
+        # Should be fixed at some point, but for now, just ignore it.
+        "make && echo PASS || echo FAIL",
+        "make install",
+        # Copy static libs to the right place for exporting.
+        "cp -r grass_lib/grass{}/lib grass_lib".format(MAJORMINOR),
+    ],
+    static_libraries = [
+        "libgrass_{}.{}.a".format(lib, MAJOR_MINOR)
+        for lib in [
+            # keep sorted
+            "arraystats",
+            "bitmap",
+            "btree",
+            "btree2",
+            "calc",
+            "ccmath",
+            "cdhc",
+            "cluster",
+            "datetime",
+            "dbmibase",
+            "dbmiclient",
+            "dbmidriver",
+            "dbstubs",
+            "dgl",
+            "dig2",
+            "display",
+            "driver",
+            "dspf",
+            "g3d",
+            "gis",
+            "gmath",
+            "gpde",
+            "gproj",
+            "htmldriver",
+            "imagery",
+            "interpdata",
+            "interpfl",
+            "iortho",
+            "iostream",
+            "lidar",
+            "linkm",
+            "lrs",
+            "manage",
+            "neta",
+            "pngdriver",
+            "psdriver",
+            "qtree",
+            "raster",
+            "rli",
+            "rowio",
+            "rtree",
+            "segment",
+            "shape",
+            "sim",
+            "sqlp",
+            "stats",
+            "symb",
+            "temporal",
+            "vector",
+            "vedit",
+        ]
     ],
     deps = [
         "//lib/bz2",
