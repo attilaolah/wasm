@@ -21,7 +21,7 @@ rules_foreign_cc_dependencies(
         "//toolchains/cmake:emcmake",
         "//toolchains/make:emmake",
     ],
-    register_default_tools = True,
+    register_preinstalled_tools = False,
 )
 
 load("@build_bazel_rules_nodejs//:index.bzl", "npm_install")
