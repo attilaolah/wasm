@@ -9,9 +9,13 @@ import (
 	"io"
 	"os/exec"
 	"path/filepath"
+	"sort"
 	"strconv"
 	"strings"
 )
+
+// Archives is a sortable slice of Archive objects.
+type Archives []*Archive
 
 // Archive is a collection of objects archived under a single name, e.g. "libpng.a".
 type Archive struct {
@@ -40,7 +44,7 @@ type Symbol struct {
 type Class byte
 
 // ParseArchive executes `nm` on a single archive.
-func ParseArchive(nm, path string, extern bool) (*Archive, error) {
+func ParseArchives(nm string, paths []string, extern bool) (Archives, error) {
 	args := []string{
 		"--format=sysv",
 		"--print-file-name",
@@ -51,7 +55,7 @@ func ParseArchive(nm, path string, extern bool) (*Archive, error) {
 	if extern {
 		args = append(args, "--extern-only")
 	}
-	cmd := exec.Command(nm, append(args, path)...)
+	cmd := exec.Command(nm, append(args, paths...)...)
 
 	out, err := cmd.CombinedOutput()
 	if err != nil {
@@ -62,9 +66,9 @@ func ParseArchive(nm, path string, extern bool) (*Archive, error) {
 }
 
 // Parse parses `nm --format=sysv` output.
-func Parse(src io.Reader) (*Archive, error) {
-	a := Archive{}
+func Parse(src io.Reader) (Archives, error) {
 	o := &Object{}
+	am := map[string]*Archive{}
 
 	ln := 0
 	scanner := bufio.NewScanner(src)
@@ -96,10 +100,11 @@ func Parse(src io.Reader) (*Archive, error) {
 			// The archive name is missing for some reason.
 			ao = []string{"", ao[0]}
 		}
-		if _, aname := filepath.Split(ao[0]); a.Name == "" {
-			a.Name = aname
-		} else if a.Name != aname && aname != "" {
-			return nil, fmt.Errorf("line %d: %q: more than one archive in a single stream: [%q, %q]", ln, line, a.Name, aname)
+		_, aname := filepath.Split(ao[0])
+		a, ok := am[aname]
+		if !ok {
+			a = &Archive{Name: aname}
+			am[aname] = a
 		}
 		if o.Name != ao[1] {
 			o = &Object{Name: ao[1]}
@@ -139,7 +144,13 @@ func Parse(src io.Reader) (*Archive, error) {
 		return nil, fmt.Errorf("failed to scan line: %w", err)
 	}
 
-	return &a, nil
+	al := Archives{}
+	for _, a := range am {
+		al = append(al, a)
+	}
+	sort.Sort(&al)
+
+	return al, nil
 }
 
 // String returns the string representation, as displayed by `nm`.
@@ -164,3 +175,8 @@ func (c *Class) UnmarshalJSON(data []byte) error {
 	*c = Class(s[0])
 	return nil
 }
+
+// Len, Less and Swap implement sort.Interface.
+func (al Archives) Len() int           { return len(al) }
+func (al Archives) Less(i, j int) bool { return strings.Compare(al[i].Name, al[j].Name) < 0 }
+func (al Archives) Swap(i, j int)      { al[i], al[j] = al[j], al[i] }

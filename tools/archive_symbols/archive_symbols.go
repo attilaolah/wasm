@@ -15,15 +15,24 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
+	"strings"
 )
 
 var (
-	nm      = flag.String("nm", "llvm-nm", `Which "nm" binary to use.`)
-	archive = flag.String("archive", "", "Archive file to read.")
-	typef   = flag.String("type", "", "Include only symbols of this type (empty means include everything).")
-	output  = flag.String("output", "-", "Where to write the output file (- means stdout).")
-	extern  = flag.Bool("extern_only", false, "List external symbols only.")
+	nm       = flag.String("nm", "llvm-nm", `Which "nm" binary to use.`)
+	typef    = flag.String("type", "", "Include only symbols of this type (empty means include everything).")
+	output   = flag.String("output", "{archive}.json", "Where to write the output file (- means stdout).")
+	extern   = flag.Bool("extern_only", false, "List external symbols only.")
+	archives = flaglist{}
+	externs  = flaglist{}
 )
+
+func init() {
+	flag.Var(&archives, "archive", "Archive files to read. Repeat for multiple archive files.")
+	flag.Var(&externs, "externs", "Extern definition files. Repeat for multiple extern files.")
+	flag.Parse()
+}
 
 type flaglist []string
 
@@ -40,40 +49,53 @@ func (ls *flaglist) Set(value string) error {
 }
 
 func main() {
-	externs := flaglist{}
-	flag.Var(&externs, "externs", "Extern definition files.")
-	flag.Parse()
-
-	if *archive == "" {
+	if len(archives) == 0 {
 		log.Fatal("missing required flag: -archive")
 	}
 
-	a, err := ParseArchive(*nm, *archive, *extern)
+	al, err := ParseArchives(*nm, archives, *extern)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	t, err := a.SymbolTable(*typef)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	for _, ext := range externs {
-		if err := t.ResolveExterns(ext); err != nil {
+	stl := []*SymbolTable{}
+	for _, a := range al {
+		t, err := a.SymbolTable(*typef)
+		if err != nil {
 			log.Fatal(err)
 		}
+		stl = append(stl, t)
 	}
 
-	var out *os.File = os.Stdout
-	if *output != "-" {
-		f, err := os.Create(*output)
-		if err != nil {
-			log.Fatalf("error creating output file: %v", err)
+	for _, t := range stl {
+		for _, ext := range stl {
+			if ext != t {
+				t.ResolveSymbols(ext)
+			}
 		}
-		out = f
-	}
 
-	if err := json.NewEncoder(out).Encode(t); err != nil {
-		log.Fatal(err)
+		for _, ext := range externs {
+			if err := t.ResolveExterns(ext); err != nil {
+				log.Fatal(err)
+			}
+		}
+
+		var out *os.File = os.Stdout
+		if *output != "-" {
+			name := strings.TrimSuffix(t.Name, filepath.Ext(t.Name))
+			name = strings.ReplaceAll(*output, "{archive}", name)
+			fmt.Println("MKDIR:", filepath.Dir(name))
+			os.MkdirAll(filepath.Dir(name), 0755) // make sure the directory exists
+			fmt.Println("WRITE:", name)
+			f, err := os.Create(name)
+			if err != nil {
+				log.Fatalf("error creating output file: %v", err)
+			}
+			out = f
+		}
+
+		if err := json.NewEncoder(out).Encode(t); err != nil {
+			log.Fatal(err)
+		}
 	}
 }

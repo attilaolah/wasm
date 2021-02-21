@@ -31,38 +31,45 @@ def archive_symbols(name, deps):
     )
 
 def _archive_symbols_impl(ctx):
+    args = ctx.actions.args()
+    args.add("-nm", ctx.file._nm)
+    args.add("-extern_only")
+
+    symbols_dir = None
+
+    inputs = []
     outputs = []
     for src in ctx.attr.srcs:
         for linker_input in src[CcInfo].linking_context.linker_inputs.to_list():
             if linker_input.owner != src.label:
                 continue
             for lib in linker_input.libraries:
+                inputs.append(lib.static_library)
                 output = ctx.actions.declare_file(
                     "symbols/{}".format(
                         paths.replace_extension(lib.static_library.basename, ".json"),
                     ),
                 )
                 outputs.append(output)
-
-                args = ctx.actions.args()
-                args.add("-nm", ctx.file._nm)
                 args.add("-archive", lib.static_library)
-                args.add("-extern_only")
-                args.add("-output", output)
 
-                inputs = [ctx.file._nm, lib.static_library]
-                for dep in ctx.attr.deps:
-                    for ext in dep.files.to_list():
-                        args.add("-externs", ext)
-                    inputs.extend(dep.files.to_list())
+                if symbols_dir == None:
+                    symbols_dir = output.dirname
+                    args.add("-output", "{}/{{archive}}.json".format(symbols_dir))
 
-                ctx.actions.run(
-                    executable = ctx.executable._archive_symbols,
-                    arguments = [args],
-                    inputs = inputs,
-                    outputs = [output],
-                    mnemonic = "A2JSON",
-                )
+    for dep in ctx.attr.deps:
+        for ext in dep.files.to_list():
+            print("-externs {}".format(ext))
+            args.add("-externs", ext)
+        inputs.extend(dep.files.to_list())
+
+    ctx.actions.run(
+        executable = ctx.executable._archive_symbols,
+        arguments = [args],
+        inputs = [ctx.file._nm] + inputs,
+        outputs = outputs,
+        mnemonic = "A2JSON",
+    )
 
     return [
         DefaultInfo(files = depset(outputs)),

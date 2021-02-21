@@ -21,6 +21,12 @@ func (t *SymbolTable) ResolveExterns(path string) error {
 		return fmt.Errorf("error parsing external symbols from %q: %w", path, err)
 	}
 
+	t.ResolveSymbols(&ext)
+	return nil
+}
+
+func (t *SymbolTable) ResolveSymbols(ext *SymbolTable) {
+
 	symbols := map[string]struct{}{}
 	for _, s := range ext.Symbols {
 		// TODO: Check for conflicts!
@@ -41,8 +47,6 @@ func (t *SymbolTable) ResolveExterns(path string) error {
 		sort.Sort(t.Externs)
 		t.Undefs = undefs
 	}
-
-	return nil
 }
 
 // Len, Less and Swap implement sort.Interface.
