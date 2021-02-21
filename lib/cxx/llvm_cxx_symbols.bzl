@@ -3,47 +3,39 @@
 load("@bazel_skylib//lib:paths.bzl", "paths")
 load("//tools/archive_symbols:archive_symbols.bzl", "ArchiveSymbolsInfo")
 
+CXX_LIBS = [
+    # keep sorted
+    "libc++.a",
+    "libc++abi.a",
+]
+
 def _llvm_cxx_symbols_impl(ctx):
-    cxx = None
-    cxxabi = None
-
-    outputs = []
-    for f in ctx.files._llvm:
-        if cxx and cxxabi:
-            break
-        if f.dirname != "external/llvm/lib":
-            continue
-        if f.basename == "libc++.a":
-            cxx = f
-            continue
-        if f.basename == "libc++abi.a":
-            cxxabi = f
-            continue
-
-    cxxabi_sym = _build_symbol(ctx, cxxabi)
-    cxx_sym = _build_symbol(ctx, cxx, [cxxabi_sym])
-
-    return [
-        DefaultInfo(files = depset([cxx_sym, cxxabi_sym])),
-        ArchiveSymbolsInfo(),
-    ]
-
-def _build_symbol(ctx, f, deps = None):
-    if deps == None:
-        deps = []
-
-    output = ctx.actions.declare_file(
-        "symbols/{}".format(
-            paths.replace_extension(f.basename, ".json"),
-        ),
-    )
-
     args = ctx.actions.args()
     args.add("-nm", ctx.file._nm)
-    args.add("-archive", f)
-    args.add("-output", output)
+    args.add("-extern_only")
 
-    inputs = [ctx.file._nm, f]
+    symbols_dir = None
+
+    inputs = []
+    outputs = []
+    for lib in ctx.files._llvm:
+        if lib.basename not in CXX_LIBS:
+            continue
+
+        inputs.append(lib)
+        output = ctx.actions.declare_file(
+            "symbols/{}".format(
+                paths.replace_extension(lib.basename, ".json"),
+            ),
+        )
+        outputs.append(output)
+        args.add("-archive", lib)
+
+        if symbols_dir == None:
+            symbols_dir = output.dirname
+            args.add("-output", "{}/{{archive}}.json".format(symbols_dir))
+
+    deps = []
     for dep in ctx.attr.deps:
         for ext in dep.files.to_list():
             args.add("-externs", ext)
@@ -55,11 +47,15 @@ def _build_symbol(ctx, f, deps = None):
     ctx.actions.run(
         executable = ctx.executable._archive_symbols,
         arguments = [args],
-        inputs = inputs,
-        outputs = [output],
+        inputs = [ctx.file._nm] + inputs,
+        outputs = outputs,
         mnemonic = "A2JSON",
     )
-    return output
+
+    return [
+        DefaultInfo(files = depset(outputs)),
+        ArchiveSymbolsInfo(),
+    ]
 
 llvm_cxx_symbols = rule(
     implementation = _llvm_cxx_symbols_impl,
