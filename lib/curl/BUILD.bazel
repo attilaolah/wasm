@@ -12,7 +12,10 @@ cmake_lib(
         "OPENSSL_INCLUDE_DIR": "${EXT_BUILD_DEPS}/open_ssl_lib/include",
         "OPENSSL_SSL_LIBRARY": "${EXT_BUILD_DEPS}/open_ssl_lib/lib/libssl.a",
     },
-    deps = ["//lib/open_ssl"],
+    deps = [
+        "//lib/open_ssl",
+        "//lib/z",
+    ],
 )
 
 bzl_library(
