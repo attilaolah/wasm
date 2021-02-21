@@ -73,20 +73,22 @@ func main() {
 				t.ResolveSymbols(ext)
 			}
 		}
+	}
 
+	for _, t := range stl {
 		for _, ext := range externs {
 			if err := t.ResolveExterns(ext); err != nil {
 				log.Fatal(err)
 			}
 		}
+	}
 
+	for _, t := range stl {
 		var out *os.File = os.Stdout
 		if *output != "-" {
 			name := strings.TrimSuffix(t.Name, filepath.Ext(t.Name))
 			name = strings.ReplaceAll(*output, "{archive}", name)
-			fmt.Println("MKDIR:", filepath.Dir(name))
 			os.MkdirAll(filepath.Dir(name), 0755) // make sure the directory exists
-			fmt.Println("WRITE:", name)
 			f, err := os.Create(name)
 			if err != nil {
 				log.Fatalf("error creating output file: %v", err)

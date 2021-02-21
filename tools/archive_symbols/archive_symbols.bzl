@@ -59,7 +59,6 @@ def _archive_symbols_impl(ctx):
 
     for dep in ctx.attr.deps:
         for ext in dep.files.to_list():
-            print("-externs {}".format(ext))
             args.add("-externs", ext)
         inputs.extend(dep.files.to_list())
 
