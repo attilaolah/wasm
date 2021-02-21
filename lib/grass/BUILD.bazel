@@ -127,6 +127,7 @@ configure_make_lib(
         "//lib/proj",
         "//lib/sqlite",
         "//lib/tiff",
+        "//lib/z",
         "//lib/zstd",
     ],
 )
