@@ -137,7 +137,9 @@ func Parse(src io.Reader) (Archives, error) {
 			s.Size = &u
 		}
 
-		o.Symbols = append(o.Symbols, &s)
+		if !s.Magic() {
+			o.Symbols = append(o.Symbols, &s)
+		}
 	}
 
 	if err := scanner.Err(); err != nil {
@@ -151,6 +153,15 @@ func Parse(src io.Reader) (Archives, error) {
 	sort.Sort(&al)
 
 	return al, nil
+}
+
+func (s Symbol) Magic() bool {
+	switch s.Name {
+	case "_GLOBAL_OFFSET_TABLE_":
+		return true
+	default:
+		return false
+	}
 }
 
 // String returns the string representation, as displayed by `nm`.

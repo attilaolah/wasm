@@ -24,6 +24,7 @@ var (
 	typef    = flag.String("type", "", "Include only symbols of this type (empty means include everything).")
 	output   = flag.String("output", "{archive}.json", "Where to write the output file (- means stdout).")
 	extern   = flag.Bool("extern_only", false, "List external symbols only.")
+	strict   = flag.Bool("strict", true, "Strict mode: fail if there are any undefined symbols.")
 	archives = flaglist{}
 	externs  = flaglist{}
 )
@@ -80,6 +81,22 @@ func main() {
 			if err := t.ResolveExterns(ext); err != nil {
 				log.Fatal(err)
 			}
+		}
+	}
+
+	undefs := 0
+	if *strict {
+		for _, t := range stl {
+			if len(t.Undefs) != 0 {
+				log.Printf("undefined symbols in %q:", t.Name)
+				if err := json.NewEncoder(os.Stderr).Encode(t.Undefs); err != nil {
+					log.Fatal(err)
+				}
+				undefs++
+			}
+		}
+		if undefs > 0 {
+			log.Fatalf("%d archive(s) contain undefined symbols", undefs)
 		}
 	}
 
