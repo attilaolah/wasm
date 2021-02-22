@@ -180,7 +180,5 @@
       ]
     }
   ],
-  "undefs": [
-    "_GLOBAL_OFFSET_TABLE_"
-  ]
+  "undefs": null
 }

@@ -753,7 +753,6 @@
     }
   ],
   "undefs": [
-    "_GLOBAL_OFFSET_TABLE_",
     "__tls_get_addr"
   ]
 }

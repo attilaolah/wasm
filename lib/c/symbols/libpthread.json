@@ -589,7 +589,6 @@
     }
   ],
   "undefs": [
-    "_GLOBAL_OFFSET_TABLE_",
     "__pthread_create"
   ]
 }

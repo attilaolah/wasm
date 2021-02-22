@@ -37,39 +37,23 @@ if [[ ! -f "${INSTALL}/lib/libc.a" ]]; then
   popd
 fi
 
-# First pass, without externs:
-rm "${BUILD_WORKSPACE_DIRECTORY}"/lib/c/symbols/*.json
-for archive in "${INSTALL}"/lib/*.a; do
-  if [[ "$(basename "${archive}")" == "libm.a" ]]; then
-    continue
-  fi
-  "${ARCHIVE_SYMBOLS}" \
-    -nm "${NM}" \
-    -archive "${archive}" \
-    -output "${BUILD_WORKSPACE_DIRECTORY}/lib/c/symbols/$(basename "${archive}" .a).json"
-done
-
-# Second pass, using all externs:
-echo "#!/usr/bin/env bash" > "${TEMPDIR}/regen.sh"
-for archive in "${INSTALL}"/lib/*.a; do
-  if [[ "$(basename "${archive}")" == "libm.a" ]]; then
-    continue
-  fi
-  echo "${ARCHIVE_SYMBOLS}" \
-    -nm "${NM}" \
-    -archive "${archive}" \
-    "$(
-      ls -1 \
-	"${BUILD_WORKSPACE_DIRECTORY}"/lib/c/symbols/*.json \
-	"${BUILD_WORKSPACE_DIRECTORY}"/lib/gcc/symbols/*.json \
-        | grep -v "${archive}" \
-	| awk '{print "-externs " $0}' \
-	| tr '\n' ' '\
-    )" \
-    -output "${BUILD_WORKSPACE_DIRECTORY}/lib/c/symbols/$(basename "${archive}" .a).json" \
-    >> "${TEMPDIR}/regen.sh"
-done
-source "${TEMPDIR}/regen.sh"
+"${ARCHIVE_SYMBOLS}" \
+  -nm="${NM}" \
+  $(
+    ls -1 \
+      "${INSTALL}"/lib/*.a \
+      | grep --invert-match --extended-regexp "/libm\\.a$" \
+      | awk '{print "-archive=" $0}' \
+      | tr '\n' ' '\
+  ) \
+  $(
+    ls -1 \
+      "${BUILD_WORKSPACE_DIRECTORY}"/lib/gcc/symbols/*.json \
+      | awk '{print "-externs=" $0}' \
+      | tr '\n' ' '\
+  ) \
+  -output="${BUILD_WORKSPACE_DIRECTORY}"'/lib/c/symbols/{archive}.json' \
+  -strict=false
 
 # Pretty-print, remove unnecessary fields:
 for result in "${BUILD_WORKSPACE_DIRECTORY}"/lib/c/symbols/*.json; do

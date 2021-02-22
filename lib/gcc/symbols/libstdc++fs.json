@@ -2067,8 +2067,5 @@
         "vtable for std::system_error"
       ]
     }
-  ],
-  "undefs": [
-    "_GLOBAL_OFFSET_TABLE_"
   ]
 }

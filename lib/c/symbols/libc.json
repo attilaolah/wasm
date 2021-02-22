@@ -5047,7 +5047,6 @@
   ],
   "undefs": [
     "_DYNAMIC",
-    "_GLOBAL_OFFSET_TABLE_",
     "__ehdr_start",
     "__fini_array_end",
     "__fini_array_start",
