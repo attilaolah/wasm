@@ -1,0 +1,24 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//toolchains/cmake:cmake.bzl", "cmake_lib")
+
+package(default_visibility = ["//:__subpackages__"])
+
+cmake_lib(
+    name = "geotiff",
+    cache_entries = {
+        "CMAKE_TRY_COMPILE_TARGET_TYPE": "STATIC_LIBRARY",
+        "TIFF_INCLUDE_DIR": "${EXT_BUILD_DEPS}/tiff_lib/include",
+        "TIFF_LIBRARY": "${EXT_BUILD_DEPS}/tiff_lib/lib/libtiff.a",
+        "WITH_UTILITIES": False,
+    },
+    deps = [
+        "//lib/proj",
+        "//lib/tiff",
+    ],
+)
+
+bzl_library(
+    name = "package",
+    srcs = ["package.bzl"],
+    deps = ["//:http_archive"],
+)

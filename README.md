@@ -38,6 +38,7 @@ toolchain, pass `--cpu=wasm32`. Pass `-c opt` for an optimised build.
 [`//lib/fftw`](https://github.com/attilaolah/wasm/blob/main/lib/fftw/BUILD.bazel) | 3.3.9 [🔗](http://www.fftw.org/fftw-3.3.9.tar.gz)
 [`//lib/gcc`](https://github.com/attilaolah/wasm/blob/main/lib/gcc/BUILD.bazel) | 10.2.0 [🔗](ftp://ftp.gnu.org/gnu/gcc/gcc-10.2.0/gcc-10.2.0.tar.xz) [🔗](https://mirror.kumi.systems/gnu/gcc/gcc-10.2.0/gcc-10.2.0.tar.xz)
 [`//lib/gdal`](https://github.com/attilaolah/wasm/blob/main/lib/gdal/BUILD.bazel) | 3.2.1 [🔗](https://github.com/OSGeo/gdal/releases/download/v3.2.1/gdal-3.2.1.tar.gz)
+[`//lib/geotiff`](https://github.com/attilaolah/wasm/blob/main/lib/geotiff/BUILD.bazel) | 1.6.0 [🔗](https://github.com/OSGeo/libgeotiff/releases/download/1.6.0/libgeotiff-1.6.0.tar.gz)
 [`//lib/gflags`](https://github.com/attilaolah/wasm/blob/main/lib/gflags/BUILD.bazel) | 2.2.2 [🔗](https://github.com/gflags/gflags/archive/v2.2.2.tar.gz)
 [`//lib/gif`](https://github.com/attilaolah/wasm/blob/main/lib/gif/BUILD.bazel) | 5.2.1 [🔗](https://downloads.sourceforge.net/project/giflib/giflib-5.2.1.tar.gz)
 [`//lib/glog`](https://github.com/attilaolah/wasm/blob/main/lib/glog/BUILD.bazel) | 0.4.0 [🔗](https://github.com/google/glog/archive/v0.4.0.tar.gz)
