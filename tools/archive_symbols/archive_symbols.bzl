@@ -20,7 +20,6 @@ def archive_symbols(name, deps):
     ] + [
         # Implicit dependencies, keep sorted:
         "//lib/c:c_symbols",
-        "//lib/cxx:cxx_symbols",
         "//lib/gcc:gcc_symbols",
     ]
 
