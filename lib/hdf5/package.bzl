@@ -18,4 +18,16 @@ def download_hdf5():
         urls = URLS,
         sha256 = SHA256,
         strip_prefix = "hdf5-{version}",
+        patch_cmds = [
+            "rm {}".format(" ".join([
+                header
+                for header in [
+                    # Auto-generated headers, keep sorted:
+                    "src/H5Edefin.h",
+                    "src/H5Einit.h",
+                    "src/H5Epubgen.h",
+                    "src/H5Eterm.h",
+                ]
+            ])),
+        ],
     )
