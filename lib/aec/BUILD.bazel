@@ -1,0 +1,25 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//toolchains/cmake:cmake.bzl", "cmake_lib")
+
+package(default_visibility = ["//:__subpackages__"])
+
+cmake_lib(
+    name = "aec",
+    cache_entries = {
+        "BUILD_SHARED_LIBS": False,
+    },
+    linkopts = [
+        "-laec",
+        "-lsz",
+    ],
+    static_libraries = [
+        "libaec.a",
+        "libsz.a",
+    ],
+)
+
+bzl_library(
+    name = "package",
+    srcs = ["package.bzl"],
+    deps = ["//:http_archive"],
+)
