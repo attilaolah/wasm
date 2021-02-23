@@ -66,6 +66,7 @@ toolchain, pass `--cpu=wasm32`. Pass `-c opt` for an optimised build.
 [`//lib/suite_sparse`](https://github.com/attilaolah/wasm/blob/main/lib/suite_sparse/BUILD.bazel) | 5.8.1 [🔗](https://github.com/DrTimothyAldenDavis/SuiteSparse/archive/v5.8.1.tar.gz)
 [`//lib/szip`](https://github.com/attilaolah/wasm/blob/main/lib/szip/BUILD.bazel) | 2.1.1 [🔗](https://support.hdfgroup.org/ftp/lib-external/szip/2.1.1/src/szip-2.1.1.tar.gz)
 [`//lib/tiff`](https://github.com/attilaolah/wasm/blob/main/lib/tiff/BUILD.bazel) | 4.2.0 [🔗](https://download.osgeo.org/libtiff/tiff-4.2.0.tar.gz)
+[`//lib/tirpc`](https://github.com/attilaolah/wasm/blob/main/lib/tirpc/BUILD.bazel) | 1.3.1 [🔗](https://downloads.sourceforge.net/project/libtirpc/libtirpc/1.3.1/libtirpc-1.3.1.tar.bz2)
 [`//lib/vigra`](https://github.com/attilaolah/wasm/blob/main/lib/vigra/BUILD.bazel) | 1.11.1 [🔗](https://github.com/ukoethe/vigra/releases/download/Version-1-11-1/vigra-1.11.1-src.tar.gz)
 [`//lib/webp`](https://github.com/attilaolah/wasm/blob/main/lib/webp/BUILD.bazel) | 1.1.0 [🔗](https://storage.googleapis.com/downloads.webmproject.org/releases/webp/libwebp-1.1.0.tar.gz)
 [`//lib/z`](https://github.com/attilaolah/wasm/blob/main/lib/z/BUILD.bazel) | 1.2.11 [🔗](https://downloads.sourceforge.net/libpng/zlib-1.2.11.tar.gz)
