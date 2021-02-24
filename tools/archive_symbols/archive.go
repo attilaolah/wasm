@@ -137,7 +137,7 @@ func Parse(src io.Reader) (Archives, error) {
 			s.Size = &u
 		}
 
-		if !s.Magic() {
+		if !s.BuiltIn() {
 			o.Symbols = append(o.Symbols, &s)
 		}
 	}
@@ -155,13 +155,20 @@ func Parse(src io.Reader) (Archives, error) {
 	return al, nil
 }
 
-func (s Symbol) Magic() bool {
-	switch s.Name {
-	case "_GLOBAL_OFFSET_TABLE_":
+func (s Symbol) BuiltIn() bool {
+	// Match is_builtin_name() from gcc/builtins.c:
+	if strings.HasPrefix(s.Name, "__builtin_") ||
+		strings.HasPrefix(s.Name, "__sync_") ||
+		strings.HasPrefix(s.Name, "__atomic_") {
 		return true
-	default:
-		return false
 	}
+
+	// The global offset table is special-cased by the linker:
+	if s.Name == "_GLOBAL_OFFSET_TABLE_" {
+		return true
+	}
+
+	return false
 }
 
 // String returns the string representation, as displayed by `nm`.
