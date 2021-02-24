@@ -56,6 +56,10 @@ def _archive_symbols_impl(ctx):
                     symbols_dir = output.dirname
                     args.add("-output", "{}/{{archive}}.json".format(symbols_dir))
 
+    if not outputs:
+        # Header-only libraries have no library outputs.
+        return [DefaultInfo(), ArchiveSymbolsInfo()]
+
     for dep in ctx.attr.deps:
         for ext in dep.files.to_list():
             args.add("-externs", ext)
