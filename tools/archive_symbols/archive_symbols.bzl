@@ -13,20 +13,21 @@ ArchiveSymbolsInfo = provider(
 
 def archive_symbols(name, deps):
     """Convenience macro for generating archive symbols for a library."""
-    deps = [Label(dep) for dep in deps]
-    deps = [
-        Label("@{}//{}:{}_symbols".format(dep.workspace_name, dep.package, dep.name))
-        for dep in deps
-    ] + [
-        # Implicit dependencies, keep sorted:
-        "//lib/c:c_symbols",
-        "//lib/gcc:gcc_symbols",
-    ]
+    labels = []
+    for dep in deps:
+        if dep.startswith(":"):
+            dep = "//{}{}".format(native.package_name(), dep)
+        label = Label(dep)
+        labels.append("@{}//{}:{}_symbols".format(label.workspace_name, label.package, label.name))
 
     _archive_symbols(
         name = "{}_symbols".format(name),
         srcs = [":{}".format(name)],
-        deps = deps,
+        deps = labels + [
+            # Implicit dependencies, keep sorted:
+            "//lib/c:c_symbols",
+            "//lib/gcc:gcc_symbols",
+        ],
     )
 
 def _archive_symbols_impl(ctx):
