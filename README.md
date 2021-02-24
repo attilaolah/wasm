@@ -37,7 +37,7 @@ toolchain, pass `--cpu=wasm32`. Pass `-c opt` for an optimised build.
 [`//lib/expat`](https://github.com/attilaolah/wasm/blob/main/lib/expat/BUILD.bazel) | 2.2.10 [🔗](https://github.com/libexpat/libexpat/releases/download/R_2_2_10/expat-2.2.10.tar.xz)
 [`//lib/ffi`](https://github.com/attilaolah/wasm/blob/main/lib/ffi/BUILD.bazel) | 3.3 [🔗](https://github.com/libffi/libffi/releases/download/v3.3/libffi-3.3.tar.gz)
 [`//lib/fftw`](https://github.com/attilaolah/wasm/blob/main/lib/fftw/BUILD.bazel) | 3.3.9 [🔗](http://www.fftw.org/fftw-3.3.9.tar.gz)
-[`//lib/gcc`](https://github.com/attilaolah/wasm/blob/main/lib/gcc/BUILD.bazel) | 10.2.0 [🔗](ftp://ftp.gnu.org/gnu/gcc/gcc-10.2.0/gcc-10.2.0.tar.xz) [🔗](https://mirror.kumi.systems/gnu/gcc/gcc-10.2.0/gcc-10.2.0.tar.xz)
+[`//lib/gcc`](https://github.com/attilaolah/wasm/blob/main/lib/gcc/BUILD.bazel) | 10.2.0 [🔗](https://ftp.gnu.org/gnu/gcc/gcc-10.2.0/gcc-10.2.0.tar.xz) [🔗](https://mirror.kumi.systems/gnu/gcc/gcc-10.2.0/gcc-10.2.0.tar.xz)
 [`//lib/gdal`](https://github.com/attilaolah/wasm/blob/main/lib/gdal/BUILD.bazel) | 3.2.1 [🔗](https://github.com/OSGeo/gdal/releases/download/v3.2.1/gdal-3.2.1.tar.gz)
 [`//lib/geos`](https://github.com/attilaolah/wasm/blob/main/lib/geos/BUILD.bazel) | 3.9.1 [🔗](https://github.com/libgeos/geos/archive/3.9.1.tar.gz)
 [`//lib/geotiff`](https://github.com/attilaolah/wasm/blob/main/lib/geotiff/BUILD.bazel) | 1.6.0 [🔗](https://github.com/OSGeo/libgeotiff/releases/download/1.6.0/libgeotiff-1.6.0.tar.gz)

@@ -41,6 +41,7 @@ WASM_TOOLS = [
 
 def configure_make_lib(
         name,
+        lib_source = None,
         configure_script = "configure",
         make_commands = None,
         linkopts = None,
@@ -52,6 +53,7 @@ def configure_make_lib(
     Args:
       name: Passed on to configure_make(). Also used for guessing other
         parameters.
+      lib_source: Passed on to cmake_external(). Guessed from name.
       configure_script: Name of the configure script to run.
       make_commands: Wrapped in a select() for Emscripten, then passed on to
         make().
@@ -61,6 +63,8 @@ def configure_make_lib(
         pre-populated with environment variables required by the toolchain.
       **kwargs: Passed no configure_make().
     """
+    if lib_source == None:
+        lib_source = _lib_source(name)
     if make_commands == None:
         make_commands = [
             "make",
@@ -87,7 +91,7 @@ def configure_make_lib(
             "//conditions:default": env,
         }),
         lib_name = "{}_lib".format(name),
-        lib_source = lib_source(name),
+        lib_source = lib_source,
         linkopts = linkopts,
         make_commands = _make_commands(commands = make_commands),
         static_libraries = static_libraries,
@@ -161,6 +165,8 @@ def tools_deps(extras = None):
 
 def lib_source(lib_name):
     return "@lib_{}//:all".format(lib_name)
+
+_lib_source = lib_source
 
 def patch_files(patch_map):
     """Generates a list of 'sed' commands that patch files in-place."""

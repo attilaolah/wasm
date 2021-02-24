@@ -1,8 +1,38 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//toolchains/make:configure.bzl", "configure_make_lib", "lib_source")
 load("//tools/archive_symbols:archive_symbols.bzl", "static_symbols")
 
 package(default_visibility = ["//lib:__subpackages__"])
 
+configure_make_lib(
+    name = "gomp",
+    configure_env_vars = {
+        "CFLAGS": " ".join(["-Wno-{}".format(check) for check in [
+            # Clang build is broken unless these checks are disabled; keep sorted.
+            "enum-conversion",
+            "implicit-function-declaration",
+            "incompatible-pointer-types",
+            "int-conversion",
+            "unknown-attributes",
+        ]]),
+    },
+    configure_options = [
+        # keep sorted
+        "--disable-multilib",
+        "--disable-shared",
+        "--enable-static",
+    ],
+    configure_script = "libgomp/configure",
+    lib_source = lib_source("gcc"),
+)
+
 static_symbols(
     name = "gcc_symbols",
     srcs = glob(["symbols/lib*.json"]),
+)
+
+bzl_library(
+    name = "package",
+    srcs = ["package.bzl"],
+    deps = ["//:http_archive"],
 )

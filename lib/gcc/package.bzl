@@ -1,13 +1,21 @@
-"""Dummy file for defining libgcc version and URLs.
+"""Workspace rule for downloading package dependencies."""
 
-As of now, this package doesn't actually build libgcc. Instead, the version
-listed below is built manually (for now), for the purpose of generating the
-corresponding symbol tables for dependency resolution.
-"""
+load("//:http_archive.bzl", "http_archive")
 
 VERSION = "10.2.0"
 
 URLS = [
-    "ftp://ftp.gnu.org/gnu/gcc/gcc-{version}/gcc-{version}.tar.xz",
+    "https://ftp.gnu.org/gnu/gcc/gcc-{version}/gcc-{version}.tar.xz",
     "https://mirror.kumi.systems/gnu/gcc/gcc-{version}/gcc-{version}.tar.xz",
 ]
+
+SHA256 = "b8dd4368bb9c7f0b98188317ee0254dd8cc99d1e3a18d0ff146c855fe16c1d8c"
+
+def download_gcc():
+    http_archive(
+        name = "lib_gcc",
+        version = VERSION,
+        urls = URLS,
+        sha256 = SHA256,
+        strip_prefix = "gcc-{version}",
+    )
