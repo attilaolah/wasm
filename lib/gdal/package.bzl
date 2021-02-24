@@ -15,5 +15,4 @@ def download_gdal():
         urls = [URL],
         sha256 = SHA256,
         strip_prefix = "gdal-{version}",
-        patches = ["//lib/gdal:configure.patch"],
     )

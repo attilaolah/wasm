@@ -1,35 +1,36 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
-load("//toolchains/cmake:cmake.bzl", "cmake_lib")
+load("//toolchains/make:configure.bzl", "configure_make_lib")
 
 package(default_visibility = ["//:__subpackages__"])
 
-cmake_lib(
+configure_make_lib(
     name = "hdf",
-    cache_entries = {
-        "BUILD_SHARED_LIBS": False,
-        "BUILD_STATIC_LIBS": True,
-        "BUILD_TESTING": False,
-        "HDF4_BUILD_EXAMPLES": False,
-        "HDF4_BUILD_FORTRAN": False,
-        "HDF4_BUILD_JAVA": False,
-        "HDF4_ENABLE_DEPRECATED_SYMBOLS": False,
-        "HDF4_ENABLE_SZIP_SUPPORT": True,
-        "JPEG_INCLUDE_DIR": "${EXT_BUILD_DEPS}/jpeg_turbo_lib/include",
-        "JPEG_LIBRARY": "${EXT_BUILD_DEPS}/jpeg_turbo_lib/lib/libjpeg.a",
-        "SZIP_INCLUDE_DIR": "${EXT_BUILD_DEPS}/szip_lib/include",
-        "SZIP_LIBRARY": "${EXT_BUILD_DEPS}/szip_lib/lib/libszip.a",
-        "ZLIB_INCLUDE_DIR": "${EXT_BUILD_DEPS}/z_lib/include",
-        "ZLIB_LIBRARY": "${EXT_BUILD_DEPS}/z_lib/lib/libz.a",
+    configure_env_vars = {
+        # Pass -laec to link against szip (-lsz) provided by //lib/aec.
+        "LDFLAGS": "-laec",
     },
+    configure_options = [
+        # keep sorted
+        "--disable-fortran",
+        "--disable-java",
+        "--disable-netcdf",
+        "--disable-shared",
+        "--enable-deprecated-symbols",
+        "--enable-hdf4-xdr",
+        "--enable-static",
+        '--with-jpeg="${EXT_BUILD_DEPS}/jpeg_turbo_lib"',
+        '--with-szlib="${EXT_BUILD_DEPS}/aec_lib"',
+        '--with-zlib="${EXT_BUILD_DEPS}/z_lib"',
+    ],
     static_libraries = [
         # keep sorted
-        "libhdf.a",
+        "libdf.a",
         "libmfhdf.a",
         "libxdr.a",
     ],
     deps = [
+        "//lib/aec",
         "//lib/jpeg_turbo",
-        "//lib/szip",
         "//lib/z",
     ],
 )

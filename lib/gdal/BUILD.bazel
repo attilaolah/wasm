@@ -9,6 +9,7 @@ configure_make_lib(
         # Transitive dependencies:
         "LDFLAGS": " ".join(["-l{}".format(lib) for lib in [
             # keep sorted
+            "aec",
             "crypto",
             "curl",
             "lzma",
@@ -16,6 +17,7 @@ configure_make_lib(
             "ssl",
             "turbojpeg",
             "webp",
+            "xdr",
             "zstd",
         ]]),
     },
@@ -26,12 +28,13 @@ configure_make_lib(
         "--enable-static=yes",
         '--with-crypto="${EXT_BUILD_DEPS}/open_ssl_lib"',
         '--with-curl="${EXT_BUILD_DEPS}/curl_lib"',
+        '--with-geotiff="${EXT_BUILD_DEPS}/geotiff_lib"',
         '--with-gif="${EXT_BUILD_DEPS}/gif_lib"',
-        "--with-grass",
         '--with-hdf4="${EXT_BUILD_DEPS}/hdf_lib"',
         '--with-hdf5="${EXT_BUILD_DEPS}/hdf5_lib"',
         '--with-jpeg="${EXT_BUILD_DEPS}/jpeg_turbo_lib"',
         '--with-libdeflate="${EXT_BUILD_DEPS}/deflate_lib"',
+        "--with-libgrass",
         '--with-liblzma="${EXT_BUILD_DEPS}/lzma_lib"',
         '--with-libtiff="${EXT_BUILD_DEPS}/tiff_lib/lib"',
         '--with-libz="${EXT_BUILD_DEPS}/z_lib"',
@@ -44,6 +47,7 @@ configure_make_lib(
     deps = [
         "//lib/curl",
         "//lib/deflate",
+        "//lib/geotiff",
         "//lib/gif",
         "//lib/grass",
         "//lib/hdf",
@@ -56,6 +60,7 @@ configure_make_lib(
         "//lib/proj",
         "//lib/sqlite",
         "//lib/tiff",
+        "//lib/webp",
         "//lib/z",
         "//lib/zstd",
     ],
