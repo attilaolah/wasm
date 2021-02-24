@@ -28,6 +28,7 @@ configure_make_lib(
         "--enable-static=yes",
         '--with-crypto="${EXT_BUILD_DEPS}/open_ssl_lib"',
         '--with-curl="${EXT_BUILD_DEPS}/curl_lib"',
+        '--with-geos="${EXT_BUILD_DEPS}/geos_lib/bin/geos-config"',
         '--with-geotiff="${EXT_BUILD_DEPS}/geotiff_lib"',
         '--with-gif="${EXT_BUILD_DEPS}/gif_lib"',
         '--with-hdf4="${EXT_BUILD_DEPS}/hdf_lib"',
@@ -47,6 +48,7 @@ configure_make_lib(
     deps = [
         "//lib/curl",
         "//lib/deflate",
+        "//lib/geos",
         "//lib/geotiff",
         "//lib/gif",
         "//lib/grass",
