@@ -12,7 +12,13 @@ ArchiveSymbolsInfo = provider(
 )
 
 def archive_symbols(name, deps, strict):
-    """Convenience macro for generating archive symbols for a library."""
+    """Convenience macro for generating archive symbols for a library.
+
+    Args:
+      name: Name of the target, *without* the _symbols suffix.
+      deps: Dependencies. Implicit deps (C and GCC libs) will be added.
+      strict: Whether the build should fail if any undefined symbols are found.
+    """
     labels = []
     for dep in deps:
         if dep.startswith(":"):
