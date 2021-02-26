@@ -3,8 +3,15 @@ load("//toolchains/make:configure.bzl", "configure_make_lib")
 
 package(default_visibility = ["//:__subpackages__"])
 
+# TODO: Missing optional dependencies:
+# - Expat (--wyth-system-expat)
+# - Tcl/Tk
+
 CONFIGURE_OPTIONS = [
-    "--enable-shared=no",
+    # keep sorted
+    "--disable-shared",
+    '--with-openssl="${EXT_BUILD_DEPS}/open_ssl_lib"',
+    "--with-system-libmpdec",
 ]
 
 configure_make_lib(
@@ -20,10 +27,12 @@ configure_make_lib(
         ],
         "//conditions:default": CONFIGURE_OPTIONS,
     }),
+    ignore_undefined_symbols = True,
     static_libraries = ["libpython3.9.a"],
     deps = [
-        # Required:
         "//lib/ffi",
+        "//lib/mpdecimal",
+        "//lib/open_ssl",
         "//lib/z",
     ],
 )
