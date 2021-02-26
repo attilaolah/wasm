@@ -98,7 +98,13 @@ func (v *VersionInfo) Expand() {
 		url = strings.ReplaceAll(url, "{version-}", strings.ReplaceAll(v.version, ".", "-"))
 		url = strings.ReplaceAll(url, "{version_}", strings.ReplaceAll(v.version, ".", "_"))
 		url = strings.ReplaceAll(url, "{versionm}", strings.Split(v.version, ".")[0])
-		url = strings.ReplaceAll(url, "{versionmm}", strings.Join(strings.Split(v.version, ".")[:2], "."))
+
+		vmm := v.version
+		if parts := strings.Split(v.version, "."); len(parts) > 1 {
+			vmm = strings.Join(parts[:2], ".")
+		}
+		url = strings.ReplaceAll(url, "{versionmm}", vmm)
+
 		v.urls[i] = url
 	}
 }
