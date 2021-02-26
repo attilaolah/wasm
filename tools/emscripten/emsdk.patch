@@ -30,4 +30,4 @@ index 9d0f8e2..c2c63c0 100755
 -source emscripten_toolchain/env.sh
 -
 -exec python3 emscripten_toolchain/link_wrapper.py "$@"
-+exec "${PYTHON:=python3}" "${ROOT_DIR}/external/emscripten_toolchain/link_wrapper.py" "$@"
++exec "${PYTHON:=python3}" "${ROOT_DIR}/external/emsdk/emscripten_toolchain/link_wrapper.py" "$@"
