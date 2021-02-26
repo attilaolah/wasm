@@ -46,6 +46,7 @@ def configure_make_lib(
         make_commands = None,
         linkopts = None,
         static_libraries = None,
+        tools_deps = None,
         env = None,
         ignore_undefined_symbols = False,
         **kwargs):
@@ -60,6 +61,8 @@ def configure_make_lib(
         make().
       linkopts: Passed on to cmake_external(). Guessed from name.
       static_libraries: Passed on to configure_make(). Guessed from name.
+      tools_deps: Additional build-time dependencies, compiled with cfg =
+        "exec".
       env: Passed on to configure_make(). Form Emscripten builds, it is
         pre-populated with environment variables required by the toolchain.
       ignore_undefined_symbols: Whether to ignore undefined symbols. If False
@@ -100,7 +103,7 @@ def configure_make_lib(
         linkopts = linkopts,
         make_commands = _make_commands(commands = make_commands),
         static_libraries = static_libraries,
-        tools_deps = tools_deps(),
+        tools_deps = _tools_deps(tools_deps),
         **kwargs
     )
 
@@ -171,6 +174,8 @@ def tools_deps(extras = None):
         "//config:wasm": collections.uniq(WASM_TOOLS + extras),
         "//conditions:default": extras,
     })
+
+_tools_deps = tools_deps
 
 def lib_source(lib_name):
     return "@lib_{}//:all".format(lib_name)

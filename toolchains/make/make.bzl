@@ -5,7 +5,7 @@ Contains a convenience macro that wraps make() from @rules_foreign_cc.
 
 load("@rules_foreign_cc//tools/build_defs:make.bzl", "make")
 load("//tools/archive_symbols:archive_symbols.bzl", "archive_symbols")
-load(":configure.bzl", "WASM_ENV_VARS", "tools_deps", _lib_source = "lib_source", _make_commands = "make_commands")
+load(":configure.bzl", "WASM_ENV_VARS", "tools_deps", _lib_source = "lib_source", _make_commands = "make_commands", _tools_deps = "tools_deps")
 
 def make_lib(
         name,
@@ -14,6 +14,7 @@ def make_lib(
         install_commands = None,
         linkopts = None,
         static_libraries = None,
+        tools_deps = None,
         env = None,
         ignore_undefined_symbols = False,
         **kwargs):
@@ -28,6 +29,8 @@ def make_lib(
         Emscripten, these are NOT prefixed with emmake.
       linkopts: Passed on to cmake_external(). Guessed from name.
       static_libraries: Passed on to make(). Guessed from name.
+      tools_deps: Additional build-time dependencies, compiled with cfg =
+        "exec".
       env: Passed on to make(). Form Emscripten builds, it is
         pre-populated with environment variables required by the toolchain.
       ignore_undefined_symbols: Whether to ignore undefined symbols. If False
@@ -65,7 +68,7 @@ def make_lib(
             "//conditions:default": env,
         }),
         static_libraries = static_libraries,
-        tools_deps = tools_deps(),
+        tools_deps = _tools_deps(tools_deps),
         **kwargs
     )
 
