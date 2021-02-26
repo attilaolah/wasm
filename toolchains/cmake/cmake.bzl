@@ -18,6 +18,7 @@ def cmake_lib(
         tools_deps = None,
         cache_entries = None,
         env = None,
+        ignore_undefined_symbols = False,
         **kwargs):
     """Convenience macro that wraps cmake_external().
 
@@ -35,6 +36,10 @@ def cmake_lib(
         cmake_external().
       env: Passed on to cmake_external(). Form Emscripten builds, it is
         pre-populated with environment variables required by the toolchain.
+      ignore_undefined_symbols: Whether to ignore undefined symbols. If False
+        (the default), any undefined symbols is the archive that are not
+        provided by any of the dependencies will cause a build error for the
+        archive symbols target.
       **kwargs: Passed on to cmake_external().
     """
     if lib_source == None:
@@ -74,7 +79,11 @@ def cmake_lib(
         **kwargs
     )
 
-    archive_symbols(name, kwargs.get("deps", []))
+    archive_symbols(
+        name = name,
+        deps = kwargs.get("deps", []),
+        strict = not ignore_undefined_symbols,
+    )
 
 def _prepare_cache_entries(cache_entries):
     for key, val in cache_entries.items():

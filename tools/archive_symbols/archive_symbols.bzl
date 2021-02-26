@@ -11,7 +11,7 @@ ArchiveSymbolsInfo = provider(
     fields = None,
 )
 
-def archive_symbols(name, deps):
+def archive_symbols(name, deps, strict):
     """Convenience macro for generating archive symbols for a library."""
     labels = []
     for dep in deps:
@@ -28,12 +28,18 @@ def archive_symbols(name, deps):
             "//lib/c:c_symbols",
             "//lib/gcc:gcc_symbols",
         ],
+        strict = strict,
     )
 
 def _archive_symbols_impl(ctx):
     args = ctx.actions.args()
     args.add("-nm", ctx.file._nm)
     args.add("-extern_only")
+
+    if ctx.attr.strict:
+        args.add("-strict")
+    else:
+        args.add("-strict=false")
 
     symbols_dir = None
 
@@ -91,6 +97,10 @@ _archive_symbols = rule(
             providers = [CcInfo],
             doc = "List of archive files to process.",
         ),
+        "strict": attr.bool(
+            default = True,
+            doc = "In strict mode, the build will fail if undefined symbols are found in any archive file.",
+        ),
         "_archive_symbols": attr.label(
             default = "//tools/archive_symbols",
             executable = True,
@@ -115,6 +125,7 @@ static_symbols = rule(
         "srcs": attr.label_list(
             mandatory = True,
             allow_files = [".json"],
+            doc = "Pre-generated JSON files.",
         ),
     },
 )

@@ -47,6 +47,7 @@ def configure_make_lib(
         linkopts = None,
         static_libraries = None,
         env = None,
+        ignore_undefined_symbols = False,
         **kwargs):
     """Convenience macro that wraps configure_make().
 
@@ -61,6 +62,10 @@ def configure_make_lib(
       static_libraries: Passed on to configure_make(). Guessed from name.
       env: Passed on to configure_make(). Form Emscripten builds, it is
         pre-populated with environment variables required by the toolchain.
+      ignore_undefined_symbols: Whether to ignore undefined symbols. If False
+        (the default), any undefined symbols is the archive that are not
+        provided by any of the dependencies will cause a build error for the
+        archive symbols target.
       **kwargs: Passed no configure_make().
     """
     if lib_source == None:
@@ -99,7 +104,11 @@ def configure_make_lib(
         **kwargs
     )
 
-    archive_symbols(name, kwargs.get("deps", []))
+    archive_symbols(
+        name = name,
+        deps = kwargs.get("deps", []),
+        strict = not ignore_undefined_symbols,
+    )
 
 def make_commands(
         commands = None,
