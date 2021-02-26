@@ -45,6 +45,7 @@ configure_make_lib(
         '--with-sqlite3="${EXT_BUILD_DEPS}/sqlite_lib"',
         '--with-zstd="${EXT_BUILD_DEPS}/zstd_lib"',
     ],
+    ignore_undefined_symbols = True,
     deps = [
         "//lib/curl",
         "//lib/deflate",

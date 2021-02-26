@@ -26,6 +26,8 @@ cmake_lib(
         "WITH_THREADS": True,
         "WITH_TLS": True,
     },
+    # Ignore until symbol __tls_get_addr is added.
+    ignore_undefined_symbols = True,
     deps = [
         "//lib/gflags",
     ],

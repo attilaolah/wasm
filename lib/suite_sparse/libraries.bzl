@@ -7,7 +7,7 @@ PREFIX = "${EXT_BUILD_ROOT}/external/lib_suite_sparse"
 
 LIB_SOURCE = lib_source("suite_sparse")
 
-def suite_sparse_lib(name, header_ext = "h", directory = None, deps = None, with_cuda = False):
+def suite_sparse_lib(name, header_ext = "h", directory = None, deps = None, with_cuda = False, **kwargs):
     """Convenience macro that wraps make_lib().
 
     Args:
@@ -17,11 +17,13 @@ def suite_sparse_lib(name, header_ext = "h", directory = None, deps = None, with
         in upper case.
       deps: Passed on to make_lib().
       with_cuda: If True, set the CUDA=auto make variable during build.
+      **kwargs: Passed on to make_lib().
     """
     if directory == None:
         directory = name.upper()
     if deps == None:
         deps = []
+    deps.append(":config")
 
     prefix = "{}/{}".format(PREFIX, directory)
 
@@ -40,4 +42,5 @@ def suite_sparse_lib(name, header_ext = "h", directory = None, deps = None, with
             'make CUDA={} -C "{}" static'.format(cuda, prefix),
         ],
         deps = deps,
+        **kwargs
     )

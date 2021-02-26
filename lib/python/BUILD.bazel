@@ -4,7 +4,6 @@ load("//toolchains/make:configure.bzl", "configure_make_lib")
 package(default_visibility = ["//:__subpackages__"])
 
 # TODO: Missing optional dependencies:
-# - Expat (--wyth-system-expat)
 # - Tcl/Tk
 
 CONFIGURE_OPTIONS = [

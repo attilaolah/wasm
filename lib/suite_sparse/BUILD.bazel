@@ -18,7 +18,19 @@ suite_sparse_lib(name = "camd")
 
 suite_sparse_lib(name = "ccolamd")
 
-suite_sparse_lib(name = "cholmod")
+suite_sparse_lib(
+    name = "cholmod",
+    ignore_undefined_symbols = True,
+    deps = [
+        ":amd",
+        ":camd",
+        ":ccolamd",
+        ":colamd",
+        ":gk",
+        ":metis",
+        "//lib/gcc:gomp",
+    ],
+)
 
 suite_sparse_lib(name = "colamd")
 
@@ -59,11 +71,19 @@ cmake_lib(
     cache_entries = {
         "BUILD_GRB_STATIC_LIBRARY": True,
     },
+    ignore_undefined_symbols = True,
     lib_source = LIB_SOURCE,
     working_directory = "GraphBLAS",
 )
 
-suite_sparse_lib(name = "klu")
+suite_sparse_lib(
+    name = "klu",
+    deps = [
+        ":amd",
+        ":btf",
+        ":colamd",
+    ],
+)
 
 suite_sparse_lib(name = "ldl")
 
@@ -81,6 +101,7 @@ cmake_lib(
     name = "mongoose",
     lib_source = LIB_SOURCE,
     working_directory = "Mongoose",
+    deps = [":config"],
 )
 
 suite_sparse_lib(
@@ -106,6 +127,9 @@ make_lib(
     ],
     static_libraries = ["libsliplu.a"],
     deps = [
+        ":amd",
+        ":colamd",
+        ":config",
         "//lib/gmp",
         "//lib/mpfr",
     ],
@@ -114,9 +138,18 @@ make_lib(
 suite_sparse_lib(
     name = "spqr",
     header_ext = "{h,hpp}",
+    ignore_undefined_symbols = True,
+    deps = [":cholmod"],
 )
 
-suite_sparse_lib(name = "umfpack")
+suite_sparse_lib(
+    name = "umfpack",
+    ignore_undefined_symbols = True,
+    deps = [
+        ":amd",
+        ":cholmod",
+    ],
+)
 
 bzl_library(
     name = "package",
