@@ -1,0 +1,28 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//toolchains/make:configure.bzl", "configure_make_lib")
+
+package(default_visibility = ["//:__subpackages__"])
+
+configure_make_lib(
+    name = "xml",
+    configure_options = [
+        # keep sorted
+        "--disable-shared",
+        "--enable-static",
+        '--with-iconv="${EXT_BUILD_DEPS}/iconv_lib"',
+        '--with-zlib="${EXT_BUILD_DEPS}/lib_z"',
+        "--without-python",
+    ],
+    linkopts = ["-lxml2"],
+    static_libraries = ["libxml2.a"],
+    deps = [
+        "//lib/iconv",
+        "//lib/z",
+    ],
+)
+
+bzl_library(
+    name = "package",
+    srcs = ["package.bzl"],
+    deps = ["//:http_archive"],
+)
