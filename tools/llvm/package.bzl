@@ -3,6 +3,7 @@
 load("//:http_archive.bzl", "http_archive")
 
 VERSION = "12.0.0-rc2"
+VERSION_MMP = VERSION.split("-")[0]
 
 URL = "https://github.com/llvm/llvm-project/releases/download/llvmorg-{version}/clang+llvm-{version}-x86_64-linux-gnu-ubuntu-20.10.tar.xz"
 

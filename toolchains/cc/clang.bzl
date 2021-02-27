@@ -6,6 +6,7 @@ on the downloaded bineries in @llvm.
 
 load("@local_config_cc//:cc_toolchain_config.bzl", "cc_toolchain_config")
 load("@rules_cc//cc:defs.bzl", "cc_toolchain")
+load("//tools/llvm:package.bzl", "VERSION_MMP")
 
 LINUX_X86_64 = [
     "@platforms//os:linux",
@@ -97,8 +98,7 @@ def clang_toolchain(name):
         coverage_link_flags = ["--coverage"],
         cpu = "k8",
         cxx_builtin_include_directories = [
-            # TODO: Load LLVM/Clang version from another .bzl file!
-            "{}/lib/clang/11.0.1/include".format(LLVM_PATH),
+            "{}/lib/clang/{}/include".format(LLVM_PATH, VERSION_MMP),
         ],
         cxx_flags = ["-std=c++17"],
         dbg_compile_flags = ["-g"],
