@@ -10,14 +10,14 @@ URL = "https://github.com/DrTimothyAldenDavis/SuiteSparse/archive/v{version}.tar
 
 SHA256 = "06726e471fbaa55f792578f9b4ab282ea9d008cf39ddcc3b42b73400acddef40"
 
-def download_suite_sparse():
+def download_suitesparse():
     http_archive(
-        name = "lib_suite_sparse",
+        name = "lib_suitesparse",
         version = VERSION,
         urls = [URL],
         sha256 = SHA256,
         strip_prefix = "SuiteSparse-{version}",
         patches = [
-            "//lib/suite_sparse:CMakeLists.txt.patch",
+            "//lib/suitesparse:CMakeLists.txt.patch",
         ],
     )

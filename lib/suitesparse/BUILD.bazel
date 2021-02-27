@@ -1,7 +1,7 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
 load("//toolchains/make:make.bzl", "make_lib")
-load(":libraries.bzl", "LIB_SOURCE", "PREFIX", "suite_sparse_lib")
+load(":libraries.bzl", "LIB_SOURCE", "PREFIX", "suitesparse_lib")
 load(":package.bzl", "METIS_VERSION")
 
 package(default_visibility = ["//:__subpackages__"])
@@ -10,15 +10,15 @@ METIS_PATH = "metis-{}".format(METIS_VERSION)
 
 GK_PATH = "{}/GKlib".format(METIS_PATH)
 
-suite_sparse_lib(name = "amd")
+suitesparse_lib(name = "amd")
 
-suite_sparse_lib(name = "btf")
+suitesparse_lib(name = "btf")
 
-suite_sparse_lib(name = "camd")
+suitesparse_lib(name = "camd")
 
-suite_sparse_lib(name = "ccolamd")
+suitesparse_lib(name = "ccolamd")
 
-suite_sparse_lib(
+suitesparse_lib(
     name = "cholmod",
     ignore_undefined_symbols = True,
     deps = [
@@ -32,7 +32,7 @@ suite_sparse_lib(
     ],
 )
 
-suite_sparse_lib(name = "colamd")
+suitesparse_lib(name = "colamd")
 
 make_lib(
     name = "config",
@@ -48,12 +48,12 @@ make_lib(
     static_libraries = ["libsuitesparseconfig.a"],
 )
 
-suite_sparse_lib(
+suitesparse_lib(
     name = "csparse",
     directory = "CSparse",
 )
 
-suite_sparse_lib(
+suitesparse_lib(
     name = "cxsparse",
     directory = "CXSparse",
 )
@@ -76,7 +76,7 @@ cmake_lib(
     working_directory = "GraphBLAS",
 )
 
-suite_sparse_lib(
+suitesparse_lib(
     name = "klu",
     deps = [
         ":amd",
@@ -85,7 +85,7 @@ suite_sparse_lib(
     ],
 )
 
-suite_sparse_lib(name = "ldl")
+suitesparse_lib(name = "ldl")
 
 cmake_lib(
     name = "metis",
@@ -104,7 +104,7 @@ cmake_lib(
     deps = [":config"],
 )
 
-suite_sparse_lib(
+suitesparse_lib(
     name = "rbio",
     directory = "RBio",
 )
@@ -135,14 +135,14 @@ make_lib(
     ],
 )
 
-suite_sparse_lib(
+suitesparse_lib(
     name = "spqr",
     header_ext = "{h,hpp}",
     ignore_undefined_symbols = True,
     deps = [":cholmod"],
 )
 
-suite_sparse_lib(
+suitesparse_lib(
     name = "umfpack",
     ignore_undefined_symbols = True,
     deps = [

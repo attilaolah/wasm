@@ -3,11 +3,11 @@
 load("//toolchains/make:configure.bzl", "lib_source")
 load("//toolchains/make:make.bzl", "make_lib")
 
-PREFIX = "${EXT_BUILD_ROOT}/external/lib_suite_sparse"
+PREFIX = "${EXT_BUILD_ROOT}/external/lib_suitesparse"
 
-LIB_SOURCE = lib_source("suite_sparse")
+LIB_SOURCE = lib_source("suitesparse")
 
-def suite_sparse_lib(name, header_ext = "h", directory = None, deps = None, with_cuda = False, **kwargs):
+def suitesparse_lib(name, header_ext = "h", directory = None, deps = None, with_cuda = False, **kwargs):
     """Convenience macro that wraps make_lib().
 
     Args:
