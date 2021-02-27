@@ -4,7 +4,7 @@ load("//toolchains/make:configure.bzl", "configure_make_lib")
 package(default_visibility = ["//:__subpackages__"])
 
 configure_make_lib(
-    name = "open_ssl",
+    name = "openssl",
     configure_script = "config",
     static_libraries = [
         "libcrypto.a",

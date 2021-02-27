@@ -9,7 +9,7 @@ package(default_visibility = ["//:__subpackages__"])
 CONFIGURE_OPTIONS = [
     # keep sorted
     "--disable-shared",
-    '--with-openssl="${EXT_BUILD_DEPS}/open_ssl_lib"',
+    '--with-openssl="${EXT_BUILD_DEPS}/openssl_lib"',
     "--with-system-libmpdec",
 ]
 
@@ -31,7 +31,7 @@ configure_make_lib(
     deps = [
         "//lib/ffi",
         "//lib/mpdecimal",
-        "//lib/open_ssl",
+        "//lib/openssl",
         "//lib/z",
     ],
 )

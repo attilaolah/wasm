@@ -26,7 +26,7 @@ configure_make_lib(
         # keep sorted
         "--enable-shared=no",
         "--enable-static=yes",
-        '--with-crypto="${EXT_BUILD_DEPS}/open_ssl_lib"',
+        '--with-crypto="${EXT_BUILD_DEPS}/openssl_lib"',
         '--with-curl="${EXT_BUILD_DEPS}/curl_lib"',
         '--with-geos="${EXT_BUILD_DEPS}/geos_lib/bin/geos-config"',
         '--with-geotiff="${EXT_BUILD_DEPS}/geotiff_lib"',
@@ -58,7 +58,7 @@ configure_make_lib(
         "//lib/jpegturbo",
         "//lib/lzma",
         "//lib/openjpeg",
-        "//lib/open_ssl",
+        "//lib/openssl",
         "//lib/png",
         "//lib/proj",
         "//lib/sqlite",
