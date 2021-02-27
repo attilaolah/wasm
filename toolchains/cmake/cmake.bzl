@@ -8,11 +8,6 @@ load("@rules_foreign_cc//tools/build_defs:cmake.bzl", "cmake_external")
 load("//toolchains/make:configure.bzl", "WASM_ENV_VARS", "make_commands", _lib_source = "lib_source", _tools_deps = "tools_deps")
 load("//tools/archive_symbols:archive_symbols.bzl", "archive_symbols")
 
-# Additional cache entries to add to Emscripten builds only.
-WASM_CACHE_ENTRIES = {
-    "CMAKE_TRY_COMPILE_TARGET_TYPE": "STATIC_LIBRARY",
-}
-
 def cmake_lib(
         name,
         lib_source = None,
@@ -61,15 +56,9 @@ def cmake_lib(
             # See: https://docs.bazel.build/versions/master/configurable-attributes.html#can-i-read-select-like-a-dict
             for val in cache_entries.values():
                 _prepare_cache_entries(val)
-            cache_entries.setdefault("//config:wasm", {})
-            cache_entries["//config:wasm"].update(WASM_CACHE_ENTRIES)
             cache_entries = select(cache_entries)
         else:
             _prepare_cache_entries(cache_entries)
-            cache_entries = select({
-                "//config:wasm": dict(cache_entries.items() + WASM_CACHE_ENTRIES.items()),
-                "//conditions:default": cache_entries,
-            })
         kwargs["cache_entries"] = cache_entries
 
     cmake_external(

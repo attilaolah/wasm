@@ -15,6 +15,7 @@ def download_emscripten():
         strip_prefix = "emsdk-{version}/bazel",
         build_file_content = None,
         patches = ["//tools/emscripten:emsdk.patch"],
+        patch_args = ["--strip=1"],
     )
 
     # TODO: Remove when fixed:
