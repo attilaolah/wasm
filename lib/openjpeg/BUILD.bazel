@@ -4,7 +4,7 @@ load("//toolchains/cmake:cmake.bzl", "cmake_lib")
 package(default_visibility = ["//:__subpackages__"])
 
 cmake_lib(
-    name = "open_jpeg",
+    name = "openjpeg",
     cache_entries = {
         "BUILD_CODEC": False,
         "BUILD_SHARED_LIBS": False,
