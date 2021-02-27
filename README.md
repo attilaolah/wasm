@@ -48,6 +48,7 @@ toolchain, pass `--cpu=wasm32`. Pass `-c opt` for an optimised build.
 [`//lib/grass`](https://github.com/attilaolah/wasm/blob/main/lib/grass/BUILD.bazel) | 7.8.5 [🔗](https://grass.osgeo.org/grass78/source/grass-7.8.5.tar.gz)
 [`//lib/hdf`](https://github.com/attilaolah/wasm/blob/main/lib/hdf/BUILD.bazel) | 4.2.15 [🔗](https://support.hdfgroup.org/ftp/HDF/releases/HDF4.2.15/src/hdf-4.2.15.tar.gz)
 [`//lib/hdf5`](https://github.com/attilaolah/wasm/blob/main/lib/hdf5/BUILD.bazel) | 1.12.0 [🔗](https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.12/hdf5-1.12.0/src/hdf5-1.12.0.tar.gz) [🔗](https://hdf-wordpress-1.s3.amazonaws.com/wp-content/uploads/manual/HDF5/HDF5_1_12_0/source/hdf5-1.12.0.tar.gz)
+[`//lib/iconv`](https://github.com/attilaolah/wasm/blob/main/lib/iconv/BUILD.bazel) | 1.16 [🔗](https://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.16.tar.gz)
 [`//lib/jpeg_turbo`](https://github.com/attilaolah/wasm/blob/main/lib/jpeg_turbo/BUILD.bazel) | 2.0.90 [🔗](https://github.com/libjpeg-turbo/libjpeg-turbo/archive/2.0.90.tar.gz)
 [`//lib/jq`](https://github.com/attilaolah/wasm/blob/main/lib/jq/BUILD.bazel) | 1.6 [🔗](https://github.com/stedolan/jq/releases/download/jq-1.6/jq-1.6.tar.gz)
 [`//lib/lcms`](https://github.com/attilaolah/wasm/blob/main/lib/lcms/BUILD.bazel) | 2.12 [🔗](https://downloads.sourceforge.net/project/lcms/lcms/2.12/lcms2-2.12.tar.gz)
