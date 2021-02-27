@@ -1,4 +1,39 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("@rules_foreign_cc//tools/build_defs:cmake.bzl", "cmake_external")
+
+CMAKE_EXE_LINKER_FLAGS = " ".join([
+    # Pass in the location of libtinfo.a:
+    "-L${EXT_BUILD_DEPS}/ncurses_lib/lib",
+    # And force-link against -ltinfo.
+    # This is required because we remove the system libtinfo.so from
+    # LLVMExports.cmake (see patch_cmds in //tools/llvm:package.bzl for details).
+    "-ltinfo",
+])
+
+cmake_external(
+    name = "flang",
+    additional_inputs = ["@llvm//:all"],
+    binaries = [
+        "f18",
+        "flang",
+    ],
+    cache_entries = {
+        "BUILD_SHARED_LIBS": "OFF",
+        "CMAKE_EXE_LINKER_FLAGS": CMAKE_EXE_LINKER_FLAGS,
+        "CMAKE_PREFIX_PATH": "${EXT_BUILD_DEPS}/z_lib",
+        "FLANG_INCLUDE_TESTS": "OFF",
+        "LIBXML2_INCLUDE_DIR": "${EXT_BUILD_DEPS}/xml_lib/include",
+        "LIBXML2_LIBRARY": "${EXT_BUILD_DEPS}/xml_lib/lib/libxml2.a",
+        "LLVM_CMAKE_PATH": "${EXT_BUILD_ROOT}/external/llvm/lib/cmake/llvm",
+        "MLIR_DIR": "${EXT_BUILD_ROOT}/external/llvm/lib/cmake/mlir",
+    },
+    lib_source = "@flang//:all",
+    deps = [
+        "//lib/ncurses",
+        "//lib/xml",
+        "//lib/z",
+    ],
+)
 
 bzl_library(
     name = "package",
