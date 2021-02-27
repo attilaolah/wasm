@@ -27,7 +27,7 @@ def make_lib(
         make().
       install_commands: Commands to run after either make or emmake. For
         Emscripten, these are NOT prefixed with emmake.
-      linkopts: Passed on to cmake_external(). Guessed from name.
+      linkopts: Passed on to make(). Guessed from name.
       static_libraries: Passed on to make(). Guessed from name.
       tools_deps: Additional build-time dependencies, compiled with cfg =
         "exec".

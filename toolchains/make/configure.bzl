@@ -55,11 +55,11 @@ def configure_make_lib(
     Args:
       name: Passed on to configure_make(). Also used for guessing other
         parameters.
-      lib_source: Passed on to cmake_external(). Guessed from name.
+      lib_source: Passed on to configure_make(). Guessed from name.
       configure_script: Name of the configure script to run.
       make_commands: Wrapped in a select() for Emscripten, then passed on to
-        make().
-      linkopts: Passed on to cmake_external(). Guessed from name.
+        configure_make().
+      linkopts: Passed on to configure_make(). Guessed from name.
       static_libraries: Passed on to configure_make(). Guessed from name.
       tools_deps: Additional build-time dependencies, compiled with cfg =
         "exec".
