@@ -29,6 +29,7 @@ toolchain, pass `--cpu=wasm32`. Pass `-c opt` for an optimised build.
 [`//lib/aec`](https://github.com/attilaolah/wasm/blob/main/lib/aec/BUILD.bazel) | 1.0.4 [🔗](https://gitlab.dkrz.de/k202009/libaec/uploads/ea0b7d197a950b0c110da8dfdecbb71f/libaec-1.0.4.tar.gz)
 [`//lib/bz2`](https://github.com/attilaolah/wasm/blob/main/lib/bz2/BUILD.bazel) | 1.0.8 [🔗](https://sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz)
 [`//lib/c`](https://github.com/attilaolah/wasm/blob/main/lib/c/BUILD.bazel) | 2.33 [🔗](https://ftp.gnu.org/gnu/libc/glibc-2.33.tar.xz) [🔗](https://mirror.kumi.systems/gnu/libc/glibc-2.33.tar.xz)
+[`//lib/cblas`](https://github.com/attilaolah/wasm/blob/main/lib/cblas/BUILD.bazel) | 3.8.0 [🔗](http://www.netlib.org/blas/blast-forum/cblas.tgz)
 [`//lib/ceres`](https://github.com/attilaolah/wasm/blob/main/lib/ceres/BUILD.bazel) | 1.14.0 [🔗](https://github.com/ceres-solver/ceres-solver/archive/1.14.0.tar.gz)
 [`//lib/curl`](https://github.com/attilaolah/wasm/blob/main/lib/curl/BUILD.bazel) | 7.75.0 [🔗](https://curl.se/download/curl-7.75.0.tar.xz)
 [`//lib/deflate`](https://github.com/attilaolah/wasm/blob/main/lib/deflate/BUILD.bazel) | 1.7 [🔗](https://github.com/ebiggers/libdeflate/archive/v1.7.tar.gz)

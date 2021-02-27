@@ -1,0 +1,32 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//toolchains/make:make.bzl", "make_lib")
+
+package(default_visibility = ["//:__subpackages__"])
+
+# TODO: Add required CFLAGS & friends.
+
+make_lib(
+    name = "cblas",
+    make_commands = [
+        "mkdir lib",
+        "make {} alllib".format(" ".join([
+            '{}="{}"'.format(key, val)
+            for key, val in {
+                "ARCH": "${EXT_BUILD_ROOT}/external/llvm/bin/llvm-ar",
+                "ARCHFLAGS": "rcsD",
+                "CBLIB": "../lib/libcblas.a",
+                "CC": "${EXT_BUILD_ROOT}/external/llvm/bin/clang",
+                "CFLAGS": "-Wno-header-guard",
+                "FC": "${EXT_BUILD_DEPS}/bin/flang/bin/flang",
+            }.items()
+        ])),
+        'cp -a lib/libcblas.a "${INSTALLDIR}/lib"',
+    ],
+    tools_deps = ["//tools/llvm:flang_runtime"],
+)
+
+bzl_library(
+    name = "package",
+    srcs = ["package.bzl"],
+    deps = ["//:http_archive"],
+)
