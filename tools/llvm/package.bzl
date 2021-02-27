@@ -2,11 +2,11 @@
 
 load("//:http_archive.bzl", "http_archive")
 
-VERSION = "12.0.0-rc1"
+VERSION = "12.0.0-rc2"
 
 URL = "https://github.com/llvm/llvm-project/releases/download/llvmorg-{version}/clang+llvm-{version}-x86_64-linux-gnu-ubuntu-20.10.tar.xz"
 
-SHA256 = "0ee9c6e3adc52eb4778e796441f0bedf178fe550e9898ded65276cf8871eea63"
+SHA256 = "70d15e6284e43472c04d28c6fe9db39f6f46aceafd0e9f6fe2f73f4e2d235fdc"
 
 BUILD = """
 package(default_visibility = ["//visibility:public"])
