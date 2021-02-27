@@ -105,7 +105,7 @@ def clang_toolchain(name):
         host_system_name = "local",
         link_flags = [
             "-B{}/bin".format(LLVM_PATH),
-            "-fuse-ld={}/bin/ld.lld".format(LLVM_PATH),
+            "--ld-path={}/bin/ld.lld".format(LLVM_PATH),
             "-Wl,-no-as-needed",
             "-Wl,-z,relro,-z,now",
             "-lstdc++",
