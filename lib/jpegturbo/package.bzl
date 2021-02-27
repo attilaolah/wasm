@@ -8,9 +8,9 @@ URL = "https://github.com/libjpeg-turbo/libjpeg-turbo/archive/{version}.tar.gz"
 
 SHA256 = "6a965adb02ad898b2ae48214244618fe342baea79db97157fdc70d8844ac6f09"
 
-def download_jpeg_turbo():
+def download_jpegturbo():
     http_archive(
-        name = "lib_jpeg_turbo",
+        name = "lib_jpegturbo",
         version = VERSION,
         urls = [URL],
         sha256 = SHA256,

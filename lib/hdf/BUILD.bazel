@@ -18,7 +18,7 @@ configure_make_lib(
         "--enable-deprecated-symbols",
         "--enable-hdf4-xdr",
         "--enable-static",
-        '--with-jpeg="${EXT_BUILD_DEPS}/jpeg_turbo_lib"',
+        '--with-jpeg="${EXT_BUILD_DEPS}/jpegturbo_lib"',
         '--with-szlib="${EXT_BUILD_DEPS}/aec_lib"',
         '--with-zlib="${EXT_BUILD_DEPS}/z_lib"',
     ],
@@ -30,7 +30,7 @@ configure_make_lib(
     ],
     deps = [
         "//lib/aec",
-        "//lib/jpeg_turbo",
+        "//lib/jpegturbo",
         "//lib/z",
     ],
 )

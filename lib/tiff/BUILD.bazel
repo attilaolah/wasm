@@ -13,8 +13,8 @@ cmake_lib(
         "CMAKE_EXE_LINKER_FLAGS": "-lpthread",
 
         # Dependencies:
-        "JPEG_INCLUDE_DIR": "${EXT_BUILD_DEPS}/jpeg_turbo_lib/include",
-        "JPEG_LIBRARY": "${EXT_BUILD_DEPS}/jpeg_turbo_lib/lib/libjpeg.a",
+        "JPEG_INCLUDE_DIR": "${EXT_BUILD_DEPS}/jpegturbo_lib/include",
+        "JPEG_LIBRARY": "${EXT_BUILD_DEPS}/jpegturbo_lib/lib/libjpeg.a",
         "LIBLZMA_INCLUDE_DIR": "${EXT_BUILD_DEPS}/lzma_lib/include",
         "LIBLZMA_LIBRARY": "${EXT_BUILD_DEPS}/lzma_lib/lib/liblzma.a",
         "WEBP_INCLUDE_DIR": "${EXT_BUILD_DEPS}/webp_lib/include",
@@ -29,7 +29,7 @@ cmake_lib(
         "libtiffxx.a",
     ],
     deps = [
-        "//lib/jpeg_turbo",
+        "//lib/jpegturbo",
         "//lib/lzma",
         "//lib/webp",
         "//lib/z",

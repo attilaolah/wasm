@@ -10,13 +10,13 @@ configure_make_lib(
         "--enable-shared=no",
         "--enable-static=yes",
         "--with-fastfloat",
-        '--with-jpeg="${EXT_BUILD_DEPS}/jpeg_turbo_lib"',
+        '--with-jpeg="${EXT_BUILD_DEPS}/jpegturbo_lib"',
         '--with-tiff="${EXT_BUILD_DEPS}/tiff_lib/lib"',
     ],
     linkopts = ["-lcms2"],
     static_libraries = ["liblcms2.a"],
     deps = [
-        "//lib/jpeg_turbo",
+        "//lib/jpegturbo",
         "//lib/tiff",
     ],
 )

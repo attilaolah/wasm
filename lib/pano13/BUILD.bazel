@@ -7,8 +7,8 @@ cmake_lib(
     name = "pano13",
     cache_entries = {
         "BUILD_SHARED_LIBS": False,
-        "JPEG_INCLUDE_DIR": "${EXT_BUILD_DEPS}/jpeg_turbo_lib/include",
-        "JPEG_LIBRARY": "${EXT_BUILD_DEPS}/jpeg_turbo_lib/lib/libjpeg.a",
+        "JPEG_INCLUDE_DIR": "${EXT_BUILD_DEPS}/jpegturbo_lib/include",
+        "JPEG_LIBRARY": "${EXT_BUILD_DEPS}/jpegturbo_lib/lib/libjpeg.a",
         "PNG_LIBRARY": "${EXT_BUILD_DEPS}/png_lib/lib/libpng.a",
         "PNG_PNG_INCLUDE_DIR": "${EXT_BUILD_DEPS}/png_lib/include",
         "TIFF_INCLUDE_DIR": "${EXT_BUILD_DEPS}/tiff_lib/include",
@@ -17,7 +17,7 @@ cmake_lib(
         "ZLIB_LIBRARY": "${EXT_BUILD_DEPS}/z_lib/lib/libz.a",
     },
     deps = [
-        "//lib/jpeg_turbo",
+        "//lib/jpegturbo",
         "//lib/png",
         "//lib/tiff",
         "//lib/z",

@@ -9,8 +9,8 @@ cmake_lib(
         "build_shared_libs": False,
         "gif_include_dir": "${EXT_BUILD_DEPS}/gif_lib/include",
         "gif_library": "${EXT_BUILD_DEPS}/gif_lib/lib/libgif.a",
-        "jpeg_include_dir": "${EXT_BUILD_DEPS}/jpeg_turbo_lib/include",
-        "jpeg_library": "${EXT_BUILD_DEPS}/jpeg_turbo_lib/lib/libjpeg.a",
+        "jpeg_include_dir": "${EXT_BUILD_DEPS}/jpegturbo_lib/include",
+        "jpeg_library": "${EXT_BUILD_DEPS}/jpegturbo_lib/lib/libjpeg.a",
         "png_library": "${EXT_BUILD_DEPS}/png_lib/lib/libpng.a",
         "png_png_include_dir": "${EXT_BUILD_DEPS}/png_lib/include",
         "webp_build_anim_utils": False,
@@ -29,7 +29,7 @@ cmake_lib(
     # but that would introduce a cyclic dependency, so we don't list it here.
     deps = [
         "//lib/gif",
-        "//lib/jpeg_turbo",
+        "//lib/jpegturbo",
         "//lib/png",
         "//lib/z",
     ],

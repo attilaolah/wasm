@@ -8,7 +8,7 @@ bzl_library(
         "//lib/ffi:package",
         "//lib/fftw:package",
         "//lib/gif:package",
-        "//lib/jpeg_turbo:package",
+        "//lib/jpegturbo:package",
         "//lib/lz4:package",
         "//lib/lzma:package",
         "//lib/png:package",

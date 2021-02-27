@@ -4,7 +4,7 @@ load("//toolchains/cmake:cmake.bzl", "cmake_lib")
 package(default_visibility = ["//:__subpackages__"])
 
 cmake_lib(
-    name = "jpeg_turbo",
+    name = "jpegturbo",
     cache_entries = {
         "CMAKE_INSTALL_DEFAULT_LIBDIR": "lib",
         "ENABLE_SHARED": False,
