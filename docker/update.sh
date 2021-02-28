@@ -16,6 +16,9 @@ echo "deb [arch=amd64] https://storage.googleapis.com/bazel-apt stable jdk1.8" >
 apt-get update
 apt-get --yes install bazel git make m4 2>&1
 
+# TODO: Required by //lib/cblas, to be added to the build system.
+apt-get --yes install gfortran
+
 # TODO: Required by //lib/grass, to be added to the build system.
 apt-get --yes install python3-distutils python3-six bison flex gettext 2>&1
 

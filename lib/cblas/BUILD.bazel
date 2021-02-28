@@ -5,8 +5,12 @@ package(default_visibility = ["//:__subpackages__"])
 
 # TODO: Add required CFLAGS & friends.
 
+# NOTE: Currently building this package requires a working "gfortran" binary.
+# TODO: Build gfortran, and set the F18_FC environment variable to that binary.
+
 make_lib(
     name = "cblas",
+    ignore_undefined_symbols = True,
     make_commands = [
         "mkdir lib",
         "make {} alllib".format(" ".join([
