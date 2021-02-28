@@ -1,0 +1,38 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//toolchains/make:configure.bzl", "configure_make_lib")
+
+package(default_visibility = ["//:__subpackages__"])
+
+configure_make_lib(
+    name = "ncurses",
+    configure_in_place = True,
+    configure_options = [
+        # keep sorted
+        "--disable-shared",
+        "--enable-static",
+        "--with-termlib",
+        "--with-ticlib",
+        "--without-dlsym",
+    ],
+    static_libraries = [
+        # keep sorted
+        "libform.a",
+        "libform_g.a",
+        "libmenu.a",
+        "libmenu_g.a",
+        "libncurses.a",
+        "libncurses++.a",
+        "libncurses++_g.a",
+        "libncurses_g.a",
+        "libpanel.a",
+        "libpanel_g.a",
+        "libtinfo.a",
+        "libtinfo_g.a",
+    ],
+)
+
+bzl_library(
+    name = "package",
+    srcs = ["package.bzl"],
+    deps = ["//:http_archive"],
+)

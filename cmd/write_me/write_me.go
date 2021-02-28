@@ -32,6 +32,9 @@ var (
 		"//:http_archive.bzl": {
 			"http_archive": nil,
 		},
+		"//toolchains/make:configure.bzl": {
+			"patch_files": nil,
+		},
 		"//tools/emscripten:emconfigure.bzl": {
 			"EMCONFIGURE": nil,
 		},
