@@ -26,14 +26,14 @@ def archive_symbols(name, deps, strict):
         label = Label(dep)
         labels.append("@{}//{}:{}_symbols".format(label.workspace_name, label.package, label.name))
 
+    labels.append("//lib/gcc:gcc_symbols")
+    if native.package_name() != "lib/musl":
+        labels.append("//lib/musl:musl_symbols")
+
     _archive_symbols(
         name = "{}_symbols".format(name),
         srcs = [":{}".format(name)],
-        deps = labels + [
-            # Implicit dependencies, keep sorted:
-            "//lib/c:c_symbols",
-            "//lib/gcc:gcc_symbols",
-        ],
+        deps = labels,
         strict = strict,
     )
 
