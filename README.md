@@ -68,7 +68,7 @@ toolchain, pass `--cpu=wasm32`. Pass `-c opt` for an optimised build.
 [`//lib/python`](https://github.com/attilaolah/wasm/blob/main/lib/python/BUILD.bazel) | 3.9.2 [🔗](https://www.python.org/ftp/python/3.9.2/Python-3.9.2.tar.xz)
 [`//lib/readline`](https://github.com/attilaolah/wasm/blob/main/lib/readline/BUILD.bazel) | 8.0 [🔗](https://ftp.gnu.org/gnu/readline/readline-8.0.tar.gz)
 [`//lib/sqlite`](https://github.com/attilaolah/wasm/blob/main/lib/sqlite/BUILD.bazel) | 3.34.1 [🔗](https://www.sqlite.org/2021/sqlite-autoconf-3340100.tar.gz)
-[`//lib/suitesparse`](https://github.com/attilaolah/wasm/blob/main/lib/suitesparse/BUILD.bazel) | 5.8.1 [🔗](https://github.com/DrTimothyAldenDavis/SuiteSparse/archive/v5.8.1.tar.gz)
+[`//lib/suitesparse`](https://github.com/attilaolah/wasm/blob/main/lib/suitesparse/BUILD.bazel) | 5.9.0 [🔗](https://github.com/DrTimothyAldenDavis/SuiteSparse/archive/v5.9.0.tar.gz)
 [`//lib/szip`](https://github.com/attilaolah/wasm/blob/main/lib/szip/BUILD.bazel) | 2.1.1 [🔗](https://support.hdfgroup.org/ftp/lib-external/szip/2.1.1/src/szip-2.1.1.tar.gz)
 [`//lib/tcl`](https://github.com/attilaolah/wasm/blob/main/lib/tcl/BUILD.bazel) | 8.6.11 [🔗](https://downloads.sourceforge.net/tcl/tcl8.6.11-src.tar.gz)
 [`//lib/tiff`](https://github.com/attilaolah/wasm/blob/main/lib/tiff/BUILD.bazel) | 4.2.0 [🔗](https://download.osgeo.org/libtiff/tiff-4.2.0.tar.gz)
