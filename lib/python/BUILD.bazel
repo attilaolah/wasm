@@ -26,7 +26,6 @@ configure_make_lib(
         ],
         "//conditions:default": CONFIGURE_OPTIONS,
     }),
-    ignore_undefined_symbols = True,
     static_libraries = ["libpython3.9.a"],
     deps = [
         "//lib/ffi",

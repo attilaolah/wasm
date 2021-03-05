@@ -2,13 +2,9 @@ load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
 load("//toolchains/make:make.bzl", "make_lib")
 load(":libraries.bzl", "LIB_SOURCE", "PREFIX", "suitesparse_lib")
-load(":package.bzl", "METIS_VERSION")
+load(":package.bzl", "GK_PATH", "METIS_PATH")
 
 package(default_visibility = ["//:__subpackages__"])
-
-METIS_PATH = "metis-{}".format(METIS_VERSION)
-
-GK_PATH = "{}/GKlib".format(METIS_PATH)
 
 suitesparse_lib(name = "amd")
 
@@ -20,7 +16,6 @@ suitesparse_lib(name = "ccolamd")
 
 suitesparse_lib(
     name = "cholmod",
-    ignore_undefined_symbols = True,
     deps = [
         ":amd",
         ":camd",
@@ -71,7 +66,6 @@ cmake_lib(
     cache_entries = {
         "BUILD_GRB_STATIC_LIBRARY": True,
     },
-    ignore_undefined_symbols = True,
     lib_source = LIB_SOURCE,
     working_directory = "GraphBLAS",
 )
@@ -138,13 +132,11 @@ make_lib(
 suitesparse_lib(
     name = "spqr",
     header_ext = "{h,hpp}",
-    ignore_undefined_symbols = True,
     deps = [":cholmod"],
 )
 
 suitesparse_lib(
     name = "umfpack",
-    ignore_undefined_symbols = True,
     deps = [
         ":amd",
         ":cholmod",

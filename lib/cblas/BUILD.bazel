@@ -10,7 +10,6 @@ package(default_visibility = ["//:__subpackages__"])
 
 make_lib(
     name = "cblas",
-    ignore_undefined_symbols = True,
     make_commands = [
         "mkdir lib",
         "make {} alllib".format(" ".join([

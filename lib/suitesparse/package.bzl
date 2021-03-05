@@ -6,6 +6,10 @@ VERSION = "5.8.1"
 
 METIS_VERSION = "5.1.0"
 
+METIS_PATH = "metis-{}".format(METIS_VERSION)
+
+GK_PATH = "{}/GKlib".format(METIS_PATH)
+
 URL = "https://github.com/DrTimothyAldenDavis/SuiteSparse/archive/v{version}.tar.gz"
 
 SHA256 = "06726e471fbaa55f792578f9b4ab282ea9d008cf39ddcc3b42b73400acddef40"

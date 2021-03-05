@@ -10,7 +10,6 @@ configure_make_lib(
         "--disable-shared",
         "--disable-install-examples",
     ],
-    ignore_undefined_symbols = True,
 )
 
 bzl_library(

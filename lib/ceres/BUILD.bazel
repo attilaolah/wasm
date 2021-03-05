@@ -56,7 +56,6 @@ cmake_lib(
         "//config:wasm": _CACHE_ENTRIES,
         "//conditions:default": _CLANG_CACHE_ENTRIES,
     },
-    ignore_undefined_symbols = True,
     deps = [
         "//lib/eigen",
         "//lib/glog",

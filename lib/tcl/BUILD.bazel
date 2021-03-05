@@ -10,7 +10,6 @@ configure_make_lib(
         "--disable-shared",
     ],
     configure_script = "unix/configure",
-    ignore_undefined_symbols = True,
     linkopts = ["-ltcl{}".format(MAJOR_MINOR)],
     static_libraries = [
         "libtcl{}.a".format(MAJOR_MINOR),
