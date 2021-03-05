@@ -8,8 +8,12 @@ cmake_lib(
     cache_entries = {
         "BUILD_TESTING": False,
     },
+    env = {
+        "FC": "${EXT_BUILD_DEPS}/bin/flang/bin/flang",
+    },
     headers_only = True,
     static_libraries = [],
+    tools_deps = ["//tools/llvm:flang_runtime"],
 )
 
 bzl_library(
