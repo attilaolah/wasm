@@ -57,7 +57,7 @@ func ParseArchives(nm string, paths []string, extern bool) (Archives, error) {
 	}
 	cmd := exec.Command(nm, append(args, paths...)...)
 
-	out, err := cmd.CombinedOutput()
+	out, err := cmd.Output()
 	if err != nil {
 		return nil, fmt.Errorf("error running command %q: %w; output: %s", cmd, err, out)
 	}
