@@ -13,6 +13,18 @@ configure_make_lib(
     out_static_libs = ["libc.a"],
 )
 
+constraint_value(
+    name = "libc",
+    constraint_setting = "//toolchains:libc",
+)
+
+filegroup(
+    name = "runtime",
+    srcs = [":musl"],
+    output_group = "gen_dir",
+    visibility = ["//visibility:public"],
+)
+
 bzl_library(
     name = "package",
     srcs = ["package.bzl"],

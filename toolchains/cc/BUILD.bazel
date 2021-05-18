@@ -3,6 +3,8 @@ load(":clang.bzl", "clang_toolchain")
 
 clang_toolchain(name = "linux_x86_64_clang")
 
+constraint_setting(name = "libc")
+
 bzl_library(
     name = "clang_bzl",
     srcs = ["clang.bzl"],

@@ -15,3 +15,5 @@ cc_toolchain_suite(
         "wasm64|emscripten": WASM,
     },
 )
+
+constraint_setting(name = "libc")

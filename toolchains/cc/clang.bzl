@@ -124,7 +124,14 @@ def clang_toolchain(name):
         supports_start_end_lib = True,
         target_libc = "local",
         target_system_name = "local",
-        tool_paths = tool_paths,
+        tool_paths = select({
+            "//lib/musl:libc": dict(tool_paths.items() + {
+                # TODO: Add this to the toolchain deps in cc_toolchain()!
+                "gcc": "${EXT_BUILD_ROOT}/todo/musl/bin/musl-clang",
+                "ld": "${EXT_BUILD_ROOT}/todo/musl/bin/ld.musl-clang",
+            }.items()),
+            "//conditions:default": tool_paths,
+        }),
         toolchain_identifier = "local",
         unfiltered_compile_flags = [
             "-no-canonical-prefixes",
