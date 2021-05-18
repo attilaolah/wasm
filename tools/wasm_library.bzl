@@ -5,7 +5,7 @@ Allows implementing JavaScript APIs for C/C++ libraries.
 
 load("@bazel_skylib//lib:paths.bzl", "paths")
 load("@build_bazel_rules_nodejs//:providers.bzl", "JSModuleInfo")
-load("@rules_foreign_cc//tools/build_defs:cc_toolchain_util.bzl", "get_flags_info")
+load("@rules_foreign_cc//foreign_cc/private:cc_toolchain_util.bzl", "get_flags_info")
 
 # Linker flags not supported by the wasm-ld linker:
 WASM_LD_UNSUPPORTED_FLAGS = [

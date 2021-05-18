@@ -8,7 +8,7 @@ and CMake macros.
 """
 
 load("@bazel_skylib//lib:collections.bzl", "collections")
-load("@rules_foreign_cc//tools/build_defs:configure.bzl", "configure_make")
+load("@rules_foreign_cc//foreign_cc:configure.bzl", "configure_make")
 load("//tools/archive_symbols:archive_symbols.bzl", "archive_symbols")
 
 WASM_ENV_VARS = {

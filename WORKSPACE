@@ -14,7 +14,7 @@ workspace_dependencies()
 
 register_toolchains("//toolchains/cc:all")
 
-load("@rules_foreign_cc//:workspace_definitions.bzl", "rules_foreign_cc_dependencies")
+load("@rules_foreign_cc//foreign_cc:repositories.bzl", "rules_foreign_cc_dependencies")
 
 rules_foreign_cc_dependencies(
     native_tools_toolchains = [

@@ -1,5 +1,5 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
-load("@rules_foreign_cc//tools/build_defs:cmake.bzl", "cmake_external")
+load("@rules_foreign_cc//foreign_cc:cmake.bzl", "cmake")
 
 CMAKE_EXE_LINKER_FLAGS = " ".join([
     # Pass in the location of libtinfo.a:
@@ -10,7 +10,7 @@ CMAKE_EXE_LINKER_FLAGS = " ".join([
     "-ltinfo",
 ])
 
-cmake_external(
+cmake(
     name = "flang",
     additional_inputs = ["@llvm//:all"],
     binaries = [
