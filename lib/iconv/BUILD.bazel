@@ -15,7 +15,7 @@ configure_make_lib(
         "-lcharset",
         "-liconv",
     ],
-    static_libraries = [
+    out_static_libs = [
         # keep sorted
         "libcharset.a",
         "libiconv.a",

@@ -10,7 +10,7 @@ cmake_lib(
         "ENABLE_POSIX_API": True,
     },
     linkopts = ["-lonig"],
-    static_libraries = ["libonig.a"],
+    out_static_libs = ["libonig.a"],
 )
 
 bzl_library(

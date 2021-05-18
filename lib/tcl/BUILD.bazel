@@ -11,7 +11,7 @@ configure_make_lib(
     ],
     configure_script = "unix/configure",
     linkopts = ["-ltcl{}".format(MAJOR_MINOR)],
-    static_libraries = [
+    out_static_libs = [
         "libtcl{}.a".format(MAJOR_MINOR),
         "libtclstub{}.a".format(MAJOR_MINOR),
     ],

@@ -45,7 +45,7 @@ def configure_make_lib(
         configure_script = "configure",
         make_commands = None,
         linkopts = None,
-        static_libraries = None,
+        out_static_libs = None,
         tools_deps = None,
         env = None,
         ignore_undefined_symbols = True,
@@ -60,7 +60,7 @@ def configure_make_lib(
       make_commands: Wrapped in a select() for Emscripten, then passed on to
         configure_make().
       linkopts: Passed on to configure_make(). Guessed from name.
-      static_libraries: Passed on to configure_make(). Guessed from name.
+      out_static_libs: Passed on to configure_make(). Guessed from name.
       tools_deps: Additional build-time dependencies, compiled with cfg =
         "exec".
       env: Passed on to configure_make(). Form Emscripten builds, it is
@@ -80,8 +80,8 @@ def configure_make_lib(
         ]
     if linkopts == None:
         linkopts = ["-l{}".format(name)]
-    if static_libraries == None:
-        static_libraries = ["lib{}.a".format(name)]
+    if out_static_libs == None:
+        out_static_libs = ["lib{}.a".format(name)]
 
     if env == None:
         env = {}
@@ -102,7 +102,7 @@ def configure_make_lib(
         lib_source = lib_source,
         linkopts = linkopts,
         make_commands = _make_commands(commands = make_commands),
-        static_libraries = static_libraries,
+        out_static_libs = out_static_libs,
         tools_deps = _tools_deps(tools_deps),
         **kwargs
     )

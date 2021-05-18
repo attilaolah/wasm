@@ -5,16 +5,16 @@ package(default_visibility = ["//:__subpackages__"])
 
 configure_make_lib(
     name = "sqlite",
-    binaries = select({
-        "//config:wasm": [],
-        "//conditions:default": ["sqlite3"],
-    }),
     configure_options = [
         # keep sorted
         "--enable-shared=no",
         "--enable-static=yes",
     ],
-    static_libraries = ["libsqlite3.a"],
+    out_binaries = select({
+        "//config:wasm": [],
+        "//conditions:default": ["sqlite3"],
+    }),
+    out_static_libs = ["libsqlite3.a"],
 )
 
 bzl_library(

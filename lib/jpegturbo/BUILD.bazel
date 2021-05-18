@@ -12,7 +12,7 @@ cmake_lib(
         "WITH_JAVA": False,
     },
     linkopts = ["-lturbojpeg"],
-    static_libraries = [
+    out_static_libs = [
         # keep sorted
         "libjpeg.a",
         "libturbojpeg.a",

@@ -13,7 +13,7 @@ def make_lib(
         make_commands = None,
         install_commands = None,
         linkopts = None,
-        static_libraries = None,
+        out_static_libs = None,
         tools_deps = None,
         env = None,
         ignore_undefined_symbols = True,
@@ -28,7 +28,7 @@ def make_lib(
       install_commands: Commands to run after either make or emmake. For
         Emscripten, these are NOT prefixed with emmake.
       linkopts: Passed on to make(). Guessed from name.
-      static_libraries: Passed on to make(). Guessed from name.
+      out_static_libs: Passed on to make(). Guessed from name.
       tools_deps: Additional build-time dependencies, compiled with cfg =
         "exec".
       env: Passed on to make(). Form Emscripten builds, it is
@@ -48,8 +48,8 @@ def make_lib(
         ]
     if linkopts == None:
         linkopts = ["-l{}".format(name)]
-    if static_libraries == None:
-        static_libraries = ["lib{}.a".format(name)]
+    if out_static_libs == None:
+        out_static_libs = ["lib{}.a".format(name)]
     if env == None:
         env = {}
 
@@ -67,7 +67,7 @@ def make_lib(
             "//config:wasm": dict(WASM_ENV_VARS.items() + env.items()),
             "//conditions:default": env,
         }),
-        static_libraries = static_libraries,
+        out_static_libs = out_static_libs,
         tools_deps = _tools_deps(tools_deps),
         **kwargs
     )

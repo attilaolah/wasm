@@ -12,7 +12,7 @@ cmake_lib(
         "-laec",
         "-lsz",
     ],
-    static_libraries = [
+    out_static_libs = [
         "libaec.a",
         "libsz.a",
     ],

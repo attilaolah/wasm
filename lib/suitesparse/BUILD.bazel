@@ -40,7 +40,7 @@ make_lib(
     make_commands = [
         'make -C "{}/SuiteSparse_config" static'.format(PREFIX),
     ],
-    static_libraries = ["libsuitesparseconfig.a"],
+    out_static_libs = ["libsuitesparseconfig.a"],
 )
 
 suitesparse_lib(
@@ -57,7 +57,7 @@ cmake_lib(
     name = "gk",
     lib_source = LIB_SOURCE,
     linkopts = ["-lGKlib"],
-    static_libraries = ["libGKlib.a"],
+    out_static_libs = ["libGKlib.a"],
     working_directory = GK_PATH,
 )
 
@@ -119,7 +119,7 @@ make_lib(
     make_commands = [
         'make CFLAGS="{}" -C "{}/SLIP_LU" static'.format(SLIP_LU_CFLAGS, PREFIX),
     ],
-    static_libraries = ["libsliplu.a"],
+    out_static_libs = ["libsliplu.a"],
     deps = [
         ":amd",
         ":colamd",

@@ -5,16 +5,16 @@ package(default_visibility = ["//:__subpackages__"])
 
 configure_make_lib(
     name = "jq",
-    binaries = select({
-        "//config:wasm": [],
-        "//conditions:default": ["jq"],
-    }),
     configure_options = [
         # keep sorted
         "--enable-shared=no",
         "--enable-static=yes",
         '--with-oniguruma="${EXT_BUILD_DEPS}/oniguruma_lib"',
     ],
+    out_binaries = select({
+        "//config:wasm": [],
+        "//conditions:default": ["jq"],
+    }),
     deps = ["//lib/oniguruma"],
 )
 

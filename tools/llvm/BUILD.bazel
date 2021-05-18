@@ -13,10 +13,6 @@ CMAKE_EXE_LINKER_FLAGS = " ".join([
 cmake(
     name = "flang",
     additional_inputs = ["@llvm//:all"],
-    binaries = [
-        "f18",
-        "flang",
-    ],
     cache_entries = {
         "BUILD_SHARED_LIBS": "OFF",
         "CMAKE_EXE_LINKER_FLAGS": CMAKE_EXE_LINKER_FLAGS,
@@ -33,6 +29,10 @@ cmake(
         # This will override whatever was passed via --action_env='MAKEFLAGS="-j..."'.
         "make -j4",
         "make install",
+    ],
+    out_binaries = [
+        "f18",
+        "flang",
     ],
     visibility = ["//lib:__subpackages__"],
     deps = [

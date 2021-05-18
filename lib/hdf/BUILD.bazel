@@ -22,7 +22,7 @@ configure_make_lib(
         '--with-szlib="${EXT_BUILD_DEPS}/aec_lib"',
         '--with-zlib="${EXT_BUILD_DEPS}/z_lib"',
     ],
-    static_libraries = [
+    out_static_libs = [
         # keep sorted
         "libdf.a",
         "libmfhdf.a",

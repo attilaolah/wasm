@@ -14,7 +14,7 @@ def cmake_lib(
         after_cmake = None,
         after_emcmake = None,
         linkopts = None,
-        static_libraries = None,
+        out_static_libs = None,
         tools_deps = None,
         cache_entries = None,
         env = None,
@@ -29,7 +29,7 @@ def cmake_lib(
       after_cmake: Commands to run after cmake.
       after_emcmake: Commands to run after emcmake (but not after plain cmake).
       linkopts: Passed on to cmake(). Guessed from name.
-      static_libraries: Passed on to cmake(). Guessed from name.
+      out_static_libs: Passed on to cmake(). Guessed from name.
       tools_deps: Additional build-time dependencies, compiled with cfg =
         "exec".
       cache_entries: Convert True/False to "ON"/"OFF", then passed on to
@@ -46,8 +46,8 @@ def cmake_lib(
         lib_source = _lib_source(name)
     if linkopts == None:
         linkopts = ["-l{}".format(name)]
-    if static_libraries == None:
-        static_libraries = ["lib{}.a".format(name)]
+    if out_static_libs == None:
+        out_static_libs = ["lib{}.a".format(name)]
     if env == None:
         env = {}
 
@@ -74,7 +74,7 @@ def cmake_lib(
             before_make = after_cmake,
             before_emmake = after_emcmake,
         ),
-        static_libraries = static_libraries,
+        out_static_libs = out_static_libs,
         tools_deps = _tools_deps(tools_deps),
         **kwargs
     )

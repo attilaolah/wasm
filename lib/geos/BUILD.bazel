@@ -9,7 +9,7 @@ cmake_lib(
         "BUILD_BENCHMARKS": False,
         "BUILD_SHARED_LIBS": False,
     },
-    static_libraries = [
+    out_static_libs = [
         "libgeos.a",
         "libgeos_c.a",
     ],

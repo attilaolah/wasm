@@ -15,7 +15,7 @@ configure_make_lib(
         "--enable-shared=no",
         "--enable-static=yes",
     ],
-    static_libraries = [
+    out_static_libs = [
         "libpng.a",
         "libpng16.a",
     ],

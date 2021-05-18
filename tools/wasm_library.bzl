@@ -37,7 +37,7 @@ def _wasm_library_impl(ctx):
     static_libs = []
     for f in ctx.files.deps:
         # This picks up all static libraries.
-        # Maybe it would be better to use providers and explicit static_libraries.
+        # Maybe it would be better to use providers and explicit out_static_libs.
         if f.extension == "a":
             static_libs.append(f)
     if not static_libs:

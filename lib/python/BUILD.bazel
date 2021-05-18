@@ -15,10 +15,6 @@ CONFIGURE_OPTIONS = [
 
 configure_make_lib(
     name = "python",
-    binaries = select({
-        "//config:wasm": [],
-        "//conditions:default": ["python3"],
-    }),
     configure_options = select({
         ":copt": CONFIGURE_OPTIONS + [
             # TODO: Add llvm-profdata to dependencies for this to work!
@@ -26,7 +22,11 @@ configure_make_lib(
         ],
         "//conditions:default": CONFIGURE_OPTIONS,
     }),
-    static_libraries = ["libpython3.9.a"],
+    out_binaries = select({
+        "//config:wasm": [],
+        "//conditions:default": ["python3"],
+    }),
+    out_static_libs = ["libpython3.9.a"],
     deps = [
         "//lib/ffi",
         "//lib/mpdecimal",

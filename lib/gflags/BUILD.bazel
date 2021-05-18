@@ -11,7 +11,7 @@ cmake_lib(
         "GFLAGS_BUILD_STATIC_LIBS": True,
         "GFLAGS_BUILD_TESTING": False,
     },
-    static_libraries = [
+    out_static_libs = [
         "libgflags.a",
         "libgflags_nothreads.a",
     ],

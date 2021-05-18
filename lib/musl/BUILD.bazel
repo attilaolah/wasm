@@ -10,7 +10,7 @@ configure_make_lib(
         "--disable-shared",
         "--enable-static",
     ],
-    static_libraries = ["libc.a"],
+    out_static_libs = ["libc.a"],
 )
 
 bzl_library(

@@ -6,7 +6,7 @@ package(default_visibility = ["//:__subpackages__"])
 configure_make_lib(
     name = "openssl",
     configure_script = "config",
-    static_libraries = [
+    out_static_libs = [
         "libcrypto.a",
         "libssl.a",
     ],

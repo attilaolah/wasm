@@ -16,7 +16,7 @@ cmake_lib(
     name = "fftw",
     cache_entries = CACHE_ENTRIES,
     linkopts = ["-lfftw3"],
-    static_libraries = ["libfftw3.a"],
+    out_static_libs = ["libfftw3.a"],
 )
 
 cmake_lib(
@@ -26,7 +26,7 @@ cmake_lib(
     }.items()),
     lib_source = lib_source("fftw"),
     linkopts = ["-lfftw3f"],
-    static_libraries = ["libfftw3f.a"],
+    out_static_libs = ["libfftw3f.a"],
 )
 
 cmake_lib(
@@ -36,7 +36,7 @@ cmake_lib(
     }.items()),
     lib_source = lib_source("fftw"),
     linkopts = ["-lfftw3l"],
-    static_libraries = ["libfftw3l.a"],
+    out_static_libs = ["libfftw3l.a"],
 )
 
 cmake_lib(
@@ -48,7 +48,7 @@ cmake_lib(
     }.items()),
     lib_source = lib_source("fftw"),
     linkopts = ["-lfftw3q"],
-    static_libraries = ["libfftw3q.a"],
+    out_static_libs = ["libfftw3q.a"],
 )
 
 bzl_library(

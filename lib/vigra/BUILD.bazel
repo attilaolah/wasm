@@ -24,7 +24,7 @@ cmake_lib(
         "ZLIB_LIBRARY": "${EXT_BUILD_DEPS}/z_lib/lib/libz.a",
     },
     linkopts = ["-lvigraimpex"],
-    static_libraries = ["libvigraimpex.a"],
+    out_static_libs = ["libvigraimpex.a"],
     deps = [
         "//lib/fftw",
         "//lib/jpegturbo",

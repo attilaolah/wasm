@@ -11,8 +11,8 @@ cmake_lib(
     env = {
         "FC": "${EXT_BUILD_DEPS}/bin/flang/bin/flang",
     },
-    headers_only = True,
-    static_libraries = [],
+    out_headers_only = True,
+    out_static_libs = [],
     tools_deps = ["//tools/llvm:flang_runtime"],
 )
 

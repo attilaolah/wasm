@@ -64,7 +64,7 @@ configure_make_lib(
         # Copy static libs to the right place for exporting.
         "cp -r grass_lib/grass{}/lib grass_lib".format(MAJORMINOR),
     ],
-    static_libraries = [
+    out_static_libs = [
         "libgrass_{}.{}.a".format(lib, MAJOR_MINOR)
         for lib in [
             # keep sorted

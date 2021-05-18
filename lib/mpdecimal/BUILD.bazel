@@ -9,7 +9,7 @@ configure_make_lib(
     configure_options = [
         "--disable-shared",
     ],
-    static_libraries = [
+    out_static_libs = [
         # keep sorted
         "libmpdec.a",
         "libmpdec++.a",

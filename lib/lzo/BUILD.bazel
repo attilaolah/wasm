@@ -10,7 +10,7 @@ cmake_lib(
         "ENABLE_STATIC": True,
     },
     linkopts = ["-llzo2"],
-    static_libraries = ["liblzo2.a"],
+    out_static_libs = ["liblzo2.a"],
 )
 
 bzl_library(

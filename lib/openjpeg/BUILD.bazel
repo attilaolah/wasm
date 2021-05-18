@@ -10,7 +10,7 @@ cmake_lib(
         "BUILD_SHARED_LIBS": False,
     },
     linkopts = ["lopenjp2"],
-    static_libraries = ["libopenjp2.a"],
+    out_static_libs = ["libopenjp2.a"],
 )
 
 bzl_library(
