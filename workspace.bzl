@@ -23,12 +23,12 @@ def workspace_dependencies():
 
     http_archive(
         name = "io_bazel_rules_go",
-        version = "0.25.1",
+        version = "0.27.0",
         urls = [
             "https://mirror.bazel.build/github.com/bazelbuild/rules_go/releases/download/v{version}/rules_go-v{version}.tar.gz",
             "https://github.com/bazelbuild/rules_go/releases/download/v{version}/rules_go-v{version}.tar.gz",
         ],
-        sha256 = "7904dbecbaffd068651916dce77ff3437679f9d20e1a7956bff43826e7645fcc",
+        sha256 = "69de5c704a05ff37862f7e0f5534d4f479418afc21806c887db544a316f3cb6b",
         build_file_content = None,
     )
 
