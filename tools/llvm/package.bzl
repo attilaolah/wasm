@@ -3,15 +3,15 @@
 load("//:http_archive.bzl", "http_archive")
 load("//toolchains/make:configure.bzl", "patch_files")
 
-VERSION = "12.0.0-rc2"
+VERSION = "12.0.0"
 VERSION_MMP = VERSION.split("-")[0]
 VERSION_ND = VERSION.replace("-", "")
 
-URL = "https://github.com/llvm/llvm-project/releases/download/llvmorg-{version}/clang+llvm-{version}-x86_64-linux-gnu-ubuntu-20.10.tar.xz"
-URL_FLANG = "https://github.com/llvm/llvm-project/releases/download/llvmorg-{}/flang-{}.src.tar.xz".format(VERSION, VERSION_ND)
+URL = "https://github.com/llvm/llvm-project/releases/download/llvmorg-{version}/clang+llvm-{version}-x86_64-linux-gnu-ubuntu-20.04.tar.xz"
+URL_FLANG = "https://github.com/llvm/llvm-project/releases/download/llvmorg-{version}/flang-{version}.src.tar.xz"
 
-SHA256 = "70d15e6284e43472c04d28c6fe9db39f6f46aceafd0e9f6fe2f73f4e2d235fdc"
-SHA256_FLANG = "383c8041665f26bab7eb2dca215a020f7cb4f074f2f043c03e9f7b7576f51d23"
+SHA256 = "a9ff205eb0b73ca7c86afc6432eed1c2d49133bd0d49e47b15be59bbf0dd292e"
+SHA256_FLANG = "dc9420c9f55c6dde633f0f46fe3f682995069cc5247dfdef225cbdfdca79123a"
 
 BUILD = """
 package(default_visibility = ["//visibility:public"])
@@ -33,7 +33,7 @@ def download_llvm():
         version = VERSION,
         urls = [URL],
         sha256 = SHA256,
-        strip_prefix = "clang+llvm-{version}-x86_64-linux-gnu-ubuntu-20.10",
+        strip_prefix = "clang+llvm-{version}-x86_64-linux-gnu-ubuntu-20.04",
         build_file_content = BUILD,
         patch_cmds = patch_files({
             # Avoid dependency on system libtinfo.so.
@@ -48,5 +48,5 @@ def download_flang():
         version = VERSION,
         urls = [URL_FLANG],
         sha256 = SHA256_FLANG,
-        strip_prefix = "flang-{}.src".format(VERSION_ND),
+        strip_prefix = "flang-{version}.src"
     )
