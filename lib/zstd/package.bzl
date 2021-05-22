@@ -2,11 +2,11 @@
 
 load("//:http_archive.bzl", "http_archive")
 
-VERSION = "1.4.8"
+VERSION = "1.5.0"
 
 URL = "https://github.com/facebook/zstd/releases/download/v{version}/zstd-{version}.tar.gz"
 
-SHA256 = "32478297ca1500211008d596276f5367c54198495cf677e9439f4791a4c69f24"
+SHA256 = "5194fbfa781fcf45b98c5e849651aa7b3b0a008c6b72d4a0db760f3002291e94"
 
 def download_zstd():
     http_archive(
