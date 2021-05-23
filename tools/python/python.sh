@@ -2,6 +2,8 @@
 
 if [[ -z "${ROOT_PATH}" ]]; then
   ROOT_PATH_ORIG="${ROOT_PATH}"
+  # TODO: Update once rules_foreign_cc 0.3.0 is released.
+  # ROOT_PATH="${EXT_BUILD_DEPS}/bin/copy_python_lib/python_lib"
   ROOT_PATH="${EXT_BUILD_DEPS}/bin/python_lib"
 fi
 

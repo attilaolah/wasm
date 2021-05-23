@@ -130,9 +130,9 @@ def clang_toolchain(name):
             "-no-canonical-prefixes",
             "-Wno-builtin-macro-redefined",
 
-            # Make builds reproducible:
-            "-D__DATE__='\"redacted\"'",
-            "-D__TIME__='\"redacted\"'",
-            "-D__TIMESTAMP__='\"redacted\"'",
+            # TODO: Make builds reproducible:
+            #"-D__DATE__='\"redacted\"'",
+            #"-D__TIME__='\"redacted\"'",
+            #"-D__TIMESTAMP__='\"redacted\"'",
         ],
     )

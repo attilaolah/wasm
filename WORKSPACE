@@ -17,10 +17,6 @@ register_toolchains("//toolchains/cc:all")
 load("@rules_foreign_cc//foreign_cc:repositories.bzl", "rules_foreign_cc_dependencies")
 
 rules_foreign_cc_dependencies(
-    native_tools_toolchains = [
-        "//toolchains/cmake:emcmake",
-        "//toolchains/make:emmake",
-    ],
     register_preinstalled_tools = False,
 )
 

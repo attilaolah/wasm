@@ -75,8 +75,9 @@ def configure_make_lib(
         lib_source = _lib_source(name)
     if make_commands == None:
         make_commands = [
-            "make",
-            "make install",
+            # TODO: Get canonical make path from somewhere.
+            '"${EXT_BUILD_DEPS}/bin/make/bin/make"',
+            '"${EXT_BUILD_DEPS}/bin/make/bin/make" install',
         ]
     if linkopts == None:
         linkopts = ["-l{}".format(name)]
@@ -135,7 +136,11 @@ def make_commands(
       A select() wrapping the resulting make commands.
     """
     if commands == None:
-        commands = ["make", "make install"]
+        # TODO: Get canonical make path from somewhere.
+        commands = [
+            '"${EXT_BUILD_DEPS}/bin/make/bin/make"',
+            '"${EXT_BUILD_DEPS}/bin/make/bin/make" install',
+        ]
     wasm_commands = [_emmake(cmd) for cmd in commands]
 
     if before_make != None:

@@ -43,8 +43,9 @@ def make_lib(
         lib_source = _lib_source(name)
     if make_commands == None:
         make_commands = [
-            'make -C "${{EXT_BUILD_ROOT}}/external/lib_{}"'.format(name),
-            'make -C "${{EXT_BUILD_ROOT}}/external/lib_{}" install PREFIX="${{INSTALLDIR}}"'.format(name),
+            # TODO: Get canonical make path from somewhere.
+            '"${{EXT_BUILD_DEPS}}/bin/make/bin/make" -C "${{EXT_BUILD_ROOT}}/external/lib_{}"'.format(name),
+            '"${{EXT_BUILD_DEPS}}/bin/make/bin/make" -C "${{EXT_BUILD_ROOT}}/external/lib_{}" install PREFIX="${{INSTALLDIR}}"'.format(name),
         ]
     if linkopts == None:
         linkopts = ["-l{}".format(name)]

@@ -1,6 +1,5 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
-load("//toolchains/make:configure.bzl", "patch_files")
 
 package(default_visibility = ["//:__subpackages__"])
 
@@ -15,9 +14,10 @@ _MASK_HEADERS = [
 
 cmake_lib(
     name = "glog",
-    after_emcmake = patch_files({
-        "config.h": r"/^#define HAVE_({})\b.*/d".format("|".join(_MASK_HEADERS)),
-    }),
+    # TODO: Fix this!
+    #after_emcmake = patch_files({
+    #    "config.h": r"/^#define HAVE_({})\b.*/d".format("|".join(_MASK_HEADERS)),
+    #}),
     cache_entries = {
         "BUILD_SHARED_LIBS": False,
         # Emscripten fails to compile tests that use popen().
@@ -26,7 +26,6 @@ cmake_lib(
         "WITH_THREADS": True,
         "WITH_TLS": True,
     },
-    # Ignore until symbol __tls_get_addr is added.
     deps = [
         "//lib/gflags",
     ],

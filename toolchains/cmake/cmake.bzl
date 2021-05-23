@@ -5,14 +5,13 @@ Contains a convenience macro that wraps cmake() from
 """
 
 load("@rules_foreign_cc//foreign_cc:cmake.bzl", "cmake")
-load("//toolchains/make:configure.bzl", "WASM_ENV_VARS", "make_commands", _lib_source = "lib_source", _tools_deps = "tools_deps")
+load("//toolchains/make:configure.bzl", "WASM_ENV_VARS", _lib_source = "lib_source", _tools_deps = "tools_deps")
 load("//tools/archive_symbols:archive_symbols.bzl", "archive_symbols")
 
 def cmake_lib(
         name,
         lib_source = None,
         after_cmake = None,
-        after_emcmake = None,
         linkopts = None,
         out_static_libs = None,
         tools_deps = None,
@@ -27,7 +26,6 @@ def cmake_lib(
         parameters.
       lib_source: Passed on to cmake(). Guessed from name.
       after_cmake: Commands to run after cmake.
-      after_emcmake: Commands to run after emcmake (but not after plain cmake).
       linkopts: Passed on to cmake(). Guessed from name.
       out_static_libs: Passed on to cmake(). Guessed from name.
       tools_deps: Additional build-time dependencies, compiled with cfg =
@@ -70,10 +68,6 @@ def cmake_lib(
         lib_name = "{}_lib".format(name),
         lib_source = lib_source,
         linkopts = linkopts,
-        make_commands = make_commands(
-            before_make = after_cmake,
-            before_emmake = after_emcmake,
-        ),
         out_static_libs = out_static_libs,
         tools_deps = _tools_deps(tools_deps),
         **kwargs
