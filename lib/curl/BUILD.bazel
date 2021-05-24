@@ -1,5 +1,6 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
+load("//tools:version_info.bzl", "version_info")
 
 package(default_visibility = ["//:__subpackages__"])
 
@@ -22,4 +23,11 @@ bzl_library(
     name = "package",
     srcs = ["package.bzl"],
     deps = ["//:http_archive"],
+)
+
+version_info(
+    name = "version",
+    package_bzl = ":package",
+    version_regex = r">curl-([^<]*)\.tar\.gz<",
+    version_url = "https://curl.se/download.html",
 )

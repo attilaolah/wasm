@@ -15,6 +15,6 @@ bzl_library(
 version_info(
     name = "version",
     package_bzl = ":package",
-    version_regex = r"The current stable version is bzip2 (.*)\.",
+    version_regex = r">\s*The current stable version is bzip2 (.*)\.\s*<",
     version_url = "https://www.sourceware.org/bzip2/downloads.html",
 )
