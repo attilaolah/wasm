@@ -89,6 +89,7 @@ func main() {
 }
 
 // VersionInfo holds info about the version.
+// TODO: Re-use VersionInfo from //tools/version_info!
 type VersionInfo struct {
 	version string
 	urls    []string
