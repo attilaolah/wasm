@@ -48,5 +48,6 @@ def download_flang():
         version = VERSION,
         urls = [URL_FLANG],
         sha256 = SHA256_FLANG,
-        strip_prefix = "flang-{version}.src"
+        strip_prefix = "flang-{version}.src",
+        patches = ["//tools/llvm:flang.patch"],
     )
