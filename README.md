@@ -30,7 +30,7 @@ toolchain, pass `--cpu=wasm32`. Pass `-c opt` for an optimised build.
 [`//lib/bz2`](https://github.com/attilaolah/wasm/blob/main/lib/bz2/BUILD.bazel) | 1.0.8 [🔗](https://sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz)
 [`//lib/cblas`](https://github.com/attilaolah/wasm/blob/main/lib/cblas/BUILD.bazel) | 3.8.0 [🔗](http://www.netlib.org/blas/blast-forum/cblas.tgz)
 [`//lib/ceres`](https://github.com/attilaolah/wasm/blob/main/lib/ceres/BUILD.bazel) | 1.14.0 [🔗](https://github.com/ceres-solver/ceres-solver/archive/1.14.0.tar.gz)
-[`//lib/curl`](https://github.com/attilaolah/wasm/blob/main/lib/curl/BUILD.bazel) | 7.75.0 [🔗](https://curl.se/download/curl-7.75.0.tar.xz)
+[`//lib/curl`](https://github.com/attilaolah/wasm/blob/main/lib/curl/BUILD.bazel) | 7.76.1 [🔗](https://curl.se/download/curl-7.76.1.tar.xz)
 [`//lib/deflate`](https://github.com/attilaolah/wasm/blob/main/lib/deflate/BUILD.bazel) | 1.7 [🔗](https://github.com/ebiggers/libdeflate/archive/v1.7.tar.gz)
 [`//lib/eigen`](https://github.com/attilaolah/wasm/blob/main/lib/eigen/BUILD.bazel) | 3.3.9 [🔗](https://gitlab.com/libeigen/eigen/-/archive/3.3.9/eigen-3.3.9.tar.bz2)
 [`//lib/exiv2`](https://github.com/attilaolah/wasm/blob/main/lib/exiv2/BUILD.bazel) | 0.27.3 [🔗](https://exiv2.org/builds/exiv2-0.27.3-Source.tar.gz)
@@ -78,7 +78,7 @@ toolchain, pass `--cpu=wasm32`. Pass `-c opt` for an optimised build.
 [`//lib/xml`](https://github.com/attilaolah/wasm/blob/main/lib/xml/BUILD.bazel) | 2.9.10 [🔗](http://xmlsoft.org/sources/libxml2-2.9.10.tar.gz)
 [`//lib/xslt`](https://github.com/attilaolah/wasm/blob/main/lib/xslt/BUILD.bazel) | 1.1.34 [🔗](http://xmlsoft.org/sources/libxslt-1.1.34.tar.gz)
 [`//lib/z`](https://github.com/attilaolah/wasm/blob/main/lib/z/BUILD.bazel) | 1.2.11 [🔗](https://downloads.sourceforge.net/libpng/zlib-1.2.11.tar.gz)
-[`//lib/zstd`](https://github.com/attilaolah/wasm/blob/main/lib/zstd/BUILD.bazel) | 1.4.8 [🔗](https://github.com/facebook/zstd/releases/download/v1.4.8/zstd-1.4.8.tar.gz)
+[`//lib/zstd`](https://github.com/attilaolah/wasm/blob/main/lib/zstd/BUILD.bazel) | 1.5.0 [🔗](https://github.com/facebook/zstd/releases/download/v1.5.0/zstd-1.5.0.tar.gz)
 
 
 ## Tools
