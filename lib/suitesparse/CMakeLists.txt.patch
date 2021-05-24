@@ -1,5 +1,26 @@
 --- Mongoose/CMakeLists.txt
 +++ Mongoose/CMakeLists.txt
+@@ -41,20 +41,6 @@
+ project(Mongoose CXX C)
+ endif()
+ 
+-# Configure files to pass CMake information
+-configure_file (
+-        "Version/Mongoose_Version.hpp.in"
+-        "${PROJECT_SOURCE_DIR}/Include/Mongoose_Version.hpp"
+-)
+-configure_file (
+-        "Version/title-info.tex.in"
+-        "${PROJECT_SOURCE_DIR}/Doc/title-info.tex"
+-)
+-configure_file (
+-        "Version/codemeta.json.in"
+-        "${PROJECT_SOURCE_DIR}/codemeta.json"
+-)
+-
+ include_directories("${PROJECT_BINARY_DIR}")
+ 
+ set(MONGOOSE_FILES
 @@ -189,35 +189,10 @@
  
  # Build the Mongoose library for dynamic linking
