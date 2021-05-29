@@ -1,5 +1,5 @@
 module github.com/attilaolah/wasm
 
-go 1.15
+go 1.16
 
-require go.starlark.net v0.0.0-20210126161401-bc864be25151
+require go.starlark.net v0.0.0-20210511153848-cca21e7857d4
