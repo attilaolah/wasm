@@ -22,8 +22,7 @@ def cmake_lib(
     """Convenience macro that wraps cmake().
 
     Args:
-      name: Passed on to cmake(). Also used for guessing other
-        parameters.
+      name: Passed on to cmake(). Also used for guessing other parameters.
       lib_source: Passed on to cmake(). Guessed from name.
       after_cmake: Commands to run after cmake.
       linkopts: Passed on to cmake(). Guessed from name.
@@ -32,8 +31,8 @@ def cmake_lib(
         "exec".
       cache_entries: Convert True/False to "ON"/"OFF", then passed on to
         cmake().
-      env: Passed on to cmake(). Form Emscripten builds, it is
-        pre-populated with environment variables required by the toolchain.
+      env: Passed on to cmake(). Form Emscripten builds, it is pre-populated
+        with environment variables required by the toolchain.
       ignore_undefined_symbols: Whether to ignore undefined symbols. If False,
         any undefined symbols is the archive that are not provided by any of
         the dependencies will cause a build error for the archive symbols
@@ -49,15 +48,17 @@ def cmake_lib(
     if env == None:
         env = {}
 
-    if cache_entries != None:
-        if "//conditions:default" in cache_entries:
-            # See: https://docs.bazel.build/versions/master/configurable-attributes.html#can-i-read-select-like-a-dict
-            for val in cache_entries.values():
-                _prepare_cache_entries(val)
-            cache_entries = select(cache_entries)
-        else:
-            _prepare_cache_entries(cache_entries)
-        kwargs["cache_entries"] = cache_entries
+    if cache_entries == None:
+        cache_entries = {}
+    if "//conditions:default" not in cache_entries:
+        cache_entries = {
+            "//config:wasm": dict(cache_entries.items() + {
+                "CMAKE_MODULE_PATH": "${EXT_BUILD_ROOT}/external/emscripten/emscripten/cmake/Modules",
+            }.items()),
+            "//conditions:default": cache_entries,
+        }
+    for val in cache_entries.values():
+        _prepare_cache_entries(val)
 
     cmake(
         name = name,
@@ -65,6 +66,7 @@ def cmake_lib(
             "//config:wasm": dict(WASM_ENV_VARS.items() + env.items()),
             "//conditions:default": env,
         }),
+        cache_entries = select(cache_entries),
         lib_name = "{}_lib".format(name),
         lib_source = lib_source,
         linkopts = linkopts,

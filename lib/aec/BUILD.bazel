@@ -3,20 +3,10 @@ load("//toolchains/cmake:cmake.bzl", "cmake_lib")
 
 package(default_visibility = ["//:__subpackages__"])
 
-_CACHE_ENTRIES = {
-    "BUILD_SHARED_LIBS": False,
-}
-
-_WASM_CACHE_ENTRIES = dict(_CACHE_ENTRIES.items() + {
-    # Load Emscripten's fix for the TEST_BIG_ENDIAN macro.
-    "CMAKE_MODULE_PATH": "${EXT_BUILD_ROOT}/external/emscripten/emscripten/cmake/Modules"
-}.items())
-
 cmake_lib(
     name = "aec",
     cache_entries = {
-        "//config:wasm": _WASM_CACHE_ENTRIES,
-        "//conditions:default": _CACHE_ENTRIES,
+        "BUILD_SHARED_LIBS": False,
     },
     linkopts = [
         "-laec",
