@@ -15,4 +15,5 @@ def download_aec():
         urls = [URL],
         sha256 = SHA256,
         strip_prefix = "libaec-{version}",
+        patches = ["//lib/aec:aec.patch"],
     )
