@@ -52,11 +52,12 @@ def cmake_lib(
         cache_entries = {}
     if "//conditions:default" not in cache_entries:
         cache_entries = {
-            "//config:wasm": dict(cache_entries.items() + {
-                "CMAKE_MODULE_PATH": "${EXT_BUILD_ROOT}/external/emscripten/emscripten/cmake/Modules",
-            }.items()),
-            "//conditions:default": cache_entries,
+            "//config:wasm": dict(cache_entries),
+            "//conditions:default": dict(cache_entries),
         }
+    cache_entries["//config:wasm"].update({
+        "CMAKE_MODULE_PATH": "${EXT_BUILD_ROOT}/external/emscripten/emscripten/cmake/Modules",
+    })
     for val in cache_entries.values():
         _prepare_cache_entries(val)
 
