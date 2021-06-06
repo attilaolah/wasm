@@ -1,6 +1,7 @@
 """Workspace rule for downloading package dependencies."""
 
 load("//:http_archive.bzl", "http_archive")
+load("//tools/emscripten:emconfigure.bzl", "EMCONFIGURE")
 
 VERSION = "4.2.15"
 
@@ -15,4 +16,5 @@ def download_hdf():
         urls = [URL],
         sha256 = SHA256,
         strip_prefix = "hdf-{version}",
+        patch_cmds = EMCONFIGURE,
     )
