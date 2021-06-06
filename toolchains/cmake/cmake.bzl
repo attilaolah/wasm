@@ -57,6 +57,7 @@ def cmake_lib(
         }
     cache_entries["//config:wasm"].update({
         "CMAKE_MODULE_PATH": "${EXT_BUILD_ROOT}/external/emscripten/emscripten/cmake/Modules",
+        "CMAKE_TOOLCHAIN_FILE": "${EXT_BUILD_ROOT}/external/emscripten/emscripten/cmake/Modules/Platform/Emscripten.cmake",
     })
     for val in cache_entries.values():
         _prepare_cache_entries(val)
