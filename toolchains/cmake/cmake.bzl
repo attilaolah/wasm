@@ -55,13 +55,9 @@ def cmake_lib(
             "//config:wasm": dict(cache_entries),
             "//conditions:default": dict(cache_entries),
         }
-    cache_entries["//config:wasm"].update({
-        "CMAKE_MODULE_PATH": "${EXT_BUILD_ROOT}/external/emscripten/emscripten/cmake/Modules",
-        "CMAKE_SYSTEM_NAME": "Emscripten",  # As suggested by rules_foreign_cc docs.
-        "CMAKE_TOOLCHAIN_FILE": "${EXT_BUILD_ROOT}/external/emscripten/emscripten/cmake/Modules/Platform/Emscripten.cmake",
-    })
     for val in cache_entries.values():
         _prepare_cache_entries(val)
+    _emscripten_cache_entries(cache_entries["//config:wasm"])
 
     cmake(
         name = name,
@@ -88,3 +84,13 @@ def _prepare_cache_entries(cache_entries):
     for key, val in cache_entries.items():
         if val in (True, False):
             cache_entries[key] = "ON" if val else "OFF"
+
+def _emscripten_cache_entries(cache_entries):
+    """Set Emscripten-specific CMake cache entries."""
+    external = "${EXT_BUILD_ROOT}/external"
+    cmake_modules = "{}/emscripten/emscripten/cmake/Modules".format(external)
+
+    # As suggested by rules_foreign_cc docs.
+    cache_entries["CMAKE_SYSTEM_NAME"] = "Emscripten"
+    cache_entries["CMAKE_MODULE_PATH"] = cmake_modules
+    cache_entries["CMAKE_TOOLCHAIN_FILE"] = "{}/Platform/Emscripten.cmake".format(cmake_modules)
