@@ -1,31 +1,75 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
-load("//toolchains/make:configure.bzl", "configure_make_lib")
+load("//toolchains/cmake:cmake.bzl", "cmake_lib")
 
 package(default_visibility = ["//:__subpackages__"])
 
-configure_make_lib(
+# HDF4 is a very old code base with lots of warnings.
+# Since we pass -Werror, disable some wornings so the library would compile.
+_C_FLAGS = " ".join(["-Wno-{}".format(check) for check in [
+    # keep sorted
+    "bitwise-op-parentheses",
+    "dangling-else",
+    "format",
+    "implicit-function-declaration",
+    "implicit-int",
+    "incompatible-function-pointer-types",
+    "incompatible-pointer-types-discards-qualifiers",
+    "logical-not-parentheses",
+    "macro-redefined",
+    "misleading-indentation",
+    "missing-braces",
+    "pointer-bool-conversion",
+    "pointer-sign",
+    "return-type",
+    "self-assign",
+    "sizeof-array-div",
+    "sometimes-uninitialized",
+    "switch",
+    "tautological-constant-out-of-range-compare",
+    "tautological-pointer-compare",
+    "uninitialized",
+    "unused-function",
+    "unused-label",
+    "unused-variable",
+]])
+
+# Emulate an i386 environment.
+# Emscripten unsets i386 to avoid "platform dependent code (inline assembly)".
+_WASM_C_FLAGS = _C_FLAGS + " -Di386"
+
+_CACHE_ENTRIES = {
+    "BUILD_SHARED_LIBS": False,
+    "BUILD_STATIC_LIBS": True,
+    "CMAKE_C_FLAGS": _C_FLAGS,
+    "HDF4_BUILD_FORTRAN": False,
+    "HDF4_BUILD_JAVA": False,
+    "HDF4_BUILD_XDR_LIB": True,
+    "HDF4_ENABLE_JPEG_LIB_SUPPORT": True,
+    "HDF4_ENABLE_SZIP_SUPPORT": True,
+    "HDF4_ENABLE_Z_LIB_SUPPORT": True,
+    "HDF4_EXTERNALLY_CONFIGURED": True,
+    "JPEG_INCLUDE_DIR": "${EXT_BUILD_DEPS}/jpegturbo_lib/include",
+    "JPEG_LIBRARY": "${EXT_BUILD_DEPS}/jpegturbo_lib/lib/libjpeg.a",
+    "SZIP_INCLUDE_DIR": "${EXT_BUILD_DEPS}/aec_lib/include",
+    "SZIP_LIBRARY": "${EXT_BUILD_DEPS}/aec_lib/lib/libsz.a",
+    "ZLIB_INCLUDE_DIR": "${EXT_BUILD_DEPS}/z_lib/include",
+    "ZLIB_LIBRARY": "${EXT_BUILD_DEPS}/z_lib/lib/libz.a",
+}
+
+_WASM_CACHE_ENTRIES = dict(_CACHE_ENTRIES.items() + {
+    "CMAKE_C_FLAGS": _WASM_C_FLAGS,
+}.items())
+
+
+cmake_lib(
     name = "hdf",
-    configure_env_vars = {
-        # Pass -laec to link against szip (-lsz) provided by //lib/aec.
-        "LDFLAGS": "-laec",
+    cache_entries = {
+        "//config:wasm": _WASM_CACHE_ENTRIES,
+        "//conditions:default": _CACHE_ENTRIES,
     },
-    configure_options = [
-        # keep sorted
-        "--disable-fortran",
-        "--disable-java",
-        "--disable-netcdf",
-        "--disable-shared",
-        "--enable-deprecated-symbols",
-        "--enable-hdf4-xdr",
-        "--enable-static",
-        "--enable-static-exec",
-        '--with-jpeg="${EXT_BUILD_DEPS}/jpegturbo_lib"',
-        '--with-szlib="${EXT_BUILD_DEPS}/aec_lib"',
-        '--with-zlib="${EXT_BUILD_DEPS}/z_lib"',
-    ],
     out_static_libs = [
         # keep sorted
-        "libdf.a",
+        "libhdf.a",
         "libmfhdf.a",
         "libxdr.a",
     ],
