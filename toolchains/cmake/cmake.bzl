@@ -94,3 +94,4 @@ def _emscripten_cache_entries(cache_entries):
     cache_entries["CMAKE_SYSTEM_NAME"] = "Emscripten"
     cache_entries["CMAKE_MODULE_PATH"] = cmake_modules
     cache_entries["CMAKE_TOOLCHAIN_FILE"] = "{}/Platform/Emscripten.cmake".format(cmake_modules)
+    cache_entries["CMAKE_CROSSCOMPILING_EMULATOR"] = "{}/nodejs_linux_amd64/bin/node".format(external)
