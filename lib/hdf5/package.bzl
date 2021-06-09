@@ -19,6 +19,10 @@ def download_hdf5():
         sha256 = SHA256,
         strip_prefix = "hdf5-{version}",
         patch_cmds = [
+            # Remove Emscripten-specific linker options.
+            # Let Bazel specify the linker options for everything.
+            "sed -i src/CMakeLists.txt -e '/PLATFORM_ID:Emscripten/d'",
+            # Remove auto-generated headers, so they can be re-generated:
             "rm {}".format(" ".join([
                 header
                 for header in [

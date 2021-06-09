@@ -3,14 +3,25 @@ load("//toolchains/cmake:cmake.bzl", "cmake_lib")
 
 package(default_visibility = ["//:__subpackages__"])
 
+_CACHE_ENTRIES = {
+    "BUILD_SHARED_LIBS": False,
+    "BUILD_STATIC_LIBS": True,
+    "BUILD_TESTING": False,
+    "HDF5_BUILD_EXAMPLES": False,
+    "HDF5_BUILD_TOOLS": False,
+}
+
+_WASM_CACHE_ENTRIES = dict(_CACHE_ENTRIES.items() + {
+    # Emscripten doesn't implement getpwuid yet:
+    # https://github.com/emscripten-core/emscripten/issues/13219
+    "H5_HAVE_GETPWUID": False,
+}.items())
+
 cmake_lib(
     name = "hdf5",
     cache_entries = {
-        "BUILD_SHARED_LIBS": False,
-        "BUILD_STATIC_LIBS": True,
-        "BUILD_TESTING": False,
-        "HDF5_BUILD_EXAMPLES": False,
-        "HDF5_BUILD_TOOLS": False,
+        "//config:wasm": _WASM_CACHE_ENTRIES,
+        "//conditions:default": _CACHE_ENTRIES,
     },
 )
 
