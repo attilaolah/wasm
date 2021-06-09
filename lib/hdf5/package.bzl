@@ -19,9 +19,22 @@ def download_hdf5():
         sha256 = SHA256,
         strip_prefix = "hdf5-{version}",
         patch_cmds = [
-            # Remove Emscripten-specific linker options.
-            # Let Bazel specify the linker options for everything.
+            # Remove Emscripten-specific compile options.
+            # Let Bazel specify the compile time options for everything.
+            # Source: https://github.com/HDFGroup/hdf5/commit/6ee2c3b0099cd9506579d192ff8785a64f81a607
             "sed -i src/CMakeLists.txt -e '/PLATFORM_ID:Emscripten/d'",
+            # Fix H5Tinit.c source file generation.
+            # Source: https://github.com/HDFGroup/hdf5/pull/357/commits/fd87bb1b244169004ec3a16e03059d64a87e7270
+            "sed -i src/CMakeLists.txt -e 's:{}:{}:g'".format(
+                "ARGS ${HDF5_GENERATED_SOURCE_DIR}/H5Tinit.c",
+                "ARGS > ${HDF5_GENERATED_SOURCE_DIR}/H5Tinit.c",
+            ),
+            # Fix H5lib_settings.c source file generation:
+            # Source: https://github.com/HDFGroup/hdf5/pull/357/commits/fd87bb1b244169004ec3a16e03059d64a87e7270
+            "sed -i src/CMakeLists.txt -e 's:{}:{}:g'".format(
+                "ARGS ${HDF5_BINARY_DIR}/H5lib_settings.c",
+                "ARGS > ${HDF5_BINARY_DIR}/H5lib_settings.c",
+            ),
             # Remove auto-generated headers, so they can be re-generated:
             "rm {}".format(" ".join([
                 header
