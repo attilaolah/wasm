@@ -3,8 +3,24 @@ load("//toolchains/make:configure.bzl", "configure_make_lib")
 
 package(default_visibility = ["//:__subpackages__"])
 
+_C_FLAGS = " ".join(["-Wno-{}".format(check) for check in [
+    # keep sorted
+    "macro-redefined",
+]])
+
+_ENV_VARS = {"CFLAGS": _C_FLAGS}
+
+_WASM_ENV_VARS = dict(_ENV_VARS.items() + {
+    # Emscripten does not implement popen(), so ignore it:
+    "LDFLAGS": "-s ERROR_ON_UNDEFINED_SYMBOLS=0",
+}.items())
+
 configure_make_lib(
     name = "sqlite",
+    configure_env_vars = select({
+        "//config:wasm": _WASM_ENV_VARS,
+        "//conditions:default": _ENV_VARS,
+    }),
     configure_options = [
         # keep sorted
         "--enable-shared=no",
