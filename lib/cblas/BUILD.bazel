@@ -11,21 +11,16 @@ package(default_visibility = ["//:__subpackages__"])
 
 make_lib(
     name = "cblas",
-    make_commands = [
-        "mkdir lib",
-        "make {} alllib".format(" ".join([
-            '{}="{}"'.format(key, val)
-            for key, val in {
-                "ARCH": "${EXT_BUILD_ROOT}/external/llvm/bin/llvm-ar",
-                "ARCHFLAGS": "rcsD",
-                "CBLIB": "../lib/libcblas.a",
-                "CC": "${EXT_BUILD_ROOT}/external/llvm/bin/clang",
-                "CFLAGS": "-Wno-header-guard",
-                "FC": "${EXT_BUILD_DEPS}/bin/flang/bin/flang",
-            }.items()
-        ])),
-        'cp -a lib/libcblas.a "${INSTALLDIR}/lib"',
+    args = [
+        'ARCH="${EXT_BUILD_ROOT}/external/llvm/bin/llvm-ar"',
+        'ARCHFLAGS="rcsD"',
+        'CBLIB="../lib/libcblas.a"',
+        'CC="${EXT_BUILD_ROOT}/external/llvm/bin/clang"',
+        'CFLAGS="-Wno-header-guard"',
+        'FC="${EXT_BUILD_DEPS}/bin/copy_flang/flang/bin/flang"',
     ],
+    postfix_script = 'cp -a "${EXT_BUILD_ROOT}/external/lib_cblas/lib/libcblas.a" "${INSTALLDIR}/lib"',
+    targets = ["alllib"],
     tools_deps = ["//tools/llvm:flang_runtime"],
 )
 

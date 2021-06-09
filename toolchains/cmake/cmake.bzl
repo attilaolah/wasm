@@ -11,7 +11,6 @@ load("//tools/archive_symbols:archive_symbols.bzl", "archive_symbols")
 def cmake_lib(
         name,
         lib_source = None,
-        after_cmake = None,
         linkopts = None,
         out_static_libs = None,
         tools_deps = None,
@@ -24,7 +23,6 @@ def cmake_lib(
     Args:
       name: Passed on to cmake(). Also used for guessing other parameters.
       lib_source: Passed on to cmake(). Guessed from name.
-      after_cmake: Commands to run after cmake.
       linkopts: Passed on to cmake(). Guessed from name.
       out_static_libs: Passed on to cmake(). Guessed from name.
       tools_deps: Additional build-time dependencies, compiled with cfg =

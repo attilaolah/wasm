@@ -31,16 +31,15 @@ suitesparse_lib(name = "colamd")
 
 make_lib(
     name = "config",
-    install_commands = [
-        'install "{}/SuiteSparse_config"/*.h ${{INSTALLDIR}}/include'.format(PREFIX),
-        'install "{}/SuiteSparse_config"/*.a ${{INSTALLDIR}}/lib'.format(PREFIX),
-    ],
+    args = ['-C "{}/SuiteSparse_config"'.format(PREFIX)],
     lib_source = LIB_SOURCE,
     linkopts = ["-lsuitesparseconfig"],
-    make_commands = [
-        'make -C "{}/SuiteSparse_config" static'.format(PREFIX),
-    ],
     out_static_libs = ["libsuitesparseconfig.a"],
+    postfix_script = "\n".join([
+        'install "{}/SuiteSparse_config"/*.h ${{INSTALLDIR}}/include'.format(PREFIX),
+        'install "{}/SuiteSparse_config"/*.a ${{INSTALLDIR}}/lib'.format(PREFIX),
+    ]),
+    targets = ["static"],
 )
 
 suitesparse_lib(
@@ -110,16 +109,18 @@ SLIP_LU_CFLAGS = " ".join([
 
 make_lib(
     name = "slip_lu",
-    install_commands = [
-        'install "{}/SLIP_LU/Include"/*.h ${{INSTALLDIR}}/include'.format(PREFIX),
-        'install "{}/SLIP_LU/Lib"/*.a ${{INSTALLDIR}}/lib'.format(PREFIX),
+    args = [
+        '-C "{}/SLIP_LU"'.format(PREFIX),
+        'CFLAGS="{}"'.format(SLIP_LU_CFLAGS),
     ],
     lib_source = LIB_SOURCE,
     linkopts = ["-lsliplu"],
-    make_commands = [
-        'make CFLAGS="{}" -C "{}/SLIP_LU" static'.format(SLIP_LU_CFLAGS, PREFIX),
-    ],
     out_static_libs = ["libsliplu.a"],
+    postfix_script = "\n".join([
+        'install "{}/SLIP_LU/Include"/*.h ${{INSTALLDIR}}/include'.format(PREFIX),
+        'install "{}/SLIP_LU/Lib"/*.a ${{INSTALLDIR}}/lib'.format(PREFIX),
+    ]),
+    targets = ["static"],
     deps = [
         ":amd",
         ":colamd",

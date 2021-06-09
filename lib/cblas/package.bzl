@@ -15,4 +15,7 @@ def download_cblas():
         urls = [URL],
         sha256 = SHA256,
         strip_prefix = "CBLAS",
+        # Bazel will exclude empty directories from the symlink tree.
+        # So add a dummy file to prevent the "lib" dir from being excluded.
+        patch_cmds = ["touch lib/.keep"],
     )

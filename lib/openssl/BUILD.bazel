@@ -11,7 +11,6 @@ configure_make_lib(
         "--cross-compile-prefix=",
         '--with-zlib-include="${EXT_BUILD_DEPS}/lib_z/include"',
         '--with-zlib-lib="${EXT_BUILD_DEPS}/lib_z/lib"',
-        "--strict-warnings",
         "--release",
         "no-ui-console",
         "zlib",

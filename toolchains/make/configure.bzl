@@ -43,7 +43,6 @@ def configure_make_lib(
         name,
         lib_source = None,
         configure_script = "configure",
-        make_commands = None,
         linkopts = None,
         out_static_libs = None,
         tools_deps = None,
@@ -57,8 +56,6 @@ def configure_make_lib(
         parameters.
       lib_source: Passed on to configure_make(). Guessed from name.
       configure_script: Name of the configure script to run.
-      make_commands: Wrapped in a select() for Emscripten, then passed on to
-        configure_make().
       linkopts: Passed on to configure_make(). Guessed from name.
       out_static_libs: Passed on to configure_make(). Guessed from name.
       tools_deps: Additional build-time dependencies, compiled with cfg =
@@ -73,12 +70,6 @@ def configure_make_lib(
     """
     if lib_source == None:
         lib_source = _lib_source(name)
-    if make_commands == None:
-        make_commands = [
-            # TODO: Get canonical make path from somewhere.
-            '"${EXT_BUILD_DEPS}/bin/make/bin/make"',
-            '"${EXT_BUILD_DEPS}/bin/make/bin/make" install',
-        ]
     if linkopts == None:
         linkopts = ["-l{}".format(name)]
     if out_static_libs == None:
@@ -102,7 +93,6 @@ def configure_make_lib(
         lib_name = "{}_lib".format(name),
         lib_source = lib_source,
         linkopts = linkopts,
-        make_commands = _make_commands(commands = make_commands),
         out_static_libs = out_static_libs,
         tools_deps = _tools_deps(tools_deps),
         **kwargs
@@ -113,52 +103,6 @@ def configure_make_lib(
         deps = kwargs.get("deps", []),
         strict = not ignore_undefined_symbols,
     )
-
-def make_commands(
-        commands = None,
-        before_make = None,
-        after_make = None,
-        before_emmake = None,
-        after_emmake = None):
-    """Generate make commands for the target platform.
-
-    By default, returns the passed-in commands. For Emscripten builds, prefixes
-    the commands with "emmake".
-
-    Args:
-      commands: Commands, as a list of strings.
-      before_make: Commands to run before make, but not before emmake.
-      after_make: Commands to run after make, but not after emmake.
-      before_emmake: Commands to run before emmake, but not before make.
-      after_emmake: Commands to run after emmake, but not after make.
-
-    Returns:
-      A select() wrapping the resulting make commands.
-    """
-    if commands == None:
-        # TODO: Get canonical make path from somewhere.
-        commands = [
-            '"${EXT_BUILD_DEPS}/bin/make/bin/make"',
-            '"${EXT_BUILD_DEPS}/bin/make/bin/make" install',
-        ]
-    wasm_commands = [_emmake(cmd) for cmd in commands]
-
-    if before_make != None:
-        commands = before_make + commands
-    if after_make != None:
-        commands += after_make
-
-    if before_emmake != None:
-        wasm_commands = before_emmake + wasm_commands
-    if after_emmake != None:
-        wasm_commands += after_emmake
-
-    return select({
-        "//config:wasm": wasm_commands,
-        "//conditions:default": commands,
-    })
-
-_make_commands = make_commands
 
 def tools_deps(extras = None):
     """Extends tools_deps with extras.
@@ -193,6 +137,3 @@ def patch_files(patch_map):
         "sed --in-place --regexp-extended '{}' \"{}\"".format(regex, filename)
         for filename, regex in sorted(patch_map.items())
     ]
-
-def _emmake(make_command):
-    return '"${{EXT_BUILD_DEPS}}/bin/emscripten/emscripten/emmake" {}'.format(make_command)

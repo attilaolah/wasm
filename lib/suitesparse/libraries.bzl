@@ -33,14 +33,16 @@ def suitesparse_lib(name, header_ext = "h", directory = None, deps = None, with_
 
     make_lib(
         name = name,
-        install_commands = [
+        postfix_script = "\n".join([
             'install "{}/Include"/*.{} ${{INSTALLDIR}}/include'.format(prefix, header_ext),
             'install "{}/Lib"/*.a ${{INSTALLDIR}}/lib'.format(prefix),
-        ],
+        ]),
         lib_source = LIB_SOURCE,
-        make_commands = [
-            'make CUDA={} -C "{}" static'.format(cuda, prefix),
+        args = [
+            '-C "{}"'.format(prefix),
+            "CUDA={}".format(cuda),
         ],
+        targets = ["static"],
         deps = deps,
         **kwargs
     )
