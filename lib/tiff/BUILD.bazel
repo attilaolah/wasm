@@ -29,6 +29,7 @@ cmake_lib(
         "libtiffxx.a",
     ],
     deps = [
+        "//lib/deflate",
         "//lib/jpegturbo",
         "//lib/lzma",
         "//lib/webp",
