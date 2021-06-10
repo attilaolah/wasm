@@ -1,7 +1,19 @@
-diff --git a/display/d.where/main.c b/display/d.where/main.c
-index a72b63ac0..951bc7094 100644
---- a/display/d.where/main.c
-+++ b/display/d.where/main.c
+diff --git Makefile Makefile
+index b89664c..a92476b 100644
+--- Makefile
++++ Makefile
+@@ -41,7 +41,6 @@ DIRS = \
+ 	scripts \
+ 	temporal \
+ 	doc \
+-	gui \
+ 	visualization \
+ 	locale \
+ 	man \
+diff --git display/d.where/main.c display/d.where/main.c
+index a72b63a..951bc70 100644
+--- display/d.where/main.c
++++ display/d.where/main.c
 @@ -19,6 +19,7 @@
   *               for details.
   *
@@ -10,10 +22,23 @@ index a72b63ac0..951bc7094 100644
  #include <string.h>
  #include <grass/gis.h>
  #include <grass/gprojects.h>
-diff --git a/lib/gis/env.c b/lib/gis/env.c
-index 6518ff77c..5f364307a 100644
---- a/lib/gis/env.c
-+++ b/lib/gis/env.c
+diff --git include/Make/Install.make include/Make/Install.make
+index d7d0b8b..5fa1e01 100644
+--- include/Make/Install.make
++++ include/Make/Install.make
+@@ -102,7 +102,7 @@ real-install: | $(INST_DIR) $(UNIX_BIN)
+ 	$(MAKE) $(STARTUP)
+ 
+ 	-rm $(INST_DIR)/$(FONTCAP)
+-	$(MAKE) $(INST_DIR)/$(FONTCAP)
++	-$(MAKE) $(INST_DIR)/$(FONTCAP)
+ 
+ 	-rm $(INST_DIR)/$(TMPGISRC)
+ 	$(MAKE) $(INST_DIR)/$(TMPGISRC)
+diff --git lib/gis/env.c lib/gis/env.c
+index 6518ff7..5f36430 100644
+--- lib/gis/env.c
++++ lib/gis/env.c
 @@ -115,8 +115,8 @@ void G__read_gisrc_env(void)
  }
  
@@ -25,10 +50,23 @@ index 6518ff77c..5f364307a 100644
      char *name;
      char *value;
  
-diff --git a/lib/raster/vrt.c b/lib/raster/vrt.c
-index 10ae1ffae..96be29114 100644
---- a/lib/raster/vrt.c
-+++ b/lib/raster/vrt.c
+diff --git lib/python/Makefile lib/python/Makefile
+index 2b7fb63..b0d7e73 100644
+--- lib/python/Makefile
++++ lib/python/Makefile
+@@ -5,7 +5,7 @@ include $(MODULE_TOPDIR)/include/Make/Python.make
+ 
+ PYDIR = $(ETC)/python/grass
+ 
+-SUBDIRS = exceptions script ctypes temporal pygrass pydispatch imaging gunittest
++SUBDIRS = exceptions script temporal pygrass pydispatch imaging gunittest
+ 
+ default: $(PYDIR)/__init__.py
+ 	$(MAKE) subdirs
+diff --git lib/raster/vrt.c lib/raster/vrt.c
+index 10ae1ff..80e54a8 100644
+--- lib/raster/vrt.c
++++ lib/raster/vrt.c
 @@ -18,7 +18,7 @@
  
  #include "R.h"
@@ -38,10 +76,10 @@ index 10ae1ffae..96be29114 100644
  {
      struct Cell_head *cellhda = &((struct tileinfo *) a)->cellhd;
      struct Cell_head *cellhdb = &((struct tileinfo *) b)->cellhd;
-diff --git a/raster/r.mapcalc/map.c b/raster/r.mapcalc/map.c
-index eedf19c6c..68ec6ec8e 100644
---- a/raster/r.mapcalc/map.c
-+++ b/raster/r.mapcalc/map.c
+diff --git raster/r.mapcalc/map.c raster/r.mapcalc/map.c
+index eedf19c..68ec6ec 100644
+--- raster/r.mapcalc/map.c
++++ raster/r.mapcalc/map.c
 @@ -23,7 +23,6 @@
  /****************************************************************************/
  

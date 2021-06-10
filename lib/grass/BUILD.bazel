@@ -1,6 +1,6 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
-load(":package.bzl", "MAJORMINOR", "MAJOR_MINOR")
+load(":package.bzl", "MAJOR_MINOR")
 
 package(default_visibility = ["//:__subpackages__"])
 
@@ -12,6 +12,7 @@ configure_make_lib(
             # keep sorted
             "crypto",
             "curl",
+            "deflate",
             "dl",
             "jpeg",
             "lzma",
@@ -52,17 +53,7 @@ configure_make_lib(
         "--without-openmp",
         "--without-postgres",
         "--without-readline",
-    ],
-    make_commands = [
-        # Do not build Python bindings.
-        # These require shared libs and cannot be built with static libs only.
-        r"sed -i lib/python/Makefile -e 's/ ctypes / /'",
-        # TODO: The build will fail due to missing PROJ libs.
-        # Should be fixed at some point, but for now, just ignore it.
-        "make && echo PASS || echo FAIL",
-        "make install",
-        # Copy static libs to the right place for exporting.
-        "cp -r grass_lib/grass{}/lib grass_lib".format(MAJORMINOR),
+        "--without-x",
     ],
     out_static_libs = [
         "libgrass_{}.{}.a".format(lib, MAJOR_MINOR)
@@ -120,6 +111,10 @@ configure_make_lib(
             "vedit",
         ]
     ],
+    postfix_script = " && ".join([
+        r'cp --dereference "${BUILD_TMPDIR}/${INSTALL_PREFIX}"/grass??/lib/libgrass_*.?.?.a "${INSTALLDIR}/lib"',
+        r'find "${INSTALLDIR}/lib" -type f -exec touch -r "${BUILD_TMPDIR}/${INSTALL_PREFIX}" "{}" \;',
+    ]),
     deps = [
         "//lib/bz2",
         "//lib/fftw",

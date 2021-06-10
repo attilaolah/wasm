@@ -4,7 +4,6 @@ load("//:http_archive.bzl", "http_archive")
 
 VERSION = "7.8.5"
 
-MAJORMINOR = "".join(VERSION.split(".")[:2])
 MAJOR_MINOR = ".".join(VERSION.split(".")[:2])
 
 URL = "https://grass.osgeo.org/grass78/source/grass-{version}.tar.gz"
@@ -19,5 +18,4 @@ def download_grass():
         sha256 = SHA256,
         strip_prefix = "grass-{version}",
         patches = ["//lib/grass:grass.patch"],
-        patch_args = ["--strip=1"],
     )
