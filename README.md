@@ -64,7 +64,7 @@ toolchain, pass `--cpu=wasm32`. Pass `-c opt` for an optimised build.
 [`//lib/openssl`](https://github.com/attilaolah/wasm/blob/main/lib/openssl/BUILD.bazel) | 1.1.1k [🔗](https://www.openssl.org/source/openssl-1.1.1k.tar.gz)
 [`//lib/pano13`](https://github.com/attilaolah/wasm/blob/main/lib/pano13/BUILD.bazel) | 2.9.19 [🔗](https://download.sourceforge.net/panotools/libpano13-2.9.19.tar.gz)
 [`//lib/png`](https://github.com/attilaolah/wasm/blob/main/lib/png/BUILD.bazel) | 1.6.37 [🔗](https://downloads.sourceforge.net/libpng/libpng-1.6.37.tar.gz)
-[`//lib/proj`](https://github.com/attilaolah/wasm/blob/main/lib/proj/BUILD.bazel) | 7.2.0 [🔗](https://download.osgeo.org/proj/proj-7.2.0.tar.gz)
+[`//lib/proj`](https://github.com/attilaolah/wasm/blob/main/lib/proj/BUILD.bazel) | 8.0.1 [🔗](https://download.osgeo.org/proj/proj-8.0.1.tar.gz)
 [`//lib/python`](https://github.com/attilaolah/wasm/blob/main/lib/python/BUILD.bazel) | 3.9.5 [🔗](https://www.python.org/ftp/python/3.9.5/Python-3.9.5.tar.xz)
 [`//lib/readline`](https://github.com/attilaolah/wasm/blob/main/lib/readline/BUILD.bazel) | 8.0 [🔗](https://ftp.gnu.org/gnu/readline/readline-8.0.tar.gz)
 [`//lib/sqlite`](https://github.com/attilaolah/wasm/blob/main/lib/sqlite/BUILD.bazel) | 3.35.5 [🔗](https://www.sqlite.org/2021/sqlite-autoconf-3350500.tar.gz)

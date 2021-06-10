@@ -2,11 +2,11 @@
 
 load("//:http_archive.bzl", "http_archive")
 
-VERSION = "7.2.0"
+VERSION = "8.0.1"
 
 URL = "https://download.osgeo.org/proj/proj-{version}.tar.gz"
 
-SHA256 = "2957798e5fe295ff96a2af1889d0428e486363d210889422f76dd744f7885763"
+SHA256 = "e0463a8068898785ca75dd49a261d3d28b07d0a88f3b657e8e0089e16a0375fa"
 
 def download_proj():
     http_archive(
