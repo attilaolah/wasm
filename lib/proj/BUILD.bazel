@@ -26,8 +26,8 @@ CACHE_ENTRIES = dict({
 }.items() + {
     "BUILD_{}".format(binary.upper()): False
     for binary in BINARIES + [
-        "testing",
         "shared_libs",
+        "testing",
     ]
 }.items())
 
