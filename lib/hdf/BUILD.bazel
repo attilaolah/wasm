@@ -68,6 +68,7 @@ cmake_lib(
     },
     out_static_libs = [
         # keep sorted
+        "libdf.a",
         "libhdf.a",
         "libmfhdf.a",
         "libxdr.a",
@@ -77,6 +78,9 @@ cmake_lib(
         "//lib/jpegturbo",
         "//lib/z",
     ],
+    # Duplicate libhdf.a as libdf.a.
+    # CMake produces libhdf.a, while ./configure && make produces libdf.a.
+    postfix_script = 'cp --archive --dereference "${INSTALLDIR}/lib/libhdf.a" "${INSTALLDIR}/lib/libdf.a"',
 )
 
 bzl_library(
