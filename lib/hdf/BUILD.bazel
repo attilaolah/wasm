@@ -73,14 +73,14 @@ cmake_lib(
         "libmfhdf.a",
         "libxdr.a",
     ],
+    # Duplicate libhdf.a as libdf.a.
+    # CMake produces libhdf.a, while ./configure && make produces libdf.a.
+    postfix_script = 'cp --archive --dereference "${INSTALLDIR}/lib/libhdf.a" "${INSTALLDIR}/lib/libdf.a"',
     deps = [
         "//lib/aec",
         "//lib/jpegturbo",
         "//lib/z",
     ],
-    # Duplicate libhdf.a as libdf.a.
-    # CMake produces libhdf.a, while ./configure && make produces libdf.a.
-    postfix_script = 'cp --archive --dereference "${INSTALLDIR}/lib/libhdf.a" "${INSTALLDIR}/lib/libdf.a"',
 )
 
 bzl_library(

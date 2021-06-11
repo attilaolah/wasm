@@ -110,6 +110,9 @@ def clang_toolchain(name):
             "-Wl,-z,relro,-z,now",
             "-lstdc++",
             "-lm",
+
+            # Make GCC and Clang do what we want when called through symlinks.
+            "-no-canonical-prefixes",
         ],
         link_libs = [],
         opt_compile_flags = [
@@ -127,12 +130,16 @@ def clang_toolchain(name):
         tool_paths = tool_paths,
         toolchain_identifier = "local",
         unfiltered_compile_flags = [
-            "-no-canonical-prefixes",
-            "-Wno-builtin-macro-redefined",
+            # Make C++ compilation deterministic.
+            # Use linkstamping instead of these compiler symbols.
+            # TODO: These lead to various escaping issues, breaking Python, HDF5 and Exiv2.
+            # See: https://github.com/bazelbuild/rules_foreign_cc/issues/239
+            #r"-D__DATE__=\"redacted\"",
+            #r"-D__TIME__=\"redacted\"",
+            #r"-D__TIMESTAMP__=\"redacted\"",
+            #"-Wno-builtin-macro-redefined",
 
-            # TODO: Make builds reproducible:
-            #"-D__DATE__='\"redacted\"'",
-            #"-D__TIME__='\"redacted\"'",
-            #"-D__TIMESTAMP__='\"redacted\"'",
+            # Make GCC and Clang do what we want when called through symlinks.
+            "-no-canonical-prefixes",
         ],
     )
