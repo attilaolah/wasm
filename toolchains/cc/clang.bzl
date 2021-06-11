@@ -130,6 +130,9 @@ def clang_toolchain(name):
         tool_paths = tool_paths,
         toolchain_identifier = "local",
         unfiltered_compile_flags = [
+            # Make GCC and Clang do what we want when called through symlinks.
+            "-no-canonical-prefixes",
+
             # Make C++ compilation deterministic.
             # Use linkstamping instead of these compiler symbols.
             # TODO: These lead to various escaping issues, breaking Python, HDF5 and Exiv2.
@@ -138,8 +141,5 @@ def clang_toolchain(name):
             #r"-D__TIME__=\"redacted\"",
             #r"-D__TIMESTAMP__=\"redacted\"",
             #"-Wno-builtin-macro-redefined",
-
-            # Make GCC and Clang do what we want when called through symlinks.
-            "-no-canonical-prefixes",
         ],
     )
