@@ -5,15 +5,15 @@ Contains a convenience macro that wraps cmake() from
 """
 
 load("@rules_foreign_cc//foreign_cc:cmake.bzl", "cmake")
-load("//toolchains/make:configure.bzl", "WASM_ENV_VARS", _lib_source = "lib_source", _tools_deps = "tools_deps")
+load("//toolchains/make:configure.bzl", "WASM_ENV_VARS", _lib_source = "lib_source", _build_data = "build_data")
 load("//tools/archive_symbols:archive_symbols.bzl", "archive_symbols")
 
 def cmake_lib(
         name,
         lib_source = None,
+        build_data = None,
         linkopts = None,
         out_static_libs = None,
-        tools_deps = None,
         cache_entries = None,
         env = None,
         ignore_undefined_symbols = True,
@@ -23,10 +23,10 @@ def cmake_lib(
     Args:
       name: Passed on to cmake(). Also used for guessing other parameters.
       lib_source: Passed on to cmake(). Guessed from name.
+      build_data: Additional build-time dependencies, compiled with cfg =
+        "exec".
       linkopts: Passed on to cmake(). Guessed from name.
       out_static_libs: Passed on to cmake(). Guessed from name.
-      tools_deps: Additional build-time dependencies, compiled with cfg =
-        "exec".
       cache_entries: Convert True/False to "ON"/"OFF", then passed on to
         cmake().
       env: Passed on to cmake(). Form Emscripten builds, it is pre-populated
@@ -66,9 +66,9 @@ def cmake_lib(
         cache_entries = select(cache_entries),
         lib_name = "{}_lib".format(name),
         lib_source = lib_source,
+        build_data = _build_data(build_data),
         linkopts = linkopts,
         out_static_libs = out_static_libs,
-        tools_deps = _tools_deps(tools_deps),
         **kwargs
     )
 

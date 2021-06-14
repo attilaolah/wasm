@@ -11,6 +11,8 @@ def workspace_dependencies():
         sha256 = "b263601a377dc2e7b255670928c98dcd21ed8fcc69a6cfe7be8b550ef7f9de07",
         strip_prefix = "{name}-{version}",
         build_file_content = None,
+        patches = ["//:rules_foreign_cc_pr_676.patch"],
+        patch_args = ["--strip=1"],
     )
 
     http_archive(

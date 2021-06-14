@@ -1,0 +1,373 @@
+From 27fdd987796e60d65db1637b4cb6596fcb73b586 Mon Sep 17 00:00:00 2001
+From: Andre Brisco <andre.brisco@gmail.com>
+Date: Sun, 13 Jun 2021 09:17:04 -0700
+Subject: [PATCH 1/3] Added `build_data` attribute and deprecated
+ `additional_inputs`, `additional_tools`, and `tool_deps`.
+
+---
+ foreign_cc/cmake.bzl             |  6 +++-
+ foreign_cc/private/framework.bzl | 51 ++++++++++++++++++++++++--------
+ 2 files changed, 44 insertions(+), 13 deletions(-)
+
+diff --git a/foreign_cc/cmake.bzl b/foreign_cc/cmake.bzl
+index da1c4b42..97cf838a 100644
+--- a/foreign_cc/cmake.bzl
++++ b/foreign_cc/cmake.bzl
+@@ -158,7 +158,11 @@ load(
+ def _cmake_impl(ctx):
+     cmake_data = get_cmake_data(ctx)
+ 
+-    tools_deps = ctx.attr.tools_deps + cmake_data.deps
++    tools_deps = cmake_data.deps
++
++    # TODO: `tool_deps` is deprecated. Remove
++    tools_deps += ctx.attr.tools_deps
++
+     env = dict(ctx.attr.env)
+ 
+     generator, generate_args = _get_generator_target(ctx)
+diff --git a/foreign_cc/private/framework.bzl b/foreign_cc/private/framework.bzl
+index 6d548a64..76e2c9ef 100644
+--- a/foreign_cc/private/framework.bzl
++++ b/foreign_cc/private/framework.bzl
+@@ -41,8 +41,7 @@ load(
+ CC_EXTERNAL_RULE_ATTRIBUTES = {
+     "additional_inputs": attr.label_list(
+         doc = (
+-            "Optional additional inputs to be declared as needed for the shell script action." +
+-            "Not used by the shell script part in cc_external_rule_impl."
++            "__deprecated__: Please use the `build_data` attribute."
+         ),
+         mandatory = False,
+         allow_files = True,
+@@ -50,8 +49,7 @@ CC_EXTERNAL_RULE_ATTRIBUTES = {
+     ),
+     "additional_tools": attr.label_list(
+         doc = (
+-            "Optional additional tools needed for the building. " +
+-            "Not used by the shell script part in cc_external_rule_impl."
++            "__deprecated__: Please use the `build_data` attribute."
+         ),
+         mandatory = False,
+         allow_files = True,
+@@ -66,10 +64,18 @@ CC_EXTERNAL_RULE_ATTRIBUTES = {
+         mandatory = False,
+         default = False,
+     ),
++    "build_data": attr.label_list(
++        doc = "Files needed by this rule only during build/compile time. May list file or rule targets. Generally allows any target.",
++        mandatory = False,
++        allow_files = True,
++        cfg = "exec",
++        default = [],
++    ),
+     "data": attr.label_list(
+         doc = "Files needed by this rule at runtime. May list file or rule targets. Generally allows any target.",
+         mandatory = False,
+         allow_files = True,
++        cfg = "target",
+         default = [],
+     ),
+     "defines": attr.string_list(
+@@ -94,7 +100,7 @@ CC_EXTERNAL_RULE_ATTRIBUTES = {
+     "env": attr.string_dict(
+         doc = (
+             "Environment variables to set during the build. " +
+-            "`$(execpath)` macros may be used to point at files which are listed as data deps, tools_deps, or additional_tools, " +
++            "`$(execpath)` macros may be used to point at files which are listed as `data`, `deps`, or `build_deps`, " +
+             "but unlike with other rules, these will be replaced with absolute paths to those files, " +
+             "because the build does not run in the exec root. " +
+             "No other macros are supported."
+@@ -179,10 +185,7 @@ CC_EXTERNAL_RULE_ATTRIBUTES = {
+         mandatory = False,
+     ),
+     "tools_deps": attr.label_list(
+-        doc = (
+-            "Optional tools to be copied into the directory structure. " +
+-            "Similar to deps, those directly required for the external building of the library/binaries."
+-        ),
++        doc = "__deprecated__: Please use the `build_data` attribute.",
+         mandatory = False,
+         allow_files = True,
+         cfg = "exec",
+@@ -204,6 +207,17 @@ CC_EXTERNAL_RULE_FRAGMENTS = [
+     "cpp",
+ ]
+ 
++# buildifier: disable=print
++def _print_deprecation_warnings(ctx):
++    if ctx.attr.tools_deps:
++        print(ctx.label, "Attribute `tools_deps` is deprecated. Please use `build_data`.")
++
++    if ctx.attr.additional_inputs:
++        print(ctx.label, "Attribute `additional_inputs` is deprecated. Please use `build_data`.")
++
++    if ctx.attr.additional_tools:
++        print(ctx.label, "Attribute `additional_tools` is deprecated. Please use `build_data`.")
++
+ # buildifier: disable=function-docstring-header
+ # buildifier: disable=function-docstring-args
+ # buildifier: disable=function-docstring-return
+@@ -337,6 +351,7 @@ def cc_external_rule_impl(ctx, attrs):
+     Returns:
+         A list of providers
+     """
++    _print_deprecation_warnings(ctx)
+     lib_name = attrs.lib_name or ctx.attr.name
+ 
+     inputs = _define_inputs(attrs)
+@@ -355,7 +370,10 @@ def cc_external_rule_impl(ctx, attrs):
+     installdir_copy = copy_directory(ctx.actions, "$$INSTALLDIR$$", "copy_{}/{}".format(lib_name, lib_name))
+     target_root = paths.dirname(installdir_copy.file.dirname)
+ 
+-    data_dependencies = ctx.attr.data + ctx.attr.tools_deps + ctx.attr.additional_tools
++    data_dependencies = ctx.attr.data + ctx.attr.build_data
++
++    # Also add legacy dependencies while they're still available
++    data_dependencies += ctx.attr.tools_deps + ctx.attr.additional_tools
+ 
+     env_prelude, env = _env_prelude(ctx, lib_name, data_dependencies, target_root)
+ 
+@@ -408,6 +426,9 @@ def cc_external_rule_impl(ctx, attrs):
+     if "requires-network" in ctx.attr.tags:
+         execution_requirements = {"requires-network": ""}
+ 
++    # TODO: `additional_tools` is deprecated, remove.
++    legacy_tools = ctx.files.additional_tools + ctx.files.tools_deps
++
+     # The use of `run_shell` here is intended to ensure bash is correctly setup on windows
+     # environments. This should not be replaced with `run` until a cross platform implementation
+     # is found that guarantees bash exists or appropriately errors out.
+@@ -416,7 +437,7 @@ def cc_external_rule_impl(ctx, attrs):
+         inputs = depset(inputs.declared_inputs),
+         outputs = rule_outputs + [wrapped_outputs.log_file],
+         tools = depset(
+-            [wrapped_outputs.script_file, wrapped_outputs.wrapper_script_file] + ctx.files.data + ctx.files.tools_deps + ctx.files.additional_tools,
++            [wrapped_outputs.script_file, wrapped_outputs.wrapper_script_file] + ctx.files.data + ctx.files.build_data + legacy_tools,
+             transitive = [cc_toolchain.all_files] + [data[DefaultInfo].default_runfiles.files for data in data_dependencies] + build_tools,
+         ),
+         command = wrapped_outputs.wrapper_script_file.path,
+@@ -432,9 +453,13 @@ def cc_external_rule_impl(ctx, attrs):
+     # Gather runfiles transitively as per the documentation in:
+     # https://docs.bazel.build/versions/master/skylark/rules.html#runfiles
+     runfiles = ctx.runfiles(files = ctx.files.data)
+-    for target in [ctx.attr.lib_source] + ctx.attr.additional_inputs + ctx.attr.deps + ctx.attr.data:
++    for target in [ctx.attr.lib_source] + ctx.attr.deps + ctx.attr.data:
+         runfiles = runfiles.merge(target[DefaultInfo].default_runfiles)
+ 
++    # TODO: `additional_inputs` is deprecated, remove.
++    for legacy in [ctx.attr.additional_inputs]:
++        runfiles = runfiles.merge(legacy[DefaultInfo].default_runfiles)
++
+     externally_built = ForeignCcArtifactInfo(
+         gen_dir = installdir_copy.file,
+         bin_dir_name = attrs.out_bin_dir,
+@@ -752,10 +777,12 @@ def _define_inputs(attrs):
+         for file_list in tool.files.to_list():
+             tools_files += _list(file_list)
+ 
++    # TODO: Remove, `additional_tools` is deprecated.
+     for tool in attrs.additional_tools:
+         for file_list in tool.files.to_list():
+             tools_files += _list(file_list)
+ 
++    # TODO: Remove, `additional_inputs` is deprecated.
+     for input in attrs.additional_inputs:
+         for file_list in input.files.to_list():
+             input_files += _list(file_list)
+
+From 892908b772c509a2659cb91328bd0bdcb002ee4f Mon Sep 17 00:00:00 2001
+From: Andre Brisco <andre.brisco@gmail.com>
+Date: Sun, 13 Jun 2021 09:52:13 -0700
+Subject: [PATCH 2/3] Added `tool_prefix` attribute
+
+---
+ foreign_cc/cmake.bzl             | 14 +++++++++++---
+ foreign_cc/configure.bzl         |  4 +++-
+ foreign_cc/make.bzl              |  6 ++++--
+ foreign_cc/ninja.bzl             | 10 +++++++---
+ foreign_cc/private/framework.bzl |  6 +++++-
+ 5 files changed, 30 insertions(+), 10 deletions(-)
+
+diff --git a/foreign_cc/cmake.bzl b/foreign_cc/cmake.bzl
+index 97cf838a..965675c8 100644
+--- a/foreign_cc/cmake.bzl
++++ b/foreign_cc/cmake.bzl
+@@ -205,15 +205,21 @@ def _create_configure_script(configureParameters):
+ 
+     cmake_commands = []
+ 
+-    data = ctx.attr.data + getattr(ctx.attr, "tools_deps", [])
+     configuration = "Debug" if is_debug_mode(ctx) else "Release"
+ 
++    data = ctx.attr.data + ctx.attr.build_data
++
++    # TODO: The following attributes are deprecated. Remove
++    data += ctx.attr.tools_deps
++
+     # Generate a list of arguments for cmake's build command
+     build_args = " ".join([
+         ctx.expand_location(arg, data)
+         for arg in ctx.attr.build_args
+     ])
+ 
++    prefix = "{} ".format(ctx.expand_location(attrs.tool_prefix, data)) if attrs.tool_prefix else ""
++
+     # Generate commands for all the targets, ensuring there's
+     # always at least 1 call to the default target.
+     for target in ctx.attr.targets or [""]:
+@@ -223,7 +229,8 @@ def _create_configure_script(configureParameters):
+ 
+         # Note that even though directory is always passed, the
+         # following arguments can take precedence.
+-        cmake_commands.append("{cmake} --build {dir} --config {config} {target} {args}".format(
++        cmake_commands.append("{prefix}{cmake} --build {dir} --config {config} {target} {args}".format(
++            prefix = prefix,
+             cmake = attrs.cmake_path,
+             dir = ".",
+             args = build_args,
+@@ -238,7 +245,8 @@ def _create_configure_script(configureParameters):
+             for arg in ctx.attr.install_args
+         ])
+ 
+-        cmake_commands.append("{cmake} --install {dir} --config {config} {args}".format(
++        cmake_commands.append("{prefix}{cmake} --install {dir} --config {config} {args}".format(
++            prefix = prefix,
+             cmake = attrs.cmake_path,
+             dir = ".",
+             args = install_args,
+diff --git a/foreign_cc/configure.bzl b/foreign_cc/configure.bzl
+index 5324d68c..076e6642 100644
+--- a/foreign_cc/configure.bzl
++++ b/foreign_cc/configure.bzl
+@@ -74,10 +74,12 @@ def _create_configure_script(configureParameters):
+     ])
+ 
+     make_commands = []
++    prefix = "{} ".format(ctx.expand_location(attrs.tool_prefix, data)) if attrs.tool_prefix else ""
+ 
+     if not ctx.attr.make_commands:
+         for target in ctx.attr.targets:
+-            make_commands.append("{make} -C $$EXT_BUILD_ROOT$$/{root} {target} {args}".format(
++            make_commands.append("{prefix}{make} -C $$EXT_BUILD_ROOT$$/{root} {target} {args}".format(
++                prefix = prefix,
+                 make = attrs.make_path,
+                 root = root,
+                 args = args,
+diff --git a/foreign_cc/make.bzl b/foreign_cc/make.bzl
+index be86512e..09196b25 100644
+--- a/foreign_cc/make.bzl
++++ b/foreign_cc/make.bzl
+@@ -43,7 +43,7 @@ def _create_make_script(configureParameters):
+     tools = get_tools_info(ctx)
+     flags = get_flags_info(ctx)
+ 
+-    data = ctx.attr.data or list()
++    data = ctx.attr.data + ctx.attr.build_data
+ 
+     # Generate a list of arguments for make
+     args = " ".join([
+@@ -52,8 +52,10 @@ def _create_make_script(configureParameters):
+     ])
+ 
+     make_commands = []
++    prefix = "{} ".format(ctx.expand_location(attrs.tool_prefix, data)) if attrs.tool_prefix else ""
+     for target in ctx.attr.targets:
+-        make_commands.append("{make} -C $$EXT_BUILD_ROOT$$/{root} {target} {args}".format(
++        make_commands.append("{prefix}{make} -C $$EXT_BUILD_ROOT$$/{root} {target} {args}".format(
++            prefix = prefix,
+             make = attrs.make_path,
+             root = root,
+             args = args,
+diff --git a/foreign_cc/ninja.bzl b/foreign_cc/ninja.bzl
+index 328d0d29..ef6ac463 100644
+--- a/foreign_cc/ninja.bzl
++++ b/foreign_cc/ninja.bzl
+@@ -46,13 +46,14 @@ def _create_ninja_script(configureParameters):
+         str: A string representing a section of a bash script
+     """
+     ctx = configureParameters.ctx
++    attrs = configureParameters.attrs
+ 
+     script = []
+ 
+     root = detect_root(ctx.attr.lib_source)
+     script.append("##symlink_contents_to_dir## $$EXT_BUILD_ROOT$$/{} $$BUILD_TMPDIR$$".format(root))
+ 
+-    data = ctx.attr.data or list()
++    data = ctx.attr.data + ctx.attr.build_data
+ 
+     # Generate a list of arguments for ninja
+     args = " ".join([
+@@ -65,13 +66,16 @@ def _create_ninja_script(configureParameters):
+     if ctx.attr.directory:
+         directory = ctx.expand_location(ctx.attr.directory, data)
+ 
++    prefix = "{} ".format(ctx.expand_location(attrs.tool_prefix, data)) if attrs.tool_prefix else ""
++
+     # Generate commands for all the targets, ensuring there's
+     # always at least 1 call to the default target.
+     for target in ctx.attr.targets or [""]:
+         # Note that even though directory is always passed, the
+         # following arguments can take precedence.
+-        script.append("{ninja} -C {dir} {args} {target}".format(
+-            ninja = configureParameters.attrs.ninja_path,
++        script.append("{prefix}{ninja} -C {dir} {args} {target}".format(
++            prefix = prefix,
++            ninja = attrs.ninja_path,
+             dir = directory,
+             args = args,
+             target = target,
+diff --git a/foreign_cc/private/framework.bzl b/foreign_cc/private/framework.bzl
+index 76e2c9ef..0e1d70b1 100644
+--- a/foreign_cc/private/framework.bzl
++++ b/foreign_cc/private/framework.bzl
+@@ -184,6 +184,10 @@ CC_EXTERNAL_RULE_ATTRIBUTES = {
+         ),
+         mandatory = False,
+     ),
++    "tool_prefix": attr.string(
++        doc = "A prefix for build commands",
++        mandatory = False,
++    ),
+     "tools_deps": attr.label_list(
+         doc = "__deprecated__: Please use the `build_data` attribute.",
+         mandatory = False,
+@@ -457,7 +461,7 @@ def cc_external_rule_impl(ctx, attrs):
+         runfiles = runfiles.merge(target[DefaultInfo].default_runfiles)
+ 
+     # TODO: `additional_inputs` is deprecated, remove.
+-    for legacy in [ctx.attr.additional_inputs]:
++    for legacy in ctx.attr.additional_inputs:
+         runfiles = runfiles.merge(legacy[DefaultInfo].default_runfiles)
+ 
+     externally_built = ForeignCcArtifactInfo(
+
+From 99920449b6b3629c7c6faf05c9ce61b01c7b0926 Mon Sep 17 00:00:00 2001
+From: Andre Brisco <andre.brisco@gmail.com>
+Date: Sun, 13 Jun 2021 12:39:13 -0700
+Subject: [PATCH 3/3] Updated examples
+
+---
+ examples/make_simple/BUILD.bazel | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/examples/make_simple/BUILD.bazel b/examples/make_simple/BUILD.bazel
+index 47d40770..ce8d19f7 100644
+--- a/examples/make_simple/BUILD.bazel
++++ b/examples/make_simple/BUILD.bazel
+@@ -3,13 +3,13 @@ load("@rules_foreign_cc//foreign_cc:defs.bzl", "make")
+ 
+ make(
+     name = "make_lib",
++    build_data = ["//make_simple/code:clang_wrapper.sh"],
+     env = {
+         "CLANG_WRAPPER": "$(execpath //make_simple/code:clang_wrapper.sh)",
+         "PREFIX": "$$INSTALLDIR$$",
+     },
+     lib_source = "//make_simple/code:srcs",
+     out_static_libs = ["liba.a"],
+-    tools_deps = ["//make_simple/code:clang_wrapper.sh"],
+ )
+ 
+ cc_test(

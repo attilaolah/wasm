@@ -42,10 +42,10 @@ WASM_TOOLS = [
 def configure_make_lib(
         name,
         lib_source = None,
+        build_data = None,
         configure_script = "configure",
         linkopts = None,
         out_static_libs = None,
-        tools_deps = None,
         env = None,
         ignore_undefined_symbols = True,
         **kwargs):
@@ -55,11 +55,11 @@ def configure_make_lib(
       name: Passed on to configure_make(). Also used for guessing other
         parameters.
       lib_source: Passed on to configure_make(). Guessed from name.
+      build_data: Additional build-time dependencies, compiled with cfg =
+        "exec".
       configure_script: Name of the configure script to run.
       linkopts: Passed on to configure_make(). Guessed from name.
       out_static_libs: Passed on to configure_make(). Guessed from name.
-      tools_deps: Additional build-time dependencies, compiled with cfg =
-        "exec".
       env: Passed on to configure_make(). Form Emscripten builds, it is
         pre-populated with environment variables required by the toolchain.
       ignore_undefined_symbols: Whether to ignore undefined symbols. If False,
@@ -92,9 +92,9 @@ def configure_make_lib(
         }),
         lib_name = "{}_lib".format(name),
         lib_source = lib_source,
+        build_data = _build_data(build_data),
         linkopts = linkopts,
         out_static_libs = out_static_libs,
-        tools_deps = _tools_deps(tools_deps),
         **kwargs
     )
 
@@ -104,17 +104,17 @@ def configure_make_lib(
         strict = not ignore_undefined_symbols,
     )
 
-def tools_deps(extras = None):
-    """Extends tools_deps with extras.
+def build_data(extras = None):
+    """Extends build_data with extras.
 
     For Emscripten, merges extras with WASM_TOOLS. Otherwise it simply selects
-    extras for tools_deps.
+    extras for build_data.
 
     Args:
-      extras: Existing tools_deps to extend.
+      extras: Existing build_data to extend.
 
     Returns:
-      A select() wrapping the resulting tools_deps.
+      A select() wrapping the resulting build_data.
     """
     if extras == None:
         extras = []
@@ -124,7 +124,7 @@ def tools_deps(extras = None):
         "//conditions:default": extras,
     })
 
-_tools_deps = tools_deps
+_build_data = build_data
 
 def lib_source(lib_name):
     return "@lib_{}//:all".format(lib_name)

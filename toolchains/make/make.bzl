@@ -5,15 +5,15 @@ Contains a convenience macro that wraps make() from @rules_foreign_cc.
 
 load("@rules_foreign_cc//foreign_cc:make.bzl", "make")
 load("//tools/archive_symbols:archive_symbols.bzl", "archive_symbols")
-load(":configure.bzl", "WASM_ENV_VARS", "tools_deps", _lib_source = "lib_source", _tools_deps = "tools_deps")
+load(":configure.bzl", "WASM_ENV_VARS", "build_data", _lib_source = "lib_source", _build_data = "build_data")
 
 def make_lib(
         name,
         args = None,
         lib_source = None,
+        build_data = None,
         linkopts = None,
         out_static_libs = None,
-        tools_deps = None,
         env = None,
         ignore_undefined_symbols = True,
         **kwargs):
@@ -22,10 +22,10 @@ def make_lib(
     Args:
       name: Passed on to make(). Also used for guessing other parameters.
       lib_source: Passed on to make(). Guessed from name.
+      build_data: Additional build-time dependencies, compiled with cfg =
+        "exec".
       linkopts: Passed on to make(). Guessed from name.
       out_static_libs: Passed on to make(). Guessed from name.
-      tools_deps: Additional build-time dependencies, compiled with cfg =
-        "exec".
       env: Passed on to make(). Form Emscripten builds, it is
         pre-populated with environment variables required by the toolchain.
       ignore_undefined_symbols: Whether to ignore undefined symbols. If False,
@@ -50,13 +50,13 @@ def make_lib(
         args = args,
         lib_name = "{}_lib".format(name),
         lib_source = lib_source,
+        build_data = _build_data(build_data),
         linkopts = linkopts,
         env = select({
             "//config:wasm": dict(WASM_ENV_VARS.items() + env.items()),
             "//conditions:default": env,
         }),
         out_static_libs = out_static_libs,
-        tools_deps = _tools_deps(tools_deps),
         **kwargs
     )
 
