@@ -1,4 +1,5 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//toolchains:utils.bzl", "no_error")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
 
 package(default_visibility = ["//:__subpackages__"])
@@ -31,6 +32,11 @@ configure_make_lib(
         "//config:wasm": WASM_CONFIGURE_OPTIONS,
         "//conditions:default": CONFIGURE_OPTIONS,
     }),
+    env = {"CFLAGS": w_no([
+        # keep sorted
+        "missing-field-initializers",
+        "unused-parameter",
+    ])},
     out_static_libs = [
         "libcrypto.a",
         "libssl.a",

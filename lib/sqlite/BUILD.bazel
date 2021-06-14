@@ -1,14 +1,17 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//toolchains/cc:clang.bzl", "w_no")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
 
 package(default_visibility = ["//:__subpackages__"])
 
-_C_FLAGS = " ".join(["-Wno-{}".format(check) for check in [
+_ENV_VARS = {"CFLAGS": w_no([
     # keep sorted
-    "macro-redefined",
-]])
-
-_ENV_VARS = {"CFLAGS": _C_FLAGS}
+    "macro-redefined",  # wasm-only
+    "missing-field-initializers",
+    "sign-compare",
+    "string-concatenation",
+    "unused-parameter",
+])}
 
 _WASM_ENV_VARS = dict(_ENV_VARS.items() + {
     # Emscripten does not implement popen(), so ignore it:

@@ -1,4 +1,5 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//toolchains/cc:clang.bzl", "w_no")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
 
 package(default_visibility = ["//:__subpackages__"])
@@ -7,7 +8,20 @@ cmake_lib(
     name = "exiv2",
     cache_entries = {
         "BUILD_SHARED_LIBS": False,
+        "CMAKE_CXX_FLAGS": w_no([
+            # keep sorted
+            "deprecated-copy",
+            "deprecated-declarations",
+            "deprecated-register",
+            "double-promotion",
+            "shadow",
+            "unused-variable",
+        ]),
         "CMAKE_CXX_STANDARD": "14",
+        "EXIV2_ENABLE_PNG": True,  # TODO: "EXIV2_ENABLE_EXTERNAL_XMP": True,
+        "EXIV2_ENABLE_XMP": True,
+        #"EXIV2_TEAM_EXTRA_WARNINGS": True,
+        #"EXIV2_TEAM_WARNINGS_AS_ERRORS": True,
         "EXPAT_INCLUDE_DIR": "${EXT_BUILD_DEPS}/expat_lib/include",
         "EXPAT_LIBRARY": "${EXT_BUILD_DEPS}/expat_lib/lib/libexpat.a",
         "ZLIB_INCLUDE_DIR": "${EXT_BUILD_DEPS}/z_lib/include",

@@ -1,4 +1,5 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//toolchains/cc:clang.bzl", "w_no")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
 
 package(default_visibility = ["//:__subpackages__"])
@@ -7,6 +8,12 @@ cmake_lib(
     name = "oniguruma",
     cache_entries = {
         "BUILD_SHARED_LIBS": False,
+        "CMAKE_C_FLAGS": w_no([
+            # keep sorted
+            "missing-field-initializers",
+            "sign-compare",
+            "unused-parameter",
+        ]),
         "ENABLE_POSIX_API": True,
     },
     linkopts = ["-lonig"],

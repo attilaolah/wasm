@@ -1,4 +1,5 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//toolchains/cc:clang.bzl", "w_no")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
 load("//toolchains/make:make.bzl", "make_lib")
 load(":libraries.bzl", "LIB_SOURCE", "PREFIX", "suitesparse_lib")
@@ -83,6 +84,14 @@ suitesparse_lib(name = "ldl")
 cmake_lib(
     name = "metis",
     cache_entries = {
+        "CMAKE_C_FLAGS": w_no([
+            # keep sorted
+            "misleading-indentation",
+            "sign-compare",
+            "sometimes-uninitialized",
+            "unused-parameter",
+            "unused-variable",
+        ]),
         "GKLIB_PATH": "{}/{}".format(PREFIX, GK_PATH),
         "SHARED": False,
     },

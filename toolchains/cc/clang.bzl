@@ -86,12 +86,16 @@ def clang_toolchain(name):
         abi_version = "local",
         compile_flags = [
             "-U_FORTIFY_SOURCE",
-            "-Wall",
-            "-Wthread-safety",
-            "-Wself-assign",
             "-fcolor-diagnostics",
+            "-fstack-protector",  # TODO: -fstack-protector-strong
             "-fno-omit-frame-pointer",
-            "-fstack-protector",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+
+            # TODO: -Wpedantic
+            # TODO: -fstack-clash-protection
+            # TODO: -fcf-protection
         ],
         compiler = "clang",
         coverage_compile_flags = ["--coverage"],
@@ -143,3 +147,7 @@ def clang_toolchain(name):
             #"-Wno-builtin-macro-redefined",
         ],
     )
+
+def w_no(checks):
+    """Construct a string with -Wno-check flags to disable warnings."""
+    return " ".join(["-Wno-{}".format(check) for check in sorted(checks)])
