@@ -5,6 +5,7 @@ package(default_visibility = ["//:__subpackages__"])
 
 cmake_lib(
     name = "eigen",
+    build_data = ["//tools/llvm:flang_runtime"],
     cache_entries = {
         "BUILD_TESTING": False,
     },
@@ -13,7 +14,6 @@ cmake_lib(
     },
     out_headers_only = True,
     out_static_libs = [],
-    tools_deps = ["//tools/llvm:flang_runtime"],
 )
 
 bzl_library(

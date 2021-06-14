@@ -33,8 +33,8 @@ CACHE_ENTRIES = dict({
 
 cmake_lib(
     name = "proj",
+    build_data = ["//tools:sqlite"],
     cache_entries = CACHE_ENTRIES,
-    tools_deps = ["//tools:sqlite"],
     deps = [
         "//lib/curl",
         "//lib/openssl",
