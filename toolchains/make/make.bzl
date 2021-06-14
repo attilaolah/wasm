@@ -5,7 +5,7 @@ Contains a convenience macro that wraps make() from @rules_foreign_cc.
 
 load("@rules_foreign_cc//foreign_cc:make.bzl", "make")
 load("//tools/archive_symbols:archive_symbols.bzl", "archive_symbols")
-load(":configure.bzl", "WASM_ENV_VARS", "build_data", _lib_source = "lib_source", _build_data = "build_data")
+load(":configure.bzl", "WASM_ENV_VARS", "build_data", _build_data = "build_data", _lib_source = "lib_source")
 
 def make_lib(
         name,
@@ -51,6 +51,11 @@ def make_lib(
         lib_name = "{}_lib".format(name),
         lib_source = lib_source,
         build_data = _build_data(build_data),
+        tool_prefix = select({
+            # TODO: Use execpath!
+            "//config:wasm": "${EMSCRIPTEN}/emmake",
+            "//conditions:default": None,
+        }),
         linkopts = linkopts,
         env = select({
             "//config:wasm": dict(WASM_ENV_VARS.items() + env.items()),

@@ -5,7 +5,7 @@ Contains a convenience macro that wraps cmake() from
 """
 
 load("@rules_foreign_cc//foreign_cc:cmake.bzl", "cmake")
-load("//toolchains/make:configure.bzl", "WASM_ENV_VARS", _lib_source = "lib_source", _build_data = "build_data")
+load("//toolchains/make:configure.bzl", "WASM_ENV_VARS", _build_data = "build_data", _lib_source = "lib_source")
 load("//tools/archive_symbols:archive_symbols.bzl", "archive_symbols")
 
 def cmake_lib(
@@ -67,6 +67,11 @@ def cmake_lib(
         lib_name = "{}_lib".format(name),
         lib_source = lib_source,
         build_data = _build_data(build_data),
+        tool_prefix = select({
+            # TODO: Use execpath!
+            "//config:wasm": "${EMSCRIPTEN}/emcmake",
+            "//conditions:default": None,
+        }),
         linkopts = linkopts,
         out_static_libs = out_static_libs,
         **kwargs

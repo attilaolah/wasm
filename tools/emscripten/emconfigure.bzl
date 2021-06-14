@@ -5,7 +5,8 @@ dependencies. This is to avoid cylcic dependencies since EMCONFIGURE is used to
 patch repos before loading them.
 """
 
-EMCONFIGURE = [
-    "echo '\"${EMSCRIPTEN}/emconfigure\" \"$(dirname $0)/${CONFIGURE}\" $@' >> emconfigure.sh",
-    "chmod +x emconfigure.sh",
-]
+EMCONFIGURE = []
+# TODO: Remove!
+#    "echo '\"${EMSCRIPTEN}/emconfigure\" \"$(dirname $0)/${CONFIGURE}\" $@' >> emconfigure.sh",
+#    "chmod +x emconfigure.sh",
+#]

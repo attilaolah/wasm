@@ -43,7 +43,6 @@ def configure_make_lib(
         name,
         lib_source = None,
         build_data = None,
-        configure_script = "configure",
         linkopts = None,
         out_static_libs = None,
         env = None,
@@ -57,7 +56,6 @@ def configure_make_lib(
       lib_source: Passed on to configure_make(). Guessed from name.
       build_data: Additional build-time dependencies, compiled with cfg =
         "exec".
-      configure_script: Name of the configure script to run.
       linkopts: Passed on to configure_make(). Guessed from name.
       out_static_libs: Passed on to configure_make(). Guessed from name.
       env: Passed on to configure_make(). Form Emscripten builds, it is
@@ -78,14 +76,9 @@ def configure_make_lib(
     if env == None:
         env = {}
     wasm_env = dict(WASM_ENV_VARS.items() + env.items())
-    wasm_env["CONFIGURE"] = configure_script
 
     configure_make(
         name = name,
-        configure_command = select({
-            "//config:wasm": "emconfigure.sh",
-            "//conditions:default": configure_script,
-        }),
         env = select({
             "//config:wasm": wasm_env,
             "//conditions:default": env,
@@ -93,8 +86,15 @@ def configure_make_lib(
         lib_name = "{}_lib".format(name),
         lib_source = lib_source,
         build_data = _build_data(build_data),
+        tool_prefix = select({
+            # TODO: Use execpath!
+            "//config:wasm": "${EMSCRIPTEN}/emconfigure",
+            "//conditions:default": None,
+        }),
         linkopts = linkopts,
         out_static_libs = out_static_libs,
+        # TODO: Move rename this arg!
+        configure_command = kwargs.pop("configure_script", "configure"),
         **kwargs
     )
 

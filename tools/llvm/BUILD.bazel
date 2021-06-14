@@ -12,10 +12,10 @@ CMAKE_EXE_LINKER_FLAGS = " ".join([
 
 cmake(
     name = "flang",
-    build_data = ["@llvm//:all"],
     # Force some make parallelism, otherwise this build takes over an hour.
     # This will override whatever was passed via --action_env='MAKEFLAGS="-j..."'.
     build_args = ["--parallel=4"],
+    build_data = ["@llvm//:all"],
     cache_entries = {
         "BUILD_SHARED_LIBS": "OFF",
         "CMAKE_EXE_LINKER_FLAGS": CMAKE_EXE_LINKER_FLAGS,
