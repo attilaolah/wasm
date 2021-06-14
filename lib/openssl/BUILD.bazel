@@ -5,6 +5,7 @@ package(default_visibility = ["//:__subpackages__"])
 
 configure_make_lib(
     name = "openssl",
+    configure_command = "config",
     configure_options = [
         # Disable cross-compile prefix.
         # Blaze will use absolute paths for the compiler anyway.
@@ -15,7 +16,6 @@ configure_make_lib(
         "no-ui-console",
         "zlib",
     ],
-    configure_script = "config",
     out_static_libs = [
         "libcrypto.a",
         "libssl.a",

@@ -21,9 +21,6 @@ var modules = map[string]starlark.StringDict{
 	"//toolchains/make:configure.bzl": {
 		"patch_files": nil,
 	},
-	"//tools/emscripten:emconfigure.bzl": {
-		"EMCONFIGURE": nil,
-	},
 }
 
 // VersionInfo holds info about the version.

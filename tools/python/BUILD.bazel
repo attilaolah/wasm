@@ -1,7 +1,0 @@
-sh_binary(
-    name = "python",
-    srcs = ["python.sh"],
-    data = ["//lib/python:runtime"],
-    env = {"ROOT_PATH": "$(rootpath //lib/python:runtime)"},
-    visibility = ["//visibility:public"],
-)

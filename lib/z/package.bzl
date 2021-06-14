@@ -1,7 +1,6 @@
 """Workspace rule for downloading package dependencies."""
 
 load("//:http_archive.bzl", "http_archive")
-load("//tools/emscripten:emconfigure.bzl", "EMCONFIGURE")
 
 VERSION = "1.2.11"
 
@@ -16,5 +15,4 @@ def download_z():
         urls = [URL],
         sha256 = SHA256,
         strip_prefix = "zlib-{version}",
-        patch_cmds = EMCONFIGURE,
     )

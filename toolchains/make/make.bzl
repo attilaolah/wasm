@@ -52,7 +52,6 @@ def make_lib(
         lib_source = lib_source,
         build_data = _build_data(build_data),
         tool_prefix = select({
-            # TODO: Use execpath!
             "//config:wasm": "${EMSCRIPTEN}/emmake",
             "//conditions:default": None,
         }),

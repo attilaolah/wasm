@@ -1,7 +1,6 @@
 """Workspace rule for downloading package dependencies."""
 
 load("//:http_archive.bzl", "http_archive")
-load("//tools/emscripten:emconfigure.bzl", "EMCONFIGURE")
 
 VERSION = "4.1.0"
 
@@ -19,5 +18,4 @@ def download_mpfr():
         urls = URLS,
         sha256 = SHA256,
         strip_prefix = "mpfr-{version}",
-        patch_cmds = EMCONFIGURE,
     )

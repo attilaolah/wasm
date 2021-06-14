@@ -1,7 +1,6 @@
 """Workspace rule for downloading package dependencies."""
 
 load("//:http_archive.bzl", "http_archive")
-load("//tools/emscripten:emconfigure.bzl", "EMCONFIGURE")
 
 VERSION = "3.35.5"
 
@@ -16,5 +15,4 @@ def download_sqlite():
         urls = [URL],
         sha256 = SHA256,
         strip_prefix = "sqlite-autoconf-3350500",
-        patch_cmds = EMCONFIGURE,
     )

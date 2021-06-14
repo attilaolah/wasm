@@ -1,7 +1,6 @@
 """Workspace rule for downloading package dependencies."""
 
 load("//:http_archive.bzl", "http_archive")
-load("//tools/emscripten:emconfigure.bzl", "EMCONFIGURE")
 
 VERSION = "5.2.5"
 
@@ -16,5 +15,4 @@ def download_lzma():
         urls = [URL],
         sha256 = SHA256,
         strip_prefix = "xz-{version}",
-        patch_cmds = EMCONFIGURE,
     )

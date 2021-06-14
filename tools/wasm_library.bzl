@@ -27,7 +27,6 @@ def _wasm32_transition_impl(settings, attr):
 
 def _wasm_library_impl(ctx):
     emcc = _find_file(ctx.files._emscripten, "emcc")
-    python = _find_file(ctx.files._python, "python.sh")
 
     # Find the "node_modules" diectory provided by @npm.
     # This is where @npm//acorn (and other npm packages) live.
@@ -98,7 +97,6 @@ def _wasm_library_impl(ctx):
 
     inputs = (
         ctx.files._emscripten +
-        ctx.files._python +
         ctx.files._python_runtime +
         ctx.files._node +
         ctx.files._acorn +
@@ -127,10 +125,9 @@ def _wasm_library_impl(ctx):
             "EM_CONFIG": ctx.file._emscripten_config.path,
             # Required by acorn-optimizer to load @npm//acorn.
             "NODE_PATH": node_modules,
-            # Python wrapper script:
-            "PYTHON": python.path,
-            # Configure ROOT_PATH for //tools/python:
-            "ROOT_PATH": ctx.files._python_runtime[0].path,
+            # Python executable & runtime:
+            "PYTHON": "{}/bin/python3".format(ctx.files._python_runtime[0].path),
+            "PYTHONHOME": ctx.files._python_runtime[0].path,
         },
         mnemonic = "EMCC",
     )
@@ -199,10 +196,6 @@ wasm_library = rule(
         "_node": attr.label(
             allow_single_file = True,
             default = "@nodejs_linux_amd64//:node",
-        ),
-        "_python": attr.label(
-            default = "//tools/python",
-            cfg = "exec",
         ),
         "_python_runtime": attr.label(
             default = "//lib/python:runtime",

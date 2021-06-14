@@ -40,9 +40,6 @@ filegroup(
     name = "runtime",
     srcs = ["//lib/python"],
     output_group = "gen_dir",
-    # TODO: Remove when this gets merged:
-    # https://github.com/bazelbuild/rules_foreign_cc/pull/437
-    visibility = ["//visibility:public"],
 )
 
 config_setting(

@@ -6,6 +6,7 @@ package(default_visibility = ["//lib:__subpackages__"])
 
 configure_make_lib(
     name = "gomp",
+    configure_command = "libgomp/configure",
     configure_env_vars = {
         "CFLAGS": " ".join(["-Wno-{}".format(check) for check in [
             # Clang build is broken unless these checks are disabled; keep sorted.
@@ -22,7 +23,6 @@ configure_make_lib(
         "--disable-shared",
         "--enable-static",
     ],
-    configure_script = "libgomp/configure",
     lib_source = lib_source("gcc"),
 )
 

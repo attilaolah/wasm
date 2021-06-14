@@ -6,10 +6,10 @@ package(default_visibility = ["//:__subpackages__"])
 
 configure_make_lib(
     name = "tcl",
+    configure_command = "unix/configure",
     configure_options = [
         "--disable-shared",
     ],
-    configure_script = "unix/configure",
     linkopts = ["-ltcl{}".format(MAJOR_MINOR)],
     out_static_libs = [
         "libtcl{}.a".format(MAJOR_MINOR),

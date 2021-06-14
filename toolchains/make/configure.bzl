@@ -21,8 +21,9 @@ WASM_ENV_VARS = {
     # Directory containing node_modules:
     "NODE_PATH": "${EXT_BUILD_DEPS}/bin",
 
-    # Python from //tools/python:
-    "PYTHON": "${EXT_BUILD_DEPS}/bin/python/python.sh",
+    # Python from //lib/python:
+    "PYTHON": "${EXT_BUILD_ROOT}/$(execpaths //lib/python:runtime)/bin/python3",
+    "PYTHONHOME": "${EXT_BUILD_ROOT}/$(execpaths //lib/python:runtime)",
 
     # Required by the Emscripten config:
     "ROOT_DIR": "${EXT_BUILD_ROOT}",
@@ -32,7 +33,6 @@ WASM_TOOLS = [
     # keep sorted
     "//lib/python:runtime",
     "//tools:nodejs",
-    "//tools/python",
     "@emscripten//:all",
     "@emsdk//emscripten_toolchain:emscripten_config",
     "@nodejs_linux_amd64//:node",
@@ -86,15 +86,16 @@ def configure_make_lib(
         lib_name = "{}_lib".format(name),
         lib_source = lib_source,
         build_data = _build_data(build_data),
-        tool_prefix = select({
-            # TODO: Use execpath!
+        configure_prefix = select({
             "//config:wasm": "${EMSCRIPTEN}/emconfigure",
+            "//conditions:default": None,
+        }),
+        tool_prefix = select({
+            "//config:wasm": "${EMSCRIPTEN}/emmake",
             "//conditions:default": None,
         }),
         linkopts = linkopts,
         out_static_libs = out_static_libs,
-        # TODO: Move rename this arg!
-        configure_command = kwargs.pop("configure_script", "configure"),
         **kwargs
     )
 

@@ -1,4 +1,4 @@
-From 27fdd987796e60d65db1637b4cb6596fcb73b586 Mon Sep 17 00:00:00 2001
+From 2f637af91d67f74ee343bfbdcf6b69fb5087f0c0 Mon Sep 17 00:00:00 2001
 From: Andre Brisco <andre.brisco@gmail.com>
 Date: Sun, 13 Jun 2021 09:17:04 -0700
 Subject: [PATCH 1/3] Added `build_data` attribute and deprecated
@@ -176,18 +176,19 @@ index 6d548a64..76e2c9ef 100644
          for file_list in input.files.to_list():
              input_files += _list(file_list)
 
-From 892908b772c509a2659cb91328bd0bdcb002ee4f Mon Sep 17 00:00:00 2001
+From adbecf41fade0147a5ddc7873ab2d6ced07f3709 Mon Sep 17 00:00:00 2001
 From: Andre Brisco <andre.brisco@gmail.com>
-Date: Sun, 13 Jun 2021 09:52:13 -0700
-Subject: [PATCH 2/3] Added `tool_prefix` attribute
+Date: Mon, 14 Jun 2021 08:31:38 -0700
+Subject: [PATCH 2/3] Added `tool_prefix` and `configure_prefix` attributes
 
 ---
- foreign_cc/cmake.bzl             | 14 +++++++++++---
- foreign_cc/configure.bzl         |  4 +++-
- foreign_cc/make.bzl              |  6 ++++--
- foreign_cc/ninja.bzl             | 10 +++++++---
- foreign_cc/private/framework.bzl |  6 +++++-
- 5 files changed, 30 insertions(+), 10 deletions(-)
+ foreign_cc/cmake.bzl                    | 14 +++++++++++---
+ foreign_cc/configure.bzl                |  9 ++++++++-
+ foreign_cc/make.bzl                     |  6 ++++--
+ foreign_cc/ninja.bzl                    | 10 +++++++---
+ foreign_cc/private/configure_script.bzl |  4 +++-
+ foreign_cc/private/framework.bzl        |  6 +++++-
+ 6 files changed, 38 insertions(+), 11 deletions(-)
 
 diff --git a/foreign_cc/cmake.bzl b/foreign_cc/cmake.bzl
 index 97cf838a..965675c8 100644
@@ -237,14 +238,15 @@ index 97cf838a..965675c8 100644
              dir = ".",
              args = install_args,
 diff --git a/foreign_cc/configure.bzl b/foreign_cc/configure.bzl
-index 5324d68c..076e6642 100644
+index 5324d68c..c9ca72b7 100644
 --- a/foreign_cc/configure.bzl
 +++ b/foreign_cc/configure.bzl
-@@ -74,10 +74,12 @@ def _create_configure_script(configureParameters):
+@@ -74,10 +74,13 @@ def _create_configure_script(configureParameters):
      ])
  
      make_commands = []
 +    prefix = "{} ".format(ctx.expand_location(attrs.tool_prefix, data)) if attrs.tool_prefix else ""
++    configure_prefix = "{} ".format(ctx.expand_location(ctx.attr.configure_prefix, data)) if ctx.attr.configure_prefix else ""
  
      if not ctx.attr.make_commands:
          for target in ctx.attr.targets:
@@ -254,6 +256,24 @@ index 5324d68c..076e6642 100644
                  make = attrs.make_path,
                  root = root,
                  args = args,
+@@ -94,6 +97,7 @@ def _create_configure_script(configureParameters):
+         user_options = ctx.attr.configure_options,
+         user_vars = dict(ctx.attr.configure_env_vars),
+         is_debug = is_debug_mode(ctx),
++        configure_prefix = configure_prefix,
+         configure_command = ctx.attr.configure_command,
+         deps = ctx.attr.deps,
+         inputs = inputs,
+@@ -197,6 +201,9 @@ def _attrs():
+         "configure_options": attr.string_list(
+             doc = "Any options to be put on the 'configure' command line.",
+         ),
++        "configure_prefix": attr.string(
++            doc = "A prefix for the call to the `configure_command`.",
++        ),
+         "install_prefix": attr.string(
+             doc = (
+                 "Install prefix, i.e. relative path to where to install the result of the build. " +
 diff --git a/foreign_cc/make.bzl b/foreign_cc/make.bzl
 index be86512e..09196b25 100644
 --- a/foreign_cc/make.bzl
@@ -318,6 +338,29 @@ index 328d0d29..ef6ac463 100644
              dir = directory,
              args = args,
              target = target,
+diff --git a/foreign_cc/private/configure_script.bzl b/foreign_cc/private/configure_script.bzl
+index 07fdd707..d56b63d8 100644
+--- a/foreign_cc/private/configure_script.bzl
++++ b/foreign_cc/private/configure_script.bzl
+@@ -13,6 +13,7 @@ def create_configure_script(
+         user_options,
+         user_vars,
+         is_debug,
++        configure_prefix,
+         configure_command,
+         deps,
+         inputs,
+@@ -67,8 +68,9 @@ def create_configure_script(
+             " ".join(autoreconf_options),
+         ).lstrip())
+ 
+-    script.append('{env_vars} "{configure}" --prefix=$$BUILD_TMPDIR$$/$$INSTALL_PREFIX$$ {user_options}'.format(
++    script.append('{env_vars} {prefix}"{configure}" --prefix=$$BUILD_TMPDIR$$/$$INSTALL_PREFIX$$ {user_options}'.format(
+         env_vars = env_vars_string,
++        prefix = configure_prefix,
+         configure = configure_path,
+         user_options = " ".join(user_options),
+     ))
 diff --git a/foreign_cc/private/framework.bzl b/foreign_cc/private/framework.bzl
 index 76e2c9ef..0e1d70b1 100644
 --- a/foreign_cc/private/framework.bzl
@@ -343,9 +386,9 @@ index 76e2c9ef..0e1d70b1 100644
  
      externally_built = ForeignCcArtifactInfo(
 
-From 99920449b6b3629c7c6faf05c9ce61b01c7b0926 Mon Sep 17 00:00:00 2001
+From 8230774d23e0dd64ef90a445a9818e07febd0293 Mon Sep 17 00:00:00 2001
 From: Andre Brisco <andre.brisco@gmail.com>
-Date: Sun, 13 Jun 2021 12:39:13 -0700
+Date: Mon, 14 Jun 2021 08:25:12 -0700
 Subject: [PATCH 3/3] Updated examples
 
 ---
