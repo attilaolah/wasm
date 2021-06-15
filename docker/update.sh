@@ -13,9 +13,6 @@ echo "deb [arch=amd64] https://storage.googleapis.com/bazel-apt stable jdk1.8" >
 apt-get update
 apt-get --yes install bazel 2>&1
 
-# Required by //lib/gmp:
-apt-get --yes install m4 2>&1
-
 # Required by //lib/openssl:
 apt-get --yes install libfindbin-libs-perl 2>&1
 

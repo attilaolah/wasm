@@ -55,6 +55,7 @@ toolchain, pass `--cpu=wasm32`. Pass `-c opt` for an optimised build.
 [`//lib/lz4`](https://github.com/attilaolah/wasm/blob/main/lib/lz4/BUILD.bazel) | 1.9.3 [🔗](https://github.com/lz4/lz4/archive/v1.9.3.tar.gz)
 [`//lib/lzma`](https://github.com/attilaolah/wasm/blob/main/lib/lzma/BUILD.bazel) | 5.2.5 [🔗](https://tukaani.org/xz/xz-5.2.5.tar.xz)
 [`//lib/lzo`](https://github.com/attilaolah/wasm/blob/main/lib/lzo/BUILD.bazel) | 2.10 [🔗](https://www.oberhumer.com/opensource/lzo/download/lzo-2.10.tar.gz)
+[`//lib/m4`](https://github.com/attilaolah/wasm/blob/main/lib/m4/BUILD.bazel) | 1.4.19 [🔗](https://ftp.gnu.org/gnu/m4/m4-1.4.19.tar.xz)
 [`//lib/mpdecimal`](https://github.com/attilaolah/wasm/blob/main/lib/mpdecimal/BUILD.bazel) | 2.5.1 [🔗](https://www.bytereef.org/software/mpdecimal/releases/mpdecimal-2.5.1.tar.gz)
 [`//lib/mpfr`](https://github.com/attilaolah/wasm/blob/main/lib/mpfr/BUILD.bazel) | 4.1.0 [🔗](https://www.mpfr.org/mpfr-current/mpfr-4.1.0.tar.xz) [🔗](https://ftp.gnu.org/gnu/mpfr/mpfr-4.1.0.tar.xz)
 [`//lib/musl`](https://github.com/attilaolah/wasm/blob/main/lib/musl/BUILD.bazel) | 1.2.2 [🔗](https://musl.libc.org/releases/musl-1.2.2.tar.gz)

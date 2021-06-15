@@ -38,7 +38,7 @@ configure_make_lib(
 
 filegroup(
     name = "runtime",
-    srcs = ["//lib/python"],
+    srcs = [":python"],
     output_group = "gen_dir",
 )
 

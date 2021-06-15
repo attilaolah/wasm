@@ -4,15 +4,18 @@ load("//toolchains/make:configure.bzl", "configure_make_lib")
 package(default_visibility = ["//:__subpackages__"])
 
 configure_make_lib(
-    name = "gmp",
-    build_data = ["//lib/m4:runtime"],
+    name = "m4",
     configure_options = [
-        "--disable-shared",
-        "--enable-static",
+        "--enable-c++",
     ],
-    env = {
-        "PATH": "${EXT_BUILD_ROOT}/$(execpaths //lib/m4:runtime)/bin:${PATH}",
-    },
+    out_binaries = ["m4"],
+    out_static_libs = [],
+)
+
+filegroup(
+    name = "runtime",
+    srcs = [":m4"],
+    output_group = "gen_dir",
 )
 
 bzl_library(
