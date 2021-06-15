@@ -1,4 +1,5 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//toolchains/cc:clang.bzl", "no_error")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
 
 package(default_visibility = ["//:__subpackages__"])
@@ -6,6 +7,11 @@ package(default_visibility = ["//:__subpackages__"])
 cmake_lib(
     name = "zstd",
     cache_entries = {
+        # Use C_FLAGS_RELEASE so they'd get appended after other flags.
+        "CMAKE_C_FLAGS_RELEASE": no_error([
+            # keep sorted
+            "unused-but-set-variable",
+        ]),
         "ZSTD_BUILD_PROGRAMS": False,
         "ZSTD_BUILD_SHARED": False,
         "ZSTD_BUILD_STATIC": True,

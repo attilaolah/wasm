@@ -13,7 +13,7 @@ load("//tools/archive_symbols:archive_symbols.bzl", "archive_symbols")
 
 WASM_ENV_VARS = {
     # Required by the Emscripten config:
-    "EMSCRIPTEN": "${EXT_BUILD_ROOT}/external/emscripten/emscripten",
+    "EMSCRIPTEN": "${EXT_BUILD_ROOT}/external/emscripten_bin_linux/emscripten",
 
     # Emscripten config from @emsdk//emscripten_toolchain:emscripten_config:
     "EM_CONFIG": "${EXT_BUILD_ROOT}/external/emsdk/emscripten_toolchain/emscripten_config",
@@ -22,7 +22,7 @@ WASM_ENV_VARS = {
     "NODE_PATH": "${EXT_BUILD_DEPS}/bin",
 
     # Python from //lib/python:
-    "PYTHON": "${EXT_BUILD_ROOT}/$(execpaths //lib/python:runtime)/bin/python3",
+    "PATH": "${EXT_BUILD_ROOT}/$(execpaths //lib/python:runtime)/bin:${PATH}",
     "PYTHONHOME": "${EXT_BUILD_ROOT}/$(execpaths //lib/python:runtime)",
 
     # Required by the Emscripten config:
@@ -33,7 +33,7 @@ WASM_TOOLS = [
     # keep sorted
     "//lib/python:runtime",
     "//tools:nodejs",
-    "@emscripten//:all",
+    "@emscripten_bin_linux//:all",
     "@emsdk//emscripten_toolchain:emscripten_config",
     "@nodejs_linux_amd64//:node",
     "@npm//acorn",

@@ -14,6 +14,8 @@ wasm_library(
         # keep sorted
         "compress",
         "compressBound",
+        "free",
+        "malloc",
         "zlibCompileFlags",
         "zlibVersion",
     ],

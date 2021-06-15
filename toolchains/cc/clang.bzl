@@ -143,3 +143,7 @@ def clang_toolchain(name):
             #"-Wno-builtin-macro-redefined",
         ],
     )
+
+def no_error(checks):
+    """Ignore specific Clang check errors (treat them as warnings instead)."""
+    return " ".join(["-Wno-error={}".format(check) for check in checks])

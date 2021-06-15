@@ -3,19 +3,34 @@ load("//toolchains/make:configure.bzl", "configure_make_lib")
 
 package(default_visibility = ["//:__subpackages__"])
 
+CONFIGURE_OPTIONS = [
+    # Disable cross-compile prefix.
+    # Blaze will use absolute paths for the compiler anyway.
+    "--cross-compile-prefix=",
+    '--with-zlib-include="${EXT_BUILD_DEPS}/lib_z/include"',
+    '--with-zlib-lib="${EXT_BUILD_DEPS}/lib_z/lib"',
+    "--release",
+    "zlib",
+] + [
+    # keep sorted
+    "no-shared",
+]
+
+WASM_CONFIGURE_OPTIONS = CONFIGURE_OPTIONS + [
+    # keep sorted
+    "no-afalgeng",
+    "no-asm",
+    "no-tests",
+    "no-ui-console",
+]
+
 configure_make_lib(
     name = "openssl",
     configure_command = "config",
-    configure_options = [
-        # Disable cross-compile prefix.
-        # Blaze will use absolute paths for the compiler anyway.
-        "--cross-compile-prefix=",
-        '--with-zlib-include="${EXT_BUILD_DEPS}/lib_z/include"',
-        '--with-zlib-lib="${EXT_BUILD_DEPS}/lib_z/lib"',
-        "--release",
-        "no-ui-console",
-        "zlib",
-    ],
+    configure_options = select({
+        "//config:wasm": WASM_CONFIGURE_OPTIONS,
+        "//conditions:default": CONFIGURE_OPTIONS,
+    }),
     out_static_libs = [
         "libcrypto.a",
         "libssl.a",

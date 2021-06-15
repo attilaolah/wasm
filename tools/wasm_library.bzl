@@ -121,6 +121,8 @@ def _wasm_library_impl(ctx):
             "EMCC": emcc.path,
             # Required by the Emscripten config:
             "EMSCRIPTEN": emcc.dirname,
+            # Required by the Emscripten config:
+            "EM_BIN_PATH": paths.dirname(ctx.files._emscripten[0].path),
             # Emscripten config file:
             "EM_CONFIG": ctx.file._emscripten_config.path,
             # Required by acorn-optimizer to load @npm//acorn.
@@ -181,7 +183,7 @@ wasm_library = rule(
             default = Label("@bazel_tools//tools/cpp:current_cc_toolchain"),
         ),
         "_emscripten": attr.label(
-            default = "@emscripten//:all",
+            default = "@emscripten_bin_linux//:all",
         ),
         "_emscripten_config": attr.label(
             allow_single_file = True,

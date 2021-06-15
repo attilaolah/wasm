@@ -1,16 +1,16 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//toolchains/cc:clang.bzl", "no_error")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
 
 package(default_visibility = ["//:__subpackages__"])
 
 configure_make_lib(
     name = "png",
-    configure_env_vars = select({
-        # The configure script tries to redefine pow() with an incorrect signature.
-        # Emscripten will report an error by default; make it more permissive in this case.
-        "//config:wasm": {"CFLAGS": "-Wno-incompatible-library-redeclaration"},
-        "//conditions:default": {},
-    }),
+    configure_env_vars = {"CFLAGS": no_error([
+        # keep sorted
+        "incompatible-library-redeclaration",
+        "unused-but-set-variable",
+    ])},
     configure_options = [
         "--enable-shared=no",
         "--enable-static=yes",
