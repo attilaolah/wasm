@@ -85,7 +85,7 @@ toolchain, pass `--cpu=wasm32`. Pass `-c opt` for an optimised build.
 
 | Build Label | Version |
 |-------------|---------|
-[`//tools/emscripten`](https://github.com/attilaolah/wasm/blob/main/tools/emscripten/BUILD.bazel) | 2.0.13 [🔗](https://github.com/emscripten-core/emsdk/archive/2.0.13.tar.gz)
+[`//tools/emscripten`](https://github.com/attilaolah/wasm/blob/main/tools/emscripten/BUILD.bazel) | 2.0.24 [🔗](https://github.com/emscripten-core/emsdk/archive/2.0.24.tar.gz)
 [`//tools/llvm`](https://github.com/attilaolah/wasm/blob/main/tools/llvm/BUILD.bazel) | 12.0.0 [🔗](https://github.com/llvm/llvm-project/releases/download/llvmorg-12.0.0/clang+llvm-12.0.0-x86_64-linux-gnu-ubuntu-20.04.tar.xz)
 
 
