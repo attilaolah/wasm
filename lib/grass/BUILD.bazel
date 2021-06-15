@@ -6,6 +6,10 @@ package(default_visibility = ["//:__subpackages__"])
 
 configure_make_lib(
     name = "grass",
+    build_data = ["//lib/flex:runtime"],
+    env = {
+        "PATH": "${EXT_BUILD_ROOT}/$(execpaths //lib/flex:runtime)/bin:${PATH}",
+    },
     configure_env_vars = {
         # Transitive dependencies:
         "LDFLAGS": " ".join(["-l{}".format(lib) for lib in [
