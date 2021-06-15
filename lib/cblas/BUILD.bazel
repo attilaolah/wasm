@@ -17,7 +17,7 @@ make_lib(
         'CBLIB="../lib/libcblas.a"',
         'CC="${EXT_BUILD_ROOT}/external/llvm/bin/clang"',
         'CFLAGS="-Wno-header-guard"',
-        'FC="${EXT_BUILD_DEPS}/bin/copy_flang/flang/bin/flang"',
+        'FC="${EXT_BUILD_ROOT}/$(execpaths //tools/llvm:flang_runtime)/bin/flang"',
     ],
     build_data = ["//tools/llvm:flang_runtime"],
     postfix_script = 'cp -a "${EXT_BUILD_ROOT}/external/lib_cblas/lib/libcblas.a" "${INSTALLDIR}/lib"',
