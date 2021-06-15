@@ -6,13 +6,11 @@ def workspace_dependencies():
     """Set up dependencies of THIS workspace."""
     http_archive(
         name = "rules_foreign_cc",
-        version = "0.3.0",
+        version = "3b3960267c9cef84ed9d1afdfff2ee5e1070ebe2",
         urls = ["https://github.com/bazelbuild/{name}/archive/{version}.tar.gz"],
-        sha256 = "b263601a377dc2e7b255670928c98dcd21ed8fcc69a6cfe7be8b550ef7f9de07",
+        sha256 = "a3ebd4670a02a55554c777121ccdbd077348513996f8c295bf42069f23a3d75b",
         strip_prefix = "{name}-{version}",
         build_file_content = None,
-        patches = ["//:rules_foreign_cc_pr_676.patch"],
-        patch_args = ["--strip=1"],
     )
 
     http_archive(
