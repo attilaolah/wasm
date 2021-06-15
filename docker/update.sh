@@ -20,7 +20,7 @@ apt-get --yes install libfindbin-libs-perl 2>&1
 apt-get --yes install gfortran 2>&1
 
 # Required by //lib/grass:
-apt-get --yes install python3-distutils python3-six bison flex gettext 2>&1
+apt-get --yes install python3-distutils python3-six gettext 2>&1
 
 # Self-destruct.
 rm /etc/update.sh

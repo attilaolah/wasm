@@ -27,6 +27,7 @@ toolchain, pass `--cpu=wasm32`. Pass `-c opt` for an optimised build.
 | Build Label | Version |
 |-------------|---------|
 [`//lib/aec`](https://github.com/attilaolah/wasm/blob/main/lib/aec/BUILD.bazel) | 1.0.4 [🔗](https://gitlab.dkrz.de/k202009/libaec/uploads/ea0b7d197a950b0c110da8dfdecbb71f/libaec-1.0.4.tar.gz)
+[`//lib/bison`](https://github.com/attilaolah/wasm/blob/main/lib/bison/BUILD.bazel) | 3.7.6 [🔗](https://ftp.gnu.org/gnu/bison/bison-3.7.6.tar.xz)
 [`//lib/bz2`](https://github.com/attilaolah/wasm/blob/main/lib/bz2/BUILD.bazel) | 1.0.8 [🔗](https://sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz)
 [`//lib/cblas`](https://github.com/attilaolah/wasm/blob/main/lib/cblas/BUILD.bazel) | 3.8.0 [🔗](http://www.netlib.org/blas/blast-forum/cblas.tgz)
 [`//lib/ceres`](https://github.com/attilaolah/wasm/blob/main/lib/ceres/BUILD.bazel) | 1.14.0 [🔗](https://github.com/ceres-solver/ceres-solver/archive/1.14.0.tar.gz)

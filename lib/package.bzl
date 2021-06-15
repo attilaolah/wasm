@@ -1,6 +1,7 @@
 """Workspace rule for downloading subpackage dependencies."""
 
 load("//lib/aec:package.bzl", "download_aec")
+load("//lib/bison:package.bzl", "download_bison")
 load("//lib/bz2:package.bzl", "download_bz2")
 load("//lib/cblas:package.bzl", "download_cblas")
 load("//lib/ceres:package.bzl", "download_ceres")
@@ -59,6 +60,7 @@ load("//lib/zstd:package.bzl", "download_zstd")
 def download_lib():
     """Download all library sources."""
     download_aec()
+    download_bison()
     download_bz2()
     download_cblas()
     download_ceres()

@@ -5,29 +5,29 @@ package(default_visibility = ["//:__subpackages__"])
 
 # TODO: add deps:
 # - libintl
+# - libreadline
+# - libtextstyle
 
 configure_make_lib(
-    name = "flex",
+    name = "bison",
     build_data = ["//lib/m4:runtime"],
     configure_options = [
-        "--enable-static",
-        "--disable-shared",
         '--with-libiconv-prefix="${EXT_BUILD_DEPS}/iconv_lib"',
     ],
     env = {
         "PATH": "${EXT_BUILD_ROOT}/$(execpaths //lib/m4:runtime)/bin:${PATH}",
     },
     out_binaries = [
-        "flex",
-        "flex++",
+        "bison",
+        "yacc",
     ],
-    out_static_libs = ["libfl.a"],
+    out_static_libs = ["liby.a"],
     deps = ["//lib/iconv"],
 )
 
 filegroup(
     name = "runtime",
-    srcs = [":flex"],
+    srcs = [":bison"],
     output_group = "gen_dir",
 )
 
