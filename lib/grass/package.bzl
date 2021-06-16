@@ -4,6 +4,7 @@ load("//:http_archive.bzl", "http_archive")
 
 VERSION = "7.8.5"
 
+MAJORMINOR = "".join(VERSION.split(".")[:2])
 MAJOR_MINOR = ".".join(VERSION.split(".")[:2])
 
 URL = "https://grass.osgeo.org/grass78/source/grass-{version}.tar.gz"

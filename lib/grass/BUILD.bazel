@@ -1,14 +1,16 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
-load(":package.bzl", "MAJOR_MINOR")
+load(":package.bzl", "MAJORMINOR", "MAJOR_MINOR")
 
 package(default_visibility = ["//:__subpackages__"])
 
 configure_make_lib(
     name = "grass",
     build_data = [
-        "//lib/flex:runtime",
+        # keep sorted
         "//lib/bison:runtime",
+        "//lib/flex:runtime",
+        "//lib/m4:runtime",
     ],
     configure_env_vars = {
         # Transitive dependencies:
@@ -32,12 +34,14 @@ configure_make_lib(
     configure_in_place = True,
     configure_options = [
         # keep sorted
+        "--enable-64bit",
         "--enable-shared=no",
         "--with-bzlib",
         "--with-cxx",
         "--with-fftw",
         "--with-nls",
         "--with-png",
+        "--with-proj",
         '--with-proj-share="${EXT_BUILD_DEPS}/proj_lib/share/proj"',
         "--with-pthread",
         "--with-regex",
@@ -60,12 +64,16 @@ configure_make_lib(
         "--without-x",
     ],
     env = {
+        "BISON_PKGDATADIR": "${EXT_BUILD_ROOT}/$(execpaths //lib/bison:runtime)/share/bison",
+        "M4": "${EXT_BUILD_ROOT}/$(execpaths //lib/m4:runtime)/bin/m4",
         "PATH": ":".join([
             "${EXT_BUILD_ROOT}/$(execpaths //lib/bison:runtime)/bin",
             "${EXT_BUILD_ROOT}/$(execpaths //lib/flex:runtime)/bin",
             "${PATH}",
         ]),
+        "PROJ_LIB": "${EXT_BUILD_DEPS}/proj_lib/share/proj",
     },
+    out_binaries = ["grass{}".format(MAJORMINOR)],
     out_static_libs = [
         "libgrass_{}.{}.a".format(lib, MAJOR_MINOR)
         for lib in [
