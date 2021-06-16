@@ -1,4 +1,5 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//toolchains:utils.bzl", "no_error")
 load("//toolchains/make:configure.bzl", "configure_make_lib", "lib_source")
 load("//tools/archive_symbols:archive_symbols.bzl", "static_symbols")
 
@@ -7,16 +8,14 @@ package(default_visibility = ["//lib:__subpackages__"])
 configure_make_lib(
     name = "gomp",
     configure_command = "libgomp/configure",
-    configure_env_vars = {
-        "CFLAGS": " ".join(["-Wno-{}".format(check) for check in [
-            # Clang build is broken unless these checks are disabled; keep sorted.
-            "enum-conversion",
-            "implicit-function-declaration",
-            "incompatible-pointer-types",
-            "int-conversion",
-            "unknown-attributes",
-        ]]),
-    },
+    configure_env_vars = {"CFLAGS": no_error([
+        # keep sorted
+        "enum-conversion",
+        "implicit-function-declaration",
+        "incompatible-pointer-types",
+        "int-conversion",
+        "unknown-attributes",
+    ])},
     configure_options = [
         # keep sorted
         "--disable-multilib",

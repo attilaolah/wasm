@@ -1,7 +1,7 @@
 """Workspace rule for downloading package dependencies."""
 
 load("//:http_archive.bzl", "http_archive")
-load("//toolchains/make:configure.bzl", "patch_files")
+load("//toolchains:utils.bzl", "patch_files")
 
 VERSION = "12.0.0"
 VERSION_MMP = VERSION.split("-")[0]

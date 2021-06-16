@@ -131,10 +131,3 @@ def lib_source(lib_name):
     return "@lib_{}//:all".format(lib_name)
 
 _lib_source = lib_source
-
-def patch_files(patch_map):
-    """Generates a list of 'sed' commands that patch files in-place."""
-    return [
-        "sed --in-place --regexp-extended '{}' \"{}\"".format(regex, filename)
-        for filename, regex in sorted(patch_map.items())
-    ]
