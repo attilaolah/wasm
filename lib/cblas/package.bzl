@@ -15,7 +15,12 @@ def download_cblas():
         urls = [URL],
         sha256 = SHA256,
         strip_prefix = "CBLAS",
-        # Bazel will exclude empty directories from the symlink tree.
-        # So add a dummy file to prevent the "lib" dir from being excluded.
-        patch_cmds = ["touch lib/.keep"],
+        patch_cmds = [
+            # Bazel will exclude empty directories from the symlink tree.
+            # So add a dummy file to prevent the "lib" dir from being excluded.
+            "touch lib/.keep",
+            # The makefile hard-codes "make".
+            # We want to use $(MAKE) instead so the toolchain's make tool gets used.
+            r"sed -i Makefile -e 's/\bmake\b/$(MAKE)/g'",
+        ],
     )
