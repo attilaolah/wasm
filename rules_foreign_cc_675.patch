@@ -1,0 +1,590 @@
+From b13dbf15ea501f127da8f2e6dca07d936bd3975f Mon Sep 17 00:00:00 2001
+From: Andre Brisco <andre.brisco@gmail.com>
+Date: Sun, 13 Jun 2021 11:46:00 -0700
+Subject: [PATCH 1/6] Removed legacy `*env_vars` attributes from `cmake` and
+ `configure_make` rule. Use `env` instead.
+
+---
+ foreign_cc/cmake.bzl                    | 10 +-----
+ foreign_cc/configure.bzl                | 19 ++---------
+ foreign_cc/private/configure_script.bzl | 43 +++++++++++++------------
+ 3 files changed, 26 insertions(+), 46 deletions(-)
+
+diff --git a/foreign_cc/cmake.bzl b/foreign_cc/cmake.bzl
+index 0297066b..e992b8b0 100644
+--- a/foreign_cc/cmake.bzl
++++ b/foreign_cc/cmake.bzl
+@@ -259,7 +259,7 @@ def _create_configure_script(configureParameters):
+         root = root,
+         no_toolchain_file = no_toolchain_file,
+         user_cache = dict(ctx.attr.cache_entries),
+-        user_env = getattr(ctx.attr, "env_vars", {}),
++        user_env = {key: ctx.expand_location(value, data) for (key, value) in ctx.attr.env},
+         options = attrs.generate_args,
+         cmake_commands = cmake_commands,
+         cmake_prefix = ctx.expand_location(attrs.tool_prefix, data) if attrs.tool_prefix else "",
+@@ -356,14 +356,6 @@ def _attrs():
+             mandatory = False,
+             default = {},
+         ),
+-        "env_vars": attr.string_dict(
+-            doc = (
+-                "CMake environment variable values to join with toolchain-defined. " +
+-                "For example, additional `CXXFLAGS`."
+-            ),
+-            mandatory = False,
+-            default = {},
+-        ),
+         "generate_args": attr.string_list(
+             doc = (
+                 "Arguments for CMake's generate command. Arguments should be passed as key/value pairs. eg: " +
+diff --git a/foreign_cc/configure.bzl b/foreign_cc/configure.bzl
+index c65676f2..4180719d 100644
+--- a/foreign_cc/configure.bzl
++++ b/foreign_cc/configure.bzl
+@@ -72,6 +72,8 @@ def _create_configure_script(configureParameters):
+         for arg in ctx.attr.args
+     ])
+ 
++    user_env = {key: ctx.expand_location(value, data) for (key, value) in ctx.attr.env.items()}
++
+     make_commands = []
+     prefix = "{} ".format(ctx.expand_location(attrs.tool_prefix, data)) if attrs.tool_prefix else ""
+     configure_prefix = "{} ".format(ctx.expand_location(ctx.attr.configure_prefix, data)) if ctx.attr.configure_prefix else ""
+@@ -93,23 +95,20 @@ def _create_configure_script(configureParameters):
+         flags = flags,
+         root = detect_root(ctx.attr.lib_source),
+         user_options = ctx.attr.configure_options,
+-        user_vars = dict(ctx.attr.configure_env_vars),
+         is_debug = is_debug_mode(ctx),
+         configure_prefix = configure_prefix,
+         configure_command = ctx.attr.configure_command,
+         deps = ctx.attr.deps,
+         inputs = inputs,
++        env_vars = user_env,
+         configure_in_place = ctx.attr.configure_in_place,
+         autoconf = ctx.attr.autoconf,
+         autoconf_options = ctx.attr.autoconf_options,
+-        autoconf_env_vars = ctx.attr.autoconf_env_vars,
+         autoreconf = ctx.attr.autoreconf,
+         autoreconf_options = ctx.attr.autoreconf_options,
+-        autoreconf_env_vars = ctx.attr.autoreconf_env_vars,
+         autogen = ctx.attr.autogen,
+         autogen_command = ctx.attr.autogen_command,
+         autogen_options = ctx.attr.autogen_options,
+-        autogen_env_vars = ctx.attr.autogen_env_vars,
+         make_commands = make_commands,
+         make_path = attrs.make_path,
+     )
+@@ -136,9 +135,6 @@ def _attrs():
+                 "currently requires `configure_in_place` to be True."
+             ),
+         ),
+-        "autoconf_env_vars": attr.string_dict(
+-            doc = "Environment variables to be set for 'autoconf' invocation.",
+-        ),
+         "autoconf_options": attr.string_list(
+             doc = "Any options to be put in the 'autoconf.sh' command line.",
+         ),
+@@ -158,9 +154,6 @@ def _attrs():
+             ),
+             default = "autogen.sh",
+         ),
+-        "autogen_env_vars": attr.string_dict(
+-            doc = "Environment variables to be set for 'autogen' invocation.",
+-        ),
+         "autogen_options": attr.string_list(
+             doc = "Any options to be put in the 'autogen.sh' command line.",
+         ),
+@@ -172,9 +165,6 @@ def _attrs():
+             mandatory = False,
+             default = False,
+         ),
+-        "autoreconf_env_vars": attr.string_dict(
+-            doc = "Environment variables to be set for 'autoreconf' invocation.",
+-        ),
+         "autoreconf_options": attr.string_list(
+             doc = "Any options to be put in the 'autoreconf.sh' command line.",
+         ),
+@@ -185,9 +175,6 @@ def _attrs():
+             ),
+             default = "configure",
+         ),
+-        "configure_env_vars": attr.string_dict(
+-            doc = "Environment variables to be set for the 'configure' invocation.",
+-        ),
+         "configure_in_place": attr.bool(
+             doc = (
+                 "Set to True if 'configure' should be invoked in place, i.e. from its enclosing " +
+diff --git a/foreign_cc/private/configure_script.bzl b/foreign_cc/private/configure_script.bzl
+index d56b63d8..5c84e2fa 100644
+--- a/foreign_cc/private/configure_script.bzl
++++ b/foreign_cc/private/configure_script.bzl
+@@ -11,27 +11,22 @@ def create_configure_script(
+         flags,
+         root,
+         user_options,
+-        user_vars,
+         is_debug,
+         configure_prefix,
+         configure_command,
+         deps,
+         inputs,
++        env_vars,
+         configure_in_place,
+         autoconf,
+         autoconf_options,
+-        autoconf_env_vars,
+         autoreconf,
+         autoreconf_options,
+-        autoreconf_env_vars,
+         autogen,
+         autogen_command,
+         autogen_options,
+-        autogen_env_vars,
+         make_path,
+         make_commands):
+-    env_vars_string = _get_env_vars(workspace_name, tools, flags, user_vars, deps, inputs)
+-
+     ext_build_dirs = inputs.ext_build_dirs
+ 
+     script = pkgconfig_script(ext_build_dirs)
+@@ -44,38 +39,44 @@ def create_configure_script(
+         configure_path = "{}/{}".format(root_path, configure_command)
+ 
+     script.append("##export_var## MAKE {}".format(make_path))
++    script.append("##enable_tracing##")
+ 
+     if autogen:
+         # NOCONFIGURE is pseudo standard and tells the script to not invoke configure.
+         # We explicitly invoke configure later.
+-        autogen_env_vars = _get_autogen_env_vars(autogen_env_vars)
+-        script.append('{} "{}/{}" {}'.format(
+-            " ".join(['{}="{}"'.format(key, autogen_env_vars[key]) for key in autogen_env_vars]),
+-            root_path,
+-            autogen_command,
+-            " ".join(autogen_options),
++        autogen_env_vars = _get_autogen_env_vars(env_vars)
++        script.append("{env_vars} \"{root_dir}/{autogen}\" {options}".format(
++            env_vars = " ".join(["{}=\"{}\"".format(key, value) for (key, value) in autogen_env_vars.items()]),
++            root_dir = root_path,
++            autogen = autogen_command,
++            options = " ".join(autogen_options),
+         ).lstrip())
+ 
++    env_vars_string = " ".join(["{}=\"{}\"".format(key, value) for (key, value) in env_vars.items()])
++
+     if autoconf:
+-        script.append("{} autoconf {}".format(
+-            " ".join(["{}=\"{}\"".format(key, autoconf_env_vars[key]) for key in autoconf_env_vars]),
+-            " ".join(autoconf_options),
++        script.append("{env_vars} {autoconf} {options}".format(
++            env_vars = env_vars_string,
++            # TODO: Pass autoconf via a toolchain
++            autoconf = "autoconf",
++            options = " ".join(autoconf_options),
+         ).lstrip())
+ 
+     if autoreconf:
+-        script.append("{} autoreconf {}".format(
+-            " ".join(['{}="{}"'.format(key, autoreconf_env_vars[key]) for key in autoreconf_env_vars]),
+-            " ".join(autoreconf_options),
++        script.append("{env_vars} {autoreconf} {options}".format(
++            env_vars = env_vars_string,
++            # TODO: Pass autoreconf via a toolchain
++            autoreconf = "autoreconf",
++            options = " ".join(autoreconf_options),
+         ).lstrip())
+ 
+-    script.append('{env_vars} {prefix}"{configure}" --prefix=$$BUILD_TMPDIR$$/$$INSTALL_PREFIX$$ {user_options}'.format(
+-        env_vars = env_vars_string,
++    script.append("{env_vars} {prefix}\"{configure}\" --prefix=$$BUILD_TMPDIR$$/$$INSTALL_PREFIX$$ {user_options}".format(
++        env_vars = _get_env_vars(workspace_name, tools, flags, env_vars, deps, inputs),
+         prefix = configure_prefix,
+         configure = configure_path,
+         user_options = " ".join(user_options),
+     ))
+ 
+-    script.append("##enable_tracing##")
+     script.extend(make_commands)
+     script.append("##disable_tracing##")
+ 
+
+From fbdac1597508cf0ac38f923c8290a603b13d4bbf Mon Sep 17 00:00:00 2001
+From: Andre Brisco <andre.brisco@gmail.com>
+Date: Sun, 13 Jun 2021 11:20:34 -0700
+Subject: [PATCH 2/6] Updated examples
+
+---
+ examples/third_party/apr/BUILD.apr.bazel           |  8 ++++----
+ examples/third_party/apr_util/BUILD.apr_util.bazel |  8 ++++----
+ .../third_party/gperftools/BUILD.gperftools.bazel  |  8 ++++----
+ examples/third_party/iconv/BUILD.iconv.bazel       |  8 ++++----
+ examples/third_party/openssl/BUILD.openssl.bazel   |  8 ++++----
+ examples/third_party/sqlite/BUILD.sqlite.bazel     |  2 +-
+ .../third_party/subversion/BUILD.subversion.bazel  | 14 +++++++-------
+ 7 files changed, 28 insertions(+), 28 deletions(-)
+
+diff --git a/examples/third_party/apr/BUILD.apr.bazel b/examples/third_party/apr/BUILD.apr.bazel
+index 6e9db1b7..9bb26cc0 100644
+--- a/examples/third_party/apr/BUILD.apr.bazel
++++ b/examples/third_party/apr/BUILD.apr.bazel
+@@ -7,14 +7,14 @@ filegroup(
+ 
+ configure_make(
+     name = "apr",
+-    configure_env_vars = select({
+-        "@platforms//os:macos": {"AR": ""},
+-        "//conditions:default": {},
+-    }),
+     configure_in_place = True,
+     configure_options = [
+         "--disable-shared",
+     ],
++    env = select({
++        "@platforms//os:macos": {"AR": ""},
++        "//conditions:default": {},
++    }),
+     lib_source = ":all_srcs",
+     out_static_libs = ["libapr-1.a"],
+     visibility = ["//visibility:public"],
+diff --git a/examples/third_party/apr_util/BUILD.apr_util.bazel b/examples/third_party/apr_util/BUILD.apr_util.bazel
+index 62acf6ed..f5f623b6 100644
+--- a/examples/third_party/apr_util/BUILD.apr_util.bazel
++++ b/examples/third_party/apr_util/BUILD.apr_util.bazel
+@@ -7,14 +7,14 @@ filegroup(
+ 
+ configure_make(
+     name = "apr_util",
+-    configure_env_vars = select({
+-        "@platforms//os:macos": {"AR": ""},
+-        "//conditions:default": {},
+-    }),
+     configure_in_place = True,
+     configure_options = [
+         "--with-apr=$EXT_BUILD_DEPS/apr",
+     ],
++    env = select({
++        "@platforms//os:macos": {"AR": ""},
++        "//conditions:default": {},
++    }),
+     lib_source = ":all_srcs",
+     out_static_libs = ["libaprutil-1.a"],
+     visibility = ["//visibility:public"],
+diff --git a/examples/third_party/gperftools/BUILD.gperftools.bazel b/examples/third_party/gperftools/BUILD.gperftools.bazel
+index 2028c94c..571e98f4 100644
+--- a/examples/third_party/gperftools/BUILD.gperftools.bazel
++++ b/examples/third_party/gperftools/BUILD.gperftools.bazel
+@@ -7,15 +7,15 @@ filegroup(
+ 
+ configure_make(
+     name = "gperftools_build",
+-    configure_env_vars = select({
+-        "@platforms//os:macos": {"AR": ""},
+-        "//conditions:default": {},
+-    }),
+     configure_options = [
+         "--enable-shared=no",
+         "--enable-frame-pointers",
+         "--disable-libunwind",
+     ],
++    env = select({
++        "@platforms//os:macos": {"AR": ""},
++        "//conditions:default": {},
++    }),
+     lib_source = ":all_srcs",
+     out_static_libs = ["libtcmalloc_and_profiler.a"],
+     visibility = ["//visibility:public"],
+diff --git a/examples/third_party/iconv/BUILD.iconv.bazel b/examples/third_party/iconv/BUILD.iconv.bazel
+index d81fc10d..10d794db 100644
+--- a/examples/third_party/iconv/BUILD.iconv.bazel
++++ b/examples/third_party/iconv/BUILD.iconv.bazel
+@@ -9,16 +9,16 @@ filegroup(
+ 
+ configure_make(
+     name = "iconv",
+-    configure_env_vars = select({
+-        "@platforms//os:macos": {"AR": ""},
+-        "//conditions:default": {},
+-    }),
+     configure_in_place = True,
+     configure_options = [
+         "--enable-relocatable",
+         "--enable-shared=no",
+         "--enable-static=yes",
+     ],
++    env = select({
++        "@platforms//os:macos": {"AR": ""},
++        "//conditions:default": {},
++    }),
+     lib_source = "@iconv//:all",
+     out_static_libs = [
+         "libiconv.a",
+diff --git a/examples/third_party/openssl/BUILD.openssl.bazel b/examples/third_party/openssl/BUILD.openssl.bazel
+index 782f1582..387415d8 100644
+--- a/examples/third_party/openssl/BUILD.openssl.bazel
++++ b/examples/third_party/openssl/BUILD.openssl.bazel
+@@ -20,10 +20,6 @@ CONFIGURE_OPTIONS = [
+ configure_make(
+     name = "openssl",
+     configure_command = "config",
+-    configure_env_vars = select({
+-        "@platforms//os:macos": {"AR": ""},
+-        "//conditions:default": {},
+-    }),
+     configure_in_place = True,
+     configure_options = select({
+         "@platforms//os:macos": [
+@@ -36,6 +32,10 @@ configure_make(
+             "no-shared",
+         ] + CONFIGURE_OPTIONS,
+     }),
++    env = select({
++        "@platforms//os:macos": {"AR": ""},
++        "//conditions:default": {},
++    }),
+     lib_source = ":all_srcs",
+     out_static_libs = [
+         "libcrypto.a",
+diff --git a/examples/third_party/sqlite/BUILD.sqlite.bazel b/examples/third_party/sqlite/BUILD.sqlite.bazel
+index 0487bfe7..d78508ea 100644
+--- a/examples/third_party/sqlite/BUILD.sqlite.bazel
++++ b/examples/third_party/sqlite/BUILD.sqlite.bazel
+@@ -7,7 +7,7 @@ filegroup(
+ 
+ configure_make(
+     name = "sqlite",
+-    configure_env_vars = select({
++    env = select({
+         "@platforms//os:macos": {"AR": ""},
+         "//conditions:default": {},
+     }),
+diff --git a/examples/third_party/subversion/BUILD.subversion.bazel b/examples/third_party/subversion/BUILD.subversion.bazel
+index 91fde7af..15e0374f 100644
+--- a/examples/third_party/subversion/BUILD.subversion.bazel
++++ b/examples/third_party/subversion/BUILD.subversion.bazel
+@@ -13,13 +13,6 @@ CONFIGURE_ENV_VARS = {
+ 
+ configure_make(
+     name = "subversion",
+-    configure_env_vars = select({
+-        "@platforms//os:macos": dicts.add(
+-            {"AR": ""},
+-            CONFIGURE_ENV_VARS,
+-        ),
+-        "//conditions:default": CONFIGURE_ENV_VARS,
+-    }),
+     configure_options = [
+         "--enable-all-static",
+         "--without-boost",
+@@ -31,6 +24,13 @@ configure_make(
+         "--enable-optimize",
+         "--disable-nls",
+     ],
++    env = select({
++        "@platforms//os:macos": dicts.add(
++            {"AR": ""},
++            CONFIGURE_ENV_VARS,
++        ),
++        "//conditions:default": CONFIGURE_ENV_VARS,
++    }),
+     lib_source = ":all_srcs",
+     out_binaries = [
+         "svn",
+
+From 7ae1ea4d255e987be300b6fce059ca67dbed6196 Mon Sep 17 00:00:00 2001
+From: UebelAndre <github@uebelandre.com>
+Date: Wed, 16 Jun 2021 14:24:17 -0700
+Subject: [PATCH 3/6] Improved variable expansion
+
+---
+ foreign_cc/cmake.bzl             |  7 +++++--
+ foreign_cc/configure.bzl         |  3 ++-
+ foreign_cc/private/framework.bzl | 28 ++++++++++++++++++++++++----
+ 3 files changed, 31 insertions(+), 7 deletions(-)
+
+diff --git a/foreign_cc/cmake.bzl b/foreign_cc/cmake.bzl
+index e992b8b0..714d1556 100644
+--- a/foreign_cc/cmake.bzl
++++ b/foreign_cc/cmake.bzl
+@@ -143,6 +143,7 @@ load(
+     "CC_EXTERNAL_RULE_FRAGMENTS",
+     "cc_external_rule_impl",
+     "create_attrs",
++    "expand_locations",
+ )
+ load(
+     "//foreign_cc/private/framework:platform.bzl",
+@@ -249,6 +250,8 @@ def _create_configure_script(configureParameters):
+             config = configuration,
+         ))
+ 
++    prefix = expand_locations(ctx, {"prefix": attrs.tool_prefix}, data)["prefix"] if attrs.tool_prefix else ""
++
+     configure_script = create_cmake_script(
+         workspace_name = ctx.workspace_name,
+         generator = attrs.generator,
+@@ -259,10 +262,10 @@ def _create_configure_script(configureParameters):
+         root = root,
+         no_toolchain_file = no_toolchain_file,
+         user_cache = dict(ctx.attr.cache_entries),
+-        user_env = {key: ctx.expand_location(value, data) for (key, value) in ctx.attr.env},
++        user_env = expand_locations(ctx, ctx.attr.env, data),
+         options = attrs.generate_args,
+         cmake_commands = cmake_commands,
+-        cmake_prefix = ctx.expand_location(attrs.tool_prefix, data) if attrs.tool_prefix else "",
++        cmake_prefix = prefix,
+         include_dirs = inputs.include_dirs,
+         is_debug_mode = is_debug_mode(ctx),
+     )
+diff --git a/foreign_cc/configure.bzl b/foreign_cc/configure.bzl
+index 4180719d..1c91b9c1 100644
+--- a/foreign_cc/configure.bzl
++++ b/foreign_cc/configure.bzl
+@@ -16,6 +16,7 @@ load(
+     "CC_EXTERNAL_RULE_FRAGMENTS",
+     "cc_external_rule_impl",
+     "create_attrs",
++    "expand_locations",
+ )
+ load("//foreign_cc/private/framework:platform.bzl", "os_name")
+ load("//toolchains/native_tools:tool_access.bzl", "get_make_data")
+@@ -72,7 +73,7 @@ def _create_configure_script(configureParameters):
+         for arg in ctx.attr.args
+     ])
+ 
+-    user_env = {key: ctx.expand_location(value, data) for (key, value) in ctx.attr.env.items()}
++    user_env = expand_locations(ctx, ctx.attr.env, data)
+ 
+     make_commands = []
+     prefix = "{} ".format(ctx.expand_location(attrs.tool_prefix, data)) if attrs.tool_prefix else ""
+diff --git a/foreign_cc/private/framework.bzl b/foreign_cc/private/framework.bzl
+index 2bb1120e..e1cd04dd 100644
+--- a/foreign_cc/private/framework.bzl
++++ b/foreign_cc/private/framework.bzl
+@@ -285,10 +285,7 @@ def _env_prelude(ctx, lib_name, data_dependencies, target_root):
+     env.update(ctx.configuration.default_shell_env)
+ 
+     # Add all user defined variables
+-    attr_env = dict()
+-    for key, value in getattr(ctx.attr, "env", {}).items():
+-        # Ensure the values of the environment variables have absolute paths
+-        attr_env.update({key: ctx.expand_location(value.replace("$(execpath ", "$EXT_BUILD_ROOT/$(execpath "), data_dependencies)})
++    attr_env = expand_locations(ctx, ctx.attr.env, data_dependencies)
+     env_snippet.extend(["export {}={}".format(key, val) for key, val in attr_env.items()])
+ 
+     return env_snippet, env
+@@ -877,3 +874,26 @@ def _expand_command_path(binary, path, command):
+         return command.replace(binary, path, 1)
+     else:
+         return command
++
++def expand_locations(ctx, environ, data):
++    """Expand locations on a dictionary while ensuring `execpath` is always set to an absolute path
++
++    This function is not expected to be passed to any action.env argument but instead rendered into
++    build scripts.
++
++    Args:
++        ctx (ctx): The rule's context object
++        environ (dict): A dictionary of environment variables
++        data (list): A list of targets
++
++    Returns:
++        dict: An expanded dict of environment variables
++    """
++    expanded_env = dict()
++    for key, value in environ.items():
++        # If `EXT_BUILD_ROOT` exists in the string, we assume the user has added it themselves
++        if "EXT_BUILD_ROOT" in value:
++            expanded_env.update({key: ctx.expand_location(value, data)})
++        else:
++            expanded_env.update({key: ctx.expand_location(value.replace("$(execpath ", "$EXT_BUILD_ROOT/$(execpath "), data)})
++    return expanded_env
+
+From b32adcab2c8596307f54be16f7564c5342aad258 Mon Sep 17 00:00:00 2001
+From: UebelAndre <github@uebelandre.com>
+Date: Sun, 20 Jun 2021 14:31:44 -0700
+Subject: [PATCH 4/6] Fixed missing `build_data` attribute for `configure_make`
+
+---
+ foreign_cc/configure.bzl | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/foreign_cc/configure.bzl b/foreign_cc/configure.bzl
+index 1c91b9c1..718c1fb5 100644
+--- a/foreign_cc/configure.bzl
++++ b/foreign_cc/configure.bzl
+@@ -65,7 +65,7 @@ def _create_configure_script(configureParameters):
+ 
+     define_install_prefix = ["export INSTALL_PREFIX=\"" + _get_install_prefix(ctx) + "\""]
+ 
+-    data = ctx.attr.data or list()
++    data = ctx.attr.data + ctx.attr.build_data
+ 
+     # Generate a list of arguments for make
+     args = " ".join([
+
+From 3fc81ce5eeef02865863e6d9abb5427d9744f955 Mon Sep 17 00:00:00 2001
+From: UebelAndre <github@uebelandre.com>
+Date: Sun, 20 Jun 2021 15:22:39 -0700
+Subject: [PATCH 5/6] Fix environment variable quotes
+
+---
+ foreign_cc/private/framework.bzl | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/foreign_cc/private/framework.bzl b/foreign_cc/private/framework.bzl
+index e1cd04dd..6cbdf9bf 100644
+--- a/foreign_cc/private/framework.bzl
++++ b/foreign_cc/private/framework.bzl
+@@ -286,7 +286,7 @@ def _env_prelude(ctx, lib_name, data_dependencies, target_root):
+ 
+     # Add all user defined variables
+     attr_env = expand_locations(ctx, ctx.attr.env, data_dependencies)
+-    env_snippet.extend(["export {}={}".format(key, val) for key, val in attr_env.items()])
++    env_snippet.extend(["export {}=\"{}\"".format(key, val) for key, val in attr_env.items()])
+ 
+     return env_snippet, env
+ 
+
+From 1fded2f65d7f059e73f02ea352da01a6f1193323 Mon Sep 17 00:00:00 2001
+From: UebelAndre <github@uebelandre.com>
+Date: Sun, 20 Jun 2021 15:31:54 -0700
+Subject: [PATCH 6/6] Attempt to address quoted environment variables.
+
+---
+ foreign_cc/private/framework.bzl | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/foreign_cc/private/framework.bzl b/foreign_cc/private/framework.bzl
+index 6cbdf9bf..e52b234b 100644
+--- a/foreign_cc/private/framework.bzl
++++ b/foreign_cc/private/framework.bzl
+@@ -249,6 +249,17 @@ dependencies.""",
+     ),
+ )
+ 
++def _escape_dquote(text):
++    """Escape double quotes for use in bash variable definitions
++
++    Args:
++        text (str): The text to escape
++
++    Returns:
++        str: text with escaped `"` characters.
++    """
++    return text.replace('"', r'\"\\\\\\"')
++
+ def _env_prelude(ctx, lib_name, data_dependencies, target_root):
+     """Generate a bash snippet containing environment variable definitions
+ 
+@@ -286,7 +297,7 @@ def _env_prelude(ctx, lib_name, data_dependencies, target_root):
+ 
+     # Add all user defined variables
+     attr_env = expand_locations(ctx, ctx.attr.env, data_dependencies)
+-    env_snippet.extend(["export {}=\"{}\"".format(key, val) for key, val in attr_env.items()])
++    env_snippet.extend(["export {}=\"{}\"".format(key, _escape_dquote(val)) for key, val in attr_env.items()])
+ 
+     return env_snippet, env
+ 

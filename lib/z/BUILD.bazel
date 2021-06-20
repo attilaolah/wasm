@@ -5,13 +5,13 @@ package(default_visibility = ["//:__subpackages__"])
 
 configure_make_lib(
     name = "z",
-    configure_env_vars = {
-        # Required by //tools/python.
-        "CFLAGS": "-fPIC",
-    },
     configure_options = [
         "--static",
     ],
+    env = {
+        # Required by //tools/python.
+        "CFLAGS": "-fPIC",
+    },
 )
 
 bzl_library(

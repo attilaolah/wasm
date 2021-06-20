@@ -6,10 +6,6 @@ package(default_visibility = ["//:__subpackages__"])
 
 configure_make_lib(
     name = "lzma",
-    configure_env_vars = {"CFLAGS": no_error([
-        # keep sorted
-        "unused-but-set-variable",
-    ])},
     configure_options = [
         "--disable-doc",
         "--disable-shared",
@@ -20,6 +16,10 @@ configure_make_lib(
         "--disable-xz",
         "--disable-xzdec",
     ],
+    env = {"CFLAGS": no_error([
+        # keep sorted
+        "unused-but-set-variable",
+    ])},
 )
 
 bzl_library(

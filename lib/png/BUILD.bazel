@@ -6,15 +6,15 @@ package(default_visibility = ["//:__subpackages__"])
 
 configure_make_lib(
     name = "png",
-    configure_env_vars = {"CFLAGS": no_error([
-        # keep sorted
-        "incompatible-library-redeclaration",
-        "unused-but-set-variable",
-    ])},
     configure_options = [
         "--enable-shared=no",
         "--enable-static=yes",
     ],
+    env = {"CFLAGS": no_error([
+        # keep sorted
+        "incompatible-library-redeclaration",
+        "unused-but-set-variable",
+    ])},
     out_static_libs = [
         "libpng.a",
         "libpng16.a",

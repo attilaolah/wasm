@@ -17,15 +17,15 @@ _WASM_ENV_VARS = dict(_ENV_VARS.items() + {
 
 configure_make_lib(
     name = "sqlite",
-    configure_env_vars = select({
-        "//config:wasm": _WASM_ENV_VARS,
-        "//conditions:default": _ENV_VARS,
-    }),
     configure_options = [
         # keep sorted
         "--enable-shared=no",
         "--enable-static=yes",
     ],
+    env = {
+        "//config:wasm": _WASM_ENV_VARS,
+        "//conditions:default": _ENV_VARS,
+    },
     out_binaries = select({
         "//config:wasm": [],
         "//conditions:default": ["sqlite3"],

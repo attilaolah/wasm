@@ -75,14 +75,15 @@ def configure_make_lib(
 
     if env == None:
         env = {}
-    wasm_env = dict(WASM_ENV_VARS.items() + env.items())
+    if "//conditions:default" not in env:
+        env = {
+            "//config:wasm": dict(WASM_ENV_VARS.items() + env.items()),
+            "//conditions:default": dict(env),
+        }
 
     configure_make(
         name = name,
-        env = select({
-            "//config:wasm": wasm_env,
-            "//conditions:default": env,
-        }),
+        env = select(env),
         lib_name = "{}_lib".format(name),
         lib_source = lib_source,
         build_data = _build_data(build_data),
