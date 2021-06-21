@@ -1,26 +1,25 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//toolchains:utils.bzl", "ldflags")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
 
 package(default_visibility = ["//:__subpackages__"])
 
+LDFLAGS = ldflags([
+    # keep sorted
+    "aec",
+    "crypto",
+    "curl",
+    "lzma",
+    "sqlite3",
+    "ssl",
+    "turbojpeg",
+    "webp",
+    "xdr",
+    "zstd",
+])
+
 configure_make_lib(
     name = "gdal",
-    configure_env_vars = {
-        # Transitive dependencies:
-        "LDFLAGS": " ".join(["-l{}".format(lib) for lib in [
-            # keep sorted
-            "aec",
-            "crypto",
-            "curl",
-            "lzma",
-            "sqlite3",
-            "ssl",
-            "turbojpeg",
-            "webp",
-            "xdr",
-            "zstd",
-        ]]),
-    },
     configure_in_place = True,
     configure_options = [
         # keep sorted
@@ -45,6 +44,7 @@ configure_make_lib(
         '--with-sqlite3="${EXT_BUILD_DEPS}/sqlite_lib"',
         '--with-zstd="${EXT_BUILD_DEPS}/zstd_lib"',
     ],
+    env = {"LDFLAGS": LDFLAGS},
     deps = [
         "//lib/curl",
         "//lib/deflate",

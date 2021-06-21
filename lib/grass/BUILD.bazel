@@ -1,9 +1,26 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
-load("//toolchains:utils.bzl", "path")
+load("//toolchains:utils.bzl", "ldflags", "path")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
 load(":package.bzl", "MAJORMINOR", "MAJOR_MINOR")
 
 package(default_visibility = ["//:__subpackages__"])
+
+LDFLAGS = ldflags([
+    # keep sorted
+    "crypto",
+    "curl",
+    "deflate",
+    "dl",
+    "jpeg",
+    "lzma",
+    "pthread",
+    "sqlite3",
+    "ssl",
+    "tiff",
+    "webp",
+    "z",
+    "zstd",
+])
 
 configure_make_lib(
     name = "grass",
@@ -13,25 +30,6 @@ configure_make_lib(
         "//lib/flex:runtime",
         "//lib/m4:runtime",
     ],
-    configure_env_vars = {
-        # Transitive dependencies:
-        "LDFLAGS": " ".join(["-l{}".format(lib) for lib in [
-            # keep sorted
-            "crypto",
-            "curl",
-            "deflate",
-            "dl",
-            "jpeg",
-            "lzma",
-            "pthread",
-            "sqlite3",
-            "ssl",
-            "tiff",
-            "webp",
-            "z",
-            "zstd",
-        ]]),
-    },
     configure_in_place = True,
     configure_options = [
         # keep sorted
@@ -66,6 +64,7 @@ configure_make_lib(
     ],
     env = {
         "BISON_PKGDATADIR": "${EXT_BUILD_ROOT}/$(execpaths //lib/bison:runtime)/share/bison",
+        "LDFLAGS": LDFLAGS,
         "M4": "${EXT_BUILD_ROOT}/$(execpaths //lib/m4:runtime)/bin/m4",
         "PATH": path([
             "${EXT_BUILD_ROOT}/$(execpaths //lib/bison:runtime)/bin",

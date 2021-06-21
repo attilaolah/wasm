@@ -8,7 +8,13 @@ package(default_visibility = ["//lib:__subpackages__"])
 configure_make_lib(
     name = "gomp",
     configure_command = "libgomp/configure",
-    configure_env_vars = {"CFLAGS": no_error([
+    configure_options = [
+        # keep sorted
+        "--disable-multilib",
+        "--disable-shared",
+        "--enable-static",
+    ],
+    env = {"CFLAGS": no_error([
         # keep sorted
         "enum-conversion",
         "implicit-function-declaration",
@@ -16,12 +22,6 @@ configure_make_lib(
         "int-conversion",
         "unknown-attributes",
     ])},
-    configure_options = [
-        # keep sorted
-        "--disable-multilib",
-        "--disable-shared",
-        "--enable-static",
-    ],
     lib_source = lib_source("gcc"),
 )
 
