@@ -14,4 +14,5 @@ def download_emscripten():
         sha256 = "e9c40a44d4c9e1e3c1fc0520787269ae017dcbbe5be43f9c81c0fabc3204f1a3",
         strip_prefix = "emsdk-{version}/bazel",
         build_file_content = None,
+        patches = ["//tools/emscripten:emsdk.patch"],
     )
