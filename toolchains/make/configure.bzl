@@ -77,9 +77,10 @@ def configure_make_lib(
         env = {}
     if "//conditions:default" not in env:
         env = {
-            "//config:wasm": dict(WASM_ENV_VARS.items() + env.items()),
+            "//config:wasm": dict(env),
             "//conditions:default": dict(env),
         }
+    env["//config:wasm"].update(WASM_ENV_VARS)
 
     configure_make(
         name = name,
