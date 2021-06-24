@@ -3,11 +3,24 @@ load("//toolchains/cmake:cmake.bzl", "cmake_lib")
 
 package(default_visibility = ["//:__subpackages__"])
 
+CACHE_ENTRIES = {
+    "BUILD_BENCHMARKS": False,
+    "BUILD_SHARED_LIBS": False,
+    "BUILD_TESTING": False,
+}
+
+WASM_CACHE_ENTRIES = dict(CACHE_ENTRIES.items() + {
+    # The C++ library uses exceptions, so enable them explicitly.
+    "CMAKE_CXX_FLAGS": "-fexceptions",
+    # Inlining causes duplicate symbols when linking with wasm-ld.
+    "DISABLE_GEOS_INLINE": True,
+}.items())
+
 cmake_lib(
     name = "geos",
     cache_entries = {
-        "BUILD_BENCHMARKS": False,
-        "BUILD_SHARED_LIBS": False,
+        "//config:wasm": WASM_CACHE_ENTRIES,
+        "//conditions:default": CACHE_ENTRIES,
     },
     out_static_libs = [
         "libgeos.a",
