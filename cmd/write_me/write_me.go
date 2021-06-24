@@ -32,7 +32,7 @@ var (
 		"//:http_archive.bzl": {
 			"http_archive": nil,
 		},
-		"//toolchains/make:configure.bzl": {
+		"//toolchains:utils.bzl": {
 			"patch_files": nil,
 		},
 	}
