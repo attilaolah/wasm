@@ -32,7 +32,7 @@ index 24d806d..6163b9b 100755
 -exec python3 external/emsdk/emscripten_toolchain/link_wrapper.py "$@"
 +exec "${PYTHOT:-python3}" "${EXT_BUILD_ROOT:-.}/external/emsdk/emscripten_toolchain/link_wrapper.py" "$@"
 diff --git emscripten_toolchain/link_wrapper.py emscripten_toolchain/link_wrapper.py
-index 1e26bde..ae75cbe 100644
+index 1e26bde..aa1ca90 100644
 --- emscripten_toolchain/link_wrapper.py
 +++ emscripten_toolchain/link_wrapper.py
 @@ -22,24 +22,15 @@ import subprocess
@@ -67,3 +67,12 @@ index 1e26bde..ae75cbe 100644
  if rtn != 0:
    sys.exit(1)
  
+@@ -51,7 +42,7 @@ parser.add_argument('--oformat')
+ options = parser.parse_known_args(param_file_args)[0]
+ output_file = options.o
+ oformat = options.oformat
+-outdir = os.path.dirname(output_file)
++outdir = os.path.normpath(os.path.dirname(output_file))
+ base_name = os.path.basename(output_file)
+ 
+ # The output file name is the name of the build rule that was built.
