@@ -1,4 +1,5 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//toolchains:utils.bzl", "no_error")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
 load("//tools:version_info.bzl", "version_info")
 
@@ -9,6 +10,10 @@ cmake_lib(
     cache_entries = {
         "BUILD_CURL_EXE": False,
         "BUILD_SHARED_LIBS": False,
+        "CMAKE_C_FLAGS": no_error([
+            # keep sorted
+            "unused-but-set-variable",
+        ]),
         "OPENSSL_CRYPTO_LIBRARY": "${EXT_BUILD_DEPS}/openssl_lib/lib/libcrypto.a",
         "OPENSSL_INCLUDE_DIR": "${EXT_BUILD_DEPS}/openssl_lib/include",
         "OPENSSL_SSL_LIBRARY": "${EXT_BUILD_DEPS}/openssl_lib/lib/libssl.a",
