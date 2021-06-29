@@ -11,6 +11,7 @@ C_FLAGS = " ".join(["-Wno-{}".format(check) for check in [
     "self-assign",
     "sometimes-uninitialized",
     "unknown-warning-option",
+    "unused-but-set-variable",
     "unused-function",
     "unused-variable",
 ]])
