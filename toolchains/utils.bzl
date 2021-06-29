@@ -15,6 +15,6 @@ def patch_files(patch_map):
         for filename, regex in sorted(patch_map.items())
     ]
 
-def path(prefixes, suffixes = None):
+def path(prefixes, existing = "${PATH}", suffixes = None):
     """Construct a ${PATH} env var with additional prefixes."""
-    return ":".join(prefixes + ["${PATH}"] + (suffixes or []))
+    return ":".join(prefixes + [existing] + (suffixes or []))

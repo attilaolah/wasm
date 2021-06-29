@@ -5,7 +5,7 @@ Contains a convenience macro that wraps cmake() from
 """
 
 load("@rules_foreign_cc//foreign_cc:cmake.bzl", "cmake")
-load("//toolchains/make:configure.bzl", "WASM_ENV_VARS", _build_data = "build_data", _lib_source = "lib_source")
+load("//toolchains/make:configure.bzl", "emscripten_env", _build_data = "build_data", _lib_source = "lib_source")
 load("//tools/archive_symbols:archive_symbols.bzl", "archive_symbols")
 
 def cmake_lib(
@@ -43,8 +43,15 @@ def cmake_lib(
         linkopts = ["-l{}".format(name)]
     if out_static_libs == None:
         out_static_libs = ["lib{}.a".format(name)]
+
     if env == None:
         env = {}
+    if "//conditions:default" not in env:
+        env = {
+            "//config:wasm": dict(env),
+            "//conditions:default": dict(env),
+        }
+    emscripten_env(env["//config:wasm"])
 
     if cache_entries == None:
         cache_entries = {}
@@ -59,10 +66,7 @@ def cmake_lib(
 
     cmake(
         name = name,
-        env = select({
-            "//config:wasm": dict(WASM_ENV_VARS.items() + env.items()),
-            "//conditions:default": env,
-        }),
+        env = select(env),
         cache_entries = select(cache_entries),
         lib_name = "{}_lib".format(name),
         lib_source = lib_source,

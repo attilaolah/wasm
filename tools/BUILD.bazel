@@ -13,12 +13,6 @@ filegroup(
     output_group = "jq",
 )
 
-filegroup(
-    name = "sqlite",
-    srcs = ["//lib/sqlite"],
-    output_group = "sqlite3",
-)
-
 bzl_library(
     name = "wasm_library",
     srcs = ["wasm_library.bzl"],

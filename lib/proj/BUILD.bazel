@@ -1,4 +1,5 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//toolchains:utils.bzl", "no_error", "path")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
 
 package(default_visibility = ["//:__subpackages__"])
@@ -15,7 +16,10 @@ BINARIES = [
 ]
 
 CACHE_ENTRIES = dict({
-    "CMAKE_FIND_ROOT_PATH": "${EXT_BUILD_DEPS}/sqlite_lib",
+    "CMAKE_C_FLAGS": no_error([
+        # keep sorted
+        "incompatible-library-redeclaration",
+    ]),
     "CURL_INCLUDE_DIR": "${EXT_BUILD_DEPS}/curl_lib/include",
     "CURL_LIBRARY": "${EXT_BUILD_DEPS}/curl_lib/lib/libcurl.a",
     "OPENSSL_CRYPTO_LIBRARY": "${EXT_BUILD_DEPS}/openssl_lib/lib/libcrypto.a",
@@ -32,10 +36,21 @@ CACHE_ENTRIES = dict({
     ]
 }.items())
 
+CACHE_ENTRIES_WASM = dict(CACHE_ENTRIES.items() + {
+    # The C++ library uses exceptions, so enable them explicitly.
+    "CMAKE_CXX_FLAGS": "-fexceptions",
+}.items())
+
 cmake_lib(
     name = "proj",
-    build_data = ["//tools:sqlite"],
-    cache_entries = CACHE_ENTRIES,
+    build_data = ["//lib/sqlite:runtime"],
+    cache_entries = {
+        "//config:wasm": CACHE_ENTRIES_WASM,
+        "//conditions:default": CACHE_ENTRIES,
+    },
+    env = {"PATH": path([
+        "${EXT_BUILD_ROOT}/$(execpaths //lib/sqlite:runtime)/bin",
+    ])},
     deps = [
         "//lib/curl",
         "//lib/openssl",

@@ -5,7 +5,7 @@ Contains a convenience macro that wraps make() from @rules_foreign_cc.
 
 load("@rules_foreign_cc//foreign_cc:make.bzl", "make")
 load("//tools/archive_symbols:archive_symbols.bzl", "archive_symbols")
-load(":configure.bzl", "WASM_ENV_VARS", "build_data", _build_data = "build_data", _lib_source = "lib_source")
+load(":configure.bzl", "build_data", "emscripten_env", _build_data = "build_data", _lib_source = "lib_source")
 
 def make_lib(
         name,
@@ -43,11 +43,19 @@ def make_lib(
         linkopts = ["-l{}".format(name)]
     if out_static_libs == None:
         out_static_libs = ["lib{}.a".format(name)]
+
     if env == None:
         env = {}
+    if "//conditions:default" not in env:
+        env = {
+            "//config:wasm": dict(env),
+            "//conditions:default": dict(env),
+        }
+    emscripten_env(env["//config:wasm"])
 
     make(
         name = name,
+        env = select(env),
         args = args,
         lib_name = "{}_lib".format(name),
         lib_source = lib_source,
@@ -57,10 +65,6 @@ def make_lib(
             "//conditions:default": None,
         }),
         linkopts = linkopts,
-        env = select({
-            "//config:wasm": dict(WASM_ENV_VARS.items() + env.items()),
-            "//conditions:default": env,
-        }),
         out_static_libs = out_static_libs,
         **kwargs
     )

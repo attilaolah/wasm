@@ -34,6 +34,12 @@ configure_make_lib(
     out_static_libs = ["libsqlite3.a"],
 )
 
+filegroup(
+    name = "runtime",
+    srcs = [":sqlite"],
+    output_group = "gen_dir",
+)
+
 bzl_library(
     name = "package",
     srcs = ["package.bzl"],

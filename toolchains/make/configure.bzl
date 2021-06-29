@@ -9,9 +9,10 @@ and CMake macros.
 
 load("@bazel_skylib//lib:collections.bzl", "collections")
 load("@rules_foreign_cc//foreign_cc:configure.bzl", "configure_make")
+load("//toolchains:utils.bzl", "path")
 load("//tools/archive_symbols:archive_symbols.bzl", "archive_symbols")
 
-WASM_ENV_VARS = {
+EM_ENV = {
     # Required by the Emscripten config:
     "EMSCRIPTEN": "${EXT_BUILD_ROOT}/external/emscripten_bin_linux/emscripten",
 
@@ -22,14 +23,16 @@ WASM_ENV_VARS = {
     "NODE_PATH": "${EXT_BUILD_DEPS}/bin",
 
     # Python from //lib/python:
-    "PATH": "${EXT_BUILD_ROOT}/$(execpaths //lib/python:runtime)/bin:${PATH}",
     "PYTHONHOME": "${EXT_BUILD_ROOT}/$(execpaths //lib/python:runtime)",
 
     # Required by the Emscripten config:
     "ROOT_DIR": "${EXT_BUILD_ROOT}",
 }
 
-WASM_TOOLS = [
+# Python from //lib/python:
+EM_PATH = path(["${EXT_BUILD_ROOT}/$(execpaths //lib/python:runtime)/bin"])
+
+EM_TOOLS = [
     # keep sorted
     "//lib/python:runtime",
     "//tools:nodejs",
@@ -80,7 +83,7 @@ def configure_make_lib(
             "//config:wasm": dict(env),
             "//conditions:default": dict(env),
         }
-    env["//config:wasm"].update(WASM_ENV_VARS)
+    emscripten_env(env["//config:wasm"])
 
     configure_make(
         name = name,
@@ -110,7 +113,7 @@ def configure_make_lib(
 def build_data(extras = None):
     """Extends build_data with extras.
 
-    For Emscripten, merges extras with WASM_TOOLS. Otherwise it simply selects
+    For Emscripten, merges extras with EM_TOOLS. Otherwise it simply selects
     extras for build_data.
 
     Args:
@@ -123,7 +126,7 @@ def build_data(extras = None):
         extras = []
 
     return select({
-        "//config:wasm": collections.uniq(WASM_TOOLS + extras),
+        "//config:wasm": collections.uniq(EM_TOOLS + extras),
         "//conditions:default": extras,
     })
 
@@ -133,3 +136,9 @@ def lib_source(lib_name):
     return "@lib_{}//:all".format(lib_name)
 
 _lib_source = lib_source
+
+def emscripten_env(env):
+    """Set Emscripten environment variables."""
+    env.update(EM_ENV)
+    env.setdefault("PATH", "${PATH}")
+    env["PATH"] = path([EM_PATH], existing = env["PATH"])
