@@ -16,7 +16,7 @@ CONFIGURE_OPTIONS = [
     "no-shared",
 ]
 
-WASM_CONFIGURE_OPTIONS = CONFIGURE_OPTIONS + [
+CONFIGURE_OPTIONS_WASM = CONFIGURE_OPTIONS + [
     # keep sorted
     "no-afalgeng",
     "no-asm",
@@ -28,7 +28,7 @@ configure_make_lib(
     name = "openssl",
     configure_command = "config",
     configure_options = select({
-        "//config:wasm": WASM_CONFIGURE_OPTIONS,
+        "//config:wasm": CONFIGURE_OPTIONS_WASM,
         "//conditions:default": CONFIGURE_OPTIONS,
     }),
     out_static_libs = [

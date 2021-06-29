@@ -1,16 +1,17 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//toolchains:utils.bzl", "no_error")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
 
 package(default_visibility = ["//:__subpackages__"])
 
-_C_FLAGS = " ".join(["-Wno-{}".format(check) for check in [
+C_FLAGS = no_error([
     # keep sorted
     "macro-redefined",
-]])
+])
 
-_ENV_VARS = {"CFLAGS": _C_FLAGS}
+ENV = {"CFLAGS": C_FLAGS}
 
-_WASM_ENV_VARS = dict(_ENV_VARS.items() + {
+ENV_WASM = dict(ENV.items() + {
     # Emscripten does not implement popen(), so ignore it:
     "LDFLAGS": "-s ERROR_ON_UNDEFINED_SYMBOLS=0",
 }.items())
@@ -23,8 +24,8 @@ configure_make_lib(
         "--enable-static=yes",
     ],
     env = {
-        "//config:wasm": _WASM_ENV_VARS,
-        "//conditions:default": _ENV_VARS,
+        "//config:wasm": ENV_WASM,
+        "//conditions:default": ENV,
     },
     out_binaries = select({
         "//config:wasm": [],

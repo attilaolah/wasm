@@ -9,7 +9,7 @@ CACHE_ENTRIES = {
     "BUILD_TESTING": False,
 }
 
-WASM_CACHE_ENTRIES = dict(CACHE_ENTRIES.items() + {
+CACHE_ENTRIES_WASM = dict(CACHE_ENTRIES.items() + {
     # The C++ library uses exceptions, so enable them explicitly.
     "CMAKE_CXX_FLAGS": "-fexceptions",
     # Inlining causes duplicate symbols when linking with wasm-ld.
@@ -19,7 +19,7 @@ WASM_CACHE_ENTRIES = dict(CACHE_ENTRIES.items() + {
 cmake_lib(
     name = "geos",
     cache_entries = {
-        "//config:wasm": WASM_CACHE_ENTRIES,
+        "//config:wasm": CACHE_ENTRIES_WASM,
         "//conditions:default": CACHE_ENTRIES,
     },
     out_static_libs = [

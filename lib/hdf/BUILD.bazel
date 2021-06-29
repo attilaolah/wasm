@@ -1,11 +1,12 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//toolchains:utils.bzl", "no_error")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
 
 package(default_visibility = ["//:__subpackages__"])
 
 # HDF4 is a very old code base with lots of warnings.
 # Since we pass -Werror, disable some wornings so the library would compile.
-_C_FLAGS = " ".join(["-Wno-{}".format(check) for check in [
+C_FLAGS = no_error([
     # keep sorted
     "bitwise-op-parentheses",
     "dangling-else",
@@ -31,16 +32,16 @@ _C_FLAGS = " ".join(["-Wno-{}".format(check) for check in [
     "unused-function",
     "unused-label",
     "unused-variable",
-]])
+])
 
 # Emulate an i386 environment.
 # Emscripten unsets i386 to avoid "platform dependent code (inline assembly)".
-_WASM_C_FLAGS = _C_FLAGS + " -Di386"
+C_FLAGS_WASM = C_FLAGS + " -Di386"
 
-_CACHE_ENTRIES = {
+CACHE_ENTRIES = {
     "BUILD_SHARED_LIBS": False,
     "BUILD_STATIC_LIBS": True,
-    "CMAKE_C_FLAGS": _C_FLAGS,
+    "CMAKE_C_FLAGS": C_FLAGS,
     "HDF4_BUILD_FORTRAN": False,
     "HDF4_BUILD_JAVA": False,
     "HDF4_BUILD_XDR_LIB": True,
@@ -56,15 +57,15 @@ _CACHE_ENTRIES = {
     "ZLIB_LIBRARY": "${EXT_BUILD_DEPS}/z_lib/lib/libz.a",
 }
 
-_WASM_CACHE_ENTRIES = dict(_CACHE_ENTRIES.items() + {
-    "CMAKE_C_FLAGS": _WASM_C_FLAGS,
+CACHE_ENTRIES_WASM = dict(CACHE_ENTRIES.items() + {
+    "CMAKE_C_FLAGS": C_FLAGS_WASM,
 }.items())
 
 cmake_lib(
     name = "hdf",
     cache_entries = {
-        "//config:wasm": _WASM_CACHE_ENTRIES,
-        "//conditions:default": _CACHE_ENTRIES,
+        "//config:wasm": CACHE_ENTRIES_WASM,
+        "//conditions:default": CACHE_ENTRIES,
     },
     out_static_libs = [
         # keep sorted

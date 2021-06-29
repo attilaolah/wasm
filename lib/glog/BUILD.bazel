@@ -5,7 +5,7 @@ package(default_visibility = ["//:__subpackages__"])
 
 # These headers are available in Emscripten, but incomplete.
 # Mask them out so that they would appear as missing and not break the build.
-_MASK_HEADERS = [
+MASK_HEADERS = [
     # keep sorter
     "SYMBOLIZE",
     "SYSCALL_H",
@@ -16,7 +16,7 @@ cmake_lib(
     name = "glog",
     # TODO: Fix this!
     #after_emcmake = patch_files({
-    #    "config.h": r"/^#define HAVE_({})\b.*/d".format("|".join(_MASK_HEADERS)),
+    #    "config.h": r"/^#define HAVE_({})\b.*/d".format("|".join(MASK_HEADERS)),
     #}),
     cache_entries = {
         "BUILD_SHARED_LIBS": False,
