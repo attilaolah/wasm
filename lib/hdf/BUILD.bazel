@@ -29,6 +29,7 @@ C_FLAGS = no_error([
     "tautological-constant-out-of-range-compare",
     "tautological-pointer-compare",
     "uninitialized",
+    "unused-but-set-variable",
     "unused-function",
     "unused-label",
     "unused-variable",
