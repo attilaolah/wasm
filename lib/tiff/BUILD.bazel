@@ -1,28 +1,57 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//toolchains:utils.bzl", "no_error")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
 
 package(default_visibility = ["//:__subpackages__"])
 
+CMAKE_EXE_LINKER_FLAGS = "-lpthread"
+
+CMAKE_EXE_LINKER_FLAGS_WASM = " ".join([
+    CMAKE_EXE_LINKER_FLAGS,
+    "--node_options=--experimental-wasm-threads",
+    "-s USE_PTHREADS",
+])
+
+CACHE_ENTRIES = {
+    "BUILD_SHARED_LIBS": False,
+    # Use C_FLAGS_RELEASE so they'd get appended after other flags.
+    "CMAKE_C_FLAGS_RELEASE": no_error([
+        # keep sorted
+        "format",
+        "tautological-constant-out-of-range-compare",
+        "unused-but-set-variable",
+        "unused-function",
+    ]),
+    "CMAKE_EXE_LINKER_FLAGS": CMAKE_EXE_LINKER_FLAGS,
+
+    # Needed for CheckTypeSize checks to pass.
+    "CMAKE_REQUIRED_FLAGS": no_error([
+        # keep sorted
+        "unused-but-set-variable",
+    ]),
+
+    # Dependencies:
+    "JPEG_INCLUDE_DIR": "${EXT_BUILD_DEPS}/jpegturbo_lib/include",
+    "JPEG_LIBRARY": "${EXT_BUILD_DEPS}/jpegturbo_lib/lib/libjpeg.a",
+    "LIBLZMA_INCLUDE_DIR": "${EXT_BUILD_DEPS}/lzma_lib/include",
+    "LIBLZMA_LIBRARY": "${EXT_BUILD_DEPS}/lzma_lib/lib/liblzma.a",
+    "WEBP_INCLUDE_DIR": "${EXT_BUILD_DEPS}/webp_lib/include",
+    "WEBP_LIBRARY": "${EXT_BUILD_DEPS}/webp_lib/lib/libwebp.a",
+    "ZLIB_INCLUDE_DIR": "${EXT_BUILD_DEPS}/z_lib/include",
+    "ZLIB_LIBRARY": "${EXT_BUILD_DEPS}/z_lib/lib/libz.a",
+    "ZSTD_INCLUDE_DIR": "${EXT_BUILD_DEPS}/zstd_lib/include",
+    "ZSTD_LIBRARY": "${EXT_BUILD_DEPS}/zstd_lib/lib/libzstd.a",
+}
+
+CACHE_ENTRIES_WASM = dict(CACHE_ENTRIES.items() + {
+    "CMAKE_EXE_LINKER_FLAGS": CMAKE_EXE_LINKER_FLAGS_WASM,
+}.items())
+
 cmake_lib(
     name = "tiff",
     cache_entries = {
-        "BUILD_SHARED_LIBS": False,
-
-        # We don't care about executables, but CMake will try to build them anyway.
-        # So we tell the linker to link them with -lpthread to avoid linker errors.
-        "CMAKE_EXE_LINKER_FLAGS": "-lpthread",
-
-        # Dependencies:
-        "JPEG_INCLUDE_DIR": "${EXT_BUILD_DEPS}/jpegturbo_lib/include",
-        "JPEG_LIBRARY": "${EXT_BUILD_DEPS}/jpegturbo_lib/lib/libjpeg.a",
-        "LIBLZMA_INCLUDE_DIR": "${EXT_BUILD_DEPS}/lzma_lib/include",
-        "LIBLZMA_LIBRARY": "${EXT_BUILD_DEPS}/lzma_lib/lib/liblzma.a",
-        "WEBP_INCLUDE_DIR": "${EXT_BUILD_DEPS}/webp_lib/include",
-        "WEBP_LIBRARY": "${EXT_BUILD_DEPS}/webp_lib/lib/libwebp.a",
-        "ZLIB_INCLUDE_DIR": "${EXT_BUILD_DEPS}/z_lib/include",
-        "ZLIB_LIBRARY": "${EXT_BUILD_DEPS}/z_lib/lib/libz.a",
-        "ZSTD_INCLUDE_DIR": "${EXT_BUILD_DEPS}/zstd_lib/include",
-        "ZSTD_LIBRARY": "${EXT_BUILD_DEPS}/zstd_lib/lib/libzstd.a",
+        "//config:wasm": CACHE_ENTRIES_WASM,
+        "//conditions:default": CACHE_ENTRIES,
     },
     out_static_libs = [
         "libtiff.a",
