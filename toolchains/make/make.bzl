@@ -21,6 +21,7 @@ def make_lib(
 
     Args:
       name: Passed on to make(). Also used for guessing other parameters.
+      args: Additional make args to pass to make().
       lib_source: Passed on to make(). Guessed from name.
       build_data: Additional build-time dependencies, compiled with cfg =
         "exec".

@@ -5,12 +5,12 @@ package(default_visibility = ["//:__subpackages__"])
 
 # These headers are available in Emscripten, but incomplete.
 # Mask them out so that they would appear as missing and not break the build.
-MASK_HEADERS = [
-    # keep sorter
-    "SYMBOLIZE",
-    "SYSCALL_H",
-    "SYS_SYSCALL_H",
-]
+#MASK_HEADERS = [
+#    # keep sorter
+#    "SYMBOLIZE",
+#    "SYSCALL_H",
+#    "SYS_SYSCALL_H",
+#]
 
 cmake_lib(
     name = "glog",
