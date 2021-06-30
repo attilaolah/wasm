@@ -95,7 +95,8 @@ def clang_toolchain(name):
         coverage_link_flags = ["--coverage"],
         cpu = "k8",
         cxx_builtin_include_directories = [
-            "{}/lib/clang/{}/include".format(LLVM_PATH, VERSION_MMP),
+            # TODO: Implement a sandboxed builtin_sysroot!
+            "/usr/include",
         ],
         cxx_flags = ["-std=c++17"],
         dbg_compile_flags = ["-g"],
