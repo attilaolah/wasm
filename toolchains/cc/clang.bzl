@@ -13,7 +13,7 @@ LINUX_X86_64 = [
     "@platforms//cpu:x86_64",
 ]
 
-LLVM_PATH = "${EXT_BUILD_ROOT}/external/llvm"
+LLVM_PATH = "external/llvm"
 
 def clang_toolchain(name):
     """LLVM+Clang toolchain.
@@ -55,10 +55,7 @@ def clang_toolchain(name):
         # However, it is only generated when auto-configuring with CC=clang.
     )
 
-    # Paths in the tool_paths dict must be absolute paths.
-    # Otherwise Bazel prefixes them with "toolchains/", which breaks
-    # @rules_foreign_cc rules that prefix them with ${EXT_BUILD_ROOT}.
-    llvm_bin = "/.{}/bin".format(LLVM_PATH)
+    llvm_bin = "{}/bin".format(LLVM_PATH)
 
     # LLVM tools prefixed with "llvm-":
     tool_paths = {

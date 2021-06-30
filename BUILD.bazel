@@ -1,5 +1,8 @@
 load("@bazel_gazelle//:def.bzl", "gazelle")
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//toolchains/cc:clang.bzl", "clang_toolchain")
+
+clang_toolchain(name = "linux_x86_64_clang")
 
 # gazelle:prefix github.com/attilaolah/wasm
 gazelle(name = "gazelle")
