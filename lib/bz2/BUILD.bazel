@@ -4,7 +4,13 @@ load("//tools:version_info.bzl", "version_info")
 
 package(default_visibility = ["//:__subpackages__"])
 
-make_lib(name = "bz2")
+make_lib(
+    name = "bz2",
+    targets = [
+        "libbz2.a",
+        "install",
+    ],
+)
 
 bzl_library(
     name = "package",

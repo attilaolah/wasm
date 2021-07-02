@@ -15,4 +15,5 @@ def download_bz2():
         urls = [URL],
         sha256 = SHA256,
         strip_prefix = "bzip2-{version}",
+        patches = ["//lib/bz2:bz2.patch"],
     )
