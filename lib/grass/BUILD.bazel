@@ -1,29 +1,96 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
-load("//toolchains:utils.bzl", "ldflags", "path")
+load("@bazel_skylib//lib:collections.bzl", "collections")
+load("//toolchains:utils.bzl", "ldflags", "no_error", "path")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
 load(":package.bzl", "MAJORMINOR", "MAJOR_MINOR")
 
 package(default_visibility = ["//:__subpackages__"])
 
-LDFLAGS = ldflags([
+CFLAGS = no_error([
     # keep sorted
-    "crypto",
-    "curl",
-    "deflate",
-    "dl",
-    "jpeg",
-    "lzma",
-    "pthread",
-    "sqlite3",
-    "ssl",
-    "tiff",
-    "webp",
-    "z",
-    "zstd",
+    "absolute-value",
+    "array-bounds",
+    "format",
+    "header-guard",
+    "implicit-function-declaration",
+    "implicit-int",
+    "incompatible-library-redeclaration",
+    "incompatible-pointer-types",
+    "incompatible-pointer-types-discards-qualifiers",
+    "logical-not-parentheses",
+    "misleading-indentation",
+    "non-literal-null-conversion",
+    "parentheses",
+    "pointer-bool-conversion",
+    "pointer-compare",
+    "pointer-sign",
+    "return-type",
+    "self-assign",
+    "switch",
+    "tautological-compare",
+    "tautological-constant-out-of-range-compare",
+    "tautological-pointer-compare",
+    "undefined-inline",
+    "uninitialized",
+    "unneeded-internal-declaration",
+    "unused-but-set-variable",
+    "unused-function",
+    "unused-variable",
 ])
+
+TRANSITIVE_DEPS = {
+    "proj": [
+        # keep sorted
+        "crypto",
+        "curl",
+        "dl",
+        "jpeg",
+        "lzma",
+        "pthread",
+        "sqlite3",
+        "ssl",
+        "tiff",
+        "webp",
+        "z",
+        "zstd",
+    ],
+    "sqlite3": [
+        # keep sorted
+        "dl",
+        "pthread",
+    ],
+    "tiff": [
+        # keep sorted
+        "jpeg",
+        "lzma",
+        "pthread",
+        "webp",
+        "z",
+        "zstd",
+    ],
+    "zstd": ["pthread"],
+}
+
+EXTRA_LDFLAGS = ldflags(sorted(collections.uniq(" ".join([
+    " ".join(libs)
+    for libs in TRANSITIVE_DEPS.values()
+]).split(" "))))
+
+FIX_TRANSITIVE_DEPS = "".join([
+    "$(",
+    """sed -i.orig -E '{sed_script}' "${{BUILD_TMPDIR}}/configure" >/dev/stderr""",
+    ")",
+]).format(sed_script = "; ".join([
+    r"""s/LIBS="(-l{}\s+\$LIBS)"/LIBS="\1 {}"/""".format(
+        lib,
+        " ".join(["-l{}".format(dep) for dep in deps]),
+    )
+    for lib, deps in sorted(TRANSITIVE_DEPS.items())
+]))
 
 configure_make_lib(
     name = "grass",
+    args = ['EXTRA_LDFLAGS="{}"'.format(EXTRA_LDFLAGS)],
     build_data = [
         # keep sorted
         "//lib/bison:runtime",
@@ -32,6 +99,7 @@ configure_make_lib(
     ],
     configure_in_place = True,
     configure_options = [
+        FIX_TRANSITIVE_DEPS,
         # keep sorted
         "--enable-64bit",
         "--enable-shared=no",
@@ -64,7 +132,7 @@ configure_make_lib(
     ],
     env = {
         "BISON_PKGDATADIR": "${EXT_BUILD_ROOT}/$(execpaths //lib/bison:runtime)/share/bison",
-        "LDFLAGS": LDFLAGS,
+        "CFLAGS": CFLAGS,
         "M4": "${EXT_BUILD_ROOT}/$(execpaths //lib/m4:runtime)/bin/m4",
         "PATH": path([
             "${EXT_BUILD_ROOT}/$(execpaths //lib/bison:runtime)/bin",
