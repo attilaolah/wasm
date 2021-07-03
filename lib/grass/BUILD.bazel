@@ -1,7 +1,7 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("//toolchains:utils.bzl", "no_error", "path")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
-load(":fix_deps.bzl", "fix_deps")
+load(":configure.bzl", "configure_sed")
 load(":package.bzl", "MAJORMINOR", "MAJOR_MINOR")
 
 package(default_visibility = ["//:__subpackages__"])
@@ -87,8 +87,56 @@ ENV_WASM = dict(ENV.items() + {
     "CROSSCOMPILING_EMULATOR": "${EXT_BUILD_ROOT}/external/nodejs_linux_amd64/bin/node",
 }.items())
 
+FLAGS = [
+    # keep sorted
+    "--enable-64bit",
+    "--enable-shared=no",
+    "--with-bzlib",
+    "--with-cxx",
+    "--with-fftw",
+    "--with-nls",
+    "--with-png",
+    "--with-proj",
+    '--with-proj-share="${EXT_BUILD_DEPS}/proj_lib/share/proj"',
+    "--with-pthread",
+    "--with-regex",
+    "--with-sqlite",
+    "--with-tiff",
+    "--with-zstd",
+    "--without-blas",
+    "--without-cairo",
+    "--without-freetype",
+    "--without-gdal",
+    "--without-lapack",
+    "--without-mysql",
+    "--without-odbc",
+    "--without-opencl",
+    "--without-opendwg",
+    "--without-opengl",
+    "--without-openmp",
+    "--without-postgres",
+    "--without-readline",
+    "--without-x",
+]
+
+CONFIGURE_OPTIONS = FLAGS + [
+    configure_sed(TRANSITIVE_DEPS),
+]
+
+CONFIGURE_OPTIONS_WASM = CONFIGURE_OPTIONS + [
+    configure_sed(
+        TRANSITIVE_DEPS,
+        cross_compiling = True,
+    ),
+]
+
 configure_make_lib(
     name = "grass",
+    args = select({
+        # TODO: Fix the build so this would not be necessary!
+        "//config:wasm": ["|| true"],
+        "//conditions:default": [],
+    }),
     build_data = [
         # keep sorted
         "//lib/bison:runtime",
@@ -96,38 +144,10 @@ configure_make_lib(
         "//lib/m4:runtime",
     ],
     configure_in_place = True,
-    configure_options = [
-        fix_deps(TRANSITIVE_DEPS),
-        # keep sorted
-        "--enable-64bit",
-        "--enable-shared=no",
-        "--with-bzlib",
-        "--with-cxx",
-        "--with-fftw",
-        "--with-nls",
-        "--with-png",
-        "--with-proj",
-        '--with-proj-share="${EXT_BUILD_DEPS}/proj_lib/share/proj"',
-        "--with-pthread",
-        "--with-regex",
-        "--with-sqlite",
-        "--with-tiff",
-        "--with-zstd",
-        "--without-blas",
-        "--without-cairo",
-        "--without-freetype",
-        "--without-gdal",
-        "--without-lapack",
-        "--without-mysql",
-        "--without-odbc",
-        "--without-opencl",
-        "--without-opendwg",
-        "--without-opengl",
-        "--without-openmp",
-        "--without-postgres",
-        "--without-readline",
-        "--without-x",
-    ],
+    configure_options = select({
+        "//config:wasm": CONFIGURE_OPTIONS_WASM,
+        "//conditions:default": CONFIGURE_OPTIONS,
+    }),
     env = {
         "//config:wasm": ENV_WASM,
         "//conditions:default": ENV,
