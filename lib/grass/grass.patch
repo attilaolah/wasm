@@ -35,6 +35,19 @@ index d7d0b8b..5fa1e01 100644
  
  	-rm $(INST_DIR)/$(TMPGISRC)
  	$(MAKE) $(INST_DIR)/$(TMPGISRC)
+diff --git include/Make/Rules.make include/Make/Rules.make
+index 071908fb3..443cb9b88 100644
+--- include/Make/Rules.make
++++ include/Make/Rules.make
+@@ -44,7 +44,7 @@ run_grass = \
+ 	PYTHONPATH="$(GRASS_PYTHONPATH)" \
+ 	$(LD_LIBRARY_PATH_VAR)="$(BIN):$(GISBASE)/bin:$(GISBASE)/scripts:$(ARCH_LIBDIR):$(BASE_LIBDIR):$($(LD_LIBRARY_PATH_VAR))" \
+ 	LC_ALL=C LANG=C LANGUAGE=C \
+-	$(1)
++	$(CROSSCOMPILING_EMULATOR) $(1)
+ 
+ # default clean rules
+ clean:
 diff --git lib/gis/env.c lib/gis/env.c
 index 6518ff7..5f36430 100644
 --- lib/gis/env.c
