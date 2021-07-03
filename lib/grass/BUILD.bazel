@@ -6,38 +6,6 @@ load(":package.bzl", "MAJORMINOR", "MAJOR_MINOR")
 
 package(default_visibility = ["//:__subpackages__"])
 
-CFLAGS = no_error([
-    # keep sorted
-    "absolute-value",
-    "array-bounds",
-    "format",
-    "header-guard",
-    "implicit-function-declaration",
-    "implicit-int",
-    "incompatible-library-redeclaration",
-    "incompatible-pointer-types",
-    "incompatible-pointer-types-discards-qualifiers",
-    "logical-not-parentheses",
-    "misleading-indentation",
-    "non-literal-null-conversion",
-    "parentheses",
-    "pointer-bool-conversion",
-    "pointer-compare",
-    "pointer-sign",
-    "return-type",
-    "self-assign",
-    "switch",
-    "tautological-compare",
-    "tautological-constant-out-of-range-compare",
-    "tautological-pointer-compare",
-    "undefined-inline",
-    "uninitialized",
-    "unneeded-internal-declaration",
-    "unused-but-set-variable",
-    "unused-function",
-    "unused-variable",
-])
-
 TRANSITIVE_DEPS = {
     "proj": [
         # keep sorted
@@ -134,7 +102,37 @@ configure_make_lib(
     }),
     env = {
         "BISON_PKGDATADIR": "${EXT_BUILD_ROOT}/$(execpaths //lib/bison:runtime)/share/bison",
-        "CFLAGS": CFLAGS,
+        "CFLAGS": no_error([
+            # keep sorted
+            "absolute-value",
+            "array-bounds",
+            "format",
+            "header-guard",
+            "implicit-function-declaration",
+            "implicit-int",
+            "incompatible-library-redeclaration",
+            "incompatible-pointer-types",
+            "incompatible-pointer-types-discards-qualifiers",
+            "logical-not-parentheses",
+            "misleading-indentation",
+            "non-literal-null-conversion",
+            "parentheses",
+            "pointer-bool-conversion",
+            "pointer-compare",
+            "pointer-sign",
+            "return-type",
+            "self-assign",
+            "switch",
+            "tautological-compare",
+            "tautological-constant-out-of-range-compare",
+            "tautological-pointer-compare",
+            "undefined-inline",
+            "uninitialized",
+            "unneeded-internal-declaration",
+            "unused-but-set-variable",
+            "unused-function",
+            "unused-variable",
+        ]),
         "M4": "${EXT_BUILD_ROOT}/$(execpaths //lib/m4:runtime)/bin/m4",
         "PATH": path([
             "${EXT_BUILD_ROOT}/$(execpaths //lib/bison:runtime)/bin",
