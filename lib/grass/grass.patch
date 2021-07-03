@@ -22,19 +22,6 @@ index a72b63a..951bc70 100644
  #include <string.h>
  #include <grass/gis.h>
  #include <grass/gprojects.h>
-diff --git include/Make/Install.make include/Make/Install.make
-index d7d0b8b..5fa1e01 100644
---- include/Make/Install.make
-+++ include/Make/Install.make
-@@ -102,7 +102,7 @@ real-install: | $(INST_DIR) $(UNIX_BIN)
- 	$(MAKE) $(STARTUP)
- 
- 	-rm $(INST_DIR)/$(FONTCAP)
--	$(MAKE) $(INST_DIR)/$(FONTCAP)
-+	-$(MAKE) $(INST_DIR)/$(FONTCAP)
- 
- 	-rm $(INST_DIR)/$(TMPGISRC)
- 	$(MAKE) $(INST_DIR)/$(TMPGISRC)
 diff --git include/Make/Rules.make include/Make/Rules.make
 index 071908fb3..443cb9b88 100644
 --- include/Make/Rules.make
