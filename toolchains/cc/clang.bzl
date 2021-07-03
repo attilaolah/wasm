@@ -6,7 +6,6 @@ on the downloaded bineries in @llvm.
 
 load("@local_config_cc//:cc_toolchain_config.bzl", "cc_toolchain_config")
 load("@rules_cc//cc:defs.bzl", "cc_toolchain")
-load("//tools/llvm:package.bzl", "VERSION_MMP")
 
 LINUX_X86_64 = [
     "@platforms//os:linux",

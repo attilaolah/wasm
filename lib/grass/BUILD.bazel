@@ -71,22 +71,6 @@ TRANSITIVE_DEPS = {
     "zstd": ["pthread"],
 }
 
-ENV = {
-    "BISON_PKGDATADIR": "${EXT_BUILD_ROOT}/$(execpaths //lib/bison:runtime)/share/bison",
-    "CFLAGS": CFLAGS,
-    "M4": "${EXT_BUILD_ROOT}/$(execpaths //lib/m4:runtime)/bin/m4",
-    "PATH": path([
-        "${EXT_BUILD_ROOT}/$(execpaths //lib/bison:runtime)/bin",
-        "${EXT_BUILD_ROOT}/$(execpaths //lib/flex:runtime)/bin",
-    ]),
-    "PROJ_LIB": "${EXT_BUILD_DEPS}/proj_lib/share/proj",
-}
-
-# NOTE: The configure script doesn't detect that we are cross-compiling.
-ENV_WASM = dict(ENV.items() + {
-    "CROSSCOMPILING_EMULATOR": "${EXT_BUILD_ROOT}/external/nodejs_linux_amd64/bin/node",
-}.items())
-
 FLAGS = [
     # keep sorted
     "--enable-64bit",
@@ -149,8 +133,14 @@ configure_make_lib(
         "//conditions:default": CONFIGURE_OPTIONS,
     }),
     env = {
-        "//config:wasm": ENV_WASM,
-        "//conditions:default": ENV,
+        "BISON_PKGDATADIR": "${EXT_BUILD_ROOT}/$(execpaths //lib/bison:runtime)/share/bison",
+        "CFLAGS": CFLAGS,
+        "M4": "${EXT_BUILD_ROOT}/$(execpaths //lib/m4:runtime)/bin/m4",
+        "PATH": path([
+            "${EXT_BUILD_ROOT}/$(execpaths //lib/bison:runtime)/bin",
+            "${EXT_BUILD_ROOT}/$(execpaths //lib/flex:runtime)/bin",
+        ]),
+        "PROJ_LIB": "${EXT_BUILD_DEPS}/proj_lib/share/proj",
     },
     out_binaries = ["grass{}".format(MAJORMINOR)],
     out_static_libs = [

@@ -13,6 +13,9 @@ load("//toolchains:utils.bzl", "path")
 load("//tools/archive_symbols:archive_symbols.bzl", "archive_symbols")
 
 EM_ENV = {
+    # NodeJS cross-compiling emulator:
+    "CROSSCOMPILING_EMULATOR": "${EXT_BUILD_ROOT}/external/nodejs_linux_amd64/bin/node",
+
     # Required by the Emscripten config:
     "EMSCRIPTEN": "${EXT_BUILD_ROOT}/external/emscripten_bin_linux/emscripten",
 
