@@ -15,4 +15,5 @@ def download_openjpeg():
         urls = [URL],
         sha256 = SHA256,
         strip_prefix = "openjpeg-{version}",
+        patches = ["//lib/openjpeg:openjpeg.patch"],
     )
