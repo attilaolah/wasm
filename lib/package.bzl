@@ -2,6 +2,7 @@
 
 load("//lib/aec:package.bzl", "download_aec")
 load("//lib/bison:package.bzl", "download_bison")
+load("//lib/boost:package.bzl", "download_boost")
 load("//lib/bz2:package.bzl", "download_bz2")
 load("//lib/cblas:package.bzl", "download_cblas")
 load("//lib/ceres:package.bzl", "download_ceres")
@@ -61,6 +62,7 @@ def download_lib():
     """Download all library sources."""
     download_aec()
     download_bison()
+    download_boost()
     download_bz2()
     download_cblas()
     download_ceres()
