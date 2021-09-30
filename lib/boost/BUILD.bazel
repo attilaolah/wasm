@@ -1,4 +1,5 @@
 load("@rules_foreign_cc//foreign_cc:defs.bzl", "boost_build")
+load("//tools/archive_symbols:archive_symbols.bzl", "archive_symbols")
 
 LIBS = [
     # keep sorted
@@ -54,4 +55,10 @@ boost_build(
         "link=static",
         "runtime-link=static",
     ],
+)
+
+archive_symbols(
+    name = "boost",
+    strict = False,
+    deps = [],
 )
