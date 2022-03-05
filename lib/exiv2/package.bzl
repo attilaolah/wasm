@@ -2,11 +2,11 @@
 
 load("//:http_archive.bzl", "http_archive")
 
-VERSION = "0.27.3"
+VERSION = "0.27.5"
 
-URL = "https://exiv2.org/builds/exiv2-{version}-Source.tar.gz"
+URL = "https://github.com/Exiv2/exiv2/releases/download/v{version}/exiv2-{version}-Source.tar.gz"
 
-SHA256 = "a79f5613812aa21755d578a297874fb59a85101e793edc64ec2c6bd994e3e778"
+SHA256 = "35a58618ab236a901ca4928b0ad8b31007ebdc0386d904409d825024e45ea6e2"
 
 def download_exiv2():
     http_archive(
