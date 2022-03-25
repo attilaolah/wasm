@@ -1,0 +1,25 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//toolchains:utils.bzl", "no_error")
+load("//toolchains/cmake:cmake.bzl", "cmake_lib")
+
+package(default_visibility = ["//:__subpackages__"])
+
+cmake_lib(
+    name = "sdl",
+    cache_entries = {
+        "SDL_SHARED": False,
+        "SDL_STATIC": True,
+        "SDL_STATIC_PIC": True,
+    },
+    out_static_libs = [
+        # keep sorted
+        "libSDL2.a",
+        "libSDL2main.a",
+    ],
+)
+
+bzl_library(
+    name = "package",
+    srcs = ["package.bzl"],
+    deps = ["//:http_archive"],
+)

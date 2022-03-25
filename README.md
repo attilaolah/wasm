@@ -73,6 +73,7 @@ toolchain, pass `--cpu=wasm32`. Pass `-c opt` for an optimised build.
 [`//lib/protobuf`](https://github.com/attilaolah/wasm/blob/main/lib/protobuf/BUILD.bazel) | 3.19.4 [🔗](https://github.com/protocolbuffers/protobuf/releases/download/v3.19.4/protobuf-cpp-3.19.4.tar.gz)
 [`//lib/python`](https://github.com/attilaolah/wasm/blob/main/lib/python/BUILD.bazel) | 3.9.5 [🔗](https://www.python.org/ftp/python/3.9.5/Python-3.9.5.tar.xz)
 [`//lib/readline`](https://github.com/attilaolah/wasm/blob/main/lib/readline/BUILD.bazel) | 8.0 [🔗](https://ftp.gnu.org/gnu/readline/readline-8.0.tar.gz)
+[`//lib/sdl`](https://github.com/attilaolah/wasm/blob/main/lib/sdl/BUILD.bazel) | 2.0.20 [🔗](https://www.libsdl.org/release/SDL2-2.0.20.tar.gz)
 [`//lib/sqlite`](https://github.com/attilaolah/wasm/blob/main/lib/sqlite/BUILD.bazel) | 3.35.5 [🔗](https://www.sqlite.org/2021/sqlite-autoconf-3350500.tar.gz)
 [`//lib/suitesparse`](https://github.com/attilaolah/wasm/blob/main/lib/suitesparse/BUILD.bazel) | 5.9.0 [🔗](https://github.com/DrTimothyAldenDavis/SuiteSparse/archive/v5.9.0.tar.gz)
 [`//lib/szip`](https://github.com/attilaolah/wasm/blob/main/lib/szip/BUILD.bazel) | 2.1.1 [🔗](https://support.hdfgroup.org/ftp/lib-external/szip/2.1.1/src/szip-2.1.1.tar.gz)
