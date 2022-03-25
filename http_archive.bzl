@@ -22,6 +22,7 @@ def http_archive(
         version,
         urls,
         strip_prefix = None,
+        format_kwargs = None,
         build_file_content = ALL_PUBLIC,
         **kwargs):
     """Wrapper around http_archive().
@@ -38,6 +39,8 @@ def http_archive(
         params.
       urls: Passed on to http_archive() after template substitution.
       strip_prefix: Passed on to http_archive() after template substitution.
+      format_kwargs: Additional formatting parameters, overriding the default
+        ones.
       build_file_content: Passed on to http_archive().
       **kwargs: Passed on to http_archive().
 
@@ -50,6 +53,9 @@ def http_archive(
         "versionm": version.split(".")[0],
         "versionmm": ".".join(version.split(".")[:2]),
     }
+
+    if format_kwargs != None:
+        args.update(format_kwargs)
 
     if strip_prefix != None:
         strip_prefix = strip_prefix.format(**args)

@@ -35,6 +35,18 @@ var (
 		"//toolchains:utils.bzl": {
 			"patch_files": nil,
 		},
+		"//lib:defs.bzl": {
+			"lib_name":      nil,
+			"repo_name":     nil,
+			"static_lib":    nil,
+			"include_dir":   nil,
+			"library_path":  nil,
+			"include_flags": nil,
+			"link_flags":    nil,
+			"link_opts":     nil,
+			"major":         nil,
+			"major_minor":   nil,
+		},
 	}
 )
 

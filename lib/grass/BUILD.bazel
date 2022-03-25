@@ -1,8 +1,8 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//lib:defs.bzl", "major_minor")
 load("//toolchains:utils.bzl", "no_error", "path")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
 load(":configure.bzl", "configure_sed")
-load(":package.bzl", "MAJORMINOR", "MAJOR_MINOR")
 
 package(default_visibility = ["//:__subpackages__"])
 
@@ -140,9 +140,15 @@ configure_make_lib(
         ]),
         "PROJ_LIB": "${EXT_BUILD_DEPS}/proj_lib/share/proj",
     },
-    out_binaries = ["grass{}".format(MAJORMINOR)],
+    out_binaries = ["grass{}".format(major_minor(
+        VERSION,
+        join = "",
+    ))],
     out_static_libs = [
-        "libgrass_{}.{}.a".format(lib, MAJOR_MINOR)
+        "libgrass_{}.{}.a".format(
+            lib,
+            major_minor(VERSION),
+        )
         for lib in [
             # keep sorted
             "arraystats",

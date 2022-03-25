@@ -1,21 +1,23 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//lib:defs.bzl", "include_flags", "library_path", "link_flags")
 load("//toolchains:utils.bzl", "no_error")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
+load("//lib/jpegturbo:package.bzl", link_flags_jpegturbo = "link_flags")
+load("//lib/openjpeg:package.bzl", include_dir_openjpeg = "include_dir", library_path_openjpeg = "library_path")
+load("//lib/lzma:package.bzl", link_flags_lzma = "link_flags")
+load("//lib/webp:package.bzl", include_dir_webp = "include_dir", library_path_webp = "library_path", link_flags_webp = "link_flags")
+load("//lib/zstd:package.bzl", link_flags_zstd = "link_flags")
 
 package(default_visibility = ["//:__subpackages__"])
 
-TRANSITIVE_DEPS = {
-    "tiff": [
-        # keep sorted
-        "jpeg",
-        "lzma",
-        "pthread",
-        "webp",
-        "z",
-        "zstd",
-    ],
-    "zstd": ["pthread"],
-}
+C_FLAGS = include_flags(include_dir_openjpeg())
+
+EXE_LINKER_FLAGS_RELEASE = " ".join([
+    link_flags_jpegturbo(),
+    link_flags_lzma(),
+    link_flags_webp(),
+    link_flags_zstd(),
+])
 
 cmake_lib(
     name = "opencv",
@@ -27,28 +29,25 @@ cmake_lib(
         # Dependencies:
         "JPEG_INCLUDE_DIR": "${EXT_BUILD_DEPS}/jpegturbo_lib/include",
         "JPEG_LIBRARY": "${EXT_BUILD_DEPS}/jpegturbo_lib/lib/libjpeg.a",
+        "OPENJPEG_INCLUDE_DIR": include_dir_openjpeg(),
+        "OPENJPEG_LIBRARY": library_path_openjpeg(),
         "PNG_LIBRARY": "${EXT_BUILD_DEPS}/png_lib/lib/libpng.a",
-        "PNG_PNG_INCLUDE_DIR": "${EXT_BUILD_DEPS}/png_lib/include",
+        "PNG_INCLUDE_DIR": "${EXT_BUILD_DEPS}/png_lib/include",
         "PROTOBUF_INCLUDE_DIR": "${EXT_BUILD_DEPS}/protobuf_lib/include",
         "PROTOBUF_LIBRARY": "${EXT_BUILD_DEPS}/protobuf_lib/lib/libprotobuf.a",
         "TIFF_INCLUDE_DIR": "${EXT_BUILD_DEPS}/tiff_lib/include",
         "TIFF_LIBRARY": "${EXT_BUILD_DEPS}/tiff_lib/lib/libtiff.a",
-        "WEBP_INCLUDE_DIR": "${EXT_BUILD_DEPS}/webp_lib/include",
-        "WEBP_LIBRARY": "${EXT_BUILD_DEPS}/webp_lib/lib/libwebp.a",
+        "WEBP_INCLUDE_DIR": include_dir_webp(),
+        "WEBP_LIBRARY": library_path_webp(),
         "ZLIB_INCLUDE_DIR": "${EXT_BUILD_DEPS}/z_lib/include",
         "ZLIB_LIBRARY": "${EXT_BUILD_DEPS}/z_lib/lib/libz.a",
 
-        # Transitive dependencies:
-        "CMAKE_EXE_LINKER_FLAGS_RELEASE": " ".join([
-            # These need to be passed explicitly for the build process to succeed.
-            "-L${EXT_BUILD_DEPS}/jpegturbo_lib/lib",
-            "-L${EXT_BUILD_DEPS}/lzma_lib/lib",
-            "-L${EXT_BUILD_DEPS}/webp_lib/lib",
-            "-L${EXT_BUILD_DEPS}/zstd_lib/lib",
-        ] + [
-            "-l{}".format(dep)
-            for dep in (TRANSITIVE_DEPS["tiff"] + TRANSITIVE_DEPS["zstd"])
-        ]),
+        # OpenJPEG include dirs:
+        "CMAKE_C_FLAGS_RELEASE": C_FLAGS,
+        "CMAKE_CXX_FLAGS_RELEASE": C_FLAGS,
+
+        # Transitive dependencies for the linker:
+        "CMAKE_EXE_LINKER_FLAGS_RELEASE": EXE_LINKER_FLAGS_RELEASE,
     },
     out_static_libs = [
         "libopencv_{}.a".format(lib)
@@ -73,6 +72,7 @@ cmake_lib(
     ],
     deps = [
         "//lib/jpegturbo",
+        "//lib/openjpeg",
         "//lib/png",
         "//lib/protobuf",
         "//lib/tiff",

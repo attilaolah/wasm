@@ -1,11 +1,12 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("//toolchains:utils.bzl", "no_error")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
+load("package.bzl", "NAME")
 
 package(default_visibility = ["//:__subpackages__"])
 
 configure_make_lib(
-    name = "lzma",
+    name = NAME,
     configure_options = [
         "--disable-doc",
         "--disable-shared",

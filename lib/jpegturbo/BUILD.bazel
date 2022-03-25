@@ -1,11 +1,13 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//lib:defs.bzl", "link_opt", "static_lib")
 load("//toolchains:utils.bzl", "no_error")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
+load(":package.bzl", "NAME", "lname")
 
 package(default_visibility = ["//:__subpackages__"])
 
 cmake_lib(
-    name = "jpegturbo",
+    name = NAME,
     cache_entries = {
         "CMAKE_C_FLAGS": no_error([
             # keep sorted
@@ -16,12 +18,11 @@ cmake_lib(
         "ENABLE_STATIC": True,
         "WITH_JAVA": False,
     },
-    linkopts = ["-lturbojpeg"],
-    out_static_libs = [
-        # keep sorted
-        "libjpeg.a",
-        "libturbojpeg.a",
-    ],
+    linkopts = [link_opt(lname())],
+    out_static_libs = [static_lib(lib) for lib in [
+        lname(),
+        "jpeg",
+    ]],
 )
 
 bzl_library(
