@@ -14,7 +14,7 @@ def _version_info_impl(ctx):
     args.add("-output", version_json)
 
     ctx.actions.run(
-        executable = ctx.executable._version_info,
+        executable = ctx.executable._parser,
         arguments = [args],
         inputs = [package_bzl],
         outputs = [version_json],
@@ -39,8 +39,8 @@ version_info = rule(
             doc = "HTTP(S) link containing upstream version info.",
             mandatory = True,
         ),
-        "_version_info": attr.label(
-            default = "//tools/version_info",
+        "_parser": attr.label(
+            default = "//tools/version_info/parser",
             executable = True,
             cfg = "exec",
         ),

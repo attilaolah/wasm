@@ -4,13 +4,12 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	"path"
 	"path/filepath"
 	"sort"
 	"strings"
 	"text/template"
 
-	"go.starlark.net/starlark"
+	"github.com/attilaolah/wasm/tools/version_info"
 )
 
 // Location of the template file.
@@ -26,33 +25,6 @@ var (
 			return "-"
 		}(),
 		"Where to write the output file (- means stdout).")
-
-	// Module stubs.
-	// We don't really want to load dependencies, but they have to return values they define.
-	modules = map[string]starlark.StringDict{
-		"//:http_archive.bzl": {
-			"http_archive": nil,
-		},
-		"//lib:defs.bzl": {
-			"lib_name":      nil,
-			"repo_name":     nil,
-			"static_lib":    nil,
-			"include_dir":   nil,
-			"library_dir":   nil,
-			"library_path":  nil,
-			"include_flags": nil,
-			"link_flags":    nil,
-			"link_opts":     nil,
-			"major":         nil,
-			"major_minor":   nil,
-		},
-		"//lib:http_archive.bzl": {
-			"http_archive": nil,
-		},
-		"//toolchains:utils.bzl": {
-			"patch_files": nil,
-		},
-	}
 )
 
 func main() {
@@ -102,35 +74,6 @@ func main() {
 	}
 }
 
-// VersionInfo holds info about the version.
-// TODO: Re-use VersionInfo from //tools/version_info!
-type VersionInfo struct {
-	name    string
-	version string
-	urls    []string
-}
-
-// Expand replaces {versions} and friends in urls.
-func (v *VersionInfo) Expand() {
-	for i, url := range v.urls {
-		url = strings.ReplaceAll(url, "{name}", v.name)
-		url = strings.ReplaceAll(url, "{tname}", strings.Title(v.name))
-		url = strings.ReplaceAll(url, "{uname}", strings.ToUpper(v.name))
-		url = strings.ReplaceAll(url, "{version}", v.version)
-		url = strings.ReplaceAll(url, "{version-}", strings.ReplaceAll(v.version, ".", "-"))
-		url = strings.ReplaceAll(url, "{version_}", strings.ReplaceAll(v.version, ".", "_"))
-		url = strings.ReplaceAll(url, "{versionm}", strings.Split(v.version, ".")[0])
-
-		vmm := v.version
-		if parts := strings.Split(v.version, "."); len(parts) > 1 {
-			vmm = strings.Join(parts[:2], ".")
-		}
-		url = strings.ReplaceAll(url, "{versionmm}", vmm)
-
-		v.urls[i] = url
-	}
-}
-
 // MDTable generates a Markdown version table.
 func MDTable(prefix string) (string, error) {
 	vers, err := GetVersionInfos(prefix + "/*/package.bzl")
@@ -154,8 +97,8 @@ func MDTable(prefix string) (string, error) {
 		b.WriteString("`](")
 		b.WriteString(url(path))
 		b.WriteString(") | ")
-		b.WriteString(v.version)
-		for _, u := range v.urls {
+		b.WriteString(v.Version)
+		for _, u := range v.URLs {
 			b.WriteString(" [🔗](")
 			b.WriteString(u)
 			b.WriteString(")")
@@ -168,66 +111,21 @@ func MDTable(prefix string) (string, error) {
 
 // GetVersionInfos extracts the version info from all matching files.
 // Keys in the returned maps are Starlark file names matching under root/.
-func GetVersionInfos(pattern string) (map[string]VersionInfo, error) {
-	vers := map[string]VersionInfo{}
+func GetVersionInfos(pattern string) (map[string]version_info.VersionInfo, error) {
+	vers := map[string]version_info.VersionInfo{}
 	matches, err := filepath.Glob(pattern)
 	if err != nil {
 		return nil, fmt.Errorf("failed to expand %q: %w", pattern, err)
 	}
 
 	for _, path := range matches {
-		v, err := GetVersionInfo(path)
+		v, err := version_info.GetVersionInfo(path)
 		if err != nil {
 			return nil, fmt.Errorf("error extracting versions: %w", err)
 		}
 		vers[path] = *v
 	}
 	return vers, nil
-}
-
-// GetVersion extracts the version from a single file.
-func GetVersionInfo(p string) (*VersionInfo, error) {
-	t := starlark.Thread{
-		Load: func(t *starlark.Thread, module string) (starlark.StringDict, error) {
-			return modules[module], nil
-		},
-	}
-	globals, err := starlark.ExecFile(&t, p, nil, starlark.Universe)
-	if err != nil {
-		return nil, fmt.Errorf("failed to execute %q: %w", p, err)
-	}
-	v, ok := globals["VERSION"]
-	if !ok {
-		return nil, fmt.Errorf("VERSION not found in %q", p)
-	}
-	version := strings.Trim(v.String(), `"`)
-
-	urls := []string{}
-	if v, ok = globals["URLS"]; ok {
-		list, ok := v.(*starlark.List)
-		if !ok {
-			return nil, fmt.Errorf("URLS is not a list in %q", p)
-		}
-		i := list.Iterate()
-		var v starlark.Value
-		for i.Next(&v) {
-			urls = append(urls, strings.Trim(v.String(), `"`))
-		}
-		i.Done()
-	} else {
-		if v, ok = globals["URL"]; !ok {
-			return nil, fmt.Errorf("URLS or URL not found in %q", p)
-		}
-		urls = append(urls, strings.Trim(v.String(), `"`))
-	}
-
-	info := &VersionInfo{
-		name:    path.Base(path.Dir(p)),
-		version: version,
-		urls:    urls,
-	}
-	info.Expand()
-	return info, nil
 }
 
 func label(path string) string {

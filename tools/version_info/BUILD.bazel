@@ -1,18 +1,12 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
-    name = "version_info_lib",
-    srcs = [
-        "version_info.go",
-        "version_info_lib.go",
-    ],
-    importpath = "github.com/attilaolah/wasm/tools/version_info",
-    visibility = ["//visibility:private"],
-    deps = ["@net_starlark_go//starlark"],
-)
-
-go_binary(
     name = "version_info",
-    embed = [":version_info_lib"],
-    visibility = ["//visibility:public"],
+    srcs = ["version_info.go"],
+    importpath = "github.com/attilaolah/wasm/tools/version_info",
+    visibility = [
+        ":__subpackages__",
+        "//cmd/write_me:__pkg__",
+    ],
+    deps = ["@net_starlark_go//starlark"],
 )
