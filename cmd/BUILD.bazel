@@ -1,0 +1,4 @@
+sh_binary(
+    name = "update_deps",
+    srcs = ["update_deps.sh"],
+)
