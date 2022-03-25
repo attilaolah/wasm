@@ -17,5 +17,5 @@ configure_make_lib(
 bzl_library(
     name = "package",
     srcs = ["package.bzl"],
-    deps = ["//:http_archive"],
+    deps = ["//lib:http_archive"],
 )

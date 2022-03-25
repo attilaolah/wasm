@@ -1,5 +1,8 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@rules_foreign_cc//foreign_cc:defs.bzl", "boost_build")
 load("//tools/archive_symbols:archive_symbols.bzl", "archive_symbols")
+
+package(default_visibility = ["//:__subpackages__"])
 
 LIBS = [
     # keep sorted
@@ -61,4 +64,10 @@ archive_symbols(
     name = "boost",
     strict = False,
     deps = [],
+)
+
+bzl_library(
+    name = "package",
+    srcs = ["package.bzl"],
+    deps = ["//lib:http_archive"],
 )

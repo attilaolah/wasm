@@ -71,4 +71,11 @@ bzl_library(
 bzl_library(
     name = "defs",
     srcs = ["defs.bzl"],
+    visibility = [":__subpackages__"],
+)
+
+bzl_library(
+    name = "http_archive",
+    srcs = ["http_archive.bzl"],
+    visibility = [":__subpackages__"],
 )

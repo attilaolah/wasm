@@ -15,5 +15,5 @@ def download():
         version = VERSION,
         urls = [URL],
         sha256 = SHA256,
-        strip_prefix = "{versionm}-{version}",
+        strip_prefix = "{name}{versionm}-{version}",
     )
