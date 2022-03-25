@@ -22,12 +22,15 @@ cmake_lib(
     cache_entries = {
         "BUILD_SHARED_LIBS": False,
         "INSTALL_CREATE_DISTRIB": True,
+        "BUILD_PROTOBUF": False,
 
         # Dependencies:
         "JPEG_INCLUDE_DIR": "${EXT_BUILD_DEPS}/jpegturbo_lib/include",
         "JPEG_LIBRARY": "${EXT_BUILD_DEPS}/jpegturbo_lib/lib/libjpeg.a",
         "PNG_LIBRARY": "${EXT_BUILD_DEPS}/png_lib/lib/libpng.a",
         "PNG_PNG_INCLUDE_DIR": "${EXT_BUILD_DEPS}/png_lib/include",
+        "PROTOBUF_INCLUDE_DIR": "${EXT_BUILD_DEPS}/protobuf_lib/include",
+        "PROTOBUF_LIBRARY": "${EXT_BUILD_DEPS}/protobuf_lib/lib/libprotobuf.a",
         "TIFF_INCLUDE_DIR": "${EXT_BUILD_DEPS}/tiff_lib/include",
         "TIFF_LIBRARY": "${EXT_BUILD_DEPS}/tiff_lib/lib/libtiff.a",
         "WEBP_INCLUDE_DIR": "${EXT_BUILD_DEPS}/webp_lib/include",
@@ -71,6 +74,7 @@ cmake_lib(
     deps = [
         "//lib/jpegturbo",
         "//lib/png",
+        "//lib/protobuf",
         "//lib/tiff",
         "//lib/webp",
         "//lib/z",
