@@ -1,0 +1,49 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//toolchains:utils.bzl", "no_error")
+load("//toolchains/cmake:cmake.bzl", "cmake_lib")
+
+package(default_visibility = ["//:__subpackages__"])
+
+cmake_lib(
+    name = "opencv",
+    cache_entries = {
+        "BUILD_SHARED_LIBS": False,
+        "INSTALL_CREATE_DISTRIB": True,
+        "ZLIB_INCLUDE_DIR": "${EXT_BUILD_DEPS}/z_lib/include",
+        "ZLIB_LIBRARY": "${EXT_BUILD_DEPS}/z_lib/lib/libz.a",
+    },
+    out_static_libs = [
+        "libopencv_{}.a".format(lib)
+        for lib in [
+            # keep sorted
+            "calib3d",
+            "core",
+            "dnn",
+            "features2d",
+            "flann",
+            "gapi",
+            "highgui",
+            "imgcodecs",
+            "imgproc",
+            "ml",
+            "objdetect",
+            "photo",
+            "stitching",
+            "video",
+            "videoio",
+        ]
+    ],
+    deps = [
+        "//lib/jpegturbo",
+        "//lib/png",
+        "//lib/tiff",
+        "//lib/webp",
+        "//lib/z",
+    ],
+)
+
+bzl_library(
+    name = "package",
+    srcs = ["package.bzl"],
+    deps = ["//:http_archive"],
+)

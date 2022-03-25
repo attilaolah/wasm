@@ -64,6 +64,7 @@ toolchain, pass `--cpu=wasm32`. Pass `-c opt` for an optimised build.
 [`//lib/musl`](https://github.com/attilaolah/wasm/blob/main/lib/musl/BUILD.bazel) | 1.2.2 [🔗](https://musl.libc.org/releases/musl-1.2.2.tar.gz)
 [`//lib/ncurses`](https://github.com/attilaolah/wasm/blob/main/lib/ncurses/BUILD.bazel) | 6.2 [🔗](https://ftp.gnu.org/pub/gnu/ncurses/ncurses-6.2.tar.gz)
 [`//lib/oniguruma`](https://github.com/attilaolah/wasm/blob/main/lib/oniguruma/BUILD.bazel) | 6.9.6 [🔗](https://github.com/kkos/oniguruma/releases/download/v6.9.6/onig-6.9.6.tar.gz)
+[`//lib/opencv`](https://github.com/attilaolah/wasm/blob/main/lib/opencv/BUILD.bazel) | 4.5.5 [🔗](https://github.com/opencv/opencv/archive/4.5.5.zip)
 [`//lib/openjpeg`](https://github.com/attilaolah/wasm/blob/main/lib/openjpeg/BUILD.bazel) | 2.4.0 [🔗](https://github.com/uclouvain/openjpeg/archive/v2.4.0.tar.gz)
 [`//lib/openssl`](https://github.com/attilaolah/wasm/blob/main/lib/openssl/BUILD.bazel) | 1.1.1k [🔗](https://www.openssl.org/source/openssl-1.1.1k.tar.gz)
 [`//lib/pano13`](https://github.com/attilaolah/wasm/blob/main/lib/pano13/BUILD.bazel) | 2.9.19 [🔗](https://download.sourceforge.net/panotools/libpano13-2.9.19.tar.gz)
