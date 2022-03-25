@@ -1,9 +1,11 @@
-load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//lib:defs.bzl", "lib_package")
 load("//toolchains:utils.bzl", "no_error")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
 load("package.bzl", "NAME")
 
 package(default_visibility = ["//:__subpackages__"])
+
+lib_package()
 
 configure_make_lib(
     name = NAME,
@@ -21,10 +23,4 @@ configure_make_lib(
         # keep sorted
         "unused-but-set-variable",
     ])},
-)
-
-bzl_library(
-    name = "package",
-    srcs = ["package.bzl"],
-    deps = ["//:http_archive"],
 )

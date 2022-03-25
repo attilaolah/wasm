@@ -9,6 +9,7 @@ and CMake macros.
 
 load("@bazel_skylib//lib:collections.bzl", "collections")
 load("@rules_foreign_cc//foreign_cc:configure.bzl", "configure_make")
+load("//lib:defs.bzl", "repo_name")
 load("//toolchains:utils.bzl", "path")
 load("//tools/archive_symbols:archive_symbols.bzl", "archive_symbols")
 
@@ -136,7 +137,7 @@ def build_data(extras = None):
 _build_data = build_data
 
 def lib_source(lib_name):
-    return "@lib_{}//:all".format(lib_name)
+    return "@{}//:all".format(repo_name(lib_name))
 
 _lib_source = lib_source
 

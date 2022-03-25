@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"path"
 	"regexp"
 	"strings"
 
@@ -15,7 +16,7 @@ import (
 // Module stubs.
 // We don't really want to load dependencies, but they have to return values they define.
 var modules = map[string]starlark.StringDict{
-	"//:http_archive.bzl": {
+	"//lib:http_archive.bzl": {
 		"http_archive": nil,
 	},
 	"//toolchains/make:configure.bzl": {
@@ -25,25 +26,26 @@ var modules = map[string]starlark.StringDict{
 
 // VersionInfo holds info about the version.
 type VersionInfo struct {
+	Name            string   `json:"name"`
 	Version         string   `json:"version,omitempty"`
 	UpstreamVersion string   `json:"upstream_version,omitempty"`
 	URLs            []string `json:"urls,omitempty"`
 }
 
 // GetVersion extracts the version from a single Starlark file.
-func GetVersionInfo(path string) (*VersionInfo, error) {
+func GetVersionInfo(p string) (*VersionInfo, error) {
 	t := starlark.Thread{
 		Load: func(t *starlark.Thread, module string) (starlark.StringDict, error) {
 			return modules[module], nil
 		},
 	}
-	globals, err := starlark.ExecFile(&t, path, nil, starlark.Universe)
+	globals, err := starlark.ExecFile(&t, p, nil, starlark.Universe)
 	if err != nil {
-		return nil, fmt.Errorf("failed to execute %q: %w", path, err)
+		return nil, fmt.Errorf("failed to execute %q: %w", p, err)
 	}
 	v, ok := globals["VERSION"]
 	if !ok {
-		return nil, fmt.Errorf("VERSION not found in %q", path)
+		return nil, fmt.Errorf("VERSION not found in %q", p)
 	}
 	version := strings.Trim(v.String(), `"`)
 
@@ -51,7 +53,7 @@ func GetVersionInfo(path string) (*VersionInfo, error) {
 	if v, ok = globals["URLS"]; ok {
 		list, ok := v.(*starlark.List)
 		if !ok {
-			return nil, fmt.Errorf("URLS is not a list in %q", path)
+			return nil, fmt.Errorf("URLS is not a list in %q", p)
 		}
 		i := list.Iterate()
 		var v starlark.Value
@@ -61,12 +63,13 @@ func GetVersionInfo(path string) (*VersionInfo, error) {
 		i.Done()
 	} else {
 		if v, ok = globals["URL"]; !ok {
-			return nil, fmt.Errorf("URLS or URL not found in %q", path)
+			return nil, fmt.Errorf("URLS or URL not found in %q", p)
 		}
 		urls = append(urls, strings.Trim(v.String(), `"`))
 	}
 
 	info := &VersionInfo{
+		Name:    path.Base(path.Dir(p)),
 		Version: version,
 		URLs:    urls,
 	}
@@ -77,6 +80,9 @@ func GetVersionInfo(path string) (*VersionInfo, error) {
 // Expand replaces {versions} and friends in urls.
 func (v *VersionInfo) Expand() {
 	for i, url := range v.URLs {
+		url = strings.ReplaceAll(url, "{name}", v.Name)
+		url = strings.ReplaceAll(url, "{tname}", strings.Title(v.Name))
+		url = strings.ReplaceAll(url, "{uname}", strings.ToUpper(v.Name))
 		url = strings.ReplaceAll(url, "{version}", v.Version)
 		url = strings.ReplaceAll(url, "{version-}", strings.ReplaceAll(v.Version, ".", "-"))
 		url = strings.ReplaceAll(url, "{version_}", strings.ReplaceAll(v.Version, ".", "_"))

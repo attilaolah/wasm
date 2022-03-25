@@ -1,10 +1,13 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//lib:defs.bzl", "lib_package")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
 load("//toolchains/make:make.bzl", "make_lib")
 load(":libraries.bzl", "LIB_SOURCE", "PREFIX", "suitesparse_lib")
 load(":package.bzl", "GK_PATH", "METIS_PATH")
 
 package(default_visibility = ["//:__subpackages__"])
+
+lib_package()
 
 suitesparse_lib(name = "amd")
 
@@ -145,10 +148,6 @@ suitesparse_lib(
 )
 
 bzl_library(
-    name = "package",
-    srcs = [
-        "libraries.bzl",
-        "package.bzl",
-    ],
-    deps = ["//:http_archive"],
+    name = "libraries",
+    srcs = ["libraries.bzl"],
 )

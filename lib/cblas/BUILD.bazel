@@ -1,8 +1,10 @@
-load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//lib:defs.bzl", "lib_package")
 load("//toolchains/make:make.bzl", "make_lib")
 load("//tools:version_info.bzl", "version_info")
 
 package(default_visibility = ["//:__subpackages__"])
+
+lib_package()
 
 # TODO: Add required CFLAGS & friends.
 
@@ -22,12 +24,6 @@ make_lib(
     build_data = ["//tools/llvm:flang_runtime"],
     postfix_script = 'cp -a "${EXT_BUILD_ROOT}/external/lib_cblas/lib/libcblas.a" "${INSTALLDIR}/lib"',
     targets = ["alllib"],
-)
-
-bzl_library(
-    name = "package",
-    srcs = ["package.bzl"],
-    deps = ["//:http_archive"],
 )
 
 version_info(

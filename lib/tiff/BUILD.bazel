@@ -1,8 +1,10 @@
-load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//lib:defs.bzl", "lib_package")
 load("//toolchains:utils.bzl", "no_error")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
 
 package(default_visibility = ["//:__subpackages__"])
+
+lib_package()
 
 CMAKE_EXE_LINKER_FLAGS = "-lpthread"
 
@@ -64,10 +66,4 @@ cmake_lib(
         "//lib/z",
         "//lib/zstd",
     ],
-)
-
-bzl_library(
-    name = "package",
-    srcs = ["package.bzl"],
-    deps = ["//:http_archive"],
 )

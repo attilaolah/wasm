@@ -1,7 +1,9 @@
-load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//lib:defs.bzl", "lib_package")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
 
 package(default_visibility = ["//:__subpackages__"])
+
+lib_package()
 
 C_FLAGS = " ".join(["-Wno-{}".format(check) for check in [
     # keep sorted
@@ -40,10 +42,4 @@ cmake_lib(
         "//config:wasm": CACHE_ENTRIES_WASM,
         "//conditions:default": CACHE_ENTRIES,
     },
-)
-
-bzl_library(
-    name = "package",
-    srcs = ["package.bzl"],
-    deps = ["//:http_archive"],
 )

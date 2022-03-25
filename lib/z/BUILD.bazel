@@ -1,21 +1,15 @@
-load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
+load("//lib:defs.bzl", "lib_package")
 
 package(default_visibility = ["//:__subpackages__"])
 
+lib_package()
+
 configure_make_lib(
     name = "z",
-    configure_options = [
-        "--static",
-    ],
+    configure_options = ["--static"],
     env = {
         # Required by //tools/python.
         "CFLAGS": "-fPIC",
     },
-)
-
-bzl_library(
-    name = "package",
-    srcs = ["package.bzl"],
-    deps = ["//lib:http_archive"],
 )

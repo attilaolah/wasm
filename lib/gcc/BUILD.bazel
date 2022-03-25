@@ -1,9 +1,11 @@
-load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//lib:defs.bzl", "lib_package")
 load("//toolchains:utils.bzl", "no_error")
 load("//toolchains/make:configure.bzl", "configure_make_lib", "lib_source")
 load("//tools/archive_symbols:archive_symbols.bzl", "static_symbols")
 
 package(default_visibility = ["//lib:__subpackages__"])
+
+lib_package()
 
 configure_make_lib(
     name = "gomp",
@@ -28,10 +30,4 @@ configure_make_lib(
 static_symbols(
     name = "gcc_symbols",
     srcs = glob(["symbols/lib*.json"]),
-)
-
-bzl_library(
-    name = "package",
-    srcs = ["package.bzl"],
-    deps = ["//:http_archive"],
 )

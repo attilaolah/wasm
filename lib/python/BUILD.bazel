@@ -1,8 +1,10 @@
-load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//lib:defs.bzl", "lib_package")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
 load("//tools:version_info.bzl", "version_info")
 
 package(default_visibility = ["//:__subpackages__"])
+
+lib_package()
 
 # TODO: Missing optional dependencies:
 # - Tcl/Tk
@@ -47,12 +49,6 @@ config_setting(
     values = {
         "compilation_mode": "opt",
     },
-)
-
-bzl_library(
-    name = "package",
-    srcs = ["package.bzl"],
-    deps = ["//:http_archive"],
 )
 
 version_info(

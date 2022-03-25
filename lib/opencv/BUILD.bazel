@@ -1,5 +1,4 @@
-load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
-load("//lib:defs.bzl", "include_flags", "library_path", "link_flags")
+load("//lib:defs.bzl", "include_flags", "lib_package", "library_path", "link_flags")
 load("//toolchains:utils.bzl", "no_error")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
 load("//lib/jpegturbo:package.bzl", link_flags_jpegturbo = "link_flags")
@@ -9,6 +8,8 @@ load("//lib/webp:package.bzl", include_dir_webp = "include_dir", library_path_we
 load("//lib/zstd:package.bzl", link_flags_zstd = "link_flags")
 
 package(default_visibility = ["//:__subpackages__"])
+
+lib_package()
 
 C_FLAGS = include_flags(include_dir_openjpeg())
 
@@ -79,10 +80,4 @@ cmake_lib(
         "//lib/webp",
         "//lib/z",
     ],
-)
-
-bzl_library(
-    name = "package",
-    srcs = ["package.bzl"],
-    deps = ["//:http_archive"],
 )

@@ -1,9 +1,11 @@
-load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//lib:defs.bzl", "lib_package")
 load("//toolchains:utils.bzl", "no_error")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
 load(":package.bzl", "NAME")
 
 package(default_visibility = ["//:__subpackages__"])
+
+lib_package()
 
 cmake_lib(
     name = NAME,
@@ -18,10 +20,4 @@ cmake_lib(
         "ZSTD_BUILD_STATIC": True,
     },
     working_directory = "build/cmake",
-)
-
-bzl_library(
-    name = "package",
-    srcs = ["package.bzl"],
-    deps = ["//:http_archive"],
 )
