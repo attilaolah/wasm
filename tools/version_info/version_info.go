@@ -46,6 +46,7 @@ type VersionInfo struct {
 	Version         string   `json:"version,omitempty"`
 	UpstreamVersion string   `json:"upstream_version,omitempty"`
 	URLs            []string `json:"urls,omitempty"`
+	UpToDate        bool     `json:"up_to_date,omitempty"`
 }
 
 // GetVersion extracts the version from a single Starlark file.
@@ -144,6 +145,7 @@ func (v *VersionInfo) GetUpstreamVersion(url, regex string) error {
 
 		// TODO: Implement semantic-version based sorting.
 		v.UpstreamVersion = string(match[1])
+		v.UpToDate = v.Version == v.UpstreamVersion
 		break
 	}
 
