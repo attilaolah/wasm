@@ -6,7 +6,6 @@ load(
     _include_dir = "include_dir",
     _library_path = "library_path",
     _link_flags = "link_flags",
-    _repo_name = "repo_name",
 )
 
 NAME = "webp"

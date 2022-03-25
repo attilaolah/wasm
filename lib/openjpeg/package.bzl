@@ -1,11 +1,10 @@
 """Workspace rule for downloading package dependencies."""
 
-load("//:http_archive.bzl", "http_archive")
+load("//lib:http_archive.bzl", "http_archive")
 load(
     "//lib:defs.bzl",
     "major",
     "major_minor",
-    "repo_name",
     _include_dir = "include_dir",
     _library_path = "library_path",
 )
@@ -28,7 +27,7 @@ def library_path():
 
 def download():
     http_archive(
-        name = repo_name(NAME),
+        name = NAME,
         version = VERSION,
         urls = [URL],
         sha256 = SHA256,

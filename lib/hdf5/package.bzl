@@ -1,6 +1,6 @@
 """Workspace rule for downloading package dependencies."""
 
-load("//:http_archive.bzl", "http_archive")
+load("//lib:http_archive.bzl", "http_archive")
 
 VERSION = "1.12.0"
 
@@ -13,7 +13,7 @@ SHA256 = "a62dcb276658cb78e6795dd29bf926ed7a9bc4edf6e77025cd2c689a8f97c17a"
 
 def download():
     http_archive(
-        name = "lib_hdf5",
+        name = "hdf5",
         version = VERSION,
         urls = URLS,
         sha256 = SHA256,

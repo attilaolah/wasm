@@ -1,6 +1,6 @@
 """Workspace rule for downloading package dependencies."""
 
-load("//:http_archive.bzl", "http_archive")
+load("//lib:http_archive.bzl", "http_archive")
 
 VERSION = "0.4.0"
 
@@ -10,7 +10,7 @@ SHA256 = "f28359aeba12f30d73d9e4711ef356dc842886968112162bc73002645139c39c"
 
 def download():
     http_archive(
-        name = "lib_glog",
+        name = "glog",
         version = VERSION,
         urls = [URL],
         sha256 = SHA256,

@@ -1,6 +1,6 @@
 """Workspace rule for downloading package dependencies."""
 
-load("//:http_archive.bzl", "http_archive")
+load("//lib:http_archive.bzl", "http_archive")
 
 VERSION = "1.7"
 
@@ -10,7 +10,7 @@ SHA256 = "a5e6a0a9ab69f40f0f59332106532ca76918977a974e7004977a9498e3f11350"
 
 def download():
     http_archive(
-        name = "lib_deflate",
+        name = "deflate",
         version = VERSION,
         urls = [URL],
         sha256 = SHA256,

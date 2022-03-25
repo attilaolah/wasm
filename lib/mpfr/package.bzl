@@ -1,6 +1,6 @@
 """Workspace rule for downloading package dependencies."""
 
-load("//:http_archive.bzl", "http_archive")
+load("//lib:http_archive.bzl", "http_archive")
 
 VERSION = "4.1.0"
 
@@ -13,7 +13,7 @@ SHA256 = "0c98a3f1732ff6ca4ea690552079da9c597872d30e96ec28414ee23c95558a7f"
 
 def download():
     http_archive(
-        name = "lib_mpfr",
+        name = "mpfr",
         version = VERSION,
         urls = URLS,
         sha256 = SHA256,

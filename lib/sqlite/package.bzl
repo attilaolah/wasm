@@ -1,6 +1,6 @@
 """Workspace rule for downloading package dependencies."""
 
-load("//:http_archive.bzl", "http_archive")
+load("//lib:http_archive.bzl", "http_archive")
 
 VERSION = "3.35.5"
 
@@ -10,7 +10,7 @@ SHA256 = "f52b72a5c319c3e516ed7a92e123139a6e87af08a2dc43d7757724f6132e6db0"
 
 def download():
     http_archive(
-        name = "lib_sqlite",
+        name = "sqlite",
         version = VERSION,
         urls = [URL],
         sha256 = SHA256,

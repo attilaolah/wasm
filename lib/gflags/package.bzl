@@ -1,6 +1,6 @@
 """Workspace rule for downloading package dependencies."""
 
-load("//:http_archive.bzl", "http_archive")
+load("//lib:http_archive.bzl", "http_archive")
 
 VERSION = "2.2.2"
 
@@ -10,7 +10,7 @@ SHA256 = "34af2f15cf7367513b352bdcd2493ab14ce43692d2dcd9dfc499492966c64dcf"
 
 def download():
     http_archive(
-        name = "lib_gflags",
+        name = "gflags",
         version = VERSION,
         urls = [URL],
         sha256 = SHA256,

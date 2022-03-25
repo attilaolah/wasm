@@ -1,6 +1,6 @@
 """Workspace rule for downloading package dependencies."""
 
-load("//:http_archive.bzl", "http_archive")
+load("//lib:http_archive.bzl", "http_archive")
 
 VERSION = "1.11.1"
 
@@ -10,7 +10,7 @@ SHA256 = "a5564e1083f6af6a885431c1ee718bad77d11f117198b277557f8558fa461aaf"
 
 def download():
     http_archive(
-        name = "lib_vigra",
+        name = "vigra",
         version = VERSION,
         urls = [URL],
         sha256 = SHA256,

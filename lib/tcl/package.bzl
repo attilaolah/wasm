@@ -1,6 +1,6 @@
 """Workspace rule for downloading package dependencies."""
 
-load("//:http_archive.bzl", "http_archive")
+load("//lib:http_archive.bzl", "http_archive")
 
 VERSION = "8.6.11"
 
@@ -12,7 +12,7 @@ SHA256 = "8c0486668586672c5693d7d95817cb05a18c5ecca2f40e2836b9578064088258"
 
 def download():
     http_archive(
-        name = "lib_tcl",
+        name = "tcl",
         version = VERSION,
         urls = [URL],
         sha256 = SHA256,

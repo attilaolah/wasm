@@ -1,18 +1,17 @@
 """Workspace rule for downloading package dependencies."""
 
-load("//:http_archive.bzl", "http_archive")
+load("//lib:http_archive.bzl", "http_archive")
 load(
     "//lib:defs.bzl",
     _include_dir = "include_dir",
     _library_path = "library_path",
     _link_flags = "link_flags",
-    _repo_name = "repo_name",
 )
 
 NAME = "zstd"
 VERSION = "1.5.0"
 
-URL = "https://github.com/facebook/zstd/releases/download/v{version}/zstd-{version}.tar.gz"
+URL = "https://github.com/facebook/{name}/releases/download/v{version}/{name}-{version}.tar.gz"
 
 SHA256 = "5194fbfa781fcf45b98c5e849651aa7b3b0a008c6b72d4a0db760f3002291e94"
 
@@ -27,9 +26,9 @@ def link_flags():
 
 def download():
     http_archive(
-        name = _repo_name(NAME),
+        name = NAME,
         version = VERSION,
         urls = [URL],
         sha256 = SHA256,
-        strip_prefix = "zstd-{version}",
+        strip_prefix = "{name}-{version}",
     )

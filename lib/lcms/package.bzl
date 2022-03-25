@@ -1,6 +1,6 @@
 """Workspace rule for downloading package dependencies."""
 
-load("//:http_archive.bzl", "http_archive")
+load("//lib:http_archive.bzl", "http_archive")
 
 VERSION = "2.12"
 
@@ -10,7 +10,7 @@ SHA256 = "18663985e864100455ac3e507625c438c3710354d85e5cbb7cd4043e11fe10f5"
 
 def download():
     http_archive(
-        name = "lib_lcms",
+        name = "lcms",
         version = VERSION,
         urls = [URL],
         sha256 = SHA256,

@@ -1,6 +1,6 @@
 """Workspace rule for downloading package dependencies."""
 
-load("//:http_archive.bzl", "http_archive")
+load("//lib:http_archive.bzl", "http_archive")
 
 VERSION = "2.9.10"
 
@@ -10,7 +10,7 @@ SHA256 = "aafee193ffb8fe0c82d4afef6ef91972cbaf5feea100edc2f262750611b4be1f"
 
 def download():
     http_archive(
-        name = "lib_xml",
+        name = "xml",
         version = VERSION,
         urls = [URL],
         sha256 = SHA256,

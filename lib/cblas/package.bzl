@@ -1,6 +1,6 @@
 """Workspace rule for downloading package dependencies."""
 
-load("//:http_archive.bzl", "http_archive")
+load("//lib:http_archive.bzl", "http_archive")
 
 VERSION = "3.8.0"
 
@@ -10,7 +10,7 @@ SHA256 = "0f6354fd67fabd909baf57ced2ef84e962db58fae126e4f41b21dd4fec60a2a3"
 
 def download():
     http_archive(
-        name = "lib_cblas",
+        name = "cblas",
         version = VERSION,
         urls = [URL],
         sha256 = SHA256,
