@@ -5,7 +5,7 @@ load("//toolchains/cmake:cmake.bzl", "cmake_lib")
 package(default_visibility = ["//:__subpackages__"])
 
 # HDF4 is a very old code base with lots of warnings.
-# Since we pass -Werror, disable some wornings so the library would compile.
+# Since we pass -Werror, disable some warnings so the library would compile.
 C_FLAGS = no_error([
     # keep sorted
     "bitwise-op-parentheses",
