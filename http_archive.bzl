@@ -47,6 +47,8 @@ def http_archive(
     """
     args = {
         "name": name,
+        "uname": name.upper(),
+        "tname": name.title(),
         "version": version,
         "version-": version.replace(".", "-"),
         "version_": version.replace(".", "_"),

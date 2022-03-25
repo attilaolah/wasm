@@ -2,6 +2,7 @@
 
 load("//lib:http_archive.bzl", "http_archive")
 
+NAME = "suitesparse"
 VERSION = "5.9.0"
 METIS_VERSION = "5.1.0"
 
@@ -15,7 +16,7 @@ SHA256 = "7bdd4811f1cf0767c5fdb5e435817fdadee50b0acdb598f4882ae7b8291a7f24"
 
 def download():
     http_archive(
-        name = "suitesparse",
+        name = NAME,
         version = VERSION,
         urls = [URL],
         sha256 = SHA256,

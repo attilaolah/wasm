@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"path"
 	"path/filepath"
 	"sort"
 	"strings"
@@ -32,20 +33,24 @@ var (
 		"//:http_archive.bzl": {
 			"http_archive": nil,
 		},
-		"//toolchains:utils.bzl": {
-			"patch_files": nil,
-		},
 		"//lib:defs.bzl": {
 			"lib_name":      nil,
 			"repo_name":     nil,
 			"static_lib":    nil,
 			"include_dir":   nil,
+			"library_dir":   nil,
 			"library_path":  nil,
 			"include_flags": nil,
 			"link_flags":    nil,
 			"link_opts":     nil,
 			"major":         nil,
 			"major_minor":   nil,
+		},
+		"//lib:http_archive.bzl": {
+			"http_archive": nil,
+		},
+		"//toolchains:utils.bzl": {
+			"patch_files": nil,
 		},
 	}
 )
@@ -100,6 +105,7 @@ func main() {
 // VersionInfo holds info about the version.
 // TODO: Re-use VersionInfo from //tools/version_info!
 type VersionInfo struct {
+	name    string
 	version string
 	urls    []string
 }
@@ -107,6 +113,9 @@ type VersionInfo struct {
 // Expand replaces {versions} and friends in urls.
 func (v *VersionInfo) Expand() {
 	for i, url := range v.urls {
+		url = strings.ReplaceAll(url, "{name}", v.name)
+		url = strings.ReplaceAll(url, "{tname}", strings.Title(v.name))
+		url = strings.ReplaceAll(url, "{uname}", strings.ToUpper(v.name))
 		url = strings.ReplaceAll(url, "{version}", v.version)
 		url = strings.ReplaceAll(url, "{version-}", strings.ReplaceAll(v.version, ".", "-"))
 		url = strings.ReplaceAll(url, "{version_}", strings.ReplaceAll(v.version, ".", "_"))
@@ -177,19 +186,19 @@ func GetVersionInfos(pattern string) (map[string]VersionInfo, error) {
 }
 
 // GetVersion extracts the version from a single file.
-func GetVersionInfo(path string) (*VersionInfo, error) {
+func GetVersionInfo(p string) (*VersionInfo, error) {
 	t := starlark.Thread{
 		Load: func(t *starlark.Thread, module string) (starlark.StringDict, error) {
 			return modules[module], nil
 		},
 	}
-	globals, err := starlark.ExecFile(&t, path, nil, starlark.Universe)
+	globals, err := starlark.ExecFile(&t, p, nil, starlark.Universe)
 	if err != nil {
-		return nil, fmt.Errorf("failed to execute %q: %w", path, err)
+		return nil, fmt.Errorf("failed to execute %q: %w", p, err)
 	}
 	v, ok := globals["VERSION"]
 	if !ok {
-		return nil, fmt.Errorf("VERSION not found in %q", path)
+		return nil, fmt.Errorf("VERSION not found in %q", p)
 	}
 	version := strings.Trim(v.String(), `"`)
 
@@ -197,7 +206,7 @@ func GetVersionInfo(path string) (*VersionInfo, error) {
 	if v, ok = globals["URLS"]; ok {
 		list, ok := v.(*starlark.List)
 		if !ok {
-			return nil, fmt.Errorf("URLS is not a list in %q", path)
+			return nil, fmt.Errorf("URLS is not a list in %q", p)
 		}
 		i := list.Iterate()
 		var v starlark.Value
@@ -207,12 +216,13 @@ func GetVersionInfo(path string) (*VersionInfo, error) {
 		i.Done()
 	} else {
 		if v, ok = globals["URL"]; !ok {
-			return nil, fmt.Errorf("URLS or URL not found in %q", path)
+			return nil, fmt.Errorf("URLS or URL not found in %q", p)
 		}
 		urls = append(urls, strings.Trim(v.String(), `"`))
 	}
 
 	info := &VersionInfo{
+		name:    path.Base(path.Dir(p)),
 		version: version,
 		urls:    urls,
 	}

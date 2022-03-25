@@ -11,7 +11,7 @@ load(
 
 NAME = "openjpeg"
 VERSION = "2.4.0"
-URL = "https://github.com/uclouvain/openjpeg/archive/v{version}.tar.gz"
+URL = "https://github.com/uclouvain/{name}/archive/v{version}.tar.gz"
 SHA256 = "8702ba68b442657f11aaeb2b338443ca8d5fb95b0d845757968a7be31ef7f16d"
 
 def lname():
@@ -31,6 +31,6 @@ def download():
         version = VERSION,
         urls = [URL],
         sha256 = SHA256,
-        strip_prefix = "openjpeg-{version}",
+        strip_prefix = "{name}-{version}",
         patches = ["//lib/openjpeg:openjpeg.patch"],
     )

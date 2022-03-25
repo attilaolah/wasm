@@ -2,22 +2,23 @@
 
 load("//lib:http_archive.bzl", "http_archive")
 
+NAME = "hdf5"
 VERSION = "1.12.0"
 
 URLS = [
-    "https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-{versionmm}/hdf5-{version}/src/hdf5-{version}.tar.gz",
-    "https://hdf-wordpress-1.s3.amazonaws.com/wp-content/uploads/manual/HDF5/HDF5_{version_}/source/hdf5-{version}.tar.gz",
+    "https://support.hdfgroup.org/ftp/{uname}/releases/{name}-{versionmm}/{name}-{version}/src/{name}-{version}.tar.gz",
+    "https://hdf-wordpress-1.s3.amazonaws.com/wp-content/uploads/manual/{uname}/{uname}_{version_}/source/{name}-{version}.tar.gz",
 ]
 
 SHA256 = "a62dcb276658cb78e6795dd29bf926ed7a9bc4edf6e77025cd2c689a8f97c17a"
 
 def download():
     http_archive(
-        name = "hdf5",
+        name = NAME,
         version = VERSION,
         urls = URLS,
         sha256 = SHA256,
-        strip_prefix = "hdf5-{version}",
+        strip_prefix = "{name}-{version}",
         patch_cmds = [
             # Remove Emscripten-specific compile options.
             # Let Bazel specify the compile time options for everything.

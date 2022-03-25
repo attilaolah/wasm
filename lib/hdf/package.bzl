@@ -2,17 +2,18 @@
 
 load("//lib:http_archive.bzl", "http_archive")
 
+NAME = "hdf"
 VERSION = "4.2.15"
 
-URL = "https://support.hdfgroup.org/ftp/HDF/releases/HDF{version}/src/hdf-{version}.tar.gz"
+URL = "https://support.{name}group.org/ftp/{uname}/releases/{uname}{version}/src/{name}-{version}.tar.gz"
 
 SHA256 = "dbeeef525af7c2d01539906c28953f0fdab7dba603d1bc1ec4a5af60d002c459"
 
 def download():
     http_archive(
-        name = "hdf",
+        name = NAME,
         version = VERSION,
         urls = [URL],
         sha256 = SHA256,
-        strip_prefix = "hdf-{version}",
+        strip_prefix = "{name}-{version}",
     )

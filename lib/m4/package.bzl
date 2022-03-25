@@ -2,17 +2,18 @@
 
 load("//lib:http_archive.bzl", "http_archive")
 
+NAME = "m4"
 VERSION = "1.4.19"
 
-URL = "https://ftp.gnu.org/gnu/m4/m4-{version}.tar.xz"
+URL = "https://ftp.gnu.org/gnu/{name}/{name}-{version}.tar.xz"
 
 SHA256 = "63aede5c6d33b6d9b13511cd0be2cac046f2e70fd0a07aa9573a04a82783af96"
 
 def download():
     http_archive(
-        name = "m4",
+        name = NAME,
         version = VERSION,
         urls = [URL],
         sha256 = SHA256,
-        strip_prefix = "m4-{version}",
+        strip_prefix = "{name}-{version}",
     )

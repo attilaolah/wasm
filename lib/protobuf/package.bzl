@@ -2,17 +2,18 @@
 
 load("//lib:http_archive.bzl", "http_archive")
 
+NAME = "protobuf"
 VERSION = "3.19.4"
 
-URL = "https://github.com/protocolbuffers/protobuf/releases/download/v{version}/protobuf-cpp-{version}.tar.gz"
+URL = "https://github.com/protocolbuffers/{name}/releases/download/v{version}/{name}-cpp-{version}.tar.gz"
 
 SHA256 = "89ac31a93832e204db6d73b1e80f39f142d5747b290f17340adce5be5b122f94"
 
 def download():
     http_archive(
-        name = "protobuf",
+        name = NAME,
         version = VERSION,
         urls = [URL],
         sha256 = SHA256,
-        strip_prefix = "protobuf-{version}",
+        strip_prefix = "{name}-{version}",
     )
