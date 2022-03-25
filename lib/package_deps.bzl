@@ -61,7 +61,4 @@ PACKAGE_DEPS = [
     "//lib/xslt:package",
     "//lib/z:package",
     "//lib/zstd:package",
-    "//tools:package",
-    "//tools/emscripten:package",
-    "//tools/llvm:package",
 ]

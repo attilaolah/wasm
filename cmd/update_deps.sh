@@ -8,7 +8,7 @@ cat << EOF > "${package_deps}"
 PACKAGE_DEPS = [
 EOF
 
-bazel query 'filter("package", kind(bzl_library, //...))' \
+bazel query 'filter("package", kind(bzl_library, //lib/...))' \
   | grep -v "//lib:package" \
   | awk '{print "    \"" $0 "\","}' \
   >> "${package_deps}"
