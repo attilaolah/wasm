@@ -8,7 +8,7 @@ URL = "https://support.hdfgroup.org/ftp/HDF/releases/HDF{version}/src/hdf-{versi
 
 SHA256 = "dbeeef525af7c2d01539906c28953f0fdab7dba603d1bc1ec4a5af60d002c459"
 
-def download_hdf():
+def download():
     http_archive(
         name = "lib_hdf",
         version = VERSION,

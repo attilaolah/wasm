@@ -25,7 +25,7 @@ def library_path():
 def link_flags():
     return _link_flags(NAME)
 
-def download_webp():
+def download():
     http_archive(
         name = NAME,
         version = VERSION,

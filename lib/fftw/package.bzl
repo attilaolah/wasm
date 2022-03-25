@@ -8,7 +8,7 @@ URL = "http://www.fftw.org/fftw-{version}.tar.gz"
 
 SHA256 = "bf2c7ce40b04ae811af714deb512510cc2c17b9ab9d6ddcf49fe4487eea7af3d"
 
-def download_fftw():
+def download():
     http_archive(
         name = "lib_fftw",
         version = VERSION,

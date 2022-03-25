@@ -8,7 +8,7 @@ URL = "https://gitlab.com/libeigen/eigen/-/archive/{version}/eigen-{version}.tar
 
 SHA256 = "0fa5cafe78f66d2b501b43016858070d52ba47bd9b1016b0165a7b8e04675677"
 
-def download_eigen():
+def download():
     http_archive(
         name = "lib_eigen",
         version = VERSION,

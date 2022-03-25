@@ -8,7 +8,7 @@ URL = "https://downloads.sourceforge.net/project/lcms/lcms/{version}/lcms2-{vers
 
 SHA256 = "18663985e864100455ac3e507625c438c3710354d85e5cbb7cd4043e11fe10f5"
 
-def download_lcms():
+def download():
     http_archive(
         name = "lib_lcms",
         version = VERSION,

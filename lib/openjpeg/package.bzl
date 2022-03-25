@@ -26,7 +26,7 @@ def include_dir():
 def library_path():
     return _library_path(NAME, lname())
 
-def download_openjpeg():
+def download():
     http_archive(
         name = repo_name(NAME),
         version = VERSION,

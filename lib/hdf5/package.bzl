@@ -11,7 +11,7 @@ URLS = [
 
 SHA256 = "a62dcb276658cb78e6795dd29bf926ed7a9bc4edf6e77025cd2c689a8f97c17a"
 
-def download_hdf5():
+def download():
     http_archive(
         name = "lib_hdf5",
         version = VERSION,

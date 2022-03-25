@@ -8,7 +8,7 @@ URL = "https://download.osgeo.org/proj/proj-{version}.tar.gz"
 
 SHA256 = "e0463a8068898785ca75dd49a261d3d28b07d0a88f3b657e8e0089e16a0375fa"
 
-def download_proj():
+def download():
     http_archive(
         name = "lib_proj",
         version = VERSION,

@@ -8,7 +8,7 @@ URL = "https://downloads.sourceforge.net/project/libtirpc/libtirpc/{version}/lib
 
 SHA256 = "245895caf066bec5e3d4375942c8cb4366adad184c29c618d97f724ea309ee17"
 
-def download_tirpc():
+def download():
     http_archive(
         name = "lib_tirpc",
         version = VERSION,

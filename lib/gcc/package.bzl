@@ -11,7 +11,7 @@ URLS = [
 
 SHA256 = "b8dd4368bb9c7f0b98188317ee0254dd8cc99d1e3a18d0ff146c855fe16c1d8c"
 
-def download_gcc():
+def download():
     http_archive(
         name = "lib_gcc",
         version = VERSION,

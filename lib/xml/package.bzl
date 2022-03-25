@@ -8,7 +8,7 @@ URL = "http://xmlsoft.org/sources/libxml2-{version}.tar.gz"
 
 SHA256 = "aafee193ffb8fe0c82d4afef6ef91972cbaf5feea100edc2f262750611b4be1f"
 
-def download_xml():
+def download():
     http_archive(
         name = "lib_xml",
         version = VERSION,

@@ -8,7 +8,7 @@ URL = "https://boostorg.jfrog.io/ui/api/v1/download?repoKey=main&path=release/{v
 
 SHA256 = "5347464af5b14ac54bb945dc68f1dd7c56f0dad7262816b956138fc53bcc0131"
 
-def download_boost():
+def download():
     http_archive(
         name = "lib_boost",
         version = VERSION,

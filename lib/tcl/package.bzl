@@ -10,7 +10,7 @@ URL = "https://downloads.sourceforge.net/tcl/tcl{version}-src.tar.gz"
 
 SHA256 = "8c0486668586672c5693d7d95817cb05a18c5ecca2f40e2836b9578064088258"
 
-def download_tcl():
+def download():
     http_archive(
         name = "lib_tcl",
         version = VERSION,

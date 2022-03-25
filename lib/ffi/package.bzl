@@ -8,7 +8,7 @@ URL = "https://github.com/libffi/libffi/releases/download/v{version}/libffi-{ver
 
 SHA256 = "72fba7922703ddfa7a028d513ac15a85c8d54c8d67f55fa5a4802885dc652056"
 
-def download_ffi():
+def download():
     http_archive(
         name = "lib_ffi",
         version = VERSION,

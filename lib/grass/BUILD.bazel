@@ -3,6 +3,7 @@ load("//lib:defs.bzl", "major_minor")
 load("//toolchains:utils.bzl", "no_error", "path")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
 load(":configure.bzl", "configure_sed")
+load(":package.bzl", "VERSION")
 
 package(default_visibility = ["//:__subpackages__"])
 

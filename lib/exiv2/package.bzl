@@ -8,7 +8,7 @@ URL = "https://github.com/Exiv2/exiv2/releases/download/v{version}/exiv2-{versio
 
 SHA256 = "35a58618ab236a901ca4928b0ad8b31007ebdc0386d904409d825024e45ea6e2"
 
-def download_exiv2():
+def download():
     http_archive(
         name = "lib_exiv2",
         version = VERSION,

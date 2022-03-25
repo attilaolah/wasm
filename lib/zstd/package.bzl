@@ -25,7 +25,7 @@ def library_path():
 def link_flags():
     return _link_flags(NAME)
 
-def download_zstd():
+def download():
     http_archive(
         name = _repo_name(NAME),
         version = VERSION,

@@ -21,7 +21,7 @@ def lname():
 def link_flags():
     return _link_flags(lname(), _library_dir(NAME))
 
-def download_jpegturbo():
+def download():
     http_archive(
         name = NAME,
         version = VERSION,

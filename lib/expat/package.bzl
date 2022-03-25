@@ -8,7 +8,7 @@ URL = "https://github.com/libexpat/libexpat/releases/download/R_{version_}/expat
 
 SHA256 = "5dfe538f8b5b63f03e98edac520d7d9a6a4d22e482e5c96d4d06fcc5485c25f2"
 
-def download_expat():
+def download():
     http_archive(
         name = "lib_expat",
         version = VERSION,

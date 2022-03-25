@@ -8,7 +8,7 @@ URL = "https://www.bytereef.org/software/mpdecimal/releases/mpdecimal-{version}.
 
 SHA256 = "9f9cd4c041f99b5c49ffb7b59d9f12d95b683d88585608aa56a6307667b2b21f"
 
-def download_mpdecimal():
+def download():
     http_archive(
         name = "lib_mpdecimal",
         version = VERSION,

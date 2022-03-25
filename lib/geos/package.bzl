@@ -8,7 +8,7 @@ URL = "https://github.com/libgeos/geos/archive/{version}.tar.gz"
 
 SHA256 = "e9e20e83572645ac2af0af523b40a404627ce74b3ec99727754391cdf5b23645"
 
-def download_geos():
+def download():
     http_archive(
         name = "lib_geos",
         version = VERSION,

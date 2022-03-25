@@ -8,7 +8,7 @@ URL = "https://github.com/OSGeo/libgeotiff/releases/download/{version}/libgeotif
 
 SHA256 = "9311017e5284cffb86f2c7b7a9df1fb5ebcdc61c30468fb2e6bca36e4272ebca"
 
-def download_geotiff():
+def download():
     http_archive(
         name = "lib_geotiff",
         version = VERSION,

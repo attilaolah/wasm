@@ -13,7 +13,7 @@ URL = "https://github.com/DrTimothyAldenDavis/SuiteSparse/archive/v{version}.tar
 
 SHA256 = "7bdd4811f1cf0767c5fdb5e435817fdadee50b0acdb598f4882ae7b8291a7f24"
 
-def download_suitesparse():
+def download():
     http_archive(
         name = "lib_suitesparse",
         version = VERSION,

@@ -8,7 +8,7 @@ URL = "https://grass.osgeo.org/grass78/source/grass-{version}.tar.gz"
 
 SHA256 = "a359bb665524ecccb643335d70f5436b1c84ffb6a0e428b78dffebacd983ff37"
 
-def download_grass():
+def download():
     http_archive(
         name = "lib_grass",
         version = VERSION,

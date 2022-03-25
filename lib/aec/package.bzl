@@ -8,7 +8,7 @@ URL = "https://gitlab.dkrz.de/k202009/libaec/uploads/ea0b7d197a950b0c110da8dfdec
 
 SHA256 = "f2b1b232083bd8beaf8a54a024225de3dd72a673a9bcdf8c3ba96c39483f4309"
 
-def download_aec():
+def download():
     http_archive(
         name = "lib_aec",
         version = VERSION,

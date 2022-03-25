@@ -8,7 +8,7 @@ URL = "https://www.openssl.org/source/openssl-{version}.tar.gz"
 
 SHA256 = "892a0875b9872acd04a9fde79b1f943075d5ea162415de3047c327df33fbaee5"
 
-def download_openssl():
+def download():
     http_archive(
         name = "lib_openssl",
         version = VERSION,

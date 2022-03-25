@@ -8,7 +8,7 @@ URL = "https://github.com/google/glog/archive/v{version}.tar.gz"
 
 SHA256 = "f28359aeba12f30d73d9e4711ef356dc842886968112162bc73002645139c39c"
 
-def download_glog():
+def download():
     http_archive(
         name = "lib_glog",
         version = VERSION,

@@ -8,7 +8,7 @@ URL = "https://sourceware.org/pub/bzip2/bzip2-{version}.tar.gz"
 
 SHA256 = "ab5a03176ee106d3f0fa90e381da478ddae405918153cca248e682cd0c4a2269"
 
-def download_bz2():
+def download():
     http_archive(
         name = "lib_bz2",
         version = VERSION,

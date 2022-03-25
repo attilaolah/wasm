@@ -8,7 +8,7 @@ URL = "https://downloads.sourceforge.net/project/giflib/giflib-{version}.tar.gz"
 
 SHA256 = "31da5562f44c5f15d63340a09a4fd62b48c45620cd302f77a6d9acf0077879bd"
 
-def download_gif():
+def download():
     http_archive(
         name = "lib_gif",
         version = VERSION,

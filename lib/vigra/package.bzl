@@ -8,7 +8,7 @@ URL = "https://github.com/ukoethe/vigra/releases/download/Version-{version-}/vig
 
 SHA256 = "a5564e1083f6af6a885431c1ee718bad77d11f117198b277557f8558fa461aaf"
 
-def download_vigra():
+def download():
     http_archive(
         name = "lib_vigra",
         version = VERSION,
