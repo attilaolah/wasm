@@ -1,6 +1,7 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("//toolchains:utils.bzl", "no_error")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
+load("//tools/write_me:write_me.bzl", "write_me")
 
 package(default_visibility = ["//:__subpackages__"])
 
@@ -20,6 +21,11 @@ configure_make_lib(
         # keep sorted
         "unused-but-set-variable",
     ])},
+)
+
+write_me(
+    name = "write_me",
+    deps = [":lzma_symbols"],
 )
 
 bzl_library(
