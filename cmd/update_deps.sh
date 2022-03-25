@@ -9,6 +9,7 @@ PACKAGE_DEPS = [
 EOF
 
 bazel query 'filter("package", kind(bzl_library, //...))' \
+  | grep -v "//lib:package" \
   | awk '{print "    \"" $0 "\","}' \
   >> "${package_deps}"
 

@@ -1,7 +1,6 @@
 # AUTO-GENERATED FILE, DO NOT EDIT!
 # To update it, run: bazel run //cmd:update_deps
 PACKAGE_DEPS = [
-    "//lib:package",
     "//lib/aec:package",
     "//lib/bison:package",
     "//lib/boost:package",
