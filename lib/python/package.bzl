@@ -3,11 +3,11 @@
 load("//lib:http_archive.bzl", "http_archive")
 
 NAME = "python"
-VERSION = "3.9.5"
+VERSION = "3.10.4"
 
 URL = "https://www.{name}.org/ftp/{name}/{version}/{tname}-{version}.tar.xz"
 
-SHA256 = "0c5a140665436ec3dbfbb79e2dfb6d192655f26ef4a29aeffcb6d1820d716d83"
+SHA256 = "80bf925f571da436b35210886cf79f6eb5fa5d6c571316b73568343451f77a19"
 
 def download():
     http_archive(
