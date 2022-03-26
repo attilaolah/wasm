@@ -26,13 +26,13 @@ toolchain, pass `--cpu=wasm32`. Pass `-c opt` for an optimised build.
 
 | Build Label | Version |
 |-------------|---------|
-[`//lib/aec`](https://github.com/attilaolah/wasm/blob/main/lib/aec/BUILD.bazel) | 1.0.4 [🔗](https://gitlab.dkrz.de/k202009/libaec/uploads/ea0b7d197a950b0c110da8dfdecbb71f/libaec-1.0.4.tar.gz)
+[`//lib/aec`](https://github.com/attilaolah/wasm/blob/main/lib/aec/BUILD.bazel) | 1.0.6 [🔗](https://gitlab.dkrz.de/k202009/libaec/-/archive/v1.0.6/libaec-v1.0.6.tar.bz2)
 [`//lib/bison`](https://github.com/attilaolah/wasm/blob/main/lib/bison/BUILD.bazel) | 3.7.6 [🔗](https://ftp.gnu.org/gnu/bison/bison-3.7.6.tar.xz)
 [`//lib/boost`](https://github.com/attilaolah/wasm/blob/main/lib/boost/BUILD.bazel) | 1.77.0 [🔗](https://boostorg.jfrog.io/ui/api/v1/download?repoKey=main&path=release/1.77.0/source/boost_1_77_0.tar.gz)
 [`//lib/bz2`](https://github.com/attilaolah/wasm/blob/main/lib/bz2/BUILD.bazel) | 1.0.8 [🔗](https://sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz)
 [`//lib/cblas`](https://github.com/attilaolah/wasm/blob/main/lib/cblas/BUILD.bazel) | 3.8.0 [🔗](http://www.netlib.org/blas/blast-forum/cblas.tgz)
 [`//lib/ceres`](https://github.com/attilaolah/wasm/blob/main/lib/ceres/BUILD.bazel) | 1.14.0 [🔗](https://github.com/ceres-solver/ceres-solver/archive/1.14.0.tar.gz)
-[`//lib/curl`](https://github.com/attilaolah/wasm/blob/main/lib/curl/BUILD.bazel) | 7.76.1 [🔗](https://curl.se/download/curl-7.76.1.tar.xz)
+[`//lib/curl`](https://github.com/attilaolah/wasm/blob/main/lib/curl/BUILD.bazel) | 7.82.0 [🔗](https://curl.se/download/curl-7.82.0.tar.xz)
 [`//lib/deflate`](https://github.com/attilaolah/wasm/blob/main/lib/deflate/BUILD.bazel) | 1.7 [🔗](https://github.com/ebiggers/libdeflate/archive/v1.7.tar.gz)
 [`//lib/eigen`](https://github.com/attilaolah/wasm/blob/main/lib/eigen/BUILD.bazel) | 3.3.9 [🔗](https://gitlab.com/libeigen/eigen/-/archive/3.3.9/eigen-3.3.9.tar.bz2)
 [`//lib/exiv2`](https://github.com/attilaolah/wasm/blob/main/lib/exiv2/BUILD.bazel) | 0.27.5 [🔗](https://github.com/Exiv2/exiv2/releases/download/v0.27.5/exiv2-0.27.5-Source.tar.gz)
@@ -66,12 +66,12 @@ toolchain, pass `--cpu=wasm32`. Pass `-c opt` for an optimised build.
 [`//lib/oniguruma`](https://github.com/attilaolah/wasm/blob/main/lib/oniguruma/BUILD.bazel) | 6.9.6 [🔗](https://github.com/kkos/oniguruma/releases/download/v6.9.6/onig-6.9.6.tar.gz)
 [`//lib/opencv`](https://github.com/attilaolah/wasm/blob/main/lib/opencv/BUILD.bazel) | 4.5.5 [🔗](https://github.com/opencv/opencv/archive/4.5.5.zip)
 [`//lib/openjpeg`](https://github.com/attilaolah/wasm/blob/main/lib/openjpeg/BUILD.bazel) | 2.4.0 [🔗](https://github.com/uclouvain/openjpeg/archive/v2.4.0.tar.gz)
-[`//lib/openssl`](https://github.com/attilaolah/wasm/blob/main/lib/openssl/BUILD.bazel) | 1.1.1k [🔗](https://www.openssl.org/source/openssl-1.1.1k.tar.gz)
+[`//lib/openssl`](https://github.com/attilaolah/wasm/blob/main/lib/openssl/BUILD.bazel) | 1.1.1n [🔗](https://www.openssl.org/source/openssl-1.1.1n.tar.gz)
 [`//lib/pano13`](https://github.com/attilaolah/wasm/blob/main/lib/pano13/BUILD.bazel) | 2.9.19 [🔗](https://download.sourceforge.net/panotools/libpano13-2.9.19.tar.gz)
 [`//lib/png`](https://github.com/attilaolah/wasm/blob/main/lib/png/BUILD.bazel) | 1.6.37 [🔗](https://downloads.sourceforge.net/libpng/libpng-1.6.37.tar.gz)
 [`//lib/proj`](https://github.com/attilaolah/wasm/blob/main/lib/proj/BUILD.bazel) | 8.0.1 [🔗](https://download.osgeo.org/proj/proj-8.0.1.tar.gz)
 [`//lib/protobuf`](https://github.com/attilaolah/wasm/blob/main/lib/protobuf/BUILD.bazel) | 3.19.4 [🔗](https://github.com/protocolbuffers/protobuf/releases/download/v3.19.4/protobuf-cpp-3.19.4.tar.gz)
-[`//lib/python`](https://github.com/attilaolah/wasm/blob/main/lib/python/BUILD.bazel) | 3.9.5 [🔗](https://www.python.org/ftp/python/3.9.5/Python-3.9.5.tar.xz)
+[`//lib/python`](https://github.com/attilaolah/wasm/blob/main/lib/python/BUILD.bazel) | 3.10.4 [🔗](https://www.python.org/ftp/python/3.10.4/Python-3.10.4.tar.xz)
 [`//lib/readline`](https://github.com/attilaolah/wasm/blob/main/lib/readline/BUILD.bazel) | 8.0 [🔗](https://ftp.gnu.org/gnu/readline/readline-8.0.tar.gz)
 [`//lib/sdl`](https://github.com/attilaolah/wasm/blob/main/lib/sdl/BUILD.bazel) | 2.0.20 [🔗](https://www.libsdl.org/release/SDL2-2.0.20.tar.gz)
 [`//lib/sqlite`](https://github.com/attilaolah/wasm/blob/main/lib/sqlite/BUILD.bazel) | 3.35.5 [🔗](https://www.sqlite.org/2021/sqlite-autoconf-3350500.tar.gz)
@@ -92,7 +92,7 @@ toolchain, pass `--cpu=wasm32`. Pass `-c opt` for an optimised build.
 
 | Build Label | Version |
 |-------------|---------|
-[`//tools/emscripten`](https://github.com/attilaolah/wasm/blob/main/tools/emscripten/BUILD.bazel) | 2.0.24 [🔗](https://github.com/emscripten-core/emsdk/archive/2.0.24.tar.gz)
+[`//tools/emscripten`](https://github.com/attilaolah/wasm/blob/main/tools/emscripten/BUILD.bazel) | 3.1.8 [🔗](https://github.com/emscripten-core/emscripten/archive/refs/tags/3.1.8.tar.gz)
 [`//tools/llvm`](https://github.com/attilaolah/wasm/blob/main/tools/llvm/BUILD.bazel) | 12.0.0 [🔗](https://github.com/llvm/llvm-project/releases/download/llvmorg-12.0.0/clang+llvm-12.0.0-x86_64-linux-gnu-ubuntu-20.04.tar.xz)
 
 
