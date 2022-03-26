@@ -1,4 +1,4 @@
-load("//lib:defs.bzl", "include_flags", "lib_package", "library_path", "link_flags")
+load("//lib:defs.bzl", "include_flags", "lib_package", "library_path", "link_flags", "static_lib")
 load("//toolchains:utils.bzl", "no_error")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
 load("//lib/jpegturbo:package.bzl", link_flags_jpegturbo = "link_flags")
@@ -6,6 +6,7 @@ load("//lib/openjpeg:package.bzl", include_dir_openjpeg = "include_dir", library
 load("//lib/lzma:package.bzl", link_flags_lzma = "link_flags")
 load("//lib/webp:package.bzl", include_dir_webp = "include_dir", library_path_webp = "library_path", link_flags_webp = "link_flags")
 load("//lib/zstd:package.bzl", link_flags_zstd = "link_flags")
+load(":package.bzl", "NAME")
 
 package(default_visibility = ["//:__subpackages__"])
 
@@ -21,7 +22,7 @@ EXE_LINKER_FLAGS_RELEASE = " ".join([
 ])
 
 cmake_lib(
-    name = "opencv",
+    name = NAME,
     cache_entries = {
         "BUILD_SHARED_LIBS": False,
         "INSTALL_CREATE_DISTRIB": True,
@@ -51,7 +52,7 @@ cmake_lib(
         "CMAKE_EXE_LINKER_FLAGS_RELEASE": EXE_LINKER_FLAGS_RELEASE,
     },
     out_static_libs = [
-        "libopencv_{}.a".format(lib)
+        static_lib("_".join((NAME, lib)))
         for lib in [
             # keep sorted
             "calib3d",
