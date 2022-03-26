@@ -40,17 +40,16 @@ def _version_update_impl(ctx):
     for version_spec in ctx.attr.version_specs:
         version_specs += version_spec[VersionInfo].version_infos.to_list()
 
-    updater_cmd = _UPDATER_CMD.format(
-        package_bzl = package_bzl.path,
-        version_specs = " ".join([v.path for v in version_specs]),
-        jq = ctx.executable._jq.path,
-    )
-
     executable = ctx.actions.declare_file(ctx.label.name)
-    ctx.actions.write(
+    ctx.actions.expand_template(
+        template = ctx.file._template,
         output = executable,
-        content = updater_cmd,
         is_executable = True,
+        substitutions = {
+            "${PACKAGE_BZL}": package_bzl.path,
+            "${VERSION_SPECS}": " ".join([v.path for v in version_specs]),
+            "${JQ}": ctx.executable._jq.path,
+        },
     )
 
     return [DefaultInfo(
@@ -95,6 +94,10 @@ version_update = rule(
             doc = "Auto-generated VersionInfo JSON file (version.json).",
             providers = [VersionInfo],
         ),
+        "_template": attr.label(
+            allow_single_file = [".sh"],
+            default = "//tools:version_update.sh",
+        ),
         "_jq": attr.label(
             default = "//tools:jq",
             executable = True,
@@ -102,37 +105,3 @@ version_update = rule(
         ),
     },
 )
-
-_UPDATER_CMD = r"""
-jq="{jq}"
-package_bzl="{package_bzl}"
-version_specs=({version_specs})
-
-echo "Updating ${{package_bzl}}:"
-
-cd "${{BUILD_WORKSPACE_DIRECTORY}}"
-for spec in ${{version_specs[@]}}; do
-  up_to_date=$("${{jq}}" -r '.up_to_date // false' < "${{spec}}")
-  "${{jq}}" . < "${{spec}}"
-  if [ "${{up_to_date}}" == "true" ]; then
-    continue
-  fi
-
-  version="$("${{jq}}" -r .version < "${{spec}}")"
-  upstream_version="$("${{jq}}" -r .upstream_version < "${{spec}}")"
-  url="$("${{jq}}" -r .urls[0] < "${{spec}}")"
-  url="$(sed "s/${{version}}/${{upstream_version}}/g" <<< "${{url}}")"
-  tmp="$(mktemp)"
-
-  curl "${{url}}" --output "${{tmp}}" --silent
-
-  checksum="$(sha256sum "${{tmp}}" | awk '{{ print $1 }}')"
-
-  sed -i "${{package_bzl}}" \
-    -e "s/VERSION = \"${{version}}\"/VERSION = \"${{upstream_version}}\"/"
-  sed -i "${{package_bzl}}" \
-    -e "s/SHA256 = \".*\"/SHA256 = \"${{checksum}}\"/"
-done
-
-echo "Done!"
-"""
