@@ -3,7 +3,10 @@ load("//toolchains/make:configure.bzl", "configure_make_lib")
 
 package(default_visibility = ["//:__subpackages__"])
 
-lib_package()
+lib_package(
+    version_regex = r">openssl-([^<]*)\.tar\.gz<",
+    version_url = "https://www.openssl.org/source",
+)
 
 CONFIGURE_OPTIONS = [
     # Disable cross-compile prefix.
