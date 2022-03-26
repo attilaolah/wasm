@@ -3,11 +3,11 @@
 load("//lib:http_archive.bzl", "http_archive")
 
 NAME = "curl"
-VERSION = "7.76.1"
+VERSION = "7.82.0"
 
 URL = "https://{name}.se/download/{name}-{version}.tar.xz"
 
-SHA256 = "64bb5288c39f0840c07d077e30d9052e1cbb9fa6c2dc52523824cc859e679145"
+SHA256 = "0aaa12d7bd04b0966254f2703ce80dd5c38dbbd76af0297d3d690cdce58a583c"
 
 def download():
     http_archive(

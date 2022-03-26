@@ -9,6 +9,20 @@ VersionInfo = provider(
     },
 )
 
+def version_info(version_url, version_regex, rule_name = "version", package_bzl = ":package"):
+    """Convenience macro for creating the version info & updater rules."""
+    _version_info(
+        name = rule_name,
+        package_bzl = package_bzl,
+        version_url = version_url,
+        version_regex = version_regex,
+    )
+    _version_update(
+        name = rule_name + "_update",
+        package_bzl = package_bzl,
+        version_specs = [":" + rule_name],
+    )
+
 def _version_info_impl(ctx):
     package_bzl = ctx.attr.package_bzl[StarlarkLibraryInfo].srcs[0]
 
@@ -57,7 +71,7 @@ def _version_update_impl(ctx):
         runfiles = ctx.runfiles([ctx.executable._jq] + version_specs),
     )]
 
-version_info = rule(
+_version_info = rule(
     implementation = _version_info_impl,
     attrs = {
         "package_bzl": attr.label(
@@ -81,7 +95,7 @@ version_info = rule(
     },
 )
 
-version_update = rule(
+_version_update = rule(
     implementation = _version_update_impl,
     executable = True,
     attrs = {

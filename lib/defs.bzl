@@ -1,9 +1,10 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//tools:version_info.bzl", "version_info")
 
 # Common prefix for all dependencies:
 EXT_BUILD_DEPS = "${EXT_BUILD_DEPS}"
 
-def lib_package():
+def lib_package(version_url = None, version_regex = None):
     """Common package contents for most packages under //lib."""
     bzl_library(
         name = "package",
@@ -13,6 +14,11 @@ def lib_package():
             "//lib:http_archive",
         ],
     )
+    if version_url != None and version_regex != None:
+        version_info(
+            version_url = version_url,
+            version_regex = version_regex,
+        )
 
 def lib_name(library):
     """Generate a consistent library name."""

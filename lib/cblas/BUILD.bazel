@@ -1,10 +1,12 @@
 load("//lib:defs.bzl", "lib_package")
 load("//toolchains/make:make.bzl", "make_lib")
-load("//tools:version_info.bzl", "version_info")
 
 package(default_visibility = ["//:__subpackages__"])
 
-lib_package()
+lib_package(
+    version_regex = r">REFERENCE BLAS Version (.*)<",
+    version_url = "https://www.netlib.org/blas/",
+)
 
 # TODO: Add required CFLAGS & friends.
 
@@ -24,11 +26,4 @@ make_lib(
     build_data = ["//tools/llvm:flang_runtime"],
     postfix_script = 'cp -a "${EXT_BUILD_ROOT}/external/lib_cblas/lib/libcblas.a" "${INSTALLDIR}/lib"',
     targets = ["alllib"],
-)
-
-version_info(
-    name = "version",
-    package_bzl = ":package",
-    version_regex = r">REFERENCE BLAS Version (.*)<",
-    version_url = "https://www.netlib.org/blas/",
 )

@@ -1,10 +1,12 @@
 load("//lib:defs.bzl", "lib_package")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
-load("//tools:version_info.bzl", "version_info")
 
 package(default_visibility = ["//:__subpackages__"])
 
-lib_package()
+lib_package(
+    version_regex = r">Download Python ([^<]*)</a>",
+    version_url = "https://www.python.org/downloads/",
+)
 
 # TODO: Missing optional dependencies:
 # - Tcl/Tk
@@ -49,11 +51,4 @@ config_setting(
     values = {
         "compilation_mode": "opt",
     },
-)
-
-version_info(
-    name = "version",
-    package_bzl = ":package",
-    version_regex = r">Download Python ([^<]*)</a>",
-    version_url = "https://www.python.org/downloads/",
 )
