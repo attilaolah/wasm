@@ -57,8 +57,8 @@ def http_archive(
     if format_kwargs != None:
         args.update(format_kwargs)
 
-    args.setdefault('tname', args['name'].title())
-    args.setdefault('uname', args['name'].upper())
+    args.setdefault("tname", args["name"].title())
+    args.setdefault("uname", args["name"].upper())
 
     if strip_prefix != None:
         strip_prefix = strip_prefix.format(**args)
