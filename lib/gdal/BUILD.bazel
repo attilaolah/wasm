@@ -9,6 +9,7 @@ lib_package(
     version_url = "https://gdal.org/download.html",
 )
 
+# TODO: Configure fails, looking for libaec.so.0!
 LDFLAGS = ldflags([
     # keep sorted
     "aec",
