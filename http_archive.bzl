@@ -52,6 +52,7 @@ def http_archive(
         "version_": version.replace(".", "_"),
         "versionm": version.split(".")[0],
         "versionmm": ".".join(version.split(".")[:2]),
+        "versionmmx": "".join(version.split(".")[:2]),
     }
 
     if format_kwargs != None:

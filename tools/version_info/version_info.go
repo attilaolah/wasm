@@ -106,10 +106,13 @@ func (v *VersionInfo) Expand() {
 		url = strings.ReplaceAll(url, "{versionm}", strings.Split(v.Version, ".")[0])
 
 		vmm := v.Version
+		vmmx := v.Version
 		if parts := strings.Split(v.Version, "."); len(parts) > 1 {
 			vmm = strings.Join(parts[:2], ".")
+			vmmx = strings.Join(parts[:2], "")
 		}
 		url = strings.ReplaceAll(url, "{versionmm}", vmm)
+		url = strings.ReplaceAll(url, "{versionmmx}", vmmx)
 
 		v.URLs[i] = url
 	}
