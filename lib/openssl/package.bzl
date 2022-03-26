@@ -3,11 +3,11 @@
 load("//lib:http_archive.bzl", "http_archive")
 
 NAME = "openssl"
-VERSION = "1.1.1k"
+VERSION = "1.1.1n"
 
 URL = "https://www.{name}.org/source/{name}-{version}.tar.gz"
 
-SHA256 = "892a0875b9872acd04a9fde79b1f943075d5ea162415de3047c327df33fbaee5"
+SHA256 = "40dceb51a4f6a5275bde0e6bf20ef4b91bfc32ed57c0552e2e8e15463372b17a"
 
 def download():
     http_archive(
