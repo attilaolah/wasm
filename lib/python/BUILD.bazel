@@ -1,5 +1,6 @@
-load("//lib:defs.bzl", "lib_package")
+load("//lib:defs.bzl", "dep_dir", "lib_package", "static_lib")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
+load(":package.bzl", "lname")
 
 package(default_visibility = ["//:__subpackages__"])
 
@@ -14,7 +15,7 @@ lib_package(
 CONFIGURE_OPTIONS = [
     # keep sorted
     "--disable-shared",
-    '--with-openssl="${EXT_BUILD_DEPS}/openssl_lib"',
+    '--with-openssl="{}"'.format(dep_dir("openssl")),
     "--with-system-libmpdec",
 ]
 
@@ -31,7 +32,7 @@ configure_make_lib(
         "//config:wasm": [],
         "//conditions:default": ["python3"],
     }),
-    out_static_libs = ["libpython3.9.a"],
+    out_static_libs = [static_lib(lname())],
     deps = [
         "//lib/ffi",
         "//lib/mpdecimal",

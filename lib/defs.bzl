@@ -32,25 +32,29 @@ def static_lib(library):
     """Generate the static library name."""
     return "lib{library}.a".format(library = library)
 
-def include_dir(library, extra_dirs = None):
+def dep_dir(library):
     return "/".join([
         EXT_BUILD_DEPS,
         lib_name(library),
+    ])
+
+def include_dir(library, extra_dirs = None):
+    return "/".join([
+        dep_dir(library),
         "include",
     ] + (extra_dirs or []))
 
 def library_dir(library):
-    return "/".join((
-        EXT_BUILD_DEPS,
-        lib_name(library),
+    return "/".join([
+        dep_dir(library),
         "lib",
-    ))
+    ])
 
 def library_path(library, static_lib_name = None):
-    return "/".join((
+    return "/".join([
         library_dir(library),
         static_lib(static_lib_name or library),
-    ))
+    ])
 
 def include_flags(include_dir):
     return "-I{include_dir}".format(include_dir = include_dir)
