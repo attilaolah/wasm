@@ -1,0 +1,21 @@
+load("//lib:defs.bzl", "lib_package", "repo_name", "static_lib")
+load("//toolchains/make:make.bzl", "make_lib")
+load(":package.bzl", "NAME")
+
+package(default_visibility = ["//:__subpackages__"])
+
+lib_package()
+
+make_lib(
+    name = NAME,
+    # SDL is only needed for the examples.
+    # However, we still set it to work around a bug in the makefile.
+    args = ["SDL_CFLAGS="],
+    # Quite complicated "cp" to avoid having to build binaries.
+    postfix_script = 'cp --dereference "{src_dir}/{static_lib}" "{install_dir}/lib"'.format(
+        src_dir = "/".join(["${EXT_BUILD_ROOT}", "external", repo_name(NAME)]),
+        static_lib = static_lib(NAME),
+        install_dir = "${INSTALLDIR}",
+    ),
+    targets = [static_lib(NAME)],
+)

@@ -72,6 +72,7 @@ toolchain, pass `--cpu=wasm32`. Pass `-c opt` for an optimised build.
 [`//lib/proj`](https://github.com/attilaolah/wasm/blob/main/lib/proj/BUILD.bazel) | 8.0.1 [🔗](https://download.osgeo.org/proj/proj-8.0.1.tar.gz)
 [`//lib/protobuf`](https://github.com/attilaolah/wasm/blob/main/lib/protobuf/BUILD.bazel) | 3.19.4 [🔗](https://github.com/protocolbuffers/protobuf/releases/download/v3.19.4/protobuf-cpp-3.19.4.tar.gz)
 [`//lib/python`](https://github.com/attilaolah/wasm/blob/main/lib/python/BUILD.bazel) | 3.10.4 [🔗](https://www.python.org/ftp/python/3.10.4/Python-3.10.4.tar.xz)
+[`//lib/quirc`](https://github.com/attilaolah/wasm/blob/main/lib/quirc/BUILD.bazel) | 1.0.1 [🔗](https://github.com/evolation/libquirc/archive/refs/tags/1.0.1.tar.gz)
 [`//lib/readline`](https://github.com/attilaolah/wasm/blob/main/lib/readline/BUILD.bazel) | 8.0 [🔗](https://ftp.gnu.org/gnu/readline/readline-8.0.tar.gz)
 [`//lib/sdl`](https://github.com/attilaolah/wasm/blob/main/lib/sdl/BUILD.bazel) | 2.0.20 [🔗](https://www.libsdl.org/release/SDL2-2.0.20.tar.gz)
 [`//lib/sqlite`](https://github.com/attilaolah/wasm/blob/main/lib/sqlite/BUILD.bazel) | 3.35.5 [🔗](https://www.sqlite.org/2021/sqlite-autoconf-3350500.tar.gz)

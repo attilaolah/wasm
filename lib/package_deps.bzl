@@ -47,6 +47,7 @@ PACKAGE_DEPS = [
     "//lib/proj:package",
     "//lib/protobuf:package",
     "//lib/python:package",
+    "//lib/quirc:package",
     "//lib/readline:package",
     "//lib/sdl:package",
     "//lib/sqlite:package",
