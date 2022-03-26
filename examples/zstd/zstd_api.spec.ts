@@ -27,6 +27,9 @@ describe("compress", () => {
   it("should compress a somewhat larger (~6MB) string", async function() {
     const zstd = await ZSTD();
 
+    // These tests take a bit long:
+    this.timeout(10000);  // 10s should be enough though.
+
     const buf = await big.arrayBuffer();
     const result = zstd.compress(new Uint8Array(buf));
 

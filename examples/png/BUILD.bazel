@@ -7,9 +7,6 @@ package(default_visibility = ["//:__subpackages__"])
 wasm_library(
     name = "png_wasm",
     srcs = [":png_api"],
-    build_settings = {
-        "USE_PTHREADS": "1",
-    },
     exported_functions = [
         # keep sorted
         "png_access_version_number",

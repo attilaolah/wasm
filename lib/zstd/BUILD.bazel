@@ -13,6 +13,7 @@ cmake_lib(
         # Use C_FLAGS_RELEASE so they'd get appended after other flags.
         "CMAKE_C_FLAGS_RELEASE": no_error([
             # keep sorted
+            "bitwise-instead-of-logical",
             "unused-but-set-variable",
         ]),
         "ZSTD_BUILD_PROGRAMS": False,

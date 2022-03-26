@@ -17,6 +17,8 @@ wasm_library(
         "ZSTD_getErrorName",
         "ZSTD_isError",
         "ZSTD_versionString",
+        "free",
+        "malloc",
     ],
     deps = ["//lib/zstd"],
 )
