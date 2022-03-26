@@ -11,6 +11,7 @@ load("@rules_foreign_cc//foreign_cc/private:cc_toolchain_util.bzl", "get_flags_i
 WASM_LD_UNSUPPORTED_FLAGS = [
     "-Wl,-as-needed",
     "-Wl,-no-as-needed",
+    "-Wl,-z,relro,-z,now",
 ]
 
 def _find_file(files, name):
