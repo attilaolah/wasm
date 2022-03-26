@@ -4,7 +4,10 @@ load("//toolchains/make:configure.bzl", "configure_make_lib")
 
 package(default_visibility = ["//:__subpackages__"])
 
-lib_package()
+lib_package(
+    version_regex = r">\s*gdal-([^<]+)\.tar\.gz\s*<",
+    version_url = "https://gdal.org/download.html",
+)
 
 LDFLAGS = ldflags([
     # keep sorted

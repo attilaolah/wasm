@@ -5,7 +5,7 @@ load("//toolchains/cmake:cmake.bzl", "cmake_lib")
 package(default_visibility = ["//:__subpackages__"])
 
 lib_package(
-    version_regex = r">curl-([^<]*)\.tar\.gz<",
+    version_regex = r">\s*curl-([^<]+)\.tar\.gz\s*<",
     version_url = "https://curl.se/download.html",
 )
 

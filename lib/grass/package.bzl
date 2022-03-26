@@ -5,7 +5,7 @@ load("//lib:http_archive.bzl", "http_archive")
 NAME = "grass"
 VERSION = "7.8.5"
 
-URL = "https://{name}.osgeo.org/{name}78/source/{name}-{version}.tar.gz"
+URL = "https://{name}.osgeo.org/{name}{versionmm}/source/{name}-{version}.tar.gz"
 
 SHA256 = "a359bb665524ecccb643335d70f5436b1c84ffb6a0e428b78dffebacd983ff37"
 

@@ -5,7 +5,7 @@ load(":package.bzl", "NAME")
 package(default_visibility = ["//:__subpackages__"])
 
 lib_package(
-    version_regex = r">\s*The current stable version is bzip2 (.*)\.\s*<",
+    version_regex = r">\s*The current stable version is bzip2 ([^<]+)\.\s*<",
     version_url = "https://www.sourceware.org/bzip2/downloads.html",
 )
 

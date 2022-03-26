@@ -7,7 +7,10 @@ load(":package.bzl", "VERSION")
 
 package(default_visibility = ["//:__subpackages__"])
 
-lib_package()
+lib_package(
+    version_regex = r">https://grass\.osgeo\.org/[^<]+/source/grass-([^<]+)\.tar\.gz<",
+    version_url = "https://github.com/OSGeo/grass/releases",
+)
 
 TRANSITIVE_DEPS = {
     "proj": [
