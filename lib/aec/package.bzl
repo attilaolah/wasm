@@ -3,11 +3,11 @@
 load("//lib:http_archive.bzl", "http_archive")
 
 NAME = "aec"
-VERSION = "1.0.4"
+VERSION = "1.0.6"
 
-URL = "https://gitlab.dkrz.de/k202009/lib{name}/uploads/ea0b7d197a950b0c110da8dfdecbb71f/lib{name}-{version}.tar.gz"
+URL = "https://gitlab.dkrz.de/k202009/lib{name}/-/archive/v{version}/lib{name}-v{version}.tar.bz2"
 
-SHA256 = "f2b1b232083bd8beaf8a54a024225de3dd72a673a9bcdf8c3ba96c39483f4309"
+SHA256 = "31fb65b31e835e1a0f3b682d64920957b6e4407ee5bbf42ca49549438795a288"
 
 def download():
     http_archive(
@@ -15,6 +15,5 @@ def download():
         version = VERSION,
         urls = [URL],
         sha256 = SHA256,
-        strip_prefix = "lib{name}-{version}",
-        patches = ["//lib/aec:aec.patch"],
+        strip_prefix = "lib{name}-v{version}",
     )
