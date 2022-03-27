@@ -70,7 +70,7 @@ def make_lib(
     )
 
     archive_symbols(
-        name = name,
+        archive = name,
         deps = kwargs.get("deps", []),
         strict = not ignore_undefined_symbols,
     )

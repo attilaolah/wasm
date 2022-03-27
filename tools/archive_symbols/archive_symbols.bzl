@@ -11,16 +11,13 @@ ArchiveSymbolsInfo = provider(
     fields = None,
 )
 
-def archive_symbols(name, deps, strict, suffix = "_symbols"):
+def archive_symbols(archive, deps, strict):
     """Convenience macro for generating archive symbols for a library.
 
-    TODO: Remove the suffix = "_symbols" magic!
-
     Args:
-      name: Name of the target, *without* the _symbols suffix.
+      archive: Name of the rule to generate symbols for.
       deps: Dependencies. Implicit deps (C and GCC libs) will be added.
       strict: Whether the build should fail if any undefined symbols are found.
-      suffix: Suffix to add to the name.
     """
     labels = []
     for dep in deps:
@@ -34,8 +31,8 @@ def archive_symbols(name, deps, strict, suffix = "_symbols"):
         labels.append("//lib/musl:musl_symbols")
 
     _archive_symbols(
-        name = name + suffix,
-        srcs = [":{}".format(name)],
+        name = "{}_symbols".format(archive),
+        srcs = [":{}".format(archive)],
         deps = labels,
         strict = strict,
     )
