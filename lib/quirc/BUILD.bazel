@@ -13,9 +13,13 @@ make_lib(
     args = ["SDL_CFLAGS="],
     # Quite complicated "cp" to avoid having to build binaries.
     postfix_script = 'cp --dereference "{src_dir}/{static_lib}" "{install_dir}/lib"'.format(
-        src_dir = "/".join(["${EXT_BUILD_ROOT}", "external", repo_name(NAME)]),
-        static_lib = static_lib(NAME),
         install_dir = "${INSTALLDIR}",
+        src_dir = "/".join([
+            "${EXT_BUILD_ROOT}",
+            "external",
+            repo_name(NAME),
+        ]),
+        static_lib = static_lib(NAME),
     ),
     targets = [static_lib(NAME)],
 )

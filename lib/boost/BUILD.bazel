@@ -63,7 +63,8 @@ boost_build(
 )
 
 archive_symbols(
-    name = "boost",
+    name = "boost_symbols",
     strict = False,
+    suffix = "",
     deps = [],
 )

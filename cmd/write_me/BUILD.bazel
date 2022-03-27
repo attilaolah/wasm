@@ -5,10 +5,7 @@ go_library(
     srcs = ["write_me.go"],
     importpath = "github.com/attilaolah/wasm/cmd/write_me",
     visibility = ["//visibility:private"],
-    deps = [
-        "//tools/version_info",
-        "@net_starlark_go//starlark",
-    ],
+    deps = ["//tools/version_info"],
 )
 
 go_binary(
