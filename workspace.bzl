@@ -56,11 +56,11 @@ def workspace_dependencies():
 
     http_archive(
         name = "bazel-skylib",
-        version = "1.0.3",
+        version = "1.2.1",
         urls = [
             "https://mirror.bazel.build/github.com/bazelbuild/{name}/releases/download/{version}/{name}-{version}.tar.gz",
             "https://github.com/bazelbuild/{name}/releases/download/{version}/{name}-{version}.tar.gz",
         ],
-        sha256 = "1c531376ac7e5a180e0237938a2536de0c54d93f5c278634818e0efc952dd56c",
+        sha256 = "f7be3474d42aae265405a592bb7da8e171919d74c16f082a5457840f06054728",
         build_file_content = None,
     )
