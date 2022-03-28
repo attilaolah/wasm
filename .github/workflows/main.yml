@@ -1,4 +1,4 @@
-name: CI
+name: Ubuntu 20.04
 
 on:
   push:
@@ -9,12 +9,18 @@ on:
   workflow_dispatch:
 
 jobs:
-  bazel:
+  Bazel:
     # Pin Ubuntu 20.04.
     # This should match the LLVM+Clang build from //tools/llvm.
     runs-on: ubuntu-20.04
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Check out the repository
+        uses: actions/checkout@v3
       - name: Verify Bazel version
         run: bazel version
+      - name: Verify Bazel can query all targets
+        run: bazel query //...
+      - name: Verify Bazel can analyse all targets
+        run: bazel build --nobuild //...
+        
