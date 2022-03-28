@@ -29,6 +29,7 @@ npm_install(
 )
 
 load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
+load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
 load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
 load("//:deps.bzl", "external_dependencies", "go_dependencies")
 
@@ -41,6 +42,8 @@ gazelle_dependencies()
 
 # gazelle:repository_macro deps.bzl%go_dependencies
 go_dependencies()
+
+protobuf_deps()
 
 external_dependencies()
 

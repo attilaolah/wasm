@@ -14,19 +14,14 @@ jobs:
     # This should match the LLVM+Clang build from //tools/llvm.
     runs-on: ubuntu-20.04
     steps:
-      - name: Mount the cache
-        uses: actions/cache@v3
+      - uses: actions/cache@v3
         with:
           path: ~/.cache/bazel
           key: ${{ runner.os }}-Bazel
-      - name: Check out the repository
-        uses: actions/checkout@v3
-      - name: Verify Bazel version
-        run: bazel version
-      - name: Verify Bazel can query all targets
-        run: bazel query //...
-      - name: Verify Bazel can analyse all targets
-        run: bazel build --nobuild //...
+      - uses: actions/checkout@v3
+      - run: bazel version
+      - run: bazel query //...
+      - run: bazel build --nobuild //...
         
   Go:
     runs-on: ubuntu-20.04
