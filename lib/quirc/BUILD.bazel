@@ -11,14 +11,10 @@ make_lib(
     # SDL is only needed for the examples.
     # However, we still set it to work around a bug in the makefile.
     args = ["SDL_CFLAGS="],
-    # Quite complicated "cp" to avoid having to build binaries.
-    postfix_script = 'cp --dereference "{src_dir}/{static_lib}" "{install_dir}/lib"'.format(
+    # Manually copy the target library to avoid having to build binaries.
+    postfix_script = 'cp --dereference "{build_tmpdir}/{static_lib}" "{install_dir}/lib"'.format(
         install_dir = "${INSTALLDIR}",
-        src_dir = "/".join([
-            "${EXT_BUILD_ROOT}",
-            "external",
-            repo_name(NAME),
-        ]),
+        build_tmpdir = "${BUILD_TMPDIR}",
         static_lib = static_lib(NAME),
     ),
     targets = [static_lib(NAME)],

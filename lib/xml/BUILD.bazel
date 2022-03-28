@@ -15,7 +15,6 @@ configure_make_lib(
         '--with-zlib="${EXT_BUILD_DEPS}/lib_z"',
         "--without-python",
     ],
-    linkopts = ["-lxml2"],
     out_static_libs = ["libxml2.a"],
     deps = [
         "//lib/iconv",

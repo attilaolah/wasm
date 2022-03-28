@@ -1,16 +1,16 @@
-load("//lib:defs.bzl", "lib_package")
+load("//lib:defs.bzl", "lib_package", "link_opt", "static_lib")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
+load(":package.bzl", "NAME", "lname")
 
 package(default_visibility = ["//:__subpackages__"])
 
 lib_package()
 
 cmake_lib(
-    name = "oniguruma",
+    name = NAME,
     cache_entries = {
         "BUILD_SHARED_LIBS": False,
         "ENABLE_POSIX_API": True,
     },
-    linkopts = ["-lonig"],
-    out_static_libs = ["libonig.a"],
+    out_static_libs = [static_lib(lname())],
 )

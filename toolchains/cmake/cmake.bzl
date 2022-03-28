@@ -12,7 +12,6 @@ def cmake_lib(
         name,
         lib_source = None,
         build_data = None,
-        linkopts = None,
         out_static_libs = None,
         cache_entries = None,
         env = None,
@@ -25,7 +24,6 @@ def cmake_lib(
       lib_source: Passed on to cmake(). Guessed from name.
       build_data: Additional build-time dependencies, compiled with cfg =
         "exec".
-      linkopts: Passed on to cmake(). Guessed from name.
       out_static_libs: Passed on to cmake(). Guessed from name.
       cache_entries: Convert True/False to "ON"/"OFF", then passed on to
         cmake().
@@ -39,8 +37,6 @@ def cmake_lib(
     """
     if lib_source == None:
         lib_source = _lib_source(name)
-    if linkopts == None:
-        linkopts = ["-l{}".format(name)]
     if out_static_libs == None:
         out_static_libs = ["lib{}.a".format(name)]
 
@@ -75,7 +71,6 @@ def cmake_lib(
             "//config:wasm": "${EMSCRIPTEN}/emcmake",
             "//conditions:default": None,
         }),
-        linkopts = linkopts,
         out_static_libs = out_static_libs,
         **kwargs
     )

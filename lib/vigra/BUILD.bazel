@@ -25,7 +25,6 @@ cmake_lib(
         "ZLIB_INCLUDE_DIR": "${EXT_BUILD_DEPS}/z_lib/include",
         "ZLIB_LIBRARY": "${EXT_BUILD_DEPS}/z_lib/lib/libz.a",
     },
-    linkopts = ["-lvigraimpex"],
     out_static_libs = ["libvigraimpex.a"],
     deps = [
         "//lib/fftw",

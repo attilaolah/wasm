@@ -1,16 +1,16 @@
-load("//lib:defs.bzl", "lib_package")
+load("//lib:defs.bzl", "lib_package", "static_lib")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
+load("package.bzl", "NAME", "lname")
 
 package(default_visibility = ["//:__subpackages__"])
 
 lib_package()
 
 cmake_lib(
-    name = "lzo",
+    name = NAME,
     cache_entries = {
         "ENABLE_SHARED": False,
         "ENABLE_STATIC": True,
     },
-    linkopts = ["-llzo2"],
-    out_static_libs = ["liblzo2.a"],
+    out_static_libs = [static_lib(lname())],
 )

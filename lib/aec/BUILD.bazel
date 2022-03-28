@@ -10,10 +10,6 @@ cmake_lib(
     cache_entries = {
         "BUILD_SHARED_LIBS": False,
     },
-    linkopts = [
-        "-laec",
-        "-lsz",
-    ],
     out_static_libs = [
         "libaec.a",
         "libsz.a",

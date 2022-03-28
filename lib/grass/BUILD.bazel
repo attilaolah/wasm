@@ -107,7 +107,7 @@ configure_make_lib(
         "//conditions:default": CONFIGURE_OPTIONS,
     }),
     env = {
-        "BISON_PKGDATADIR": "${EXT_BUILD_ROOT}/$(execpaths //lib/bison:runtime)/share/bison",
+        "BISON_PKGDATADIR": "$${EXT_BUILD_ROOT}/$(execpaths //lib/bison:runtime)/share/bison",
         "CFLAGS": no_error([
             # keep sorted
             "absolute-value",
@@ -139,12 +139,12 @@ configure_make_lib(
             "unused-function",
             "unused-variable",
         ]),
-        "M4": "${EXT_BUILD_ROOT}/$(execpaths //lib/m4:runtime)/bin/m4",
+        "M4": "$${EXT_BUILD_ROOT}/$(execpaths //lib/m4:runtime)/bin/m4",
         "PATH": path([
-            "${EXT_BUILD_ROOT}/$(execpaths //lib/bison:runtime)/bin",
-            "${EXT_BUILD_ROOT}/$(execpaths //lib/flex:runtime)/bin",
+            "$${EXT_BUILD_ROOT}/$(execpaths //lib/bison:runtime)/bin",
+            "$${EXT_BUILD_ROOT}/$(execpaths //lib/flex:runtime)/bin",
         ]),
-        "PROJ_LIB": "${EXT_BUILD_DEPS}/proj_lib/share/proj",
+        "PROJ_LIB": "$${EXT_BUILD_DEPS}/proj_lib/share/proj",
     },
     out_binaries = ["grass{}".format(major_minor(
         VERSION,

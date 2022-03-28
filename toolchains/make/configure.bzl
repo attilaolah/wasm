@@ -50,7 +50,6 @@ def configure_make_lib(
         name,
         lib_source = None,
         build_data = None,
-        linkopts = None,
         out_static_libs = None,
         env = None,
         ignore_undefined_symbols = True,
@@ -63,7 +62,6 @@ def configure_make_lib(
       lib_source: Passed on to configure_make(). Guessed from name.
       build_data: Additional build-time dependencies, compiled with cfg =
         "exec".
-      linkopts: Passed on to configure_make(). Guessed from name.
       out_static_libs: Passed on to configure_make(). Guessed from name.
       env: Passed on to configure_make(). Form Emscripten builds, it is
         pre-populated with environment variables required by the toolchain.
@@ -75,8 +73,6 @@ def configure_make_lib(
     """
     if lib_source == None:
         lib_source = _lib_source(name)
-    if linkopts == None:
-        linkopts = ["-l{}".format(name)]
     if out_static_libs == None:
         out_static_libs = ["lib{}.a".format(name)]
 
@@ -103,7 +99,6 @@ def configure_make_lib(
             "//config:wasm": "${EMSCRIPTEN}/emmake",
             "//conditions:default": None,
         }),
-        linkopts = linkopts,
         out_static_libs = out_static_libs,
         **kwargs
     )

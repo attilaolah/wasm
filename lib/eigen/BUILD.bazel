@@ -12,7 +12,7 @@ cmake_lib(
         "BUILD_TESTING": False,
     },
     env = {
-        "FC": "${EXT_BUILD_ROOT}/$(execpaths //tools/llvm:flang_runtime)/bin/flang",
+        "FC": "$${EXT_BUILD_ROOT}/$(execpaths //tools/llvm:flang_runtime)/bin/flang",
     },
     out_headers_only = True,
     out_static_libs = [],

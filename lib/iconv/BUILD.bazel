@@ -12,11 +12,6 @@ configure_make_lib(
         "--disable-shared",
         "--enable-static",
     ],
-    linkopts = [
-        # keep sorted
-        "-lcharset",
-        "-liconv",
-    ],
     out_static_libs = [
         # keep sorted
         "libcharset.a",

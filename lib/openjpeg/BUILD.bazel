@@ -19,6 +19,5 @@ cmake_lib(
             "unused-function",
         ]),
     },
-    linkopts = [link_opt(lname())],
     out_static_libs = [static_lib(lname())],
 )

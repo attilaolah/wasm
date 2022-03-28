@@ -20,7 +20,6 @@ cmake_lib(
         "ENABLE_STATIC": True,
         "WITH_JAVA": False,
     },
-    linkopts = [link_opt(lname())],
     out_static_libs = [static_lib(lib) for lib in [
         lname(),
         "jpeg",

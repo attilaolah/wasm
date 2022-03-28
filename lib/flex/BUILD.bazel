@@ -18,7 +18,7 @@ configure_make_lib(
         '--with-libiconv-prefix="${EXT_BUILD_DEPS}/iconv_lib"',
     ],
     env = {"PATH": path([
-        "${EXT_BUILD_ROOT}/$(execpaths //lib/m4:runtime)/bin",
+        "$${EXT_BUILD_ROOT}/$(execpaths //lib/m4:runtime)/bin",
     ])},
     out_binaries = [
         "flex",

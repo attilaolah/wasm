@@ -1,11 +1,15 @@
-load("//lib:defs.bzl", "lib_package")
+load("//lib:defs.bzl", "lib_package", "static_lib")
 load("//toolchains:utils.bzl", "no_error")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
 load("//toolchains/make:configure.bzl", "lib_source")
+load(":package.bzl", "NAME", "lname")
 
 package(default_visibility = ["//:__subpackages__"])
 
-lib_package()
+lib_package(
+    version_regex = r"""<a\s+href=["']?fftw-([^>]+)\.tar\.gz["']?>""",
+    version_url = "https://fftw.org/download.html",
+)
 
 CACHE_ENTRIES = {
     "BUILD_SHARED_LIBS": False,
@@ -20,40 +24,36 @@ CACHE_ENTRIES = {
 }
 
 cmake_lib(
-    name = "fftw",
+    name = NAME,
     cache_entries = CACHE_ENTRIES,
-    linkopts = ["-lfftw3"],
-    out_static_libs = ["libfftw3.a"],
+    out_static_libs = [static_lib(lname())],
 )
 
 cmake_lib(
-    name = "fftwf",
+    name = NAME + "f",
     cache_entries = dict(CACHE_ENTRIES.items() + {
         "ENABLE_FLOAT": True,
     }.items()),
-    lib_source = lib_source("fftw"),
-    linkopts = ["-lfftw3f"],
-    out_static_libs = ["libfftw3f.a"],
+    lib_source = lib_source(NAME),
+    out_static_libs = [static_lib(lname("f"))],
 )
 
 cmake_lib(
-    name = "fftwl",
+    name = NAME + "l",
     cache_entries = dict(CACHE_ENTRIES.items() + {
         "ENABLE_LONG_DOUBLE": True,
     }.items()),
-    lib_source = lib_source("fftw"),
-    linkopts = ["-lfftw3l"],
-    out_static_libs = ["libfftw3l.a"],
+    lib_source = lib_source(NAME),
+    out_static_libs = [static_lib(lname("l"))],
 )
 
 cmake_lib(
-    name = "fftwq",
+    name = NAME + "q",
     cache_entries = dict(CACHE_ENTRIES.items() + {
         "ENABLE_FLOAT": True,
         "ENABLE_LONG_DOUBLE": True,
         "ENABLE_QUAD_PRECISION": True,
     }.items()),
-    lib_source = lib_source("fftw"),
-    linkopts = ["-lfftw3q"],
-    out_static_libs = ["libfftw3q.a"],
+    lib_source = lib_source(NAME),
+    out_static_libs = [static_lib(lname("q"))],
 )

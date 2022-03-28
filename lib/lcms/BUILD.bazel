@@ -15,7 +15,6 @@ configure_make_lib(
         '--with-jpeg="${EXT_BUILD_DEPS}/jpegturbo_lib"',
         '--with-tiff="${EXT_BUILD_DEPS}/tiff_lib/lib"',
     ],
-    linkopts = ["-lcms2"],
     out_static_libs = ["liblcms2.a"],
     deps = [
         "//lib/jpegturbo",

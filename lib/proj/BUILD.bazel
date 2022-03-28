@@ -51,7 +51,7 @@ cmake_lib(
         "//conditions:default": CACHE_ENTRIES,
     },
     env = {"PATH": path([
-        "${EXT_BUILD_ROOT}/$(execpaths //lib/sqlite:runtime)/bin",
+        "$${EXT_BUILD_ROOT}/$(execpaths //lib/sqlite:runtime)/bin",
     ])},
     deps = [
         "//lib/curl",

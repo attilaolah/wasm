@@ -36,7 +36,6 @@ make_lib(
     name = "config",
     args = ['-C "{}/SuiteSparse_config"'.format(PREFIX)],
     lib_source = LIB_SOURCE,
-    linkopts = ["-lsuitesparseconfig"],
     out_static_libs = ["libsuitesparseconfig.a"],
     postfix_script = "\n".join([
         'install "{}/SuiteSparse_config"/*.h ${{INSTALLDIR}}/include'.format(PREFIX),
@@ -58,7 +57,6 @@ suitesparse_lib(
 cmake_lib(
     name = "gk",
     lib_source = LIB_SOURCE,
-    linkopts = ["-lGKlib"],
     out_static_libs = ["libGKlib.a"],
     working_directory = GK_PATH,
 )
@@ -117,7 +115,6 @@ make_lib(
         'CFLAGS="{}"'.format(SLIP_LU_CFLAGS),
     ],
     lib_source = LIB_SOURCE,
-    linkopts = ["-lsliplu"],
     out_static_libs = ["libsliplu.a"],
     postfix_script = "\n".join([
         'install "{}/SLIP_LU/Include"/*.h ${{INSTALLDIR}}/include'.format(PREFIX),

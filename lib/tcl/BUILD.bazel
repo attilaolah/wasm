@@ -13,7 +13,6 @@ configure_make_lib(
     configure_options = [
         "--disable-shared",
     ],
-    linkopts = ["-ltcl{}".format(major_minor(VERSION))],
     out_static_libs = [
         "libtcl{}.a".format(major_minor(VERSION)),
         "libtclstub{}.a".format(major_minor(VERSION)),
