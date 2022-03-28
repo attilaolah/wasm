@@ -1,0 +1,20 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  workflow_dispatch:
+
+jobs:
+  bazel:
+    # Pin Ubuntu 20.04.
+    # This should match the LLVM+Clang build from //tools/llvm.
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Verify Bazel version
+        run: bazel version
