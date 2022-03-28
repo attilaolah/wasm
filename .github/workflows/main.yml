@@ -50,3 +50,13 @@ jobs:
         run: go version
       - name: Verify Go can build all packages
         run: go build ./...
+
+  Node:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '17'
+          cache: 'npm'
+      - run: npm install
