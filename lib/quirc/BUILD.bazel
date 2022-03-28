@@ -13,8 +13,8 @@ make_lib(
     args = ["SDL_CFLAGS="],
     # Manually copy the target library to avoid having to build binaries.
     postfix_script = 'cp --dereference "{build_tmpdir}/{static_lib}" "{install_dir}/lib"'.format(
-        install_dir = "${INSTALLDIR}",
         build_tmpdir = "${BUILD_TMPDIR}",
+        install_dir = "${INSTALLDIR}",
         static_lib = static_lib(NAME),
     ),
     targets = [static_lib(NAME)],
