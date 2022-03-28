@@ -17,7 +17,7 @@ jobs:
       - name: Mount the cache
         uses: actions/cache@v3
         with:
-          path: ~/.cache
+          path: ~/.cache/bazel
           key: ${{ runner.os }}-Bazel
       - name: Check out the repository
         uses: actions/checkout@v3
