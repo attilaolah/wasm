@@ -15,26 +15,26 @@ load("//tools/archive_symbols:archive_symbols.bzl", "archive_symbols")
 
 EM_ENV = {
     # NodeJS cross-compiling emulator:
-    "CROSSCOMPILING_EMULATOR": "${EXT_BUILD_ROOT}/external/nodejs_linux_amd64/bin/node",
+    "CROSSCOMPILING_EMULATOR": "$${EXT_BUILD_ROOT}/external/nodejs_linux_amd64/bin/node",
 
     # Required by the Emscripten config:
-    "EMSCRIPTEN": "${EXT_BUILD_ROOT}/external/emscripten_bin_linux/emscripten",
+    "EMSCRIPTEN": "$${EXT_BUILD_ROOT}/external/emscripten_bin_linux/emscripten",
 
     # Emscripten config from @emsdk//emscripten_toolchain:emscripten_config:
-    "EM_CONFIG": "${EXT_BUILD_ROOT}/external/emsdk/emscripten_toolchain/emscripten_config",
+    "EM_CONFIG": "$${EXT_BUILD_ROOT}/external/emsdk/emscripten_toolchain/emscripten_config",
 
     # Directory containing node_modules:
-    "NODE_PATH": "${EXT_BUILD_DEPS}/bin",
+    "NODE_PATH": "$${EXT_BUILD_DEPS}/bin",
 
     # Python from //lib/python:
-    "PYTHONHOME": "${EXT_BUILD_ROOT}/$(execpaths //lib/python:runtime)",
+    "PYTHONHOME": "$${EXT_BUILD_ROOT}/$(execpaths //lib/python:runtime)",
 
     # Required by the Emscripten config:
-    "ROOT_DIR": "${EXT_BUILD_ROOT}",
+    "ROOT_DIR": "$${EXT_BUILD_ROOT}",
 }
 
 # Python from //lib/python:
-EM_PATH = path(["${EXT_BUILD_ROOT}/$(execpaths //lib/python:runtime)/bin"])
+EM_PATH = path(["$${EXT_BUILD_ROOT}/$(execpaths //lib/python:runtime)/bin"])
 
 EM_TOOLS = [
     # keep sorted
@@ -139,5 +139,5 @@ _lib_source = lib_source
 def emscripten_env(env):
     """Set Emscripten environment variables."""
     env.update(EM_ENV)
-    env.setdefault("PATH", "${PATH}")
+    env.setdefault("PATH", "$${PATH}")
     env["PATH"] = path([EM_PATH], existing = env["PATH"])
