@@ -57,5 +57,8 @@ bzl_library(
 bzl_library(
     name = "versions",
     srcs = ["versions.bzl"],
-    visibility = ["//tests:consistency_tests"],
+    visibility = [
+        "//tests:consistency_tests",
+        "//tools/llvm:__pkg__",
+    ],
 )
