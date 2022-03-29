@@ -14,13 +14,13 @@ load("//tools/archive_symbols:archive_symbols.bzl", "archive_symbols")
 
 EM_ENV = {
     # NodeJS cross-compiling emulator:
-    "CROSSCOMPILING_EMULATOR": "$${EXT_BUILD_ROOT}/external/nodejs_linux_amd64/bin/node",
+    "CROSSCOMPILING_EMULATOR": "$${EXT_BUILD_ROOT}/$(execpath @nodejs_linux_amd64//:node)",
 
     # Required by the Emscripten config:
     "EMSCRIPTEN": "$${EXT_BUILD_ROOT}/external/emscripten_bin_linux/emscripten",
 
     # Emscripten config from @emsdk//emscripten_toolchain:emscripten_config:
-    "EM_CONFIG": "$${EXT_BUILD_ROOT}/external/emsdk/emscripten_toolchain/emscripten_config",
+    "EM_CONFIG": "$(execpath @emsdk//emscripten_toolchain:emscripten_config)",
 
     # Directory containing node_modules:
     "NODE_PATH": "$${EXT_BUILD_DEPS}/bin",
@@ -41,6 +41,9 @@ EM_TOOLS = [
     "//lib/python:runtime",
     "//tools:nodejs",
     "@emscripten_bin_linux//:all",
+    "@emscripten_bin_linux//:emscripten/emcmake",
+    "@emscripten_bin_linux//:emscripten/emconfigure",
+    "@emscripten_bin_linux//:emscripten/emmake",
     "@emsdk//emscripten_toolchain:emscripten_config",
     "@nodejs_linux_amd64//:node",
     "@npm//acorn",
@@ -92,11 +95,11 @@ def configure_make_lib(
         lib_source = lib_source,
         build_data = _build_data(build_data),
         configure_prefix = select({
-            "//config:wasm": "${EMSCRIPTEN}/emconfigure",
+            "//config:wasm": "$(execpath @emscripten_bin_linux//:emscripten/emconfigure)",
             "//conditions:default": None,
         }),
         tool_prefix = select({
-            "//config:wasm": "${EMSCRIPTEN}/emmake",
+            "//config:wasm": "$(execpath @emscripten_bin_linux//:emscripten/emmake)",
             "//conditions:default": None,
         }),
         out_static_libs = out_static_libs,

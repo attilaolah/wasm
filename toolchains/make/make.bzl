@@ -52,7 +52,7 @@ def make_lib(
         lib_source = lib_source,
         build_data = _build_data(build_data),
         tool_prefix = select({
-            "//config:wasm": "${EMSCRIPTEN}/emmake",
+            "//config:wasm": "$(execpath @emscripten_bin_linux//:emscripten/emmake)",
             "//conditions:default": None,
         }),
         out_static_libs = out_static_libs,
