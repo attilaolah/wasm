@@ -25,6 +25,7 @@ def version_info(version_url, version_regex, rule_name = "version", package_bzl 
 
 def _version_info_impl(ctx):
     package_bzl = ctx.attr.package_bzl[StarlarkLibraryInfo].srcs[0]
+    package_deps = ctx.attr.package_bzl[StarlarkLibraryInfo].transitive_srcs.to_list()
 
     args = ctx.actions.args()
     args.add("-version_url", ctx.attr.version_url)
@@ -37,7 +38,7 @@ def _version_info_impl(ctx):
     ctx.actions.run(
         executable = ctx.executable._parser,
         arguments = [args],
-        inputs = [package_bzl],
+        inputs = [package_bzl] + package_deps,
         outputs = [version_json],
         mnemonic = "VersionInfo",
     )
