@@ -28,6 +28,12 @@ filegroup(
     visibility = ["//tests:consistency_tests"],
 )
 
+filegroup(
+    name = "readme",
+    srcs = ["README.md"],
+    visibility = ["//tests:__pkg__"],
+)
+
 bzl_library(
     name = "workspace",
     srcs = ["workspace.bzl"],
@@ -52,14 +58,4 @@ bzl_library(
     name = "versions",
     srcs = ["versions.bzl"],
     visibility = ["//tests:consistency_tests"],
-)
-
-sh_test(
-    name = "readme_test",
-    srcs = ["readme_test.sh"],
-    data = [
-        "README.md",
-        "//cmd/write_me",
-    ],
-    env = {"WRITE_ME": "$(rootpath //cmd/write_me)"},
 )
