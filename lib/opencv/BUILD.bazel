@@ -1,4 +1,5 @@
-load("//lib:defs.bzl", "include_flags", "lib_package", "library_path", "link_flags", "static_lib")
+load("//lib:defs.bzl", "include_flags", "library_path", "link_flags", "static_lib")
+load("//lib:lib.bzl", "package_lib")
 load("//toolchains:utils.bzl", "no_error")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
 load("//lib/jpegturbo:package.bzl", link_flags_jpegturbo = "link_flags")
@@ -10,7 +11,7 @@ load(":package.bzl", "NAME")
 
 package(default_visibility = ["//:__subpackages__"])
 
-lib_package()
+package_lib()
 
 C_FLAGS = include_flags(include_dir_openjpeg())
 

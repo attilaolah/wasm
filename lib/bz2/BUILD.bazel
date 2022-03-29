@@ -1,10 +1,11 @@
-load("//lib:defs.bzl", "lib_package", "static_lib")
+load("//lib:defs.bzl", "static_lib")
+load("//lib:lib.bzl", "package_lib")
 load("//toolchains/make:make.bzl", "make_lib")
 load(":package.bzl", "NAME")
 
 package(default_visibility = ["//:__subpackages__"])
 
-lib_package(
+package_lib(
     version_regex = r">\s*The current stable version is bzip2 ([^<]+)\.\s*<",
     version_url = "https://www.sourceware.org/bzip2/downloads.html",
 )

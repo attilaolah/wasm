@@ -1,4 +1,4 @@
-load("//lib:defs.bzl", "lib_package")
+load("//lib:lib.bzl", "package_lib")
 load("//lib:defs.bzl", "link_opt", "static_lib")
 load("//toolchains:utils.bzl", "no_error")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
@@ -6,7 +6,7 @@ load(":package.bzl", "NAME", "lname")
 
 package(default_visibility = ["//:__subpackages__"])
 
-lib_package()
+package_lib()
 
 cmake_lib(
     name = NAME,

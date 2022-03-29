@@ -10,29 +10,22 @@ on:
 
 jobs:
   Bazel:
-    # Pin Ubuntu 20.04.
-    # This should match the LLVM+Clang build from //tools/llvm.
     runs-on: ubuntu-20.04
     steps:
-      - name: Mount the cache
-        uses: actions/cache@v3
+      - uses: actions/cache@v3
         with:
-          path: ~/.cache
+          path: ~/.cache/bazel
           key: ${{ runner.os }}-Bazel
-      - name: Check out the repository
-        uses: actions/checkout@v3
-      - name: Verify Bazel version
-        run: bazel version
-      - name: Verify Bazel can query all targets
-        run: bazel query //...
-      - name: Verify Bazel can analyse all targets
-        run: bazel build --nobuild //...
+      - uses: actions/checkout@v3
+      - run: bazel version
+      - run: bazel query //...
+      - run: bazel build --nobuild //...
+      - run: bazel test //tests/...
         
   Go:
     runs-on: ubuntu-20.04
     steps:
-      - name: Mount the cache
-        uses: actions/cache@v3
+      - uses: actions/cache@v3
         with:
           path: |
             ~/.cache/go-build
@@ -40,16 +33,12 @@ jobs:
           key: ${{ runner.os }}-Go-${{ hashFiles('**/go.sum') }}
           restore-keys: |
             ${{ Runner.os }}-Go-
-      - name: Check out the repository
-        uses: actions/checkout@v3
-      - name: Update Go
-        uses: actions/setup-go@v3
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
         with:
           go-version: 1.18
-      - name: Verify Go version
-        run: go version
-      - name: Verify Go can build all packages
-        run: go build ./...
+      - run: go version
+      - run: go build ./...
 
   Node:
     runs-on: ubuntu-20.04

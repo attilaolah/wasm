@@ -7,7 +7,7 @@ GREEN="\033[0;32m"
 NC="\033[0m"
 
 # Simulate running as `bazel run //cmd/write_me`:
-BUILD_WORKSPACE_DIRECTORY="$(dirname $(readlink -f "${0}"))" \
+BUILD_WORKSPACE_DIRECTORY="$(dirname $(dirname $(readlink -f "${0}")))" \
   "${WRITE_ME}" -output="${PWD}/README.md.golden"
 
 diff --unified --color README.md README.md.golden && (

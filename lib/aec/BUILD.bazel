@@ -1,9 +1,9 @@
-load("//lib:defs.bzl", "lib_package")
+load("//lib:lib.bzl", "package_lib")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
 
 package(default_visibility = ["//:__subpackages__"])
 
-lib_package()
+package_lib()
 
 cmake_lib(
     name = "aec",

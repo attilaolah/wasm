@@ -1,0 +1,14 @@
+package_group(
+    name = "consistency_tests",
+    packages = ["//tests/consistency/..."],
+)
+
+sh_test(
+    name = "readme_test",
+    srcs = ["readme_test.sh"],
+    data = [
+        "//:readme",
+        "//cmd/write_me",
+    ],
+    env = {"WRITE_ME": "$(rootpath //cmd/write_me)"},
+)
