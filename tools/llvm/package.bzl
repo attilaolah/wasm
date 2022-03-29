@@ -2,12 +2,13 @@
 
 load("//:http_archive.bzl", "http_archive")
 load("//toolchains:utils.bzl", "patch_files")
+load("//:versions.bzl", "OS_VERSION")
 
 VERSION = "12.0.0"
 VERSION_MMP = VERSION.split("-")[0]
 VERSION_ND = VERSION.replace("-", "")
 
-URL = "https://github.com/llvm/llvm-project/releases/download/llvmorg-{version}/clang+llvm-{version}-x86_64-linux-gnu-ubuntu-20.04.tar.xz"
+URL = "https://github.com/llvm/llvm-project/releases/download/llvmorg-{version}/clang+llvm-{version}-x86_64-linux-gnu-" + OS_VERSION + ".tar.xz"
 URL_FLANG = "https://github.com/llvm/llvm-project/releases/download/llvmorg-{version}/flang-{version}.src.tar.xz"
 
 SHA256 = "a9ff205eb0b73ca7c86afc6432eed1c2d49133bd0d49e47b15be59bbf0dd292e"
@@ -33,7 +34,7 @@ def download_llvm():
         version = VERSION,
         urls = [URL],
         sha256 = SHA256,
-        strip_prefix = "clang+llvm-{version}-x86_64-linux-gnu-ubuntu-20.04",
+        strip_prefix = "clang+llvm-{version}-x86_64-linux-gnu-" + OS_VERSION,
         build_file_content = BUILD,
         patch_cmds = patch_files({
             # Avoid dependency on system libtinfo.so.

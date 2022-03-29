@@ -53,6 +53,9 @@ type VersionInfo struct {
 func GetVersionInfo(p string) (*VersionInfo, error) {
 	t := starlark.Thread{
 		Load: func(t *starlark.Thread, module string) (starlark.StringDict, error) {
+			if module == "//:versions.bzl" {
+				return starlark.ExecFile(t, "versions.bzl", nil, starlark.Universe)
+			}
 			return modules[module], nil
 		},
 	}
