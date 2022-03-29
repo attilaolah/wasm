@@ -1,10 +1,11 @@
-load("//lib:defs.bzl", "dep_dir", "lib_package", "static_lib")
+load("//lib:defs.bzl", "dep_dir", "static_lib")
+load("//lib:lib.bzl", "package_lib")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
 load(":package.bzl", "lname")
 
 package(default_visibility = ["//:__subpackages__"])
 
-lib_package(
+package_lib(
     version_regex = r">\s*Download Python ([^<]+)\s*</a>",
     version_url = "https://www.python.org/downloads/",
 )

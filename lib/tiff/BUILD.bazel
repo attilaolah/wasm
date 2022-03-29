@@ -1,10 +1,10 @@
-load("//lib:defs.bzl", "lib_package")
+load("//lib:lib.bzl", "package_lib")
 load("//toolchains:utils.bzl", "no_error")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
 
 package(default_visibility = ["//:__subpackages__"])
 
-lib_package()
+package_lib()
 
 CMAKE_EXE_LINKER_FLAGS = "-lpthread"
 

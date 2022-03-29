@@ -1,10 +1,10 @@
-load("//lib:defs.bzl", "lib_package")
+load("//lib:lib.bzl", "package_lib")
 load("@rules_foreign_cc//foreign_cc:defs.bzl", "boost_build")
 load("//tools/archive_symbols:archive_symbols.bzl", "archive_symbols")
 
 package(default_visibility = ["//:__subpackages__"])
 
-lib_package()
+package_lib()
 
 LIBS = [
     # keep sorted

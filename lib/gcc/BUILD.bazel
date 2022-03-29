@@ -1,11 +1,11 @@
-load("//lib:defs.bzl", "lib_package")
+load("//lib:lib.bzl", "package_lib")
 load("//toolchains:utils.bzl", "no_error")
 load("//toolchains/make:configure.bzl", "configure_make_lib", "lib_source")
 load("//tools/archive_symbols:archive_symbols.bzl", "static_symbols")
 
 package(default_visibility = ["//lib:__subpackages__"])
 
-lib_package()
+package_lib()
 
 configure_make_lib(
     name = "gomp",

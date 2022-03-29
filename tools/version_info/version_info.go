@@ -13,30 +13,11 @@ import (
 	"go.starlark.net/starlark"
 )
 
-// Module stubs.
+// Fake module stubs.
 // We don't really want to load dependencies, but they have to return values they define.
-var modules = map[string]starlark.StringDict{
-	"//:http_archive.bzl": {
+var fakes = map[string]starlark.StringDict{
+	"@bazel_tools//tools/build_defs/repo:http.bzl": {
 		"http_archive": nil,
-	},
-	"//lib:defs.bzl": {
-		"lib_name":      nil,
-		"repo_name":     nil,
-		"static_lib":    nil,
-		"include_dir":   nil,
-		"library_dir":   nil,
-		"library_path":  nil,
-		"include_flags": nil,
-		"link_flags":    nil,
-		"link_opts":     nil,
-		"major":         nil,
-		"major_minor":   nil,
-	},
-	"//lib:http_archive.bzl": {
-		"http_archive": nil,
-	},
-	"//toolchains:utils.bzl": {
-		"patch_files": nil,
 	},
 }
 
@@ -53,10 +34,13 @@ type VersionInfo struct {
 func GetVersionInfo(p string) (*VersionInfo, error) {
 	t := starlark.Thread{
 		Load: func(t *starlark.Thread, module string) (starlark.StringDict, error) {
-			if module == "//:versions.bzl" {
-				return starlark.ExecFile(t, "versions.bzl", nil, starlark.Universe)
+			if strings.HasPrefix(module, "@") {
+				// We don't care much about external dependencies here.
+				return fakes[module], nil
 			}
-			return modules[module], nil
+			module = strings.Replace(module, ":", "/", 1)
+			module = strings.TrimLeft(module, "//")
+			return starlark.ExecFile(t, module, nil, starlark.Universe)
 		},
 	}
 	globals, err := starlark.ExecFile(&t, p, nil, starlark.Universe)
