@@ -88,7 +88,7 @@ def _prepare_cache_entries(cache_entries):
 
 def _emscripten_cache_entries(cache_entries):
     """Set Emscripten-specific CMake cache entries."""
-    external = "$(EXT_BUILD_ROOT)/external"
+    external = "${EXT_BUILD_ROOT}/external"
     cmake_modules = "{}/emscripten_bin_linux/emscripten/cmake/Modules".format(external)
 
     # As suggested by rules_foreign_cc docs.

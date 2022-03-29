@@ -10,7 +10,6 @@ and CMake macros.
 load("@bazel_skylib//lib:collections.bzl", "collections")
 load("@rules_foreign_cc//foreign_cc:configure.bzl", "configure_make")
 load("//lib:defs.bzl", "repo_name")
-load("//toolchains:utils.bzl", "path")
 load("//tools/archive_symbols:archive_symbols.bzl", "archive_symbols")
 
 EM_ENV = {
@@ -31,10 +30,11 @@ EM_ENV = {
 
     # Required by the Emscripten config:
     "ROOT_DIR": "$${EXT_BUILD_ROOT}",
+
+    # Python from //lib/python:
+    "PYTHON": "$${PYTHONHOME}/bin/python3",
 }
 
-# Python from //lib/python:
-EM_PATH = path(["$${EXT_BUILD_ROOT}/$(execpaths //lib/python:runtime)/bin"])
 
 EM_TOOLS = [
     # keep sorted
@@ -139,5 +139,3 @@ _lib_source = lib_source
 def emscripten_env(env):
     """Set Emscripten environment variables."""
     env.update(EM_ENV)
-    env.setdefault("PATH", "$${PATH}")
-    env["PATH"] = path([EM_PATH], existing = env["PATH"])
