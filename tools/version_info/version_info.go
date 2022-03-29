@@ -11,7 +11,13 @@ import (
 	"strings"
 
 	"go.starlark.net/starlark"
+	"golang.org/x/mod/semver"
 )
+
+var transforms = []*regexp.Regexp{
+	// OpenSSL version numbers: 1.2.3x -> 1.2.3+x
+	regexp.MustCompile(`(v?\d+(?:\.\d+)*)([a-z]+)`),
+}
 
 // Fake module stubs.
 // We don't really want to load dependencies, but they have to return values they define.
@@ -124,20 +130,38 @@ func (v *VersionInfo) GetUpstreamVersion(url, regex string) error {
 
 	matches := rx.FindAllSubmatch(body, -1)
 	if len(matches) == 0 {
-		fmt.Println(string(body))
 		return fmt.Errorf("could not find any match for %q in %q", regex, url)
 	}
 
+	semantic := []string{}
+	versions := map[string]string{}
 	for _, match := range matches {
 		if len(match) != 2 {
 			return fmt.Errorf("wrong number of matches (expected 1): %v", match[1:])
 		}
+		v := string(match[1])
 
-		// TODO: Implement semantic-version based sorting.
-		v.UpstreamVersion = string(match[1])
-		v.UpToDate = v.Version == v.UpstreamVersion
-		break
+		sem := "v" + v
+		for _, t := range transforms {
+			if m := t.FindAllStringSubmatch(sem, 1); len(m) == 1 {
+				sem = m[0][1] + "+" + m[0][2]
+			}
+		}
+
+		if !semver.IsValid(sem) {
+			return fmt.Errorf("could not parse as semantic version: %q", v)
+
+		}
+		semantic = append(semantic, sem)
+		versions[sem] = v
 	}
+	if len(versions) == 0 {
+		return fmt.Errorf("no version info found in %q for pattern %q", url, regex)
+	}
+
+	semver.Sort(semantic)
+	v.UpstreamVersion = versions[semantic[len(semantic)-1]]
+	v.UpToDate = v.Version == v.UpstreamVersion
 
 	return nil
 }

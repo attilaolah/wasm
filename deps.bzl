@@ -413,6 +413,19 @@ def go_dependencies():
         version = "v0.0.0-20210226210310-f2269e66cdee",
     )
     go_repository(
+        name = "com_github_kisielk_errcheck",
+        importpath = "github.com/kisielk/errcheck",
+        sum = "h1:e8esj/e4R+SAOwFwN+n3zr0nYeCyeweozKfO23MvHzY=",
+        version = "v1.5.0",
+    )
+    go_repository(
+        name = "com_github_kisielk_gotool",
+        importpath = "github.com/kisielk/gotool",
+        sum = "h1:AV2c/EiW3KqPNT9ZKl07ehoAGi4C5/01Cfbblndcapg=",
+        version = "v1.0.0",
+    )
+
+    go_repository(
         name = "com_github_klauspost_compress",
         importpath = "github.com/klauspost/compress",
         sum = "h1:xqfchp4whNFxn5A4XFyyYtitiWI8Hy5EW59jEwcyL6U=",
@@ -635,6 +648,12 @@ def go_dependencies():
         sum = "h1:Via6XqJr0hceW4wff3QRzD5gAk/tatMw/4ZA7cTlIME=",
         version = "v0.11.2",
     )
+    go_repository(
+        name = "com_github_yuin_goldmark",
+        importpath = "github.com/yuin/goldmark",
+        sum = "h1:ruQGxdhGHe7FWOJPT0mKs5+pD2Xs1Bm/kdGlHO04FmM=",
+        version = "v1.2.1",
+    )
 
     go_repository(
         name = "com_google_cloud_go",
@@ -846,8 +865,8 @@ def go_dependencies():
     go_repository(
         name = "org_golang_x_tools",
         importpath = "golang.org/x/tools",
-        sum = "h1:aZzprAO9/8oim3qStq3wc1Xuxx4QmAGriC4VU4ojemQ=",
-        version = "v0.0.0-20191119224855-298f0cb1881e",
+        sum = "h1:CB3a9Nez8M13wwlr/E2YtwoU+qYHKfC+JrDa45RXXoQ=",
+        version = "v0.0.0-20210106214847-113979e3529a",
     )
     go_repository(
         name = "org_golang_x_xerrors",
