@@ -9,7 +9,6 @@ load(":configure.bzl", "build_data", "emscripten_env", _build_data = "build_data
 
 def make_lib(
         name,
-        args = None,
         lib_source = None,
         build_data = None,
         out_static_libs = None,
@@ -20,7 +19,6 @@ def make_lib(
 
     Args:
       name: Passed on to make(). Also used for guessing other parameters.
-      args: Additional make args to pass to make().
       lib_source: Passed on to make(). Guessed from name.
       build_data: Additional build-time dependencies, compiled with cfg =
         "exec".
@@ -33,8 +31,6 @@ def make_lib(
         target.
       **kwargs: Passed no make().
     """
-    if args == None:
-        args = ['PREFIX="${INSTALLDIR}"']
     if lib_source == None:
         lib_source = _lib_source(name)
     if out_static_libs == None:
@@ -52,12 +48,11 @@ def make_lib(
     make(
         name = name,
         env = select(env),
-        args = args,
         lib_name = "{}_lib".format(name),
         lib_source = lib_source,
         build_data = _build_data(build_data),
         tool_prefix = select({
-            "//config:wasm": "${EMSCRIPTEN}/emmake",
+            "//config:wasm": "$(execpath @emscripten_bin_linux//:emscripten/emmake)",
             "//conditions:default": None,
         }),
         out_static_libs = out_static_libs,
