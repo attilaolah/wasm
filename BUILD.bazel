@@ -8,13 +8,23 @@ clang_toolchain(name = "linux_x86_64_clang")
 # gazelle:prefix github.com/attilaolah/wasm
 gazelle(name = "gazelle")
 
-buildifier(
-    name = "buildifier",
-)
+buildifier(name = "buildifier")
 
 exports_files(
-    ["tsconfig.json"],
+    [
+        ".github/workflows/main.yml",
+        "tsconfig.json",
+    ],
     visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "go_mod",
+    srcs = [
+        "go.mod",
+        "go.sum",
+    ],
+    visibility = ["//tests:__pkg__"],
 )
 
 bzl_library(
@@ -35,6 +45,12 @@ bzl_library(
     name = "http_archive",
     srcs = ["http_archive.bzl"],
     visibility = [":__subpackages__"],
+)
+
+bzl_library(
+    name = "versions",
+    srcs = ["versions.bzl"],
+    visibility = ["//tests:__pkg__"],
 )
 
 sh_test(

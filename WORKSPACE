@@ -32,10 +32,11 @@ load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
 load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
 load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
 load("//:deps.bzl", "external_dependencies", "go_dependencies")
+load("//:versions.bzl", "GO_VERSION")
 
 go_rules_dependencies()
 
-go_register_toolchains(version = "1.18")
+go_register_toolchains(version = GO_VERSION)
 
 # gazelle:repo bazel_gazelle
 gazelle_dependencies()

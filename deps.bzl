@@ -113,10 +113,23 @@ def go_dependencies():
         version = "v0.26.0",
     )
     go_repository(
+        name = "in_gopkg_check_v1",
+        importpath = "gopkg.in/check.v1",
+        sum = "h1:yhCVgyC4o1eVCa2tZl7eS0r+SDo693bJlVdllGtEeKM=",
+        version = "v0.0.0-20161208181325-20d25e280405",
+    )
+    go_repository(
+        name = "in_gopkg_yaml_v3",
+        importpath = "gopkg.in/yaml.v3",
+        sum = "h1:h8qDotaEPuJATrMmW04NCwg7v22aHH28wwpauUhK9Oo=",
+        version = "v3.0.0-20210107192922-496545a6307b",
+    )
+
+    go_repository(
         name = "net_starlark_go",
         importpath = "go.starlark.net",
-        sum = "h1:Jv3qnj+QmBjvAeyPwsTAm26oKmU/Z9F6EZIMDNznH6Q=",
-        version = "v0.0.0-20210511153848-cca21e7857d4",
+        sum = "h1:i0Sz4b+qJi5xwOaFZqZ+RNHkIpaKLDofei/Glt+PMNc=",
+        version = "v0.0.0-20220302181546-5411bad688d1",
     )
     go_repository(
         name = "org_golang_google_appengine",

@@ -1,0 +1,16 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_test")
+
+go_test(
+    name = "workflow_test",
+    srcs = ["workflow_test.go"],
+    data = [
+        ":workflows/main.yml",
+        "//:go_mod",
+        "//:versions",
+    ],
+    deps = [
+        "@in_gopkg_yaml_v3//:yaml_v3",
+        "@net_starlark_go//starlark",
+        "@org_golang_x_mod//modfile:go_default_library",
+    ],
+)
