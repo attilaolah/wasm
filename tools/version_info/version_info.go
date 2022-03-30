@@ -14,9 +14,25 @@ import (
 	"golang.org/x/mod/semver"
 )
 
-var transforms = []*regexp.Regexp{
+var (
+	// GRASS and others have a glued-on release candidate:
+	rxPreRelease = regexp.MustCompile(`(v?\d+(?:\.\d+)*)(RC\d+)`)
 	// OpenSSL version numbers: 1.2.3x -> 1.2.3+x
-	regexp.MustCompile(`(v?\d+(?:\.\d+)*)([a-z]+)`),
+	rxBuild = regexp.MustCompile(`(v?\d+(?:\.\d+)*)([a-z]+)`)
+)
+
+func fixPreRelease(v string) string {
+	if m := rxPreRelease.FindAllStringSubmatch(v, 1); len(m) == 1 {
+		v = m[0][1] + "-" + m[0][2]
+	}
+	return v
+}
+
+func fixBuild(v string) string {
+	if m := rxBuild.FindAllStringSubmatch(v, 1); len(m) == 1 {
+		v = m[0][1] + "+" + m[0][2]
+	}
+	return v
 }
 
 // Fake module stubs.
@@ -142,14 +158,10 @@ func (v *VersionInfo) GetUpstreamVersion(url, regex string) error {
 		v := string(match[1])
 
 		sem := "v" + v
-		for _, t := range transforms {
-			if m := t.FindAllStringSubmatch(sem, 1); len(m) == 1 {
-				sem = m[0][1] + "+" + m[0][2]
-			}
-		}
-
+		sem = fixPreRelease(sem)
+		sem = fixBuild(sem)
 		if !semver.IsValid(sem) {
-			return fmt.Errorf("could not parse as semantic version: %q", v)
+			return fmt.Errorf("could not parse as semantic version: %q (tried: %q)", v, sem)
 
 		}
 		semantic = append(semantic, sem)
