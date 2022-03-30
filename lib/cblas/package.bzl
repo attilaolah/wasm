@@ -17,11 +17,11 @@ def download():
         sha256 = SHA256,
         strip_prefix = "{uname}",
         patch_cmds = [
-            # Bazel will exclude empty directories from the symlink tree.
-            # So add a dummy file to prevent the "lib" dir from being excluded.
-            "touch lib/.keep",
             # The makefile hard-codes "make".
             # We want to use $(MAKE) instead so the toolchain's make tool gets used.
             r"sed -i Makefile -e 's/\bmake\b/$(MAKE)/g'",
+            # The makefilse also use ARCH instead of AR and its flags.
+            r"sed -i src/Makefile -e 's/\$(ARCH)/$(AR)/g'",
+            r"sed -i src/Makefile -e 's/\$(ARCHFLAGS)/$(ARFLAGS)/g'",
         ],
     )
