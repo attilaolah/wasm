@@ -88,6 +88,29 @@ CONFIGURE_OPTIONS_WASM = CONFIGURE_OPTIONS + [
     ),
 ]
 
+POSTFIX_CP = " ".join((
+    "cp",
+    "--dereference",
+    # Static libraries are installed outside of the "lib" dir, so copy them inside.
+    '"{build_tmpdir}/{install_prefix}"/{name}{major_minor_nodot}/lib/lib{name}_*.{major_minor}.a',
+    '"{installdir}/lib"',
+)).format(
+    name = NAME,
+    build_tmpdir = "${BUILD_TMPDIR}",
+    install_prefix = "${INSTALL_PREFIX}",
+    installdir = "${INSTALLDIR}",
+    major_minor = major_minor(VERSION),
+    major_minor_nodot = major_minor(
+        VERSION,
+        join = "",
+    ),
+)
+
+POSTFIX_TOUCH = (
+    r'find "${INSTALLDIR}/lib" -type f -exec ' +
+    r'touch -r "${BUILD_TMPDIR}/${INSTALL_PREFIX}" "{}" \;'
+)
+
 configure_make_lib(
     name = NAME,
     args = select({
@@ -207,10 +230,7 @@ configure_make_lib(
             "vedit",
         ]
     ],
-    postfix_script = " && ".join([
-        r'cp --dereference "${BUILD_TMPDIR}/${INSTALL_PREFIX}"/grass??/lib/libgrass_*.?.?.a "${INSTALLDIR}/lib"',
-        r'find "${INSTALLDIR}/lib" -type f -exec touch -r "${BUILD_TMPDIR}/${INSTALL_PREFIX}" "{}" \;',
-    ]),
+    postfix_script = " && ".join((POSTFIX_CP, POSTFIX_TOUCH)),
     deps = [
         "//lib/bz2",
         "//lib/fftw",
