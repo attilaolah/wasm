@@ -1,9 +1,9 @@
-load("//lib:defs.bzl", "major_minor")
+load("//lib:defs.bzl", "dep_dir", "include_dir", "library_dir", "major_minor", "static_lib")
 load("//lib:lib.bzl", "package_lib")
 load("//toolchains:utils.bzl", "no_error", "path")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
-load(":configure.bzl", "configure_sed")
-load(":package.bzl", "VERSION")
+load(":configure.bzl", "configure_sed", "with_features", "with_libraries", "without_features")
+load(":package.bzl", "NAME", "VERSION")
 
 package(default_visibility = ["//:__subpackages__"])
 
@@ -28,6 +28,7 @@ TRANSITIVE_DEPS = {
         "z",
         "zstd",
     ],
+    "readline": ["tinfo"],
     "sqlite3": [
         # keep sorted
         "dl",
@@ -49,33 +50,37 @@ FLAGS = [
     # keep sorted
     "--enable-64bit",
     "--enable-shared=no",
-    "--with-bzlib",
-    "--with-cxx",
-    "--with-fftw",
-    "--with-nls",
-    "--with-png",
-    "--with-proj",
-    '--with-proj-share="${EXT_BUILD_DEPS}/proj_lib/share/proj"',
-    "--with-pthread",
-    "--with-regex",
-    "--with-sqlite",
-    "--with-tiff",
-    "--with-zstd",
-    "--without-blas",
-    "--without-cairo",
-    "--without-freetype",
-    "--without-gdal",
-    "--without-lapack",
-    "--without-mysql",
-    "--without-odbc",
-    "--without-opencl",
-    "--without-opendwg",
-    "--without-opengl",
-    "--without-openmp",
-    "--without-postgres",
-    "--without-readline",
-    "--without-x",
-]
+] + with_features(
+    "cxx",
+    "nls",
+    "proj",
+    "pthread",
+    "regex",
+) + with_libraries(
+    "fftw",
+    "png",
+    "readline",
+    "sqlite",
+    "tiff",
+    "zstd",
+    blas = "cblas",
+    bzlib = "bz2",
+) + [
+    '--with-proj-share="{}/share/proj"'.format(dep_dir("proj")),
+] + without_features(
+    "cairo",
+    "freetype",
+    "gdal",  # to avoid a cyclic dependency
+    "lapack",
+    "mysql",
+    "odbc",
+    "opencl",
+    "opendwg",
+    "opengl",
+    "openmp",
+    "postgres",
+    "x",
+)
 
 CONFIGURE_OPTIONS = FLAGS + [
     configure_sed(TRANSITIVE_DEPS),
@@ -88,8 +93,31 @@ CONFIGURE_OPTIONS_WASM = CONFIGURE_OPTIONS + [
     ),
 ]
 
+POSTFIX_CP = " ".join((
+    "cp",
+    "--dereference",
+    # Static libraries are installed outside of the "lib" dir, so copy them inside.
+    '"{build_tmpdir}/{install_prefix}"/{name}{major_minor_nodot}/lib/lib{name}_*.{major_minor}.a',
+    '"{installdir}/lib"',
+)).format(
+    name = NAME,
+    build_tmpdir = "${BUILD_TMPDIR}",
+    install_prefix = "${INSTALL_PREFIX}",
+    installdir = "${INSTALLDIR}",
+    major_minor = major_minor(VERSION),
+    major_minor_nodot = major_minor(
+        VERSION,
+        join = "",
+    ),
+)
+
+POSTFIX_TOUCH = (
+    r'find "${INSTALLDIR}/lib" -type f -exec ' +
+    r'touch -r "${BUILD_TMPDIR}/${INSTALL_PREFIX}" "{}" \;'
+)
+
 configure_make_lib(
-    name = "grass",
+    name = NAME,
     args = select({
         # TODO: Fix the build so this would not be necessary!
         "//config:wasm": ["|| true"],
@@ -146,15 +174,13 @@ configure_make_lib(
         ]),
         "PROJ_LIB": "$${EXT_BUILD_DEPS}/proj_lib/share/proj",
     },
-    out_binaries = ["grass{}".format(major_minor(
-        VERSION,
-        join = "",
-    ))],
+    out_binaries = [NAME],
     out_static_libs = [
-        "libgrass_{}.{}.a".format(
+        static_lib("{}_{}.{}".format(
+            NAME,
             lib,
             major_minor(VERSION),
-        )
+        ))
         for lib in [
             # keep sorted
             "arraystats",
@@ -209,15 +235,14 @@ configure_make_lib(
             "vedit",
         ]
     ],
-    postfix_script = " && ".join([
-        r'cp --dereference "${BUILD_TMPDIR}/${INSTALL_PREFIX}"/grass??/lib/libgrass_*.?.?.a "${INSTALLDIR}/lib"',
-        r'find "${INSTALLDIR}/lib" -type f -exec touch -r "${BUILD_TMPDIR}/${INSTALL_PREFIX}" "{}" \;',
-    ]),
+    postfix_script = "\n".join((POSTFIX_CP, POSTFIX_TOUCH)),
     deps = [
+        "//lib/blas:cblas",
         "//lib/bz2",
         "//lib/fftw",
         "//lib/png",
         "//lib/proj",
+        "//lib/readline",
         "//lib/sqlite",
         "//lib/tiff",
         "//lib/z",

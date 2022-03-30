@@ -1,4 +1,4 @@
-load("//lib:defs.bzl", "static_lib", "library_path", "root_path")
+load("//lib:defs.bzl", "library_path", "root_path", "static_lib")
 load("//lib:lib.bzl", "package_lib")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
 load("//toolchains/make:make.bzl", "make_lib")
@@ -18,8 +18,20 @@ FC = root_path("$(execpaths //tools/llvm:flang_runtime)/bin/flang")
 
 cmake_lib(
     name = NAME,
-    env = {"FC": FC.replace("${", "$${")},
     build_data = ["//tools/llvm:flang_runtime"],
+    env = {"FC": FC.replace("${", "$${")},
+)
+
+CP_HEADERS = 'cp --dereference "{build_tmpdir}/include"/{name}{{,_f77}}.h "{install_dir}/include"'.format(
+    name = NAME_C,
+    build_tmpdir = "${BUILD_TMPDIR}",
+    install_dir = "${INSTALLDIR}",
+)
+
+CP_LIBS = 'cp --dereference "{build_tmpdir}/{static_lib}" "{install_dir}/lib"'.format(
+    build_tmpdir = "${BUILD_TMPDIR}",
+    install_dir = "${INSTALLDIR}",
+    static_lib = static_lib(NAME_C),
 )
 
 make_lib(
@@ -31,11 +43,7 @@ make_lib(
         'FC="{}"'.format(FC),
     ],
     build_data = ["//tools/llvm:flang_runtime"],
-    postfix_script = 'cp --dereference "{build_tmpdir}/{static_lib}" "{install_dir}/lib"'.format(
-        build_tmpdir = "${BUILD_TMPDIR}",
-        install_dir = "${INSTALLDIR}",
-        static_lib = static_lib(NAME_C),
-    ),
+    postfix_script = "\n".join((CP_HEADERS, CP_LIBS)),
     targets = ["alllib"],
-    deps = [":"+NAME],
+    deps = [":" + NAME],
 )

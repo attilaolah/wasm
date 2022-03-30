@@ -35,7 +35,6 @@ EM_ENV = {
     "PYTHON": "$${PYTHONHOME}/bin/python3",
 }
 
-
 EM_TOOLS = [
     # keep sorted
     "//lib/python:runtime",

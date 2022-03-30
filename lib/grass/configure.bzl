@@ -1,4 +1,5 @@
 load("//toolchains:utils.bzl", "ldflags")
+load("//lib:defs.bzl", "include_dir", "library_dir")
 
 _SED_CMD = """$(sed -i.orig -E '{sed_script}' "${{BUILD_TMPDIR}}/configure" >/dev/stderr)"""
 _S_LIBS = r"""s/LIBS="(-l{lib}\s+\$LIBS)"/LIBS="\1 {deps}"/"""
@@ -25,3 +26,23 @@ def configure_sed(transitive_deps, cross_compiling = False):
     sed_script = "; ".join(sed_e)
 
     return _SED_CMD.format(sed_script = sed_script)
+
+def with_features(*features):
+    return ["--with-{}".format(feature) for feature in features]
+
+def without_features(*features):
+    return ["--without-{}".format(feature) for feature in features]
+
+def with_libraries(*features, **libraries):
+    flags = []
+    for feature in features:
+        flags += _with_library(feature)
+    for feature, library in libraries.items():
+        flags += _with_library(feature, library)
+    return flags
+
+def _with_library(feature, library = None):
+    return with_features(feature) + [
+        '--with-{}-includes="{}"'.format(feature, include_dir(library or feature)),
+        '--with-{}-libs="{}"'.format(feature, library_dir(library or feature)),
+    ]
