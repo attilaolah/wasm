@@ -3,9 +3,9 @@
 PACKAGE_DEPS = [
     "//lib/aec:package",
     "//lib/bison:package",
+    "//lib/blas:package",
     "//lib/boost:package",
     "//lib/bz2:package",
-    "//lib/cblas:package",
     "//lib/ceres:package",
     "//lib/curl:package",
     "//lib/deflate:package",

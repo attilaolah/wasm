@@ -28,9 +28,9 @@ toolchain, pass `--cpu=wasm32`. Pass `-c opt` for an optimised build.
 |-------------|---------|
 [`//lib/aec`](https://github.com/attilaolah/wasm/blob/main/lib/aec/BUILD.bazel) | 1.0.6 [🔗](https://gitlab.dkrz.de/k202009/libaec/-/archive/v1.0.6/libaec-v1.0.6.tar.bz2)
 [`//lib/bison`](https://github.com/attilaolah/wasm/blob/main/lib/bison/BUILD.bazel) | 3.7.6 [🔗](https://ftp.gnu.org/gnu/bison/bison-3.7.6.tar.xz)
+[`//lib/blas`](https://github.com/attilaolah/wasm/blob/main/lib/blas/BUILD.bazel) | 3.10.0 [🔗](http://www.netlib.org/blas/blas-3.10.0.tgz)
 [`//lib/boost`](https://github.com/attilaolah/wasm/blob/main/lib/boost/BUILD.bazel) | 1.77.0 [🔗](https://boostorg.jfrog.io/ui/api/v1/download?repoKey=main&path=release/1.77.0/source/boost_1_77_0.tar.gz)
 [`//lib/bz2`](https://github.com/attilaolah/wasm/blob/main/lib/bz2/BUILD.bazel) | 1.0.8 [🔗](https://sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz)
-[`//lib/cblas`](https://github.com/attilaolah/wasm/blob/main/lib/cblas/BUILD.bazel) | 3.8.0 [🔗](http://www.netlib.org/blas/blast-forum/cblas.tgz)
 [`//lib/ceres`](https://github.com/attilaolah/wasm/blob/main/lib/ceres/BUILD.bazel) | 1.14.0 [🔗](https://github.com/ceres-solver/ceres-solver/archive/1.14.0.tar.gz)
 [`//lib/curl`](https://github.com/attilaolah/wasm/blob/main/lib/curl/BUILD.bazel) | 7.82.0 [🔗](https://curl.se/download/curl-7.82.0.tar.xz)
 [`//lib/deflate`](https://github.com/attilaolah/wasm/blob/main/lib/deflate/BUILD.bazel) | 1.7 [🔗](https://github.com/ebiggers/libdeflate/archive/v1.7.tar.gz)

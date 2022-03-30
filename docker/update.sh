@@ -19,7 +19,7 @@ apt-get --yes install bazel 2>&1
 # Required by //lib/openssl:
 apt-get --yes install libfindbin-libs-perl 2>&1
 
-# Required by //lib/cblas:
+# Required by //lib/blas:
 apt-get --yes install gfortran 2>&1
 
 # Required by //lib/grass:
