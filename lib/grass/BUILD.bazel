@@ -2,7 +2,7 @@ load("//lib:defs.bzl", "dep_dir", "include_dir", "library_dir", "major_minor", "
 load("//lib:lib.bzl", "package_lib")
 load("//toolchains:utils.bzl", "no_error", "path")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
-load(":configure.bzl", "configure_sed")
+load(":configure.bzl", "configure_sed", "with_features", "with_libraries", "without_features")
 load(":package.bzl", "NAME", "VERSION")
 
 package(default_visibility = ["//:__subpackages__"])
@@ -50,49 +50,37 @@ FLAGS = [
     # keep sorted
     "--enable-64bit",
     "--enable-shared=no",
-    "--with-blas",
-    '--with-blas-includes="{}"'.format(include_dir("cblas")),
-    '--with-blas-libs="{}"'.format(library_dir("cblas")),
-    "--with-bzlib",
-    '--with-bzlib-includes="{}"'.format(include_dir("bz2")),
-    '--with-bzlib-libs="{}"'.format(library_dir("bz2")),
-    "--with-cxx",
-    "--with-fftw",
-    '--with-fftw-includes="{}"'.format(include_dir("fftw")),
-    '--with-fftw-libs="{}"'.format(library_dir("fftw")),
-    "--with-nls",
-    "--with-png",
-    '--with-png-includes="{}"'.format(include_dir("png")),
-    '--with-png-libs="{}"'.format(library_dir("png")),
-    "--with-proj",
+] + with_features(
+    "cxx",
+    "nls",
+    "proj",
+    "pthread",
+    "regex",
+) + with_libraries(
+    "fftw",
+    "png",
+    "readline",
+    "sqlite",
+    "tiff",
+    "zstd",
+    blas = "cblas",
+    bzlib = "bz2",
+) + [
     '--with-proj-share="{}/share/proj"'.format(dep_dir("proj")),
-    "--with-pthread",
-    "--with-readline",
-    '--with-readline-includes="{}"'.format(include_dir("readline")),
-    '--with-readline-libs="{}"'.format(library_dir("readline")),
-    "--with-regex",
-    "--with-sqlite",
-    '--with-sqlite-includes="{}"'.format(include_dir("sqlite")),
-    '--with-sqlite-libs="{}"'.format(library_dir("sqlite")),
-    "--with-tiff",
-    '--with-tiff-includes="{}"'.format(include_dir("tiff")),
-    '--with-tiff-libs="{}"'.format(library_dir("tiff")),
-    "--with-zstd",
-    '--with-zstd-includes="{}"'.format(include_dir("zstd")),
-    '--with-zstd-libs="{}"'.format(library_dir("zstd")),
-    "--without-cairo",
-    "--without-freetype",
-    "--without-gdal",  # to avoid a cyclic dependency
-    "--without-lapack",
-    "--without-mysql",
-    "--without-odbc",
-    "--without-opencl",
-    "--without-opendwg",
-    "--without-opengl",
-    "--without-openmp",
-    "--without-postgres",
-    "--without-x",
-]
+] + without_features(
+    "cairo",
+    "freetype",
+    "gdal",  # to avoid a cyclic dependency
+    "lapack",
+    "mysql",
+    "odbc",
+    "opencl",
+    "opendwg",
+    "opengl",
+    "openmp",
+    "postgres",
+    "x",
+)
 
 CONFIGURE_OPTIONS = FLAGS + [
     configure_sed(TRANSITIVE_DEPS),
@@ -247,7 +235,7 @@ configure_make_lib(
             "vedit",
         ]
     ],
-    postfix_script = " && ".join((POSTFIX_CP, POSTFIX_TOUCH)),
+    postfix_script = "\n".join((POSTFIX_CP, POSTFIX_TOUCH)),
     deps = [
         "//lib/blas:cblas",
         "//lib/bz2",
