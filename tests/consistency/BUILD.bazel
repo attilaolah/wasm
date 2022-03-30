@@ -17,7 +17,6 @@ go_test(
         "@com_github_moby_buildkit//frontend/dockerfile/command",
         "@com_github_moby_buildkit//frontend/dockerfile/parser",
         "@in_gopkg_yaml_v3//:yaml_v3",
-        "@net_starlark_go//starlark",
         "@org_golang_x_mod//modfile",
     ],
 )

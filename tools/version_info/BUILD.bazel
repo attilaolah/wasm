@@ -8,5 +8,8 @@ go_library(
         ":__subpackages__",
         "//cmd/write_me:__pkg__",
     ],
-    deps = ["@net_starlark_go//starlark"],
+    deps = [
+        "@net_starlark_go//starlark",
+        "@org_golang_x_mod//semver",
+    ],
 )

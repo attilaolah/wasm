@@ -12,11 +12,13 @@ jobs:
   Bazel:
     runs-on: ubuntu-20.04
     steps:
+      - uses: actions/checkout@v3
       - uses: actions/cache@v2
         with:
-          path: ~/.cache/bazel
+          path: |
+            ~/.cache/bazel
+            ~/.cache/bazelisk
           key: ${{ runner.os }}-Bazel
-      - uses: actions/checkout@v3
       - run: bazel version
       - run: bazel query //...
       - run: bazel build --nobuild //...
@@ -25,6 +27,7 @@ jobs:
   Go:
     runs-on: ubuntu-20.04
     steps:
+      - uses: actions/checkout@v3
       - uses: actions/cache@v3
         with:
           path: |
@@ -33,7 +36,6 @@ jobs:
           key: ${{ runner.os }}-Go-${{ hashFiles('**/go.sum') }}
           restore-keys: |
             ${{ Runner.os }}-Go-
-      - uses: actions/checkout@v3
       - uses: actions/setup-go@v3
         with:
           go-version: 1.18
