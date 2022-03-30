@@ -1,5 +1,6 @@
 # Common prefix for all dependencies:
 EXT_BUILD_DEPS = "${EXT_BUILD_DEPS}"
+EXT_BUILD_ROOT = "${EXT_BUILD_ROOT}"
 
 def lib_name(library):
     """Generate a consistent library name."""
@@ -12,6 +13,12 @@ def repo_name(library):
 def static_lib(library):
     """Generate the static library name."""
     return "lib{library}.a".format(library = library)
+
+def root_path(path):
+    return "/".join([
+        EXT_BUILD_ROOT,
+        path,
+    ])
 
 def dep_dir(library):
     return "/".join([

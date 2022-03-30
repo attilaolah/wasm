@@ -1,4 +1,4 @@
-load("//lib:defs.bzl", "static_lib")
+load("//lib:defs.bzl", "static_lib", "library_path", "root_path")
 load("//lib:lib.bzl", "package_lib")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
 load("//toolchains/make:make.bzl", "make_lib")
@@ -11,12 +11,10 @@ package_lib(
     version_url = "https://www.netlib.org/blas/",
 )
 
-# TODO: Add required CFLAGS & friends.
-
 # NOTE: Currently building this package requires a working "gfortran" binary.
 # TODO: Build gfortran, and set the F18_FC environment variable to that binary.
 
-FC = "${EXT_BUILD_ROOT}/$(execpaths //tools/llvm:flang_runtime)/bin/flang"
+FC = root_path("$(execpaths //tools/llvm:flang_runtime)/bin/flang")
 
 cmake_lib(
     name = NAME,
@@ -27,7 +25,7 @@ cmake_lib(
 make_lib(
     name = NAME_C,
     args = [
-        'BLIB="$${EXT_BUILD_DEPS}/blas_lib/lib/libblas.a"',
+        'BLIB="{}"'.format(library_path(NAME)),
         'CBLIB="../{}"'.format(static_lib(NAME_C)),
         'CFLAGS="-Wno-header-guard"',
         'FC="{}"'.format(FC),
