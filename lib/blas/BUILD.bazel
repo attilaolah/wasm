@@ -1,7 +1,8 @@
 load("//lib:defs.bzl", "static_lib")
 load("//lib:lib.bzl", "package_lib")
+load("//toolchains/cmake:cmake.bzl", "cmake_lib")
 load("//toolchains/make:make.bzl", "make_lib")
-load(":package.bzl", "NAME")
+load(":package.bzl", "NAME", "NAME_C")
 
 package(default_visibility = ["//:__subpackages__"])
 
@@ -15,18 +16,28 @@ package_lib(
 # NOTE: Currently building this package requires a working "gfortran" binary.
 # TODO: Build gfortran, and set the F18_FC environment variable to that binary.
 
-make_lib(
+FC = "${EXT_BUILD_ROOT}/$(execpaths //tools/llvm:flang_runtime)/bin/flang"
+
+cmake_lib(
     name = NAME,
+    env = {"FC": FC.replace("${", "$${")},
+    build_data = ["//tools/llvm:flang_runtime"],
+)
+
+make_lib(
+    name = NAME_C,
     args = [
-        'CBLIB="../{}"'.format(static_lib(NAME)),
+        'BLIB="$${EXT_BUILD_DEPS}/blas_lib/lib/libblas.a"',
+        'CBLIB="../{}"'.format(static_lib(NAME_C)),
         'CFLAGS="-Wno-header-guard"',
-        'FC="${EXT_BUILD_ROOT}/$(execpaths //tools/llvm:flang_runtime)/bin/flang"',
+        'FC="{}"'.format(FC),
     ],
     build_data = ["//tools/llvm:flang_runtime"],
     postfix_script = 'cp --dereference "{build_tmpdir}/{static_lib}" "{install_dir}/lib"'.format(
         build_tmpdir = "${BUILD_TMPDIR}",
         install_dir = "${INSTALLDIR}",
-        static_lib = static_lib(NAME),
+        static_lib = static_lib(NAME_C),
     ),
     targets = ["alllib"],
+    deps = [":"+NAME],
 )
