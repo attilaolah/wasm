@@ -14,4 +14,6 @@ cmake_lib(
         "libaec.a",
         "libsz.a",
     ],
+    # The build script insists on installing shared libs, so remove them.
+    postfix_script = 'rm "${INSTALLDIR}"/lib/*.so{,.*}',
 )

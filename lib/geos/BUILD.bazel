@@ -3,7 +3,10 @@ load("//toolchains/cmake:cmake.bzl", "cmake_lib")
 
 package(default_visibility = ["//:__subpackages__"])
 
-package_lib()
+package_lib(
+    version_regex = r'href="/libgeos/geos/archive/refs/tags/([^"]+).tar.gz"',
+    version_url = "https://github.com/libgeos/geos/tags",
+)
 
 CACHE_ENTRIES = {
     "BUILD_BENCHMARKS": False,
