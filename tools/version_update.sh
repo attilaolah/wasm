@@ -1,6 +1,6 @@
 version_specs=(${VERSION_SPECS})
 
-echo "Updating ${package_bzl}:"
+echo "Updating ${PACKAGE_BZL}:"
 
 cd "${BUILD_WORKSPACE_DIRECTORY}"
 for spec in ${version_specs[@]}; do
