@@ -1,4 +1,4 @@
-load("//lib:defs.bzl", "static_lib", "library_path", "root_path")
+load("//lib:defs.bzl", "library_path", "root_path", "static_lib")
 load("//lib:lib.bzl", "package_lib")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
 load("//toolchains/make:make.bzl", "make_lib")
@@ -18,8 +18,8 @@ FC = root_path("$(execpaths //tools/llvm:flang_runtime)/bin/flang")
 
 cmake_lib(
     name = NAME,
-    env = {"FC": FC.replace("${", "$${")},
     build_data = ["//tools/llvm:flang_runtime"],
+    env = {"FC": FC.replace("${", "$${")},
 )
 
 make_lib(
@@ -37,5 +37,5 @@ make_lib(
         static_lib = static_lib(NAME_C),
     ),
     targets = ["alllib"],
-    deps = [":"+NAME],
+    deps = [":" + NAME],
 )
