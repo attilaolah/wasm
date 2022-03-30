@@ -16,7 +16,7 @@ for spec in ${version_specs[@]}; do
   url="$(sed "s/${version}/${upstream_version}/g" <<< "${url}")"
   tmp="$(mktemp)"
 
-  curl "${url}" --output "${tmp}" --silent
+  curl "${url}" --output "${tmp}" --silent --location
 
   checksum="$(sha256sum "${tmp}" | awk '{ print $1 }')"
 
