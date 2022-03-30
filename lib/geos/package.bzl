@@ -3,11 +3,11 @@
 load("//lib:http_archive.bzl", "http_archive")
 
 NAME = "geos"
-VERSION = "3.9.1"
+VERSION = "3.10.2"
 
 URL = "https://github.com/lib{name}/{name}/archive/{version}.tar.gz"
 
-SHA256 = "e9e20e83572645ac2af0af523b40a404627ce74b3ec99727754391cdf5b23645"
+SHA256 = "d71932b444c9bd5d0bdf9eab4d22f25d9c31c122a73d619e2ec15294fb32147d"
 
 def download():
     http_archive(
