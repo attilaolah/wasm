@@ -4,11 +4,11 @@ load("//lib:http_archive.bzl", "http_archive")
 load("//lib:defs.bzl", "major")
 
 NAME = "fftw"
-VERSION = "3.3.9"
+VERSION = "3.3.10"
 
 URL = "http://www.{name}.org/{name}-{version}.tar.gz"
 
-SHA256 = "bf2c7ce40b04ae811af714deb512510cc2c17b9ab9d6ddcf49fe4487eea7af3d"
+SHA256 = "56c932549852cddcfafdab3820b0200c7742675be92179e59e6215b340e26467"
 
 def lname(suffix = ""):
     return NAME + major(VERSION) + suffix
