@@ -19,4 +19,6 @@ def download():
         urls = URLS,
         sha256 = SHA256,
         strip_prefix = "{name}-{version}",
+        # Workaround for https://github.com/OSGeo/gdal/issues/4815.
+        patches = ["//lib/gdal:gdal.patch"],
     )
