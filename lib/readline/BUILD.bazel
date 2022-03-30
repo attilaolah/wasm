@@ -12,4 +12,5 @@ configure_make_lib(
         "--disable-shared",
         "--disable-install-examples",
     ],
+    deps = ["//lib/ncurses"],
 )

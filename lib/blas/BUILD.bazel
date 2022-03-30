@@ -22,6 +22,18 @@ cmake_lib(
     env = {"FC": FC.replace("${", "$${")},
 )
 
+CP_HEADERS = 'cp --dereference "{build_tmpdir}/include"/{name}{{,_f77}}.h "{install_dir}/include"'.format(
+    name = NAME_C,
+    build_tmpdir = "${BUILD_TMPDIR}",
+    install_dir = "${INSTALLDIR}",
+)
+
+CP_LIBS = 'cp --dereference "{build_tmpdir}/{static_lib}" "{install_dir}/lib"'.format(
+    build_tmpdir = "${BUILD_TMPDIR}",
+    install_dir = "${INSTALLDIR}",
+    static_lib = static_lib(NAME_C),
+)
+
 make_lib(
     name = NAME_C,
     args = [
@@ -31,11 +43,7 @@ make_lib(
         'FC="{}"'.format(FC),
     ],
     build_data = ["//tools/llvm:flang_runtime"],
-    postfix_script = 'cp --dereference "{build_tmpdir}/{static_lib}" "{install_dir}/lib"'.format(
-        build_tmpdir = "${BUILD_TMPDIR}",
-        install_dir = "${INSTALLDIR}",
-        static_lib = static_lib(NAME_C),
-    ),
+    postfix_script = "\n".join((CP_HEADERS, CP_LIBS)),
     targets = ["alllib"],
     deps = [":" + NAME],
 )
