@@ -1,5 +1,7 @@
+load("//lib:defs.bzl", "static_lib")
 load("//lib:lib.bzl", "package_lib")
 load("//toolchains/make:make.bzl", "make_lib")
+load(":package.bzl", "NAME")
 
 package(default_visibility = ["//:__subpackages__"])
 
@@ -14,16 +16,20 @@ package_lib(
 # TODO: Build gfortran, and set the F18_FC environment variable to that binary.
 
 make_lib(
-    name = "cblas",
+    name = NAME,
     args = [
         'ARCH="${EXT_BUILD_ROOT}/external/llvm/bin/llvm-ar"',
         'ARCHFLAGS="rcsD"',
-        'CBLIB="../lib/libcblas.a"',
+        'CBLIB="../lib/{}"'.format(static_lib(NAME)),
         'CC="${EXT_BUILD_ROOT}/external/llvm/bin/clang"',
         'CFLAGS="-Wno-header-guard"',
         'FC="${EXT_BUILD_ROOT}/$(execpaths //tools/llvm:flang_runtime)/bin/flang"',
     ],
     build_data = ["//tools/llvm:flang_runtime"],
-    postfix_script = 'cp -a "${EXT_BUILD_ROOT}/external/lib_cblas/lib/libcblas.a" "${INSTALLDIR}/lib"',
+    postfix_script = 'cp --dereference "{build_tmpdir}/lib/{static_lib}" "{install_dir}/lib"'.format(
+        build_tmpdir = "${BUILD_TMPDIR}",
+        install_dir = "${INSTALLDIR}",
+        static_lib = static_lib(NAME),
+    ),
     targets = ["alllib"],
 )
