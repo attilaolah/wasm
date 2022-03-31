@@ -20,28 +20,25 @@ def root_path(path):
         path,
     ])
 
-def dep_dir(library):
+def dep_path(library, subpath = ""):
     return "/".join([
         EXT_BUILD_DEPS,
         lib_name(library),
-    ])
+    ]) + subpath
 
-def include_dir(library, extra_dirs = None):
-    return "/".join([
-        dep_dir(library),
-        "include",
-    ] + (extra_dirs or []))
+def include_dir(library, subdir = ""):
+    subpath = "/include"
+    if subdir:
+        subpath += "/" + subdir
+    return dep_path(library, subpath)
 
 def library_dir(library):
-    return "/".join([
-        dep_dir(library),
-        "lib",
-    ])
+    return dep_path(library, "/lib")
 
-def library_path(library, static_lib_name = None):
+def library_path(library, static_lib = None):
     return "/".join([
         library_dir(library),
-        static_lib(static_lib_name or library),
+        static_lib or _static_lib(library),
     ])
 
 def include_flags(include_dir):
@@ -63,3 +60,45 @@ def major(version, delimiter = "."):
 def major_minor(version, join = ".", delimiter = "."):
     """Extract major & minor versions, joined by the given delimiter."""
     return join.join(version.split(delimiter)[:2])
+
+def dep_spec(name, include_dir = None, library = None, exclude = ()):
+    spec = {
+        "name": name,
+        "include_dir": include_dir or _include_dir(name),
+        "library": library or _library_path(name),
+    }
+    for item in exclude:
+        spec.pop(item)
+    return spec
+
+def cache_entries(upcase = True, deps = None, **kwargs):
+    """Convenience macro for constructing the cache_entries dict."""
+    result = dict(kwargs.items())
+
+    for dep, spec in (deps or {}).items():
+        spec = spec or dep_spec(dep)
+        if "include_dir" in spec:
+            result[_include_key(dep)] = spec["include_dir"]
+        if "library" in spec:
+            result[_library_key(dep)] = spec["library"]
+
+    if upcase:
+        for key in list(result):
+            result[key.upper()] = result.pop(key)
+
+    return result
+
+def _library_key(dep):
+    return "{}_library".format({
+        "z": "zlib",
+    }.get(dep, dep))
+
+def _include_key(dep):
+    return "{}_include_dir".format({
+        "png": "png_png",
+        "z": "zlib",
+    }.get(dep, dep))
+
+_include_dir = include_dir
+_library_path = library_path
+_static_lib = static_lib

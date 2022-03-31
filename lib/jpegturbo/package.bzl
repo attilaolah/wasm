@@ -1,12 +1,7 @@
 """Workspace rule for downloading package dependencies."""
 
 load("//lib:http_archive.bzl", "http_archive")
-load(
-    "//lib:defs.bzl",
-    _include_dir = "include_dir",
-    _library_dir = "library_dir",
-    _link_flags = "link_flags",
-)
+load("//lib:defs.bzl", "dep_spec", "library_path", "static_lib")
 
 NAME = "jpegturbo"
 VERSION = "2.1.0"
@@ -15,11 +10,15 @@ URL = "https://github.com/libjpeg-turbo/libjpeg-turbo/archive/{version}.tar.gz"
 
 SHA256 = "d6b7790927d658108dfd3bee2f0c66a2924c51ee7f9dc930f62c452f4a638c52"
 
-def lname():
-    return "turbojpeg"
+INAME = "jpeg"
+LNAME = "turbojpeg"
 
-def link_flags():
-    return _link_flags(lname(), _library_dir(NAME))
+STATIC_LIBS = [static_lib(lib) for lib in (INAME, LNAME)]
+
+SPEC = dep_spec(
+    name = NAME,
+    library = library_path(NAME, STATIC_LIBS[0]),
+)
 
 def download():
     http_archive(

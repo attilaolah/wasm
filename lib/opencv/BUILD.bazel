@@ -1,88 +1,60 @@
-load("//lib:defs.bzl", "include_dir", "include_flags", "library_dir", "library_path", "link_flags", "root_path", "static_lib")
+load("//lib:defs.bzl", "cache_entries", "dep_path", "include_dir", "include_flags", "library_dir", "link_flags")
 load("//lib:lib.bzl", "package_lib")
-load("//toolchains:utils.bzl", "no_error")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
-load("//lib/jpegturbo:package.bzl", link_flags_jpegturbo = "link_flags")
-load("//lib/openjpeg:package.bzl", include_dir_openjpeg = "include_dir", library_path_openjpeg = "library_path")
-load("//lib/lzma:package.bzl", link_flags_lzma = "link_flags")
-load("//lib/webp:package.bzl", include_dir_webp = "include_dir", library_path_webp = "library_path", link_flags_webp = "link_flags")
-load("//lib/zstd:package.bzl", link_flags_zstd = "link_flags")
-load(":package.bzl", "NAME")
+load(":package.bzl", "NAME", "STATIC_LIBS")
+
+# Library deps:
+load("//lib/jpegturbo:package.bzl", JPEGTURBO_SPEC = "SPEC")
+load("//lib/openexr:package.bzl", OPENEXR_SPEC = "SPEC")
+load("//lib/openjpeg:package.bzl", OPENJPEG_SPEC = "SPEC")
 
 package(default_visibility = ["//:__subpackages__"])
 
 package_lib()
 
-C_FLAGS = include_flags(include_dir_openjpeg())
+C_FLAGS = include_flags(OPENJPEG_SPEC["include_dir"])
 
 EXE_LINKER_FLAGS_RELEASE = " ".join([
-    link_flags_jpegturbo(),
-    link_flags_lzma(),
-    link_flags_webp(),
-    link_flags_zstd(),
+    link_flags(
+        "jpeg",
+        library_dir("jpegturbo"),
+    ),
+    link_flags("lzma"),
+    link_flags("webp"),
+    link_flags("zstd"),
 ])
 
 cmake_lib(
     name = NAME,
-    cache_entries = {
-        "BUILD_SHARED_LIBS": False,
-        "INSTALL_CREATE_DISTRIB": True,
-        "BUILD_PROTOBUF": False,
-
-        # Dependencies:
-        "JPEG_INCLUDE_DIR": "${EXT_BUILD_DEPS}/jpegturbo_lib/include",
-        "JPEG_LIBRARY": "${EXT_BUILD_DEPS}/jpegturbo_lib/lib/libjpeg.a",
-        "OPENJPEG_INCLUDE_DIR": include_dir_openjpeg(),
-        "OPENJPEG_LIBRARY": library_path_openjpeg(),
-        "PNG_LIBRARY": "${EXT_BUILD_DEPS}/png_lib/lib/libpng.a",
-        "PNG_PNG_INCLUDE_DIR": "${EXT_BUILD_DEPS}/png_lib/include",
-        "PROTOBUF_INCLUDE_DIR": "${EXT_BUILD_DEPS}/protobuf_lib/include",
-        "PROTOBUF_LIBRARY": "${EXT_BUILD_DEPS}/protobuf_lib/lib/libprotobuf.a",
-        "TIFF_INCLUDE_DIR": "${EXT_BUILD_DEPS}/tiff_lib/include",
-        "TIFF_LIBRARY": "${EXT_BUILD_DEPS}/tiff_lib/lib/libtiff.a",
-        "OPENEXR_INCLUDE_DIR": "${EXT_BUILD_DEPS}/openexr_lib/include",
-        "OPENEXR_LIBRARY": "${EXT_BUILD_DEPS}/openexr_lib/lib/libOpenEXR.a",
-        "WEBP_INCLUDE_DIR": include_dir_webp(),
-        "WEBP_LIBRARY": library_path_webp(),
-        "ZLIB_INCLUDE_DIR": "${EXT_BUILD_DEPS}/z_lib/include",
-        "ZLIB_LIBRARY": "${EXT_BUILD_DEPS}/z_lib/lib/libz.a",
-
-        # OpenJPEG include dirs:
-        "CMAKE_C_FLAGS_RELEASE": C_FLAGS,
-        "CMAKE_CXX_FLAGS_RELEASE": C_FLAGS,
-
-        # Transitive dependencies for the linker:
-        "CMAKE_EXE_LINKER_FLAGS_RELEASE": EXE_LINKER_FLAGS_RELEASE,
-    },
-    out_static_libs = [
-        static_lib("_".join((NAME, lib)))
-        for lib in [
-            # keep sorted
-            "calib3d",
-            "core",
-            "dnn",
-            "features2d",
-            "flann",
-            "gapi",
-            "highgui",
-            "imgcodecs",
-            "imgproc",
-            "ml",
-            "objdetect",
-            "photo",
-            "stitching",
-            "video",
-            "videoio",
-        ]
-    ],
+    cache_entries = cache_entries(
+        build_protobuf = False,
+        build_shared_libs = False,
+        cmake_c_flags_release = C_FLAGS,
+        cmake_cxx_flags_release = C_FLAGS,
+        cmake_exe_linker_flags_release = EXE_LINKER_FLAGS_RELEASE,
+        install_create_distrib = True,
+        opencv_force_eigen_find_package_config = dep_path("eigen", "/share/eigen3/cmake/Eigen3Config.cmake"),
+        deps = {
+            "png": {},
+            "protobuf": {},
+            "tiff": {},
+            "webp": {},
+            "z": {},
+            "jpeg": JPEGTURBO_SPEC,
+            "openjpeg": OPENJPEG_SPEC,
+            "openexr": OPENEXR_SPEC,
+        },
+    ),
+    out_static_libs = STATIC_LIBS,
     deps = [
+        "//lib/eigen",
         "//lib/jpegturbo",
+        "//lib/openexr",
         "//lib/openjpeg",
         "//lib/png",
         "//lib/protobuf",
         "//lib/tiff",
         "//lib/webp",
         "//lib/z",
-        "//lib/openexr",
     ],
 )
