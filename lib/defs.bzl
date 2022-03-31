@@ -74,6 +74,7 @@ def dep_spec(name, include_dir = None, library = None, exclude = ()):
 def cache_entries(upcase = True, deps = None, **kwargs):
     """Convenience macro for constructing the cache_entries dict."""
     result = dict(kwargs.items())
+    remap = result.pop("remap", {})
 
     for dep, spec in (deps or {}).items():
         spec = spec or dep_spec(dep)
@@ -81,6 +82,9 @@ def cache_entries(upcase = True, deps = None, **kwargs):
             result[_include_key(dep)] = spec["include_dir"]
         if "library" in spec:
             result[_library_key(dep)] = spec["library"]
+
+    for new, old in remap.items():
+        result[new] = result.pop(old)
 
     if upcase:
         for key in list(result):

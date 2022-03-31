@@ -34,6 +34,10 @@ cmake_lib(
         cmake_exe_linker_flags_release = EXE_LINKER_FLAGS_RELEASE,
         install_create_distrib = True,
         opencv_force_eigen_find_package_config = dep_path("eigen", "/share/eigen3/cmake/Eigen3Config.cmake"),
+        remap = {
+            # OpenJPEG find_package() uses plural.
+            "openjpeg_libraries": "openjpeg_library",
+        },
         deps = {
             "png": {},
             "protobuf": {},
