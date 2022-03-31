@@ -1,4 +1,4 @@
-load("//lib:defs.bzl", "include_flags", "library_path", "link_flags", "static_lib")
+load("//lib:defs.bzl", "include_dir", "include_flags", "library_dir", "library_path", "link_flags", "root_path", "static_lib")
 load("//lib:lib.bzl", "package_lib")
 load("//toolchains:utils.bzl", "no_error")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
@@ -35,11 +35,13 @@ cmake_lib(
         "OPENJPEG_INCLUDE_DIR": include_dir_openjpeg(),
         "OPENJPEG_LIBRARY": library_path_openjpeg(),
         "PNG_LIBRARY": "${EXT_BUILD_DEPS}/png_lib/lib/libpng.a",
-        "PNG_INCLUDE_DIR": "${EXT_BUILD_DEPS}/png_lib/include",
+        "PNG_PNG_INCLUDE_DIR": "${EXT_BUILD_DEPS}/png_lib/include",
         "PROTOBUF_INCLUDE_DIR": "${EXT_BUILD_DEPS}/protobuf_lib/include",
         "PROTOBUF_LIBRARY": "${EXT_BUILD_DEPS}/protobuf_lib/lib/libprotobuf.a",
         "TIFF_INCLUDE_DIR": "${EXT_BUILD_DEPS}/tiff_lib/include",
         "TIFF_LIBRARY": "${EXT_BUILD_DEPS}/tiff_lib/lib/libtiff.a",
+        "OPENEXR_INCLUDE_DIR": "${EXT_BUILD_DEPS}/openexr_lib/include",
+        "OPENEXR_LIBRARY": "${EXT_BUILD_DEPS}/openexr_lib/lib/libOpenEXR.a",
         "WEBP_INCLUDE_DIR": include_dir_webp(),
         "WEBP_LIBRARY": library_path_webp(),
         "ZLIB_INCLUDE_DIR": "${EXT_BUILD_DEPS}/z_lib/include",
@@ -81,5 +83,6 @@ cmake_lib(
         "//lib/tiff",
         "//lib/webp",
         "//lib/z",
+        "//lib/openexr",
     ],
 )
