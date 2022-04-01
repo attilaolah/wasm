@@ -1,4 +1,4 @@
-load("@npm//@bazel/typescript:index.bzl", "ts_library")
+load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("//tools:mocha_test.bzl", "mocha_test")
 load("//tools:wasm_library.bzl", "wasm_library")
 
@@ -14,7 +14,7 @@ wasm_library(
     deps = ["//lib/png"],
 )
 
-ts_library(
+ts_project(
     name = "png_api",
     srcs = ["png_api.ts"],
     deps = ["//tools/emscripten:types"],
