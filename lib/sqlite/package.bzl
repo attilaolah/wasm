@@ -1,7 +1,7 @@
 """Workspace rule for downloading package dependencies."""
 
-load("//lib:http_archive.bzl", "http_archive")
 load("//lib:defs.bzl", "dep_spec", "library_path", "major", "static_lib")
+load("//lib:http_archive.bzl", "http_archive")
 
 NAME = "sqlite"
 VERSION = "3.35.5"

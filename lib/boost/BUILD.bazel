@@ -1,6 +1,6 @@
-load("//lib:lib.bzl", "package_lib")
-load("//lib:defs.bzl", "lib_name", "repo_name")
 load("@rules_foreign_cc//foreign_cc:defs.bzl", "boost_build")
+load("//lib:defs.bzl", "lib_name", "repo_name")
+load("//lib:lib.bzl", "package_lib")
 load("//tools/archive_symbols:archive_symbols.bzl", "archive_symbols")
 load(":package.bzl", "NAME", "STATIC_LIBS")
 

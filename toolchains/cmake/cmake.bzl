@@ -5,10 +5,10 @@ Contains a convenience macro that wraps cmake() from
 """
 
 load("@rules_foreign_cc//foreign_cc:cmake.bzl", "cmake")
-load("//toolchains/make:configure.bzl", "emscripten_env", _build_data = "build_data", _lib_source = "lib_source")
-load("//tools/archive_symbols:archive_symbols.bzl", "archive_symbols")
 load("//lib:cache_entries.bzl", "include_dir_key", "library_key")
 load("//lib:defs.bzl", "dep_spec")
+load("//toolchains/make:configure.bzl", "emscripten_env", _build_data = "build_data", _lib_source = "lib_source")
+load("//tools/archive_symbols:archive_symbols.bzl", "archive_symbols")
 
 def cmake_lib(
         name,

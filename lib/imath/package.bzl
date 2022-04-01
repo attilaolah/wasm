@@ -1,7 +1,7 @@
 """Workspace rule for downloading package dependencies."""
 
-load("//lib:http_archive.bzl", "http_archive")
 load("//lib:defs.bzl", "major_minor", "static_lib")
+load("//lib:http_archive.bzl", "http_archive")
 
 NAME = "imath"
 VERSION = "3.1.5"

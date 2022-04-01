@@ -1,7 +1,7 @@
 """Workspace rule for downloading package dependencies."""
 
-load("//lib:http_archive.bzl", "http_archive")
 load("//lib:defs.bzl", "dep_spec", "library_path", "major_minor", "static_lib")
+load("//lib:http_archive.bzl", "http_archive")
 
 NAME = "openexr"
 VERSION = "3.1.4"

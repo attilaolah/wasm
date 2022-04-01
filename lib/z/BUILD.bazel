@@ -1,5 +1,5 @@
-load("//toolchains/make:configure.bzl", "configure_make_lib")
 load("//lib:lib.bzl", "package_lib")
+load("//toolchains/make:configure.bzl", "configure_make_lib")
 load(":package.bzl", "NAME")
 
 package(default_visibility = ["//:__subpackages__"])

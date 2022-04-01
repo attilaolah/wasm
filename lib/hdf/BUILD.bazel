@@ -1,11 +1,11 @@
-load("//lib:lib.bzl", "package_lib")
 load("//lib:defs.bzl", "include_dir", "library_path", "static_lib")
-load("//toolchains:utils.bzl", "no_error")
-load("//toolchains/cmake:cmake.bzl", "cache_entries", "cmake_lib")
-load(":package.bzl", "NAME", "STATIC_LIBS")
+load("//lib:lib.bzl", "package_lib")
 
 # Library deps:
 load("//lib/jpegturbo:package.bzl", JPEGTURBO_SPEC = "SPEC")
+load("//toolchains:utils.bzl", "no_error")
+load("//toolchains/cmake:cmake.bzl", "cache_entries", "cmake_lib")
+load(":package.bzl", "NAME", "STATIC_LIBS")
 
 package(default_visibility = ["//:__subpackages__"])
 

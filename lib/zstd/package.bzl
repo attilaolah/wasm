@@ -1,12 +1,12 @@
 """Workspace rule for downloading package dependencies."""
 
-load("//lib:http_archive.bzl", "http_archive")
 load(
     "//lib:defs.bzl",
     _include_dir = "include_dir",
     _library_path = "library_path",
     _link_flags = "link_flags",
 )
+load("//lib:http_archive.bzl", "http_archive")
 
 NAME = "zstd"
 VERSION = "1.5.0"

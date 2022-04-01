@@ -1,9 +1,9 @@
 load("//lib:lib.bzl", "package_lib")
-load("//toolchains/cmake:cmake.bzl", "cmake_lib", "cache_entries")
-load(":package.bzl", "NAME")
 
 # Library deps:
 load("//lib/jpegturbo:package.bzl", JPEGTURBO_SPEC = "SPEC")
+load("//toolchains/cmake:cmake.bzl", "cache_entries", "cmake_lib")
+load(":package.bzl", "NAME")
 
 package(default_visibility = ["//:__subpackages__"])
 

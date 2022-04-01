@@ -1,7 +1,7 @@
 """Workspace rule for downloading package dependencies."""
 
-load("//lib:http_archive.bzl", "http_archive")
 load("//lib:defs.bzl", "major", "static_lib")
+load("//lib:http_archive.bzl", "http_archive")
 
 NAME = "xml"
 VERSION = "2.9.10"

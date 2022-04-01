@@ -1,10 +1,10 @@
 """Workspace rule for downloading package dependencies."""
 
-load("//lib:http_archive.bzl", "http_archive")
 load(
     "//lib:defs.bzl",
     _link_flags = "link_flags",
 )
+load("//lib:http_archive.bzl", "http_archive")
 
 NAME = "lzma"
 VERSION = "5.2.5"

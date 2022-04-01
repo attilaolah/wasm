@@ -1,7 +1,7 @@
 """Workspace rule for downloading package dependencies."""
 
-load("//lib:http_archive.bzl", "http_archive")
 load("//lib:defs.bzl", "static_lib")
+load("//lib:http_archive.bzl", "http_archive")
 
 NAME = "geos"
 VERSION = "3.10.2"
