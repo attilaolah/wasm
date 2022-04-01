@@ -1,4 +1,5 @@
 load("//lib:lib.bzl", "package_lib")
+load("//lib:defs.bzl", "cache_entries")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
 load(":package.bzl", "NAME", "STATIC_LIBS")
 
@@ -8,14 +9,14 @@ package_lib()
 
 cmake_lib(
     name = NAME,
-    cache_entries = {
-        "BUILD_SHARED_LIBS": False,
-        "CMAKE_CXX_STANDARD": "14",
-        "EXPAT_INCLUDE_DIR": "${EXT_BUILD_DEPS}/expat_lib/include",
-        "EXPAT_LIBRARY": "${EXT_BUILD_DEPS}/expat_lib/lib/libexpat.a",
-        "ZLIB_INCLUDE_DIR": "${EXT_BUILD_DEPS}/z_lib/include",
-        "ZLIB_LIBRARY": "${EXT_BUILD_DEPS}/z_lib/lib/libz.a",
-    },
+    cache_entries = cache_entries(
+        build_shared_libs = False,
+        cmake_cxx_standard = "14",
+        deps = {
+            "expat": {},
+            "z": {},
+        },
+    ),
     out_static_libs = STATIC_LIBS,
     deps = [
         "//lib/expat",

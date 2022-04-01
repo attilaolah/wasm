@@ -1,11 +1,14 @@
 load("//lib:lib.bzl", "package_lib")
+load("//lib:defs.bzl", "cache_entries")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
+load("//toolchains:utils.bzl", "no_error")
+load(":package.bzl", "NAME")
 
 package(default_visibility = ["//:__subpackages__"])
 
 package_lib()
 
-C_FLAGS = " ".join(["-Wno-{}".format(check) for check in [
+C_FLAGS = no_error([
     # keep sorted
     "incompatible-pointer-types-discards-qualifiers",
     "misleading-indentation",
@@ -16,30 +19,29 @@ C_FLAGS = " ".join(["-Wno-{}".format(check) for check in [
     "unused-but-set-variable",
     "unused-function",
     "unused-variable",
-]])
+])
 
-CACHE_ENTRIES = {
-    "BUILD_SHARED_LIBS": False,
-    "BUILD_STATIC_LIBS": True,
-    "BUILD_TESTING": False,
-    "CMAKE_C_FLAGS": C_FLAGS,
-    "HDF5_BUILD_EXAMPLES": False,
-    "HDF5_BUILD_TOOLS": False,
-}
-
-CACHE_ENTRIES_WASM = dict(CACHE_ENTRIES.items() + {
-    # Emscripten doesn't implement getpwuid yet:
-    # https://github.com/emscripten-core/emscripten/issues/13219
-    "H5_HAVE_GETPWUID": False,
-    # Emscripten doesn't support POSIX signals (except kill):
-    # https://emscripten.org/docs/porting/pthreads.html#special-considerations
-    "H5_HAVE_SIGNAL": False,
-}.items())
+CACHE_ENTRIES = cache_entries(
+    build_shared_libs = False,
+    build_static_libs = True,
+    build_testing = False,
+    cmake_c_flags = C_FLAGS,
+    hdf5_build_examples = False,
+    hdf5_build_tools = False,
+)
 
 cmake_lib(
-    name = "hdf5",
+    name = NAME,
     cache_entries = {
-        "//config:wasm": CACHE_ENTRIES_WASM,
+        "//config:wasm": cache_entries(
+            CACHE_ENTRIES,
+            # Emscripten doesn't implement getpwuid yet:
+            # https://github.com/emscripten-core/emscripten/issues/13219
+            h5_have_getpwuid = False,
+            # Emscripten doesn't support POSIX signals (except kill):
+            # https://emscripten.org/docs/porting/pthreads.html#special-considerations
+            h5_have_signal = False,
+        ),
         "//conditions:default": CACHE_ENTRIES,
     },
 )

@@ -1,7 +1,7 @@
 """Workspace rule for downloading package dependencies."""
 
 load("//lib:http_archive.bzl", "http_archive")
-load("//lib:defs.bzl", "major")
+load("//lib:defs.bzl", "major", "static_lib")
 
 NAME = "fftw"
 VERSION = "3.3.10"
@@ -10,8 +10,15 @@ URL = "http://www.{name}.org/{name}-{version}.tar.gz"
 
 SHA256 = "56c932549852cddcfafdab3820b0200c7742675be92179e59e6215b340e26467"
 
-def lname(suffix = ""):
-    return NAME + major(VERSION) + suffix
+LNAMES = {
+    suffix: NAME + major(VERSION) + suffix
+    for suffix in ["", "f", "l", "q"]
+}
+
+STATIC_LIBS = {
+    suffix: [static_lib(lname)]
+    for suffix, lname in LNAMES.items()
+}
 
 def download():
     http_archive(

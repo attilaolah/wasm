@@ -18,10 +18,6 @@ BUILD_DEPS = [
     "//lib/m4:runtime",
 ]
 
-PATH = runtime_path(
-    deps = ["//lib/m4:runtime"],
-)
-
 configure_make_lib(
     name = NAME,
     build_data = BUILD_DEPS,

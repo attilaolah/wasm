@@ -1,6 +1,11 @@
 load("//lib:lib.bzl", "package_lib")
+load("//lib:defs.bzl", "cache_entries", "include_dir", "library_path", "static_lib")
 load("//toolchains:utils.bzl", "no_error")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
+load(":package.bzl", "NAME", "STATIC_LIBS")
+
+# Library deps:
+load("//lib/jpegturbo:package.bzl", JPEGTURBO_SPEC = "SPEC")
 
 package(default_visibility = ["//:__subpackages__"])
 
@@ -37,49 +42,57 @@ C_FLAGS = no_error([
     "unused-variable",
 ])
 
-# Emulate an i386 environment.
-# Emscripten unsets i386 to avoid "platform dependent code (inline assembly)".
-C_FLAGS_WASM = C_FLAGS + " -Di386"
-
-CACHE_ENTRIES = {
-    "BUILD_SHARED_LIBS": False,
-    "BUILD_STATIC_LIBS": True,
-    "CMAKE_C_FLAGS": C_FLAGS,
-    "HDF4_BUILD_FORTRAN": False,
-    "HDF4_BUILD_JAVA": False,
-    "HDF4_BUILD_XDR_LIB": True,
-    "HDF4_ENABLE_JPEG_LIB_SUPPORT": True,
-    "HDF4_ENABLE_SZIP_SUPPORT": True,
-    "HDF4_ENABLE_Z_LIB_SUPPORT": True,
-    "HDF4_EXTERNALLY_CONFIGURED": True,
-    "JPEG_INCLUDE_DIR": "${EXT_BUILD_DEPS}/jpegturbo_lib/include",
-    "JPEG_LIBRARY": "${EXT_BUILD_DEPS}/jpegturbo_lib/lib/libjpeg.a",
-    "SZIP_INCLUDE_DIR": "${EXT_BUILD_DEPS}/aec_lib/include",
-    "SZIP_LIBRARY": "${EXT_BUILD_DEPS}/aec_lib/lib/libsz.a",
-    "ZLIB_INCLUDE_DIR": "${EXT_BUILD_DEPS}/z_lib/include",
-    "ZLIB_LIBRARY": "${EXT_BUILD_DEPS}/z_lib/lib/libz.a",
-}
-
-CACHE_ENTRIES_WASM = dict(CACHE_ENTRIES.items() + {
-    "CMAKE_C_FLAGS": C_FLAGS_WASM,
-}.items())
+CACHE_ENTRIES = cache_entries(
+    build_shared_libs = False,
+    build_static_libs = True,
+    hdf4_build_fortran = False,
+    hdf4_build_java = False,
+    hdf4_build_xdr_lib = True,
+    hdf4_enable_jpeg_lib_support = True,
+    hdf4_enable_szip_support = True,
+    hdf4_enable_z_lib_support = True,
+    hdf4_externally_configured = True,
+    deps = {
+        "jpeg": JPEGTURBO_SPEC,
+        "szip": {
+            "include_dir": include_dir("aec"),
+            "library": library_path(
+                "aec",
+                static_lib("sz"),
+            ),
+        },
+        "z": {},
+    },
+)
 
 cmake_lib(
-    name = "hdf",
+    name = NAME,
     cache_entries = {
-        "//config:wasm": CACHE_ENTRIES_WASM,
-        "//conditions:default": CACHE_ENTRIES,
+        "//config:wasm": cache_entries(
+            CACHE_ENTRIES,
+            # Emulate an i386 environment.
+            # Emscripten unsets i386 to avoid "platform dependent code (inline assembly)".
+            cmake_c_flags = " ".join([C_FLAGS + "-Di386"]),
+        ),
+        "//conditions:default": cache_entries(
+            CACHE_ENTRIES,
+            cmake_c_flags = C_FLAGS,
+        ),
     },
-    out_static_libs = [
-        # keep sorted
-        "libdf.a",
-        "libhdf.a",
-        "libmfhdf.a",
-        "libxdr.a",
-    ],
+    out_static_libs = STATIC_LIBS.values(),
     # Duplicate libhdf.a as libdf.a.
     # CMake produces libhdf.a, while ./configure && make produces libdf.a.
-    postfix_script = 'cp --archive --dereference "${INSTALLDIR}/lib/libhdf.a" "${INSTALLDIR}/lib/libdf.a"',
+    postfix_script = " ".join([
+        "cp",
+        "--archive",
+        "--dereference",
+        '"{install_dir}/lib/{lib_hdf}"',
+        '"{install_dir}/lib/{lib_df}"',
+    ]).format(
+        install_dir = "${INSTALLDIR}",
+        lib_df = STATIC_LIBS["df"],
+        lib_hdf = STATIC_LIBS["hdf"],
+    ),
     deps = [
         "//lib/aec",
         "//lib/jpegturbo",

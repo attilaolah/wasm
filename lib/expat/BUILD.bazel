@@ -1,17 +1,19 @@
 load("//lib:lib.bzl", "package_lib")
+load("//lib:defs.bzl", "cache_entries")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
+load(":package.bzl", "NAME")
 
 package(default_visibility = ["//:__subpackages__"])
 
 package_lib()
 
 cmake_lib(
-    name = "expat",
-    cache_entries = {
-        "EXPAT_BUILD_DOCS": False,
-        "EXPAT_BUILD_EXAMPLES": False,
-        "EXPAT_BUILD_TESTS": False,
-        "EXPAT_BUILD_TOOLS": False,
-        "EXPAT_SHARED_LIBS": False,
-    },
+    name = NAME,
+    cache_entries = cache_entries(
+        expat_build_docs = False,
+        expat_build_examples = False,
+        expat_build_tests = False,
+        expat_build_tools = False,
+        expat_shared_libs = False,
+    ),
 )

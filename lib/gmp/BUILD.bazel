@@ -1,19 +1,23 @@
 load("//lib:lib.bzl", "package_lib")
+load("//lib:defs.bzl", "runtime_path")
 load("//toolchains:utils.bzl", "path")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
+load(":package.bzl", "NAME")
 
 package(default_visibility = ["//:__subpackages__"])
 
 package_lib()
 
+BUILD_DEPS = [
+    "//lib/m4:runtime",
+]
+
 configure_make_lib(
-    name = "gmp",
-    build_data = ["//lib/m4:runtime"],
+    name = NAME,
+    build_data = BUILD_DEPS,
     configure_options = [
         "--disable-shared",
         "--enable-static",
     ],
-    env = {"PATH": path([
-        "$${EXT_BUILD_ROOT}/$(execpaths //lib/m4:runtime)/bin",
-    ])},
+    env = {"PATH": runtime_path(BUILD_DEPS)},
 )

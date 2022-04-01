@@ -1,20 +1,19 @@
 load("//lib:lib.bzl", "package_lib")
+load("//lib:defs.bzl", "cache_entries")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
+load(":package.bzl", "NAME", "STATIC_LIBS")
 
 package(default_visibility = ["//:__subpackages__"])
 
 package_lib()
 
 cmake_lib(
-    name = "gflags",
-    cache_entries = {
-        "GFLAGS_BUILD_PACKAGING": False,
-        "GFLAGS_BUILD_SHARED_LIBS": False,
-        "GFLAGS_BUILD_STATIC_LIBS": True,
-        "GFLAGS_BUILD_TESTING": False,
-    },
-    out_static_libs = [
-        "libgflags.a",
-        "libgflags_nothreads.a",
-    ],
+    name = NAME,
+    cache_entries = cache_entries(
+        gflags_build_packaging = False,
+        gflags_build_shared_libs = False,
+        gflags_build_static_libs = True,
+        gflags_build_testing = False,
+    ),
+    out_static_libs = STATIC_LIBS,
 )

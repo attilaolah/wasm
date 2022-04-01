@@ -1,5 +1,7 @@
 load("//lib:lib.bzl", "package_lib")
+load("//lib:defs.bzl", "cache_entries")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
+load(":package.bzl", "NAME")
 
 package(default_visibility = ["//:__subpackages__"])
 
@@ -15,19 +17,19 @@ package_lib()
 #]
 
 cmake_lib(
-    name = "glog",
+    name = NAME,
     # TODO: Fix this!
     #after_emcmake = patch_files({
     #    "config.h": r"/^#define HAVE_({})\b.*/d".format("|".join(MASK_HEADERS)),
     #}),
-    cache_entries = {
-        "BUILD_SHARED_LIBS": False,
+    cache_entries = cache_entries(
+        build_shared_libs = False,
         # Emscripten fails to compile tests that use popen().
-        "BUILD_TESTING": False,
-        "WITH_GFLAGS": True,
-        "WITH_THREADS": True,
-        "WITH_TLS": True,
-    },
+        build_testing = False,
+        with_gflags = True,
+        with_threads = True,
+        with_tls = True,
+    ),
     deps = [
         "//lib/gflags",
     ],

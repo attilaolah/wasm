@@ -1,20 +1,22 @@
 load("//lib:lib.bzl", "package_lib")
+load("//lib:defs.bzl", "cache_entries")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
+load(":package.bzl", "NAME")
 
 package(default_visibility = ["//:__subpackages__"])
 
 package_lib()
 
 cmake_lib(
-    name = "geotiff",
-    cache_entries = {
-        "CMAKE_TRY_COMPILE_TARGET_TYPE": "STATIC_LIBRARY",
-        "PROJ_INCLUDE_DIR": "${EXT_BUILD_DEPS}/proj_lib/include",
-        "PROJ_LIBRARY": "${EXT_BUILD_DEPS}/proj_lib/lib/libproj.a",
-        "TIFF_INCLUDE_DIR": "${EXT_BUILD_DEPS}/tiff_lib/include",
-        "TIFF_LIBRARY": "${EXT_BUILD_DEPS}/tiff_lib/lib/libtiff.a",
-        "WITH_UTILITIES": False,
-    },
+    name = NAME,
+    cache_entries = cache_entries(
+        cmake_try_compile_target_type = "STATIC_LIBRARY",
+        with_utilities = False,
+        deps = {
+            "proj": {},
+            "tiff": {},
+        },
+    ),
     deps = [
         "//lib/proj",
         "//lib/tiff",

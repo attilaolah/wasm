@@ -1,6 +1,7 @@
 load("//lib:lib.bzl", "package_lib")
 load("//toolchains:utils.bzl", "ldflags")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
+load(":package.bzl", "NAME")
 
 package(default_visibility = ["//:__subpackages__"])
 
@@ -24,7 +25,7 @@ LDFLAGS = ldflags([
 ])
 
 configure_make_lib(
-    name = "gdal",
+    name = NAME,
     configure_in_place = True,
     configure_options = [
         # keep sorted

@@ -20,9 +20,9 @@ def root_path(path, double_escape = False):
         path,
     ])
 
-def dep_path(library, subpath = ""):
+def dep_path(library, subpath = "", double_escape = False):
     return "/".join([
-        EXT_BUILD_DEPS,
+        ("$" if double_escape else "") + EXT_BUILD_DEPS,
         lib_name(library),
     ]) + subpath
 
