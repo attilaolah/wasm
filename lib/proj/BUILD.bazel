@@ -12,7 +12,7 @@ package(default_visibility = ["//:__subpackages__"])
 package_lib()
 
 BUILD_DEPS = [
-    "//lib/m4:runtime",
+    "//lib/sqlite:runtime",
 ]
 
 BINARIES = [

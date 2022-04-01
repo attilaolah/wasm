@@ -9,15 +9,15 @@ and CMake macros.
 
 load("@bazel_skylib//lib:collections.bzl", "collections")
 load("@rules_foreign_cc//foreign_cc:configure.bzl", "configure_make")
-load("//lib:defs.bzl", "repo_name")
+load("//lib:defs.bzl", "dep_path", "repo_name", "root_path")
 load("//tools/archive_symbols:archive_symbols.bzl", "archive_symbols")
 
 EM_ENV = {
     # NodeJS cross-compiling emulator:
-    "CROSSCOMPILING_EMULATOR": "$${EXT_BUILD_ROOT}/$(execpath @nodejs_linux_amd64//:node)",
+    "CROSSCOMPILING_EMULATOR": root_path("$(execpath @nodejs_linux_amd64//:node)", double_escape = True),
 
     # Required by the Emscripten config:
-    "EMSCRIPTEN": "$${EXT_BUILD_ROOT}/external/emscripten_bin_linux/emscripten",
+    "EMSCRIPTEN": root_path("external/emscripten_bin_linux/emscripten", double_escape = True),
 
     # Emscripten config from @emsdk//emscripten_toolchain:emscripten_config:
     "EM_CONFIG": "$(execpath @emsdk//emscripten_toolchain:emscripten_config)",
@@ -26,14 +26,15 @@ EM_ENV = {
     "NODE_PATH": "$${EXT_BUILD_DEPS}/bin",
 
     # Python from //lib/python:
-    "PYTHON": "$${PYTHONHOME}/bin/python3",
-
-    # Python from //lib/python:
-    "PYTHONHOME": "$${EXT_BUILD_ROOT}/$(execpaths //lib/python:runtime)",
+    "PYTHONHOME": root_path("$(execpaths //lib/python:runtime)", double_escape = True),
 
     # Required by the Emscripten config:
     "ROOT_DIR": "$${EXT_BUILD_ROOT}",
 }
+
+# Python from //lib/python.
+# This must come after ${PYTHONHOME}.
+EM_ENV["PYTHON"] = "$${PYTHONHOME}/bin/python3"
 
 EM_TOOLS = [
     # keep sorted
