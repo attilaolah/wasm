@@ -1,7 +1,6 @@
 load("//lib:lib.bzl", "package_lib")
-load("//lib:defs.bzl", "cache_entries")
+load("//toolchains/cmake:cmake.bzl", "cmake_lib", "cache_entries")
 load("//toolchains:utils.bzl", "no_error")
-load("//toolchains/cmake:cmake.bzl", "cmake_lib")
 load(":package.bzl", "NAME")
 
 package(default_visibility = ["//:__subpackages__"])

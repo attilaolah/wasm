@@ -14,12 +14,15 @@ package_lib(
 # NOTE: Currently building this package requires a working "gfortran" binary.
 # TODO: Build gfortran, and set the F18_FC environment variable to that binary.
 
-FC = root_path("$(execpaths //tools/llvm:flang_runtime)/bin/flang")
+FLANG = "$(execpaths //tools/llvm:flang_runtime)/bin/flang"
 
 cmake_lib(
     name = NAME,
     build_data = ["//tools/llvm:flang_runtime"],
-    env = {"FC": FC.replace("${", "$${")},
+    env = {"FC": root_path(
+        FLANG,
+        double_escape = True,
+    )},
 )
 
 CP_HEADERS = 'cp --dereference "{build_tmpdir}/include"/{name}{{,_f77}}.h "{install_dir}/include"'.format(
@@ -40,7 +43,10 @@ make_lib(
         blib = library_path(NAME),
         cblib = "../" + static_lib(NAME_C),
         cflags = "-Wno-header-guard",
-        fc = FC,
+        fc = root_path(
+            FLANG,
+            double_escape = False,
+        ),
     ),
     build_data = ["//tools/llvm:flang_runtime"],
     postfix_script = "\n".join((CP_HEADERS, CP_LIBS)),

@@ -88,41 +88,6 @@ def make_args(sort_keys = True, **kwargs):
 
     return result
 
-def cache_entries(*originals, upcase = True, prefix_all = "", deps = None, **kwargs):
-    """Convenience macro for constructing the cache_entries dict."""
-    result = {}
-    for original in originals + (kwargs,):
-        result.update(original)
-
-    remap = result.pop("remap", {})
-
-    for dep, spec in (deps or {}).items():
-        spec = spec or dep_spec(dep)
-        if "include_dir" in spec:
-            result[_include_key(dep)] = spec["include_dir"]
-        if "library" in spec:
-            result[_library_key(dep)] = spec["library"]
-
-    for new, old in remap.items():
-        result[new] = result.pop(old)
-
-    if upcase:
-        for key in list(result):
-            result[key.upper()] = result.pop(key)
-
-    return {prefix_all + key: val for key, val in result.items()}
-
-def _library_key(dep):
-    return "{}_library".format({
-        "z": "zlib",
-    }.get(dep, dep))
-
-def _include_key(dep):
-    return "{}_include_dir".format({
-        "png": "png_png",
-        "z": "zlib",
-    }.get(dep, dep))
-
 _include_dir = include_dir
 _library_path = library_path
 _static_lib = static_lib

@@ -1,6 +1,6 @@
-load("//lib:defs.bzl", "cache_entries", "dep_path", "include_dir", "include_flags", "library_dir", "link_flags")
+load("//lib:defs.bzl", "dep_path", "include_dir", "include_flags", "library_dir", "link_flags")
 load("//lib:lib.bzl", "package_lib")
-load("//toolchains/cmake:cmake.bzl", "cmake_lib")
+load("//toolchains/cmake:cmake.bzl", "cache_entries", "cmake_lib")
 load(":package.bzl", "NAME", "STATIC_LIBS")
 
 # Library deps:
