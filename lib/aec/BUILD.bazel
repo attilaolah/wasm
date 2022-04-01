@@ -1,19 +1,18 @@
 load("//lib:lib.bzl", "package_lib")
+load("//lib:defs.bzl", "cache_entries")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
+load(":package.bzl", "NAME", "STATIC_LIBS")
 
 package(default_visibility = ["//:__subpackages__"])
 
 package_lib()
 
 cmake_lib(
-    name = "aec",
-    cache_entries = {
-        "BUILD_SHARED_LIBS": False,
-    },
-    out_static_libs = [
-        "libaec.a",
-        "libsz.a",
-    ],
+    name = NAME,
+    cache_entries = cache_entries(
+        build_shared_libs = False,
+    ),
+    out_static_libs = STATIC_LIBS,
     # The build script insists on installing shared libs, so remove them.
     postfix_script = 'rm "${INSTALLDIR}"/lib/*.so{,.*}',
 )

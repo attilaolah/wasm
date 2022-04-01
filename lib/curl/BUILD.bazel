@@ -1,6 +1,8 @@
 load("//lib:lib.bzl", "package_lib")
+load("//lib:defs.bzl", "cache_entries", "include_dir", "library_path", "static_lib")
 load("//toolchains:utils.bzl", "no_error")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
+load(":package.bzl", "NAME")
 
 package(default_visibility = ["//:__subpackages__"])
 
@@ -10,18 +12,24 @@ package_lib(
 )
 
 cmake_lib(
-    name = "curl",
-    cache_entries = {
-        "BUILD_CURL_EXE": False,
-        "BUILD_SHARED_LIBS": False,
-        "CMAKE_C_FLAGS": no_error([
+    name = NAME,
+    cache_entries = cache_entries(
+        build_curl_exe = False,
+        build_shared_libs = False,
+        cmake_c_flags = no_error([
             # keep sorted
             "unused-but-set-variable",
         ]),
-        "OPENSSL_CRYPTO_LIBRARY": "${EXT_BUILD_DEPS}/openssl_lib/lib/libcrypto.a",
-        "OPENSSL_INCLUDE_DIR": "${EXT_BUILD_DEPS}/openssl_lib/include",
-        "OPENSSL_SSL_LIBRARY": "${EXT_BUILD_DEPS}/openssl_lib/lib/libssl.a",
-    },
+        openssl_crypto_library = library_path(
+            "openssl",
+            static_lib("crypto"),
+        ),
+        openssl_include_dir = include_dir("openssl"),
+        openssl_ssl_library = library_path(
+            "openssl",
+            static_lib("ssl"),
+        ),
+    ),
     deps = [
         "//lib/openssl",
         "//lib/z",

@@ -12,16 +12,16 @@ SHA256 = "cb019c3c69ada47fe340f7fa6c8b863ca0515804dc60bdb25c942c1da886930b"
 
 LNAME = "OpenEXR"
 
-STATIC_LIBS = [static_lib("-".join((
+STATIC_LIBS = [static_lib("-".join([
     lib,
     major_minor(VERSION, join = "_"),
-))) for lib in (
+])) for lib in [
     LNAME,
     LNAME + "Core",
     LNAME + "Util",
     "Iex",
     "IlmThread",
-)]
+]]
 
 SPEC = dep_spec(
     name = NAME,

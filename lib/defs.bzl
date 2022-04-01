@@ -14,9 +14,9 @@ def static_lib(library):
     """Generate the static library name."""
     return "lib{library}.a".format(library = library)
 
-def root_path(path):
+def root_path(path, double_escape = False):
     return "/".join([
-        EXT_BUILD_ROOT,
+        ("$" if double_escape else "") + EXT_BUILD_ROOT,
         path,
     ])
 
@@ -25,6 +25,14 @@ def dep_path(library, subpath = ""):
         EXT_BUILD_DEPS,
         lib_name(library),
     ]) + subpath
+
+def runtime_path(deps, double_escape = True):
+    return ":".join([
+        root_path("$(execpaths {})/bin".format(dep), double_escape)
+        for dep in deps
+    ] + [
+        "$${PATH}" if double_escape else "${PATH}",
+    ])
 
 def include_dir(library, subdir = ""):
     subpath = "/include"
@@ -70,6 +78,19 @@ def dep_spec(name, include_dir = None, library = None, exclude = ()):
     for item in exclude:
         spec.pop(item)
     return spec
+
+def make_args(upcase = True, sort_keys = True, **kwargs):
+    """Convenience macro for constructing the make_args list."""
+    if upcase:
+        for key in list(kwargs):
+            kwargs[key.upper()] = kwargs.pop(key)
+
+    result = ['{}="{}"'.format(key, val) for key, val in kwargs.items()]
+
+    if sort_keys:
+        result = sorted(result)
+
+    return result
 
 def cache_entries(*originals, upcase = True, deps = None, **kwargs):
     """Convenience macro for constructing the cache_entries dict."""

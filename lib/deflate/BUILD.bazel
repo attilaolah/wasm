@@ -1,8 +1,9 @@
 load("//lib:lib.bzl", "package_lib")
 load("//toolchains/make:make.bzl", "make_lib")
+load(":package.bzl", "NAME")
 
 package(default_visibility = ["//:__subpackages__"])
 
 package_lib()
 
-make_lib(name = "deflate")
+make_lib(name = NAME)
