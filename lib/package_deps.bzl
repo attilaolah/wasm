@@ -7,6 +7,7 @@ PACKAGE_DEPS = [
     "//lib/boost:package",
     "//lib/bz2:package",
     "//lib/ceres:package",
+    "//lib/cmark:package",
     "//lib/curl:package",
     "//lib/deflate:package",
     "//lib/eigen:package",
