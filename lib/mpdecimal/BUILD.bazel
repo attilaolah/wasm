@@ -1,19 +1,16 @@
 load("//lib:lib.bzl", "package_lib")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
+load(":package.bzl", "NAME", "STATIC_LIBS")
 
 package(default_visibility = ["//:__subpackages__"])
 
 package_lib()
 
 configure_make_lib(
-    name = "mpdecimal",
+    name = NAME,
     configure_in_place = True,
     configure_options = [
         "--disable-shared",
     ],
-    out_static_libs = [
-        # keep sorted
-        "libmpdec.a",
-        "libmpdec++.a",
-    ],
+    out_static_libs = STATIC_LIBS,
 )

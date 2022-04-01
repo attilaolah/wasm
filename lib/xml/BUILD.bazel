@@ -1,21 +1,23 @@
 load("//lib:lib.bzl", "package_lib")
+load("//lib:defs.bzl", "dep_path")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
+load(":package.bzl", "NAME", "STATIC_LIBS")
 
 package(default_visibility = ["//:__subpackages__"])
 
 package_lib()
 
 configure_make_lib(
-    name = "xml",
+    name = NAME,
     configure_options = [
         # keep sorted
         "--disable-shared",
         "--enable-static",
-        '--with-iconv="${EXT_BUILD_DEPS}/iconv_lib"',
-        '--with-zlib="${EXT_BUILD_DEPS}/lib_z"',
+        '--with-iconv="{}"'.format(dep_path("iconv")),
+        '--with-zlib="{}"'.format(dep_path("z")),
         "--without-python",
     ],
-    out_static_libs = ["libxml2.a"],
+    out_static_libs = STATIC_LIBS,
     deps = [
         "//lib/iconv",
         "//lib/z",

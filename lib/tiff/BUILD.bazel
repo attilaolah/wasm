@@ -1,6 +1,11 @@
 load("//lib:lib.bzl", "package_lib")
+load("//lib:defs.bzl", "cache_entries")
 load("//toolchains:utils.bzl", "no_error")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
+load(":package.bzl", "NAME", "STATIC_LIBS")
+
+# Library deps:
+load("//lib/jpegturbo:package.bzl", JPEGTURBO_SPEC = "SPEC")
 
 package(default_visibility = ["//:__subpackages__"])
 
@@ -13,51 +18,44 @@ CMAKE_EXE_LINKER_FLAGS_WASM = " ".join([
     "-s USE_PTHREADS",
 ])
 
-CACHE_ENTRIES = {
-    "BUILD_SHARED_LIBS": False,
+CACHE_ENTRIES = cache_entries(
+    build_shared_libs = False,
     # Use C_FLAGS_RELEASE so they'd get appended after other flags.
-    "CMAKE_C_FLAGS_RELEASE": no_error([
+    cmake_c_flags_release = no_error([
         # keep sorted
         "format",
         "tautological-constant-out-of-range-compare",
         "unused-but-set-variable",
         "unused-function",
     ]),
-    "CMAKE_EXE_LINKER_FLAGS": CMAKE_EXE_LINKER_FLAGS,
 
     # Needed for CheckTypeSize checks to pass.
-    "CMAKE_REQUIRED_FLAGS": no_error([
+    cmake_required_flags = no_error([
         # keep sorted
         "unused-but-set-variable",
     ]),
-
-    # Dependencies:
-    "JPEG_INCLUDE_DIR": "${EXT_BUILD_DEPS}/jpegturbo_lib/include",
-    "JPEG_LIBRARY": "${EXT_BUILD_DEPS}/jpegturbo_lib/lib/libjpeg.a",
-    "LIBLZMA_INCLUDE_DIR": "${EXT_BUILD_DEPS}/lzma_lib/include",
-    "LIBLZMA_LIBRARY": "${EXT_BUILD_DEPS}/lzma_lib/lib/liblzma.a",
-    "WEBP_INCLUDE_DIR": "${EXT_BUILD_DEPS}/webp_lib/include",
-    "WEBP_LIBRARY": "${EXT_BUILD_DEPS}/webp_lib/lib/libwebp.a",
-    "ZLIB_INCLUDE_DIR": "${EXT_BUILD_DEPS}/z_lib/include",
-    "ZLIB_LIBRARY": "${EXT_BUILD_DEPS}/z_lib/lib/libz.a",
-    "ZSTD_INCLUDE_DIR": "${EXT_BUILD_DEPS}/zstd_lib/include",
-    "ZSTD_LIBRARY": "${EXT_BUILD_DEPS}/zstd_lib/lib/libzstd.a",
-}
-
-CACHE_ENTRIES_WASM = dict(CACHE_ENTRIES.items() + {
-    "CMAKE_EXE_LINKER_FLAGS": CMAKE_EXE_LINKER_FLAGS_WASM,
-}.items())
+    deps = {
+        "jpeg": JPEGTURBO_SPEC,
+        "zstd": {},
+        "webp": {},
+        "lzma": {},
+        "z": {},
+    },
+)
 
 cmake_lib(
-    name = "tiff",
+    name = NAME,
     cache_entries = {
-        "//config:wasm": CACHE_ENTRIES_WASM,
-        "//conditions:default": CACHE_ENTRIES,
+        "//config:wasm": cache_entries(
+            CACHE_ENTRIES,
+            cmake_exe_linker_flags = CMAKE_EXE_LINKER_FLAGS_WASM,
+        ),
+        "//conditions:default": cache_entries(
+            CACHE_ENTRIES,
+            cmake_exe_linker_flags = CMAKE_EXE_LINKER_FLAGS,
+        ),
     },
-    out_static_libs = [
-        "libtiff.a",
-        "libtiffxx.a",
-    ],
+    out_static_libs = STATIC_LIBS,
     deps = [
         "//lib/deflate",
         "//lib/jpegturbo",

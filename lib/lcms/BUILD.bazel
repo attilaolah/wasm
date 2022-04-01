@@ -1,21 +1,23 @@
 load("//lib:lib.bzl", "package_lib")
+load("//lib:defs.bzl", "dep_path", "library_dir")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
+load(":package.bzl", "NAME", "STATIC_LIBS")
 
 package(default_visibility = ["//:__subpackages__"])
 
 package_lib()
 
 configure_make_lib(
-    name = "lcms",
+    name = NAME,
     configure_options = [
         # keep sorted
         "--enable-shared=no",
         "--enable-static=yes",
         "--with-fastfloat",
-        '--with-jpeg="${EXT_BUILD_DEPS}/jpegturbo_lib"',
-        '--with-tiff="${EXT_BUILD_DEPS}/tiff_lib/lib"',
+        '--with-jpeg="{}"'.format(dep_path("jpegturbo")),
+        '--with-tiff="{}"'.format(library_dir("tiff")),
     ],
-    out_static_libs = ["liblcms2.a"],
+    out_static_libs = STATIC_LIBS,
     deps = [
         "//lib/jpegturbo",
         "//lib/tiff",

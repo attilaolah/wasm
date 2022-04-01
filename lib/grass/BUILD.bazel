@@ -1,6 +1,6 @@
-load("//lib:defs.bzl", "dep_path", "include_dir", "library_dir", "major_minor", "root_path", "static_lib")
+load("//lib:defs.bzl", "dep_path", "include_dir", "library_dir", "major_minor", "root_path", "runtime_path", "static_lib")
 load("//lib:lib.bzl", "package_lib")
-load("//toolchains:utils.bzl", "no_error", "path")
+load("//toolchains:utils.bzl", "no_error")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
 load(":configure.bzl", "configure_sed", "with_features", "with_libraries", "without_features")
 load(":package.bzl", "NAME", "STATIC_LIBS", "VERSION")

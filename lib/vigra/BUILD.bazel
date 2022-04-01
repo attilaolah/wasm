@@ -1,31 +1,34 @@
 load("//lib:lib.bzl", "package_lib")
+load("//lib:defs.bzl", "cache_entries")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
+load(":package.bzl", "NAME", "STATIC_LIBS")
+
+# Library deps:
+load("//lib/jpegturbo:package.bzl", JPEGTURBO_SPEC = "SPEC")
 
 package(default_visibility = ["//:__subpackages__"])
 
 package_lib()
 
 cmake_lib(
-    name = "vigra",
-    cache_entries = {
-        "FFTW3F_INCLUDE_DIR": "${EXT_BUILD_DEPS}/fftw_lib/include",
-        "FFTW3F_LIBRARY": "${EXT_BUILD_DEPS}/fftw_lib/lib/libfftw3q.a",
-        "FFTW3_INCLUDE_DIR": "${EXT_BUILD_DEPS}/fftw_lib/include",
-        "FFTW3_LIBRARY": "${EXT_BUILD_DEPS}/fftw_lib/lib/libfftw3q.a",
-        "JPEG_INCLUDE_DIR": "${EXT_BUILD_DEPS}/jpegturbo_lib/include",
-        "JPEG_LIBRARY": "${EXT_BUILD_DEPS}/jpegturbo_lib/lib/libjpeg.a",
-        "LIB_SUFFIX": "",
-        "PNG_LIBRARY": "${EXT_BUILD_DEPS}/png_lib/lib/libpng.a",
-        "PNG_PNG_INCLUDE_DIR": "${EXT_BUILD_DEPS}/png_lib/include",
-        "TIFF_INCLUDE_DIR": "${EXT_BUILD_DEPS}/tiff_lib/include",
-        "TIFF_LIBRARY": "${EXT_BUILD_DEPS}/tiff_lib/lib/libtiff.a",
-        "VIGRA_STATIC_LIB": True,
-        "WITH_HDF5": False,
-        "WITH_VIGRANUMPY": False,
-        "ZLIB_INCLUDE_DIR": "${EXT_BUILD_DEPS}/z_lib/include",
-        "ZLIB_LIBRARY": "${EXT_BUILD_DEPS}/z_lib/lib/libz.a",
-    },
-    out_static_libs = ["libvigraimpex.a"],
+    name = NAME,
+    cache_entries = cache_entries(
+        fftw3_f_include_dir = "${EXT_BUILD_DEPS}/fftw_lib/include",
+        fftw3_f_library = "${EXT_BUILD_DEPS}/fftw_lib/lib/libfftw3q.a",
+        fftw3_include_dir = "${EXT_BUILD_DEPS}/fftw_lib/include",
+        fftw3_library = "${EXT_BUILD_DEPS}/fftw_lib/lib/libfftw3q.a",
+        lib_suffix = "",
+        vigra_static_lib = True,
+        with_hdf5 = False,
+        with_vigranumpy = False,
+        deps = {
+            "z": {},
+            "png": {},
+            "tiff": {},
+            "jpeg": JPEGTURBO_SPEC,
+        },
+    ),
+    out_static_libs = STATIC_LIBS,
     deps = [
         "//lib/fftw",
         "//lib/jpegturbo",

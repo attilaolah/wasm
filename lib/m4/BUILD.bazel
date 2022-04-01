@@ -1,21 +1,18 @@
 load("//lib:lib.bzl", "package_lib")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
+load(":package.bzl", "NAME")
 
 package(default_visibility = ["//:__subpackages__"])
 
-package_lib()
+package_lib(
+    runtime_for = [NAME],
+)
 
 configure_make_lib(
-    name = "m4",
+    name = NAME,
     configure_options = [
         "--enable-c++",
     ],
-    out_binaries = ["m4"],
+    out_binaries = [NAME],
     out_static_libs = [],
-)
-
-filegroup(
-    name = "runtime",
-    srcs = [":m4"],
-    output_group = "gen_dir",
 )

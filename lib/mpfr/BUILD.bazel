@@ -1,16 +1,18 @@
 load("//lib:lib.bzl", "package_lib")
+load("//lib:defs.bzl", "dep_path")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
+load(":package.bzl", "NAME")
 
 package(default_visibility = ["//:__subpackages__"])
 
 package_lib()
 
 configure_make_lib(
-    name = "mpfr",
+    name = NAME,
     configure_options = [
         "--disable-shared",
         "--enable-static",
-        "--with-gmp=${EXT_BUILD_DEPS}/gmp_lib",
+        '--with-gmp="{}"'.format(dep_path("gmp")),
     ],
     deps = ["//lib/gmp"],
 )

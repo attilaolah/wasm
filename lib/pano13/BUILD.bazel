@@ -1,23 +1,26 @@
 load("//lib:lib.bzl", "package_lib")
+load("//lib:defs.bzl", "cache_entries")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
+load(":package.bzl", "NAME")
+
+# Library deps:
+load("//lib/jpegturbo:package.bzl", JPEGTURBO_SPEC = "SPEC")
 
 package(default_visibility = ["//:__subpackages__"])
 
 package_lib()
 
 cmake_lib(
-    name = "pano13",
-    cache_entries = {
-        "BUILD_SHARED_LIBS": False,
-        "JPEG_INCLUDE_DIR": "${EXT_BUILD_DEPS}/jpegturbo_lib/include",
-        "JPEG_LIBRARY": "${EXT_BUILD_DEPS}/jpegturbo_lib/lib/libjpeg.a",
-        "PNG_LIBRARY": "${EXT_BUILD_DEPS}/png_lib/lib/libpng.a",
-        "PNG_PNG_INCLUDE_DIR": "${EXT_BUILD_DEPS}/png_lib/include",
-        "TIFF_INCLUDE_DIR": "${EXT_BUILD_DEPS}/tiff_lib/include",
-        "TIFF_LIBRARY": "${EXT_BUILD_DEPS}/tiff_lib/lib/libtiff.a",
-        "ZLIB_INCLUDE_DIR": "${EXT_BUILD_DEPS}/z_lib/include",
-        "ZLIB_LIBRARY": "${EXT_BUILD_DEPS}/z_lib/lib/libz.a",
-    },
+    name = NAME,
+    cache_entries = cache_entries(
+        build_shared_libs = False,
+        deps = {
+            "jpeg": JPEGTURBO_SPEC,
+            "png": {},
+            "z": {},
+            "tiff": {},
+        },
+    ),
     deps = [
         "//lib/jpegturbo",
         "//lib/png",

@@ -79,20 +79,16 @@ def dep_spec(name, include_dir = None, library = None, exclude = ()):
         spec.pop(item)
     return spec
 
-def make_args(upcase = True, sort_keys = True, **kwargs):
+def make_args(sort_keys = True, **kwargs):
     """Convenience macro for constructing the make_args list."""
-    if upcase:
-        for key in list(kwargs):
-            kwargs[key.upper()] = kwargs.pop(key)
-
-    result = ['{}="{}"'.format(key, val) for key, val in kwargs.items()]
+    result = ['{}="{}"'.format(key.upper(), val) for key, val in kwargs.items()]
 
     if sort_keys:
         result = sorted(result)
 
     return result
 
-def cache_entries(*originals, upcase = True, deps = None, **kwargs):
+def cache_entries(*originals, upcase = True, prefix_all = "", deps = None, **kwargs):
     """Convenience macro for constructing the cache_entries dict."""
     result = {}
     for original in originals + (kwargs,):
@@ -114,7 +110,7 @@ def cache_entries(*originals, upcase = True, deps = None, **kwargs):
         for key in list(result):
             result[key.upper()] = result.pop(key)
 
-    return result
+    return {prefix_all + key: val for key, val in result.items()}
 
 def _library_key(dep):
     return "{}_library".format({

@@ -10,7 +10,7 @@ URL = "https://{name}.osgeo.org/{name}{versionmmx}/source/{name}-{version}.tar.g
 
 SHA256 = "e925bf8c44e1809459974457f2ab3c61dd5a24c0655ed026de665d1494f68a96"
 
-out_static_libs = [
+STATIC_LIBS = [
     static_lib("{}_{}.{}".format(NAME, lib, major_minor(VERSION)))
     for lib in [
         # keep sorted

@@ -1,7 +1,7 @@
-load("//lib:defs.bzl", "static_lib")
 load("//lib:lib.bzl", "package_lib")
+load("//lib:defs.bzl", "cache_entries")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
-load(":package.bzl", "lname")
+load(":package.bzl", "NAME", "STATIC_LIBS")
 
 package(default_visibility = ["//:__subpackages__"])
 
@@ -11,15 +11,11 @@ package_lib(
 )
 
 cmake_lib(
-    name = "sdl",
-    cache_entries = {
-        "SDL_SHARED": False,
-        "SDL_STATIC": True,
-        "SDL_STATIC_PIC": True,
-    },
-    out_static_libs = [
-        # keep sorted
-        static_lib(lname()),
-        static_lib(lname("main")),
-    ],
+    name = NAME,
+    cache_entries = cache_entries(
+        sdl_shared = False,
+        sdl_static = True,
+        sdl_static_pic = True,
+    ),
+    out_static_libs = STATIC_LIBS,
 )

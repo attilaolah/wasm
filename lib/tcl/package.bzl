@@ -1,6 +1,7 @@
 """Workspace rule for downloading package dependencies."""
 
 load("//lib:http_archive.bzl", "http_archive")
+load("//lib:defs.bzl", "major_minor", "static_lib")
 
 NAME = "tcl"
 VERSION = "8.6.11"
@@ -8,6 +9,11 @@ VERSION = "8.6.11"
 URL = "https://downloads.sourceforge.net/{name}/{name}{version}-src.tar.gz"
 
 SHA256 = "8c0486668586672c5693d7d95817cb05a18c5ecca2f40e2836b9578064088258"
+
+STATIC_LIBS = [
+    static_lib(NAME + major_minor(VERSION)),
+    static_lib(NAME + "stub" + major_minor(VERSION)),
+]
 
 def download():
     http_archive(

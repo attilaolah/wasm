@@ -1,12 +1,13 @@
 load("//lib:lib.bzl", "package_lib")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
+load(":package.bzl", "NAME", "STATIC_LIBS")
 
 package(default_visibility = ["//:__subpackages__"])
 
 package_lib()
 
 configure_make_lib(
-    name = "ncurses",
+    name = NAME,
     configure_in_place = True,
     configure_options = [
         # keep sorted
@@ -16,19 +17,5 @@ configure_make_lib(
         "--with-ticlib",
         "--without-dlsym",
     ],
-    out_static_libs = [
-        # keep sorted
-        "libform.a",
-        "libform_g.a",
-        "libmenu.a",
-        "libmenu_g.a",
-        "libncurses.a",
-        "libncurses++.a",
-        "libncurses++_g.a",
-        "libncurses_g.a",
-        "libpanel.a",
-        "libpanel_g.a",
-        "libtinfo.a",
-        "libtinfo_g.a",
-    ],
+    out_static_libs = STATIC_LIBS,
 )
