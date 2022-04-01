@@ -1,13 +1,14 @@
 load("//lib:lib.bzl", "package_lib")
 load("//toolchains:utils.bzl", "no_error")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
+load(":package.bzl", "NAME", "STATIC_LIBS")
 
 package(default_visibility = ["//:__subpackages__"])
 
 package_lib()
 
 configure_make_lib(
-    name = "png",
+    name = NAME,
     configure_options = [
         "--enable-shared=no",
         "--enable-static=yes",
@@ -17,9 +18,6 @@ configure_make_lib(
         "incompatible-library-redeclaration",
         "unused-but-set-variable",
     ])},
-    out_static_libs = [
-        "libpng.a",
-        "libpng16.a",
-    ],
+    out_static_libs = STATIC_LIBS,
     deps = ["//lib/z"],
 )

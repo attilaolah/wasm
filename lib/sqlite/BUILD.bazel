@@ -1,10 +1,13 @@
 load("//lib:lib.bzl", "package_lib")
 load("//toolchains:utils.bzl", "no_error")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
+load("package.bzl", "BINARIES", "NAME", "STATIC_LIBS")
 
 package(default_visibility = ["//:__subpackages__"])
 
-package_lib()
+package_lib(
+    runtime_for = [NAME],
+)
 
 C_FLAGS = no_error([
     # keep sorted
@@ -19,7 +22,7 @@ ENV_WASM = dict(ENV.items() + {
 }.items())
 
 configure_make_lib(
-    name = "sqlite",
+    name = NAME,
     configure_options = [
         # keep sorted
         "--enable-shared=no",
@@ -31,13 +34,7 @@ configure_make_lib(
     },
     out_binaries = select({
         "//config:wasm": [],
-        "//conditions:default": ["sqlite3"],
+        "//conditions:default": BINARIES,
     }),
-    out_static_libs = ["libsqlite3.a"],
-)
-
-filegroup(
-    name = "runtime",
-    srcs = [":sqlite"],
-    output_group = "gen_dir",
+    out_static_libs = STATIC_LIBS,
 )

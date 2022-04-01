@@ -61,9 +61,9 @@ def _version_update_impl(ctx):
         output = executable,
         is_executable = True,
         substitutions = {
+            "${JQ}": ctx.executable._jq.path,
             "${PACKAGE_BZL}": package_bzl.path,
             "${VERSION_SPECS}": " ".join([v.path for v in version_specs]),
-            "${JQ}": ctx.executable._jq.path,
         },
     )
 
@@ -109,14 +109,14 @@ _version_update = rule(
             doc = "Auto-generated VersionInfo JSON file (version.json).",
             providers = [VersionInfo],
         ),
-        "_template": attr.label(
-            allow_single_file = [".sh"],
-            default = "//tools:version_update.sh",
-        ),
         "_jq": attr.label(
             default = "//tools:jq",
             executable = True,
             cfg = "exec",
+        ),
+        "_template": attr.label(
+            allow_single_file = [".sh"],
+            default = "//tools:version_update.sh",
         ),
     },
 )

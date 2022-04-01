@@ -1,35 +1,38 @@
+load("//lib:defs.bzl", "dep_path", "runtime_path")
 load("//lib:lib.bzl", "package_lib")
-load("//toolchains:utils.bzl", "path")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
+load(":package.bzl", "NAME", "STATIC_LIBS")
 
 package(default_visibility = ["//:__subpackages__"])
 
-package_lib()
+package_lib(
+    runtime_for = [NAME],
+)
 
 # TODO: add deps:
 # - libintl
 
+BUILD_DEPS = [
+    "//lib/m4:runtime",
+]
+
+PATH = runtime_path(
+    deps = ["//lib/m4:runtime"],
+)
+
 configure_make_lib(
-    name = "flex",
-    build_data = ["//lib/m4:runtime"],
+    name = NAME,
+    build_data = BUILD_DEPS,
     configure_options = [
         "--enable-static",
         "--disable-shared",
-        '--with-libiconv-prefix="${EXT_BUILD_DEPS}/iconv_lib"',
+        '--with-libiconv-prefix="{}"'.format(dep_path("iconv")),
     ],
-    env = {"PATH": path([
-        "$${EXT_BUILD_ROOT}/$(execpaths //lib/m4:runtime)/bin",
-    ])},
+    env = {"PATH": runtime_path(BUILD_DEPS)},
     out_binaries = [
         "flex",
         "flex++",
     ],
-    out_static_libs = ["libfl.a"],
+    out_static_libs = STATIC_LIBS,
     deps = ["//lib/iconv"],
-)
-
-filegroup(
-    name = "runtime",
-    srcs = [":flex"],
-    output_group = "gen_dir",
 )

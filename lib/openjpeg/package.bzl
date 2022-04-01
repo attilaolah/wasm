@@ -1,7 +1,7 @@
 """Workspace rule for downloading package dependencies."""
 
-load("//lib:http_archive.bzl", "http_archive")
 load("//lib:defs.bzl", "dep_spec", "include_dir", "library_path", "major", "major_minor", "static_lib")
+load("//lib:http_archive.bzl", "http_archive")
 
 NAME = "openjpeg"
 VERSION = "2.4.0"

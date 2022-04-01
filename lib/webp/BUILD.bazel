@@ -1,5 +1,8 @@
 load("//lib:lib.bzl", "package_lib")
-load("//toolchains/cmake:cmake.bzl", "cmake_lib")
+
+# Library deps:
+load("//lib/jpegturbo:package.bzl", JPEGTURBO_SPEC = "SPEC")
+load("//toolchains/cmake:cmake.bzl", "cache_entries", "cmake_lib")
 load(":package.bzl", "NAME")
 
 package(default_visibility = ["//:__subpackages__"])
@@ -8,26 +11,25 @@ package_lib()
 
 cmake_lib(
     name = NAME,
-    cache_entries = {
-        "build_shared_libs": False,
-        "gif_include_dir": "${EXT_BUILD_DEPS}/gif_lib/include",
-        "gif_library": "${EXT_BUILD_DEPS}/gif_lib/lib/libgif.a",
-        "jpeg_include_dir": "${EXT_BUILD_DEPS}/jpegturbo_lib/include",
-        "jpeg_library": "${EXT_BUILD_DEPS}/jpegturbo_lib/lib/libjpeg.a",
-        "png_library": "${EXT_BUILD_DEPS}/png_lib/lib/libpng.a",
-        "png_png_include_dir": "${EXT_BUILD_DEPS}/png_lib/include",
-        "webp_build_anim_utils": False,
-        "webp_build_cwebp": False,
-        "webp_build_dwebp": False,
-        "webp_build_extras": False,
-        "webp_build_gif2_webp": False,
-        "webp_build_img2_webp": False,
-        "webp_build_vwebp": False,
-        "webp_build_webpinfo": False,
-        "webp_build_webpmux": False,
-        "zlib_include_dir": "${EXT_BUILD_DEPS}/z_lib/include",
-        "zlib_library": "${EXT_BUILD_DEPS}/z_lib/lib/libz.a",
-    },
+    cache_entries = cache_entries(
+        build_shared_libs = False,
+        upcase = False,  # WebP uses lower-case cache entries.
+        webp_build_anim_utils = False,
+        webp_build_cwebp = False,
+        webp_build_dwebp = False,
+        webp_build_extras = False,
+        webp_build_gif2_webp = False,
+        webp_build_img2_webp = False,
+        webp_build_vwebp = False,
+        webp_build_webpinfo = False,
+        webp_build_webpmux = False,
+        deps = {
+            "gif": {},
+            "jpeg": JPEGTURBO_SPEC,
+            "png": {},
+            "z": {},
+        },
+    ),
     # NOTE: //lib/tiff would be a dependency for some tools,
     # but that would introduce a cyclic dependency, so we don't list it here.
     deps = [

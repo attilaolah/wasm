@@ -1,17 +1,19 @@
+load("//lib:defs.bzl", "dep_path")
 load("//lib:lib.bzl", "package_lib")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
+load(":package.bzl", "NAME")
 
 package(default_visibility = ["//:__subpackages__"])
 
 package_lib()
 
 configure_make_lib(
-    name = "jq",
+    name = NAME,
     configure_options = [
         # keep sorted
         "--enable-shared=no",
         "--enable-static=yes",
-        '--with-oniguruma="${EXT_BUILD_DEPS}/oniguruma_lib"',
+        '--with-oniguruma="{}"'.format(dep_path("oniguruma")),
     ],
     out_binaries = select({
         "//config:wasm": [],

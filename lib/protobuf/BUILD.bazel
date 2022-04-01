@@ -1,28 +1,29 @@
 load("//lib:lib.bzl", "package_lib")
+load("//toolchains/cmake:cmake.bzl", "cache_entries")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
+load(":package.bzl", "NAME", "STATIC_LIBS")
 
 package(default_visibility = ["//:__subpackages__"])
 
 package_lib()
 
 cmake_lib(
-    name = "protobuf",
-    cache_entries = {
-        "BUILD_SHARED_LIBS": False,
-
-        # Protobuf-specific flags:
-        "protobuf_BUILD_TESTS": False,
-        "protobuf_BUILD_EXAMPLES": False,
-        "protobuf_BUILD_PROTOC_BINARIES": False,
-
-        # Dependencies:
-        "ZLIB_INCLUDE_DIR": "${EXT_BUILD_DEPS}/z_lib/include",
-        "ZLIB_LIBRARY": "${EXT_BUILD_DEPS}/z_lib/lib/libz.a",
-    },
-    out_static_libs = [
-        "libprotobuf-lite.a",
-        "libprotobuf.a",
-    ],
+    name = NAME,
+    cache_entries = dict(
+        cache_entries(
+            build_shared_libs = False,
+            deps = {
+                "z": {},
+            },
+        ).items() +
+        cache_entries(
+            build_examples = False,
+            build_protoc_binaries = False,
+            build_tests = False,
+            prefix_all = "protobuf_",
+        ).items(),
+    ),
+    out_static_libs = STATIC_LIBS,
     working_directory = "cmake",
     deps = ["//lib/z"],
 )

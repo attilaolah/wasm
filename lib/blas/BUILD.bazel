@@ -1,4 +1,4 @@
-load("//lib:defs.bzl", "library_path", "root_path", "static_lib")
+load("//lib:defs.bzl", "library_path", "make_args", "root_path", "static_lib")
 load("//lib:lib.bzl", "package_lib")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
 load("//toolchains/make:make.bzl", "make_lib")
@@ -14,12 +14,15 @@ package_lib(
 # NOTE: Currently building this package requires a working "gfortran" binary.
 # TODO: Build gfortran, and set the F18_FC environment variable to that binary.
 
-FC = root_path("$(execpaths //tools/llvm:flang_runtime)/bin/flang")
+FLANG = "$(execpaths //tools/llvm:flang_runtime)/bin/flang"
 
 cmake_lib(
     name = NAME,
     build_data = ["//tools/llvm:flang_runtime"],
-    env = {"FC": FC.replace("${", "$${")},
+    env = {"FC": root_path(
+        FLANG,
+        double_escape = True,
+    )},
 )
 
 CP_HEADERS = 'cp --dereference "{build_tmpdir}/include"/{name}{{,_f77}}.h "{install_dir}/include"'.format(
@@ -36,12 +39,15 @@ CP_LIBS = 'cp --dereference "{build_tmpdir}/{static_lib}" "{install_dir}/lib"'.f
 
 make_lib(
     name = NAME_C,
-    args = [
-        'BLIB="{}"'.format(library_path(NAME)),
-        'CBLIB="../{}"'.format(static_lib(NAME_C)),
-        'CFLAGS="-Wno-header-guard"',
-        'FC="{}"'.format(FC),
-    ],
+    args = make_args(
+        blib = library_path(NAME),
+        cblib = "../" + static_lib(NAME_C),
+        cflags = "-Wno-header-guard",
+        fc = root_path(
+            FLANG,
+            double_escape = False,
+        ),
+    ),
     build_data = ["//tools/llvm:flang_runtime"],
     postfix_script = "\n".join((CP_HEADERS, CP_LIBS)),
     targets = ["alllib"],

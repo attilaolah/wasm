@@ -1,7 +1,6 @@
-load("//lib:defs.bzl", "static_lib")
 load("//lib:lib.bzl", "package_lib")
-load("//toolchains/cmake:cmake.bzl", "cmake_lib")
-load("package.bzl", "NAME", "lname")
+load("//toolchains/cmake:cmake.bzl", "cache_entries", "cmake_lib")
+load("package.bzl", "NAME", "STATIC_LIBS")
 
 package(default_visibility = ["//:__subpackages__"])
 
@@ -9,9 +8,9 @@ package_lib()
 
 cmake_lib(
     name = NAME,
-    cache_entries = {
-        "ENABLE_SHARED": False,
-        "ENABLE_STATIC": True,
-    },
-    out_static_libs = [static_lib(lname())],
+    cache_entries = cache_entries(
+        enable_shared = False,
+        enable_static = True,
+    ),
+    out_static_libs = STATIC_LIBS,
 )

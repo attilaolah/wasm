@@ -1,60 +1,18 @@
-load("//lib:lib.bzl", "package_lib")
 load("@rules_foreign_cc//foreign_cc:defs.bzl", "boost_build")
+load("//lib:defs.bzl", "lib_name", "repo_name")
+load("//lib:lib.bzl", "package_lib")
 load("//tools/archive_symbols:archive_symbols.bzl", "archive_symbols")
+load(":package.bzl", "NAME", "STATIC_LIBS")
 
 package(default_visibility = ["//:__subpackages__"])
 
 package_lib()
 
-LIBS = [
-    # keep sorted
-    "atomic",
-    "chrono",
-    "container",
-    "context",
-    "contract",
-    "coroutine",
-    "date_time",
-    "exception",
-    "fiber",
-    "filesystem",
-    "graph",
-    "iostreams",
-    "json",
-    "locale",
-    "log",
-    "log_setup",
-    "math_c99",
-    "math_c99f",
-    "math_c99l",
-    "math_tr1",
-    "math_tr1f",
-    "math_tr1l",
-    "nowide",
-    "prg_exec_monitor",
-    "program_options",
-    "random",
-    "regex",
-    "serialization",
-    "stacktrace_addr2line",
-    "stacktrace_backtrace",
-    "stacktrace_basic",
-    "stacktrace_noop",
-    "system",
-    "test_exec_monitor",
-    "thread",
-    "timer",
-    "type_erasure",
-    "unit_test_framework",
-    "wave",
-    "wserialization",
-]
-
 boost_build(
-    name = "boost",
-    lib_name = "boost_lib",
-    lib_source = "@lib_boost//:all",
-    out_static_libs = ["libboost_{}.a".format(lib) for lib in LIBS],
+    name = NAME,
+    lib_name = lib_name(NAME),
+    lib_source = "@{}//:all".format(repo_name(NAME)),
+    out_static_libs = STATIC_LIBS,
     user_options = [
         # keep sorted
         "link=static",
@@ -63,7 +21,7 @@ boost_build(
 )
 
 archive_symbols(
-    archive = "boost",
+    archive = NAME,
     strict = False,
     deps = [],
 )

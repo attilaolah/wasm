@@ -1,5 +1,5 @@
-load("//toolchains:utils.bzl", "ldflags")
 load("//lib:defs.bzl", "include_dir", "library_dir")
+load("//toolchains:utils.bzl", "ldflags")
 
 _SED_CMD = """$(sed -i.orig -E '{sed_script}' "${{BUILD_TMPDIR}}/configure" >/dev/stderr)"""
 _S_LIBS = r"""s/LIBS="(-l{lib}\s+\$LIBS)"/LIBS="\1 {deps}"/"""

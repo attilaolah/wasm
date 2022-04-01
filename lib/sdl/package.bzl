@@ -1,6 +1,6 @@
 """Workspace rule for downloading package dependencies."""
 
-load("//lib:defs.bzl", "major")
+load("//lib:defs.bzl", "major", "static_lib")
 load("//lib:http_archive.bzl", "http_archive")
 
 NAME = "sdl"
@@ -10,8 +10,10 @@ URL = "https://www.lib{name}.org/release/{uname}{versionm}-{version}.tar.gz"
 
 SHA256 = "c56aba1d7b5b0e7e999e4a7698c70b63a3394ff9704b5f6e1c57e0c16f04dd06"
 
-def lname(suffix = ""):
-    return NAME.upper() + major(VERSION) + suffix
+STATIC_LIBS = [
+    static_lib(NAME.upper() + major(VERSION)),
+    static_lib(NAME.upper() + major(VERSION) + "main"),
+]
 
 def download():
     http_archive(

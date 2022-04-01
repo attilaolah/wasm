@@ -1,5 +1,5 @@
-load(":package_deps.bzl", "PACKAGE_DEPS")
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load(":package_deps.bzl", "PACKAGE_DEPS")
 
 bzl_library(
     name = "package",

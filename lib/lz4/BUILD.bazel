@@ -1,17 +1,18 @@
 load("//lib:lib.bzl", "package_lib")
-load("//toolchains/cmake:cmake.bzl", "cmake_lib")
+load("//toolchains/cmake:cmake.bzl", "cache_entries", "cmake_lib")
+load(":package.bzl", "NAME")
 
 package(default_visibility = ["//:__subpackages__"])
 
 package_lib()
 
 cmake_lib(
-    name = "lz4",
-    cache_entries = {
-        "BUILD_SHARED_LIBS": False,
-        "BUILD_STATIC_LIBS": True,
-        "LZ4_BUILD_CLI": False,
-        "LZ4_BUILD_LEGACY_LZ4C": False,
-    },
+    name = NAME,
+    cache_entries = cache_entries(
+        build_shared_libs = False,
+        build_static_libs = True,
+        lz4_build_cli = False,
+        lz4_build_legacy_lz4_c = False,
+    ),
     working_directory = "build/cmake",
 )

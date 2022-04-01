@@ -5,6 +5,8 @@ Contains a convenience macro that wraps cmake() from
 """
 
 load("@rules_foreign_cc//foreign_cc:cmake.bzl", "cmake")
+load("//lib:cache_entries.bzl", "include_dir_key", "library_key")
+load("//lib:defs.bzl", "dep_spec")
 load("//toolchains/make:configure.bzl", "emscripten_env", _build_data = "build_data", _lib_source = "lib_source")
 load("//tools/archive_symbols:archive_symbols.bzl", "archive_symbols")
 
@@ -80,6 +82,30 @@ def cmake_lib(
         deps = kwargs.get("deps", []),
         strict = not ignore_undefined_symbols,
     )
+
+def cache_entries(*originals, upcase = True, prefix_all = "", deps = None, **kwargs):
+    """Convenience macro for constructing the cache_entries dict."""
+    result = {}
+    for original in originals + (kwargs,):
+        result.update(original)
+
+    remap = result.pop("remap", {})
+
+    for dep, spec in (deps or {}).items():
+        spec = spec or dep_spec(dep)
+        if "include_dir" in spec:
+            result[include_dir_key(dep)] = spec["include_dir"]
+        if "library" in spec:
+            result[library_key(dep)] = spec["library"]
+
+    for new, old in remap.items():
+        result[new] = result.pop(old)
+
+    if upcase:
+        for key in list(result):
+            result[key.upper()] = result.pop(key)
+
+    return {prefix_all + key: val for key, val in result.items()}
 
 def _prepare_cache_entries(cache_entries):
     for key, val in cache_entries.items():

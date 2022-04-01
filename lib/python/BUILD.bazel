@@ -1,11 +1,12 @@
 load("//lib:defs.bzl", "dep_path", "static_lib")
 load("//lib:lib.bzl", "package_lib")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
-load(":package.bzl", "lname")
+load(":package.bzl", "NAME", "STATIC_LIBS")
 
 package(default_visibility = ["//:__subpackages__"])
 
 package_lib(
+    runtime_for = [NAME],
     version_regex = r">\s*Download Python ([^<]+)\s*</a>",
     version_url = "https://www.python.org/downloads/",
 )
@@ -21,7 +22,7 @@ CONFIGURE_OPTIONS = [
 ]
 
 configure_make_lib(
-    name = "python",
+    name = NAME,
     configure_options = select({
         ":copt": CONFIGURE_OPTIONS + [
             # TODO: Add llvm-profdata to dependencies for this to work!
@@ -33,19 +34,13 @@ configure_make_lib(
         "//config:wasm": [],
         "//conditions:default": ["python3"],
     }),
-    out_static_libs = [static_lib(lname())],
+    out_static_libs = STATIC_LIBS,
     deps = [
         "//lib/ffi",
         "//lib/mpdecimal",
         "//lib/openssl",
         "//lib/z",
     ],
-)
-
-filegroup(
-    name = "runtime",
-    srcs = [":python"],
-    output_group = "gen_dir",
 )
 
 config_setting(

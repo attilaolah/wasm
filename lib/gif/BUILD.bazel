@@ -1,11 +1,9 @@
 load("//lib:lib.bzl", "package_lib")
 load("//toolchains/make:make.bzl", "make_lib")
+load(":package.bzl", "NAME")
 
 package(default_visibility = ["//:__subpackages__"])
 
 package_lib()
 
-# TODO: The Makefile doesn't seem to obey the -c option, it forces an optimised
-# build by default. Find a way to relay the build setting to the Makefile.
-
-make_lib(name = "gif")
+make_lib(name = NAME)

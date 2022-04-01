@@ -14,7 +14,3 @@ def patch_files(patch_map):
         "sed --in-place --regexp-extended '{}' \"{}\"".format(regex, filename)
         for filename, regex in sorted(patch_map.items())
     ]
-
-def path(prefixes, existing = "$${PATH}", suffixes = None):
-    """Construct a ${PATH} env var with additional prefixes."""
-    return ":".join(prefixes + [existing] + (suffixes or []))

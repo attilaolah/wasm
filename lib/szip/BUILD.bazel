@@ -1,14 +1,15 @@
 load("//lib:lib.bzl", "package_lib")
-load("//toolchains/cmake:cmake.bzl", "cmake_lib")
+load("//toolchains/cmake:cmake.bzl", "cache_entries", "cmake_lib")
+load(":package.bzl", "NAME")
 
 package(default_visibility = ["//:__subpackages__"])
 
 package_lib()
 
 cmake_lib(
-    name = "szip",
-    cache_entries = {
-        "BUILD_SHARED_LIBS": False,
-        "BUILD_TESTING": False,
-    },
+    name = NAME,
+    cache_entries = cache_entries(
+        build_shared_libs = False,
+        build_testing = False,
+    ),
 )

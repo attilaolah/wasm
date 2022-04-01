@@ -1,7 +1,7 @@
 """Workspace rule for downloading package dependencies."""
 
-load("//lib:http_archive.bzl", "http_archive")
 load("//lib:defs.bzl", "dep_spec", "library_path", "major_minor", "static_lib")
+load("//lib:http_archive.bzl", "http_archive")
 
 NAME = "openexr"
 VERSION = "3.1.4"
@@ -12,16 +12,16 @@ SHA256 = "cb019c3c69ada47fe340f7fa6c8b863ca0515804dc60bdb25c942c1da886930b"
 
 LNAME = "OpenEXR"
 
-STATIC_LIBS = [static_lib("-".join((
+STATIC_LIBS = [static_lib("-".join([
     lib,
     major_minor(VERSION, join = "_"),
-))) for lib in (
+])) for lib in [
     LNAME,
     LNAME + "Core",
     LNAME + "Util",
     "Iex",
     "IlmThread",
-)]
+]]
 
 SPEC = dep_spec(
     name = NAME,

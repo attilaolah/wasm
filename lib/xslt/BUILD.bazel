@@ -1,17 +1,19 @@
+load("//lib:defs.bzl", "dep_path")
 load("//lib:lib.bzl", "package_lib")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
+load(":package.bzl", "NAME")
 
 package(default_visibility = ["//:__subpackages__"])
 
 package_lib()
 
 configure_make_lib(
-    name = "xslt",
+    name = NAME,
     configure_options = [
         # keep sorted
         "--disable-shared",
         "--enable-static",
-        '--with-libxml-prefix="${EXT_BUILD_DEPS}/xml_lib"',
+        '--with-libxml-prefix="{}"'.format(dep_path("xml")),
         "--without-python",
     ],
     deps = ["//lib/xml"],

@@ -1,6 +1,6 @@
 load("//lib:lib.bzl", "package_lib")
 load("//toolchains:utils.bzl", "no_error")
-load("//toolchains/cmake:cmake.bzl", "cmake_lib")
+load("//toolchains/cmake:cmake.bzl", "cache_entries", "cmake_lib")
 load(":package.bzl", "NAME")
 
 package(default_visibility = ["//:__subpackages__"])
@@ -9,16 +9,16 @@ package_lib()
 
 cmake_lib(
     name = NAME,
-    cache_entries = {
+    cache_entries = cache_entries(
         # Use C_FLAGS_RELEASE so they'd get appended after other flags.
-        "CMAKE_C_FLAGS_RELEASE": no_error([
+        cmake_c_flags_release = no_error([
             # keep sorted
             "bitwise-instead-of-logical",
             "unused-but-set-variable",
         ]),
-        "ZSTD_BUILD_PROGRAMS": False,
-        "ZSTD_BUILD_SHARED": False,
-        "ZSTD_BUILD_STATIC": True,
-    },
+        zstd_build_programs = False,
+        zstd_build_shared = False,
+        zstd_build_static = True,
+    ),
     working_directory = "build/cmake",
 )

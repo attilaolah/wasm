@@ -1,10 +1,19 @@
+load("//lib:defs.bzl", "dep_path", "include_dir", "library_path", "runtime_path", "static_lib")
 load("//lib:lib.bzl", "package_lib")
-load("//toolchains:utils.bzl", "no_error", "path")
-load("//toolchains/cmake:cmake.bzl", "cmake_lib")
+
+# Library deps:
+load("//lib/sqlite:package.bzl", SQLITE_SPEC = "SPEC")
+load("//toolchains:utils.bzl", "no_error")
+load("//toolchains/cmake:cmake.bzl", "cache_entries", "cmake_lib")
+load(":package.bzl", "NAME")
 
 package(default_visibility = ["//:__subpackages__"])
 
 package_lib()
+
+BUILD_DEPS = [
+    "//lib/sqlite:runtime",
+]
 
 BINARIES = [
     # keep sorted
@@ -17,42 +26,44 @@ BINARIES = [
     "projsync",
 ]
 
-CACHE_ENTRIES = dict({
-    "CMAKE_C_FLAGS": no_error([
-        # keep sorted
-        "incompatible-library-redeclaration",
-    ]),
-    "CURL_INCLUDE_DIR": "${EXT_BUILD_DEPS}/curl_lib/include",
-    "CURL_LIBRARY": "${EXT_BUILD_DEPS}/curl_lib/lib/libcurl.a",
-    "OPENSSL_CRYPTO_LIBRARY": "${EXT_BUILD_DEPS}/openssl_lib/lib/libcrypto.a",
-    "OPENSSL_INCLUDE_DIR": "${EXT_BUILD_DEPS}/openssl_lib/include",
-    "SQLITE3_INCLUDE_DIR": "${EXT_BUILD_DEPS}/sqlite_lib/include",
-    "SQLITE3_LIBRARY": "${EXT_BUILD_DEPS}/sqlite_lib/lib/libsqlite3.a",
-    "TIFF_INCLUDE_DIR": "${EXT_BUILD_DEPS}/tiff_lib/include",
-    "TIFF_LIBRARY": "${EXT_BUILD_DEPS}/tiff_lib/lib/libtiff.a",
-}.items() + {
-    "BUILD_{}".format(binary.upper()): False
-    for binary in BINARIES + [
+BUILD_FLAGS = {
+    "build_{}".format(component): False
+    for component in BINARIES + [
         "shared_libs",
         "testing",
     ]
-}.items())
+}
 
-CACHE_ENTRIES_WASM = dict(CACHE_ENTRIES.items() + {
-    # The C++ library uses exceptions, so enable them explicitly.
-    "CMAKE_CXX_FLAGS": "-fexceptions",
-}.items())
+CACHE_ENTRIES = cache_entries(
+    BUILD_FLAGS,
+    cmake_c_flags = no_error([
+        # keep sorted
+        "incompatible-library-redeclaration",
+    ]),
+    openssl_crypto_library = library_path(
+        "openssl",
+        static_lib("crypto"),
+    ),
+    openssl_include_dir = include_dir("openssl"),
+    deps = {
+        "curl": {},
+        "sqlite3": SQLITE_SPEC,
+        "tiff": {},
+    },
+)
 
 cmake_lib(
-    name = "proj",
-    build_data = ["//lib/sqlite:runtime"],
+    name = NAME,
+    build_data = BUILD_DEPS,
     cache_entries = {
-        "//config:wasm": CACHE_ENTRIES_WASM,
+        "//config:wasm": cache_entries(
+            CACHE_ENTRIES,
+            # The C++ library uses exceptions, so enable them explicitly.
+            cmake_cxx_flags = "-fexceptions",
+        ),
         "//conditions:default": CACHE_ENTRIES,
     },
-    env = {"PATH": path([
-        "$${EXT_BUILD_ROOT}/$(execpaths //lib/sqlite:runtime)/bin",
-    ])},
+    env = {"PATH": runtime_path(BUILD_DEPS)},
     deps = [
         "//lib/curl",
         "//lib/openssl",

@@ -1,18 +1,23 @@
+load("//lib:defs.bzl", "root_path")
 load("//lib:lib.bzl", "package_lib")
-load("//toolchains/cmake:cmake.bzl", "cmake_lib")
+load("//toolchains/cmake:cmake.bzl", "cache_entries", "cmake_lib")
+load(":package.bzl", "NAME")
 
 package(default_visibility = ["//:__subpackages__"])
 
 package_lib()
 
 cmake_lib(
-    name = "eigen",
+    name = NAME,
     build_data = ["//tools/llvm:flang_runtime"],
-    cache_entries = {
-        "BUILD_TESTING": False,
-    },
+    cache_entries = cache_entries(
+        build_testing = False,
+    ),
     env = {
-        "FC": "$${EXT_BUILD_ROOT}/$(execpaths //tools/llvm:flang_runtime)/bin/flang",
+        "FC": root_path(
+            "$(execpaths //tools/llvm:flang_runtime)/bin/flang",
+            double_escape = True,
+        ),
     },
     out_headers_only = True,
     out_static_libs = [],
