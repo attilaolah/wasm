@@ -1,24 +1,24 @@
 load("//lib:lib.bzl", "package_lib")
 load("//lib:defs.bzl", "cache_entries")
-load("//toolchains:utils.bzl", "no_error")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
 load(":package.bzl", "NAME", "STATIC_LIBS")
 
 package(default_visibility = ["//:__subpackages__"])
 
-package_lib()
+package_lib(
+    version_regex = r'href="/AcademySoftwareFoundation/openexr/archive/refs/tags/v([^<]+)\.tar\.gz"',
+    version_url = "https://github.com/AcademySoftwareFoundation/openexr/releases",
+)
 
 cmake_lib(
     name = NAME,
     cache_entries = cache_entries(
-        cmake_c_flags = no_error([
-            # keep sorted
-            "unused-but-set-variable",
-        ]),
-        cmake_install_default_libdir = "lib",
-        enable_shared = False,
-        enable_static = True,
-        with_java = False,
+        build_shared_libs = False,
+        openexr_build_tools = False,
     ),
     out_static_libs = STATIC_LIBS,
+    deps = [
+        "//lib/imath",
+        "//lib/z",
+    ],
 )

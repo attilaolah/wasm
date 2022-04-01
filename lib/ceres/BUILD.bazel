@@ -34,7 +34,7 @@ CACHE_ENTRIES = {
     # Dependencies:
     "CXSPARSE_INCLUDE_DIR": "${EXT_BUILD_DEPS}/cxsparse_lib/include",
     "CXSPARSE_LIBRARY": "${EXT_BUILD_DEPS}/cxsparse_lib/lib/libcxsparse.a",
-    "EIGEN_INCLUDE_DIR": "${EXT_BUILD_DEPS}/eigen_lib/include/eigen3",
+    "CMAKE_PREFIX_PATH": "${EXT_BUILD_DEPS}/eigen_lib",
     "GLOG_INCLUDE_DIR": "${EXT_BUILD_DEPS}/glog_lib/include",
     "GLOG_LIBRARY": "${EXT_BUILD_DEPS}/glog_lib/lib/libglog.a",
 

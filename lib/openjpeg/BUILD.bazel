@@ -1,24 +1,24 @@
-load("//lib:defs.bzl", "link_opt", "static_lib")
+load("//lib:defs.bzl", "cache_entries")
 load("//lib:lib.bzl", "package_lib")
 load("//toolchains:utils.bzl", "no_error")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
-load(":package.bzl", "lname")
+load(":package.bzl", "NAME", "STATIC_LIBS")
 
 package(default_visibility = ["//:__subpackages__"])
 
 package_lib()
 
 cmake_lib(
-    name = "openjpeg",
-    cache_entries = {
-        "BUILD_CODEC": False,
-        "BUILD_SHARED_LIBS": False,
+    name = NAME,
+    cache_entries = cache_entries(
+        build_codec = False,
+        build_shared_libs = False,
         # Needed for CheckTypeSize checks to pass.
-        "CMAKE_C_FLAGS": no_error([
+        cmake_c_flags = no_error([
             # keep sorted
             "implicit-const-int-float-conversion",
             "unused-function",
         ]),
-    },
-    out_static_libs = [static_lib(lname())],
+    ),
+    out_static_libs = STATIC_LIBS,
 )

@@ -7,7 +7,7 @@ VERSION = "3.4.2"
 
 URLS = [
     "http://download.osgeo.org/{name}/{version}/{name}-{version}.tar.gz",
-    "https://github.com/OSGeo/{name}/releases/download/v{version}/{name}-{version}.tar.gz"
+    "https://github.com/OSGeo/{name}/releases/download/v{version}/{name}-{version}.tar.gz",
 ]
 
 SHA256 = "7edef6de47c67da806b74eb8d3a20550933392a295c707682ea21b72123e34ce"

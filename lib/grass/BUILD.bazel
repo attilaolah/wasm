@@ -1,4 +1,4 @@
-load("//lib:defs.bzl", "dep_dir", "include_dir", "library_dir", "major_minor", "static_lib")
+load("//lib:defs.bzl", "dep_path", "include_dir", "library_dir", "major_minor", "static_lib")
 load("//lib:lib.bzl", "package_lib")
 load("//toolchains:utils.bzl", "no_error", "path")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
@@ -66,7 +66,7 @@ FLAGS = [
     blas = "cblas",
     bzlib = "bz2",
 ) + [
-    '--with-proj-share="{}/share/proj"'.format(dep_dir("proj")),
+    '--with-proj-share="{}"'.format(dep_path("proj", "/share/proj")),
 ] + without_features(
     "cairo",
     "freetype",

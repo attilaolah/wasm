@@ -3,11 +3,11 @@
 load("//lib:http_archive.bzl", "http_archive")
 
 NAME = "ceres"
-VERSION = "1.14.0"
+VERSION = "2.1.0"
 
 URL = "https://github.com/{name}-solver/{name}-solver/archive/{version}.tar.gz"
 
-SHA256 = "1296330fcf1e09e6c2f926301916f64d4a4c5c0ff12d460a9bc5d4c48411518f"
+SHA256 = "ccbd716a93f65d4cb017e3090ae78809e02f5426dce16d0ee2b4f8a4ba2411a8"
 
 def download():
     http_archive(

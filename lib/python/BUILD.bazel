@@ -1,4 +1,4 @@
-load("//lib:defs.bzl", "dep_dir", "static_lib")
+load("//lib:defs.bzl", "dep_path", "static_lib")
 load("//lib:lib.bzl", "package_lib")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
 load(":package.bzl", "lname")
@@ -16,7 +16,7 @@ package_lib(
 CONFIGURE_OPTIONS = [
     # keep sorted
     "--disable-shared",
-    '--with-openssl="{}"'.format(dep_dir("openssl")),
+    '--with-openssl="{}"'.format(dep_path("openssl")),
     "--with-system-libmpdec",
 ]
 
