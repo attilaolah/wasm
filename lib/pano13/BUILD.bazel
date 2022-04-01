@@ -16,8 +16,8 @@ cmake_lib(
         deps = {
             "jpeg": JPEGTURBO_SPEC,
             "png": {},
-            "z": {},
             "tiff": {},
+            "z": {},
         },
     ),
     deps = [

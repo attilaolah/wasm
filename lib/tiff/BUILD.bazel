@@ -35,10 +35,10 @@ CACHE_ENTRIES = cache_entries(
     ]),
     deps = {
         "jpeg": JPEGTURBO_SPEC,
-        "zstd": {},
-        "webp": {},
         "lzma": {},
+        "webp": {},
         "z": {},
+        "zstd": {},
     },
 )
 

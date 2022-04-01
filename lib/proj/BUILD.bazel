@@ -47,8 +47,8 @@ CACHE_ENTRIES = cache_entries(
     openssl_include_dir = include_dir("openssl"),
     deps = {
         "curl": {},
-        "tiff": {},
         "sqlite3": SQLITE_SPEC,
+        "tiff": {},
     },
 )
 

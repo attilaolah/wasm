@@ -26,13 +26,13 @@ EM_ENV = {
     "NODE_PATH": "$${EXT_BUILD_DEPS}/bin",
 
     # Python from //lib/python:
+    "PYTHON": "$${PYTHONHOME}/bin/python3",
+
+    # Python from //lib/python:
     "PYTHONHOME": "$${EXT_BUILD_ROOT}/$(execpaths //lib/python:runtime)",
 
     # Required by the Emscripten config:
     "ROOT_DIR": "$${EXT_BUILD_ROOT}",
-
-    # Python from //lib/python:
-    "PYTHON": "$${PYTHONHOME}/bin/python3",
 }
 
 EM_TOOLS = [

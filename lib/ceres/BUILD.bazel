@@ -37,8 +37,8 @@ CACHE_ENTRIES = cache_entries(
         for lib in SS_LIBS
     ]),
     deps = {
-        "glog": {},
         "cxsparse": {},
+        "glog": {},
     },
 )
 

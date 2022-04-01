@@ -71,9 +71,9 @@ def major_minor(version, join = ".", delimiter = "."):
 
 def dep_spec(name, include_dir = None, library = None, exclude = ()):
     spec = {
-        "name": name,
         "include_dir": include_dir or _include_dir(name),
         "library": library or _library_path(name),
+        "name": name,
     }
     for item in exclude:
         spec.pop(item)

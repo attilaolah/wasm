@@ -24,10 +24,10 @@ cmake_lib(
         webp_build_webpinfo = False,
         webp_build_webpmux = False,
         deps = {
-            "z": {},
-            "png": {},
             "gif": {},
             "jpeg": JPEGTURBO_SPEC,
+            "png": {},
+            "z": {},
         },
     ),
     # NOTE: //lib/tiff would be a dependency for some tools,
