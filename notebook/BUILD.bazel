@@ -1,0 +1,17 @@
+load("@npm//@bazel/typescript:index.bzl", "ts_project")
+
+package(default_visibility = ["//visibility:public"])
+
+exports_files(["index.html"])
+
+# Main entry point.
+# Loads the rest of the components to bootstrap the runtime.
+ts_project(
+    name = "notebook",
+    srcs = ["notebook.ts"],
+    tsconfig = {
+        "compilerOptions": {
+            "target": "es2018",
+        },
+    },
+)

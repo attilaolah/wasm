@@ -1,0 +1,61 @@
+load("@npm//@bazel/typescript:index.bzl", "ts_project")
+load("//tools:wasm_library.bzl", "wasm_library")
+
+package(default_visibility = ["//notebook:__subpackages__"])
+
+wasm_library(
+    name = "bootstrap",
+    srcs = [
+        ":bootstrap_ts",
+    ],
+    exported_functions = [
+        # keep sorted
+        "cmark_markdown_to_html",
+        "cmark_version_string",
+        "free",
+        "malloc",
+    ],
+    deps = ["//lib/cmark"],
+)
+
+filegroup(
+    name = "bootstrap_js",
+    srcs = [":bootstrap"],
+    output_group = "js",
+)
+
+filegroup(
+    name = "bootstrap_wasm",
+    srcs = [":bootstrap"],
+    output_group = "wasm",
+)
+
+genrule(
+    name = "bootstrap_trim_js",
+    srcs = [":bootstrap_js"],
+    outs = ["bootstrap_trim_js.js"],
+    cmd = " ".join([
+        "sed",
+        #r'":.*\s*=\s*require(.@types/emscripten.);:d"',
+        r'"s:^.*DELETEME::g"',
+        "<$(location bootstrap_js)",
+        ">$@",
+    ]),
+)
+
+ts_project(
+    name = "bootstrap_ts",
+    srcs = ["main.ts"] + [
+        "cmark_wrap.ts",
+        "md_to_html.ts",
+    ],
+    tsconfig = {
+        "compilerOptions": {
+            "target": "es2018",
+        },
+    },
+    deps = [
+        "@npm//@types/emscripten",
+        "@npm//@types/node",
+    ],
+)

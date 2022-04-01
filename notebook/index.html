@@ -1,0 +1,65 @@
+<meta charset="utf-8">
+<script src="notebook.js" data-loading="text"></script>
+<body>
+# WebAssembly Notebooks
+
+WebAssembly notebooks are a simple yet powerful tool to demonstrate code
+snippets on the web. In fact, this page is such a notebook! Look at the source
+code (`Ctrl+U` in Chrome) to learn more.
+
+Currently notebooks support a small set of features:
+
+- [JavaScript code blocks](#code-blocks)
+- [HTML code blocks](#html-code-blocks)
+- [CSS code blocks](#css-code-blocks)
+
+## Code Blocks
+
+Code blocks are assumed to be JavaScript, unless they have a more specific
+language tag. JavaScript code blocks can be executed; other code blocks are
+currently only that: code blocks.
+
+Here is an example:
+
+```
+const answer = 42;
+console.log(answer);
+```
+
+## HTML Code Blocks
+
+HTML can be included just like any other code snipped, using the `html`
+language tag. Note, however, that the browser will execute the HTML before it
+gets added to the body! Once Markdown parsing happens, the HTML will be removed
+and replaced by code blocks.
+
+When an HTML "code block" is executed, its contents get appended right below
+the code block. Like in this example:
+
+
+```html
+<span>This is a some text…</span>
+<script>
+  // But beware of inline script tags!
+  console.log("This will be eagerly executed by the browser!");
+</script>
+```
+
+## CSS Code Blocks
+
+CSS code blocks are a bit special, in that they have no output, but instead
+modify the stylesheet of the entire page. They can of course target any HTML
+content added in other blocks too:
+
+```html
+<span class="example-red">This text should turn red.</span>
+```
+
+```css
+.example-red {
+  color: red;
+}
+```
+
+More types of code blocks, as well as some utility functions will be added
+soon, so stay tuned!

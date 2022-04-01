@@ -62,6 +62,8 @@ def _wasm_library_impl(ctx):
     settings.setdefault("MODULARIZE", "1")
     settings.setdefault("WASM_BIGINT", "1")
     settings.setdefault("INCOMING_MODULE_JS_API", "[onRuntimeInitialized]")
+
+    # TODO: Allow unexported libraries!
     settings.setdefault("EXPORT_NAME", short_name.upper())
 
     # Override settings:
