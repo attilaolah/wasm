@@ -71,9 +71,12 @@ def dep_spec(name, include_dir = None, library = None, exclude = ()):
         spec.pop(item)
     return spec
 
-def cache_entries(upcase = True, deps = None, **kwargs):
+def cache_entries(*originals, upcase = True, deps = None, **kwargs):
     """Convenience macro for constructing the cache_entries dict."""
-    result = dict(kwargs.items())
+    result = {}
+    for original in originals + (kwargs,):
+        result.update(original)
+
     remap = result.pop("remap", {})
 
     for dep, spec in (deps or {}).items():

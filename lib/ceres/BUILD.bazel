@@ -1,11 +1,10 @@
 load("//lib:lib.bzl", "package_lib")
+load("//lib:defs.bzl", "cache_entries", "dep_path", "include_dir", "library_dir")
 load("//toolchains/cmake:cmake.bzl", "cmake_lib")
 
 package(default_visibility = ["//:__subpackages__"])
 
 package_lib()
-
-# NOTE: Version 2.0.0rc1 fails to detect Eigen3 due to some buggy CMake magic.
 
 SS_LIBS = [
     # keep sorted
@@ -19,48 +18,41 @@ SS_LIBS = [
     "spqr",
 ]
 
-CACHE_ENTRIES = {
-    "BUILD_EXAMPLES": False,
-    "BUILD_SHARED_LIBS": False,
+CACHE_ENTRIES = cache_entries(
+    build_examples = False,
+    build_shared_libs = False,
 
     # Needed to make #include <SuiteSparse_config.h> work.
-    "CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES": "${EXT_BUILD_DEPS}/config_lib/include",
-
-    # Add -pthread and -lsupc++ to try_compile() commands.
-    # These are only needed when compiling with Clang (GCC works fine without these.)
-    "CMAKE_REQUIRED_FLAGS": "-pthread",
-    "CMAKE_REQUIRED_LIBRARIES": "-lsupc++",
-
-    # Dependencies:
-    "CXSPARSE_INCLUDE_DIR": "${EXT_BUILD_DEPS}/cxsparse_lib/include",
-    "CXSPARSE_LIBRARY": "${EXT_BUILD_DEPS}/cxsparse_lib/lib/libcxsparse.a",
-    "CMAKE_PREFIX_PATH": "${EXT_BUILD_DEPS}/eigen_lib",
-    "GLOG_INCLUDE_DIR": "${EXT_BUILD_DEPS}/glog_lib/include",
-    "GLOG_LIBRARY": "${EXT_BUILD_DEPS}/glog_lib/lib/libglog.a",
+    cmake_cxx_standard_include_directories = include_dir("config"),
+    cmake_prefix_path = dep_path("eigen"),
 
     # SuiteSparse hints.
     # We must list each component since we put them in separate directories.
-    "SUITESPARSE_INCLUDE_DIR_HINTS": ";".join([
-        "${{EXT_BUILD_DEPS}}/{}_lib/include".format(lib)
+    suitesparse_include_dir_hints = ";".join([
+        include_dir(lib)
         for lib in SS_LIBS
     ]),
-    "SUITESPARSE_LIBRARY_DIR_HINTS": ";".join([
-        "${{EXT_BUILD_DEPS}}/{}_lib/lib".format(lib)
+    suitesparse_library_dir_hints = ";".join([
+        library_dir(lib)
         for lib in SS_LIBS
     ]),
-}
-
-CACHE_ENTRIES_WASM = {key: val for key, val in CACHE_ENTRIES.items() if key not in [
-    # keep sorted
-    "CMAKE_REQUIRED_FLAGS",
-    "CMAKE_REQUIRED_LIBRARIES",
-]}
+    deps = {
+        "glog": {},
+        "cxsparse": {},
+    },
+)
 
 cmake_lib(
     name = "ceres",
     cache_entries = {
-        "//config:wasm": CACHE_ENTRIES_WASM,
-        "//conditions:default": CACHE_ENTRIES,
+        "//config:wasm": CACHE_ENTRIES,
+        "//conditions:default": cache_entries(
+            CACHE_ENTRIES,
+            # Add -pthread and -lsupc++ to try_compile() commands.
+            # These are only needed when compiling with Clang (GCC works fine without these.)
+            cmake_required_flags = "-pthread",
+            cmake_required_libraries = "-lsupc++",
+        ),
     },
     deps = [
         "//lib/eigen",
