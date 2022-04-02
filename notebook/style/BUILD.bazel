@@ -2,9 +2,25 @@ load("@io_bazel_rules_sass//:defs.bzl", "sass_binary")
 
 package(default_visibility = ["//visibility:public"])
 
-sass_binary(
+genrule(
     name = "style",
-    src = "main.sass",
+    srcs = [":style_tpl"],
+    outs = [
+        "main.css",
+        "main.css.map",
+    ],
+    # TODO: Implement better text substitution!
+    cmd = r"""
+for src in $(locations :style_tpl); do
+  sed < "$${src}"> "$${src/_tpl.css/.css}" \
+    's:url("../../assets/:url("/external/mdn_yari/client/src/assets/:g'
+done
+""",
+)
+
+sass_binary(
+    name = "style_tpl",
+    src = "main_tpl.sass",
     deps = [
         "@mdn_yari//:scss",
     ],
