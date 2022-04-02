@@ -12,8 +12,8 @@ package_lib(
 cmake_lib(
     name = NAME,
     cache_entries = cache_entries(
-        cmark_static = True,
         cmark_shared = False,
+        cmark_static = True,
         cmark_tests = False,
     ),
 )

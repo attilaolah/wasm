@@ -14,7 +14,7 @@ load("//tools/archive_symbols:archive_symbols.bzl", "archive_symbols")
 
 EM_ENV = {
     # NodeJS cross-compiling emulator:
-    "CROSSCOMPILING_EMULATOR": root_path("$(execpath @nodejs_linux_amd64//:node)", double_escape = True),
+    "CROSSCOMPILING_EMULATOR": root_path("$(execpath @nodejs_host//:node)", double_escape = True),
 
     # Required by the Emscripten config:
     "EMSCRIPTEN": root_path("external/emscripten_bin_linux/emscripten", double_escape = True),
@@ -45,7 +45,7 @@ EM_TOOLS = [
     "@emscripten_bin_linux//:emscripten/emconfigure",
     "@emscripten_bin_linux//:emscripten/emmake",
     "@emsdk//emscripten_toolchain:emscripten_config",
-    "@nodejs_linux_amd64//:node",
+    "@nodejs_host//:node",
     "@npm//acorn",
 ]
 
