@@ -47,6 +47,7 @@ ts_project(
     srcs = ["main.ts"] + [
         "cmark_wrap.ts",
         "md_to_html.ts",
+        "toc.ts",
     ],
     tsconfig = {
         "compilerOptions": {
