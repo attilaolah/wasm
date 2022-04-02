@@ -13,5 +13,5 @@ def download():
         urls = ["https://github.com/mdn/yari/archive/{version}.zip"],
         sha256 = SHA256,
         strip_prefix = "yari-{version}",
-        build_file = "//notebook/style/themes/mdn:yari.bazel",
+        build_file = "//notebook/style:themes/mdn_yari.bazel",
     )

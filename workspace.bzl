@@ -1,7 +1,7 @@
 """Repository rules for downloading all dependencies."""
 
 load(":http_archive.bzl", "http_archive")
-load("//notebook/style/themes/mdn:yari.bzl", download_mdn_yari = "download")
+load("//notebook/style:themes/mdn_yari.bzl", download_mdn_yari = "download")
 
 def workspace_dependencies():
     """Set up dependencies of THIS workspace."""
