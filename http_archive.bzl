@@ -64,10 +64,12 @@ def http_archive(
     if strip_prefix != None:
         strip_prefix = strip_prefix.format(**args)
 
+    if build_file_content != None and "build_file" not in kwargs:
+        kwargs["build_file_content"] = build_file_content
+
     _http_archive(
         name = name.lower().replace("-", "_"),
         urls = [url.format(**args) for url in urls],
         strip_prefix = strip_prefix,
-        build_file_content = build_file_content,
         **kwargs
     )

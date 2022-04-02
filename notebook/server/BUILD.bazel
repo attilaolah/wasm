@@ -1,41 +1,15 @@
-load("@bazel_skylib//rules:copy_file.bzl", "copy_file")
 load("@npm//http-server:index.bzl", "http_server")
 
 http_server(
     name = "server",
-    args = ["notebook/server"],
+    args = ["notebook"],
     data = [
-        ":bootstrap_js",
-        ":bootstrap_wasm",
-        ":index_html",
-        ":notebook_js",
+        "//notebook",
+        "//notebook:index.html",
+        "//notebook:layout.html",
+        "//notebook/bootstrap:bootstrap_trim_js",
+        "//notebook/bootstrap:bootstrap_wasm",
+        "//notebook/style",
+        "@mdn_yari//:client/src/assets/fonts/Inter.var.woff2",
     ],
-)
-
-copy_file(
-    name = "index_html",
-    src = "//notebook:index.html",
-    out = "index.html",
-    allow_symlink = True,
-)
-
-copy_file(
-    name = "notebook_js",
-    src = "//notebook",
-    out = "notebook.js",
-    allow_symlink = True,
-)
-
-copy_file(
-    name = "bootstrap_js",
-    src = "//notebook/bootstrap:bootstrap_trim_js",
-    out = "bootstrap.js",
-    allow_symlink = True,
-)
-
-copy_file(
-    name = "bootstrap_wasm",
-    src = "//notebook/bootstrap:bootstrap_wasm",
-    out = "bootstrap.wasm",
-    allow_symlink = True,
 )

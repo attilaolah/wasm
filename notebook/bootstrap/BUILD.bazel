@@ -36,7 +36,6 @@ genrule(
     outs = ["bootstrap_trim_js.js"],
     cmd = " ".join([
         "sed",
-        #r'":.*\s*=\s*require(.@types/emscripten.);:d"',
         r'"s:^.*DELETEME::g"',
         "<$(location bootstrap_js)",
         ">$@",

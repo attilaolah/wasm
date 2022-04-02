@@ -1,4 +1,4 @@
-function mdToHTML(root: HTMLElement) : void {
+function mdToHTML(root: HTMLElement, layoutHTML: string) : void {
   const srcHTML: string = root.innerHTML;
   const size: number = lengthBytesUTF8(srcHTML);
   const markdown: number = _malloc(size);
@@ -10,23 +10,23 @@ function mdToHTML(root: HTMLElement) : void {
   const dstHTML: string = UTF8ToString(html);
   _free(html);
 
-  const main: HTMLElement = document.createElement("main");
-  main.setAttribute("role", "main");
-  main.className = "main-content";
-  main.id = "content";
-  main.innerHTML = dstHTML;
+  const tpl: HTMLTemplateElement = document.createElement("template");
+  tpl.innerHTML = layoutHTML;
+  tpl.content.querySelector("#content").innerHTML = dstHTML;
 
   // If the document has no title, set it to the first heading.
   if (!document.title) {
-    const h1: HTMLHeadingElement = main.querySelector("h1");
+    const h1: HTMLHeadingElement = tpl.content.querySelector("h1");
     if (h1) {
       document.title = h1.innerText;
     }
   }
 
-  // See https://stackoverflow.com/a/3955238.
+  // Clear the root node.
+  // See https://stackoverflow.com/a/3955238 for why the first/last child combo.
   while (root.firstChild) {
     root.removeChild(root.lastChild);
   }
-  root.appendChild(main);
+
+  root.appendChild(tpl.content);
 }

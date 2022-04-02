@@ -2,7 +2,10 @@ load("@npm//@bazel/typescript:index.bzl", "ts_project")
 
 package(default_visibility = ["//visibility:public"])
 
-exports_files(["index.html"])
+exports_files([
+    "index.html",
+    "layout.html",
+])
 
 # Main entry point.
 # Loads the rest of the components to bootstrap the runtime.

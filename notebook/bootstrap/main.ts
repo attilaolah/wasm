@@ -1,11 +1,10 @@
 const { Module, _malloc, _free } = require("@types/emscripten"); // DELETEME
 
-function bootstrap(root: HTMLElement) : void {
-  mdToHTML(root);
+function bootstrap(root: HTMLElement, layoutHTML: string) : void {
+  mdToHTML(root, layoutHTML);
 }
 
 Module["onRuntimeInitialized"] = () : void => {
   Module["bootstrap"] = bootstrap;
   cmarkWrap();
 };
-

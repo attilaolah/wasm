@@ -1,6 +1,7 @@
 """Repository rules for downloading all dependencies."""
 
 load(":http_archive.bzl", "http_archive")
+load("//notebook/style/themes/mdn:yari.bzl", download_mdn_yari = "download")
 
 def workspace_dependencies():
     """Set up dependencies of THIS workspace."""
@@ -82,3 +83,14 @@ def workspace_dependencies():
         strip_prefix = "buildtools-{version}",
         build_file_content = None,
     )
+
+    http_archive(
+        name = "io_bazel_rules_sass",
+        version = "1.49.11",
+        urls = ["https://github.com/bazelbuild/rules_sass/archive/refs/tags/{version}.tar.gz"],
+        strip_prefix = "rules_sass-{version}",
+        sha256 = "fc6952f55ae9fbce6be058cbecbf5f0bf60fb715ca06994921f8127df1cf52be",
+        build_file_content = None,
+    )
+
+    download_mdn_yari()
