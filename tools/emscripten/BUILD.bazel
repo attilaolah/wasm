@@ -9,8 +9,10 @@ filegroup(
 )
 
 ts_project(
-    name = "types",
-    srcs = ["types.d.ts"],
+    name = "pre_js",
+    srcs = ["pre_js.d.ts"],
+    declaration = True,
+    tsconfig = {},
     deps = [
         "@npm//@types/emscripten",
         "@npm//@types/node",

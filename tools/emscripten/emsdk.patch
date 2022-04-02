@@ -1,5 +1,36 @@
+diff --git emscripten_toolchain/BUILD.bazel emscripten_toolchain/BUILD.bazel
+index eb36959..2704339 100644
+--- emscripten_toolchain/BUILD.bazel
++++ emscripten_toolchain/BUILD.bazel
+@@ -14,7 +14,7 @@ filegroup(
+         "env.bat",
+         "@emsdk//:binaries",
+         "@emsdk//:node_modules",
+-        "@nodejs//:node_files",
++        "@nodejs_host//:node_files",
+     ],
+ )
+ 
+@@ -31,7 +31,7 @@ filegroup(
+         "link_wrapper.py",
+         ":common-script-includes",
+         "@emsdk//:binaries",
+-        "@nodejs//:node_files",
++        "@nodejs_host//:node_files",
+     ],
+ )
+ 
+@@ -41,7 +41,7 @@ filegroup(
+         ":compile-emscripten",
+         ":link-emscripten",
+         "@emsdk//:binaries",
+-        "@nodejs//:node_files",
++        "@nodejs_host//:node_files",
+     ],
+ )
+ 
 diff --git emscripten_toolchain/emar.sh emscripten_toolchain/emar.sh
-index e4279f1..7e73539 100755
+index b4ead6e..7e73539 100755
 --- emscripten_toolchain/emar.sh
 +++ emscripten_toolchain/emar.sh
 @@ -1,5 +1,3 @@
@@ -10,7 +41,7 @@ index e4279f1..7e73539 100755
 -exec python3 $EMSCRIPTEN/emar.py "$@"
 +exec "${PYTHON:-python3}" "${EMSCRIPTEN}/emar.py" "$@"
 diff --git emscripten_toolchain/emcc.sh emscripten_toolchain/emcc.sh
-index 7f3699b..95b3200 100755
+index 5fdaf9c..95b3200 100755
 --- emscripten_toolchain/emcc.sh
 +++ emscripten_toolchain/emcc.sh
 @@ -1,5 +1,3 @@
@@ -21,7 +52,7 @@ index 7f3699b..95b3200 100755
 -exec python3 $EMSCRIPTEN/emcc.py "$@"
 +exec "${PYTHON:-python3}" "${EMSCRIPTEN}/emcc.py" "$@"
 diff --git emscripten_toolchain/emcc_link.sh emscripten_toolchain/emcc_link.sh
-index 24d806d..6163b9b 100755
+index 44f3235..9b4535d 100755
 --- emscripten_toolchain/emcc_link.sh
 +++ emscripten_toolchain/emcc_link.sh
 @@ -1,5 +1,3 @@
@@ -32,10 +63,10 @@ index 24d806d..6163b9b 100755
 -exec python3 $(dirname $0)/link_wrapper.py "$@"
 +exec "${PYTHON:-python3}" "${EXT_BUILD_ROOT:-.}/external/emsdk/emscripten_toolchain/link_wrapper.py" "$@"
 diff --git emscripten_toolchain/link_wrapper.py emscripten_toolchain/link_wrapper.py
-index 1e26bde..aa1ca90 100644
+index d6b715d..ea058b8 100644
 --- emscripten_toolchain/link_wrapper.py
 +++ emscripten_toolchain/link_wrapper.py
-@@ -21,22 +21,11 @@
+@@ -21,22 +21,11 @@ import os
  import subprocess
  import sys
  
@@ -63,4 +94,3 @@ index 1e26bde..aa1ca90 100644
  
  emcc_py = os.path.join(os.environ['EMSCRIPTEN'], 'emcc.py')
  rtn = subprocess.call([sys.executable, emcc_py] + sys.argv[1:])
-

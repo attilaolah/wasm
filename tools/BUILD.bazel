@@ -6,7 +6,7 @@ exports_files(["version_update.sh"])
 
 filegroup(
     name = "nodejs",
-    srcs = ["@nodejs_linux_amd64//:node_bin"],
+    srcs = ["@nodejs_host//:node_bin"],
 )
 
 filegroup(
