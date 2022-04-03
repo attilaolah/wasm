@@ -1,4 +1,6 @@
+load("@io_bazel_rules_closure//closure:defs.bzl", "closure_js_binary", "closure_js_library")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
+load(":js.bzl", "JS_TARGET", "TS_TARGET", "iife")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -7,17 +9,33 @@ exports_files([
     "layout.html",
 ])
 
-# Main entry point.
-# Loads the rest of the components to bootstrap the runtime.
-ts_project(
+closure_js_binary(
     name = "notebook",
-    srcs = ["notebook.ts"],
+    language = JS_TARGET,
+    deps = [":notebook_lib"],
+)
+
+closure_js_library(
+    name = "notebook_lib",
+    srcs = [":notebook_iife"],
+    #no_closure_library = True,
+    suppress = [
+        # Closure Compiler currently does not consume TypeScript .d.ts inputs.
+        # Therefore it has no clue about the types, so we disable some optimisations.
+        "JSC_UNKNOWN_EXPR_TYPE",
+    ],
+)
+
+iife(
+    name = "notebook_iife",
+    srcs = [":notebook_ts"],
+)
+
+ts_project(
+    name = "notebook_ts",
+    srcs = ["main.ts"],
+    tsconfig = {"compilerOptions": {"target": TS_TARGET}},
     deps = [
         "@npm//@types/emscripten",
     ],
-    tsconfig = {
-        "compilerOptions": {
-            "target": "es2022",
-        },
-    },
 )

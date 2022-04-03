@@ -11,14 +11,7 @@ The entire page is written in Markdown, with a single script tag and a
 `&lt;body&gt;` on the first line.
 
 The runtime supports a few types of code blocks out of the bock, like
-[JavaScript](#code-blocks), [HTML](#html-blocks) and [CSS](#css-blocks). Here
-is an example:
-
-```js
-`I am a JavaScript code block, executed on ${new Date().toDateString()}!`
-```
-
-TODO: Add a list of supported code blocks.
+[JavaScript](#code-blocks), [HTML](#html-blocks) and [CSS](#css-blocks).
 
 ## Code Blocks
 
@@ -28,9 +21,18 @@ currently only that: code blocks.
 
 Here is an example:
 
+```js
+new Date();
 ```
-const answer = 42;
-console.log(answer);
+
+The entire block is evaluated as one expression, and the result is printed out
+below the block when executing. To print more than one value, use the
+`console.log()` function as usual:
+
+```js
+for (let i = 0; i < 3; i++) {
+  console.log(i);
+}
 ```
 
 ## HTML Blocks

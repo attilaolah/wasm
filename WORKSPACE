@@ -36,6 +36,7 @@ npm_install(
 
 load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
 load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
+load("@io_bazel_rules_closure//closure:repositories.bzl", "rules_closure_dependencies", "rules_closure_toolchains")
 load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
 load("@io_bazel_rules_sass//:defs.bzl", "sass_repositories")
 load("//:deps.bzl", "external_dependencies", "go_dependencies")
@@ -64,3 +65,7 @@ load("@emsdk//:emscripten_deps.bzl", emsdk_emscripten_deps = "emscripten_deps")
 emsdk_emscripten_deps()
 
 sass_repositories()
+
+rules_closure_dependencies()
+
+rules_closure_toolchains()

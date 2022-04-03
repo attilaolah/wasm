@@ -93,4 +93,13 @@ def workspace_dependencies():
         build_file_content = None,
     )
 
+    http_archive(
+        name = "io_bazel_rules_closure",
+        version = "1d8c08055488d15c4eaa7e70f9bdfba1b2c83b5b",  # master @ 2022-03-25T23:36:15Z
+        sha256 = "6032db43d2ce09570a0de94b3a2b5e24654a9232c45e0d418b5314867adf4173",
+        strip_prefix = "rules_closure-{version}",
+        #urls = ["https://github.com/bazelbuild/rules_closure/archive/refs/tags/{version}.tar.gz"],
+        urls = ["https://github.com/bazelbuild/rules_closure/archive/{version}.zip"],
+    )
+
     download_mdn_yari()

@@ -1,5 +1,3 @@
-// TODO: AUTO-wrap this into an IIFE!
-
 // These constants will be replaced when packaging.
 const BOOTSTRAP_JS = "bootstrap/bootstrap_trim_js.js";
 const LAYOUT_HTML = "layout.html";
@@ -15,12 +13,16 @@ const bootstrapURL = [
 ].join("");
 
 class Notebook {
+  /** @nocollapse */
   config: NotebookConfig;
   root: HTMLElement;
 
   constructor(config: NotebookConfig) {
-    this.config = config;
-    this.root = config.root
+    // Export properties.
+    /** @suppress {checkTypes} */
+    this["config"] = config;
+    /** @suppress {checkTypes} */
+    this["root"] = config.root
       ? ownerDocument.querySelector(config.root)
       : ownerDocument.body;
   }
@@ -28,7 +30,7 @@ class Notebook {
 
 class NotebookConfig {
   root: string;
-  autoRun: Array<string> | boolean;
+  autorun: Array<string> | boolean;
 
   constructor(doc: HTMLDocument) {
     let obj: any = {};
@@ -38,8 +40,15 @@ class NotebookConfig {
       obj = JSON.parse(config);
     }
 
-    this.root = obj.hasOwnProperty("root") ? obj.root : "body";
-    this.autoRun = obj.hasOwnProperty("autorun") ? obj.autorun : true;
+    // Export properties.
+    /** @suppress {checkTypes} */
+    this["root"] = obj.hasOwnProperty("root")
+      ? obj["root"]
+      : "body";
+    /** @suppress {checkTypes} */
+    this["autorun"] = obj.hasOwnProperty("autorun")
+      ? obj["autorun"]
+      : true;
   }
 };
 
