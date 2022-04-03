@@ -23,8 +23,6 @@ closure_js_library(
         # Closure Compiler currently does not consume TypeScript .d.ts inputs.
         # Therefore it has no clue about the types, so we disable some optimisations.
         "JSC_UNKNOWN_EXPR_TYPE",
-        # We use dynamic module loading.
-        "JSC_JS_MODULE_LOAD_WARNING",
     ],
 )
 
@@ -42,6 +40,7 @@ ts_project(
     srcs = ["main.ts"],
     tsconfig = {"compilerOptions": {
         "target": TS_TARGET,
+        "esModuleInterop": True,
         "module": "commonjs",
     }},
     deps = ["@npm//@types/emscripten"],

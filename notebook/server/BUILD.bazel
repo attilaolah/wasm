@@ -8,9 +8,9 @@ http_server(
         "//notebook:index.html",
         "//notebook:layout.html",
         "//notebook/runtime",
-        "//notebook/runtime:runtime_stripped_js",
+        "//notebook/runtime:runtime_wasm_js",
         "//notebook/runtime:runtime_wasm_binary",
-        "//notebook/style",
+        # "//notebook/style", # TODO!
         "@mdn_yari//:client/src/assets/fonts/Inter.var.woff2",
     ],
 )

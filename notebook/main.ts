@@ -1,5 +1,5 @@
 // These constants will be replaced when packaging.
-const RUNTIME_JS = "./runtime/runtime_stripped_js.js";
+const RUNTIME_JS = "./runtime/runtime.js";
 const LAYOUT_HTML = "layout.html";
 const MAIN_CSS = "style/main.css";
 

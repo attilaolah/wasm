@@ -2,6 +2,8 @@
 
 load(":http_archive.bzl", "http_archive")
 load("//notebook/style:themes/mdn_yari.bzl", download_mdn_yari = "download")
+load("//notebook:js.bzl", "JS_TARGET")
+load("//toolchains:utils.bzl", "patch_files")
 
 def workspace_dependencies():
     """Set up dependencies of THIS workspace."""
@@ -98,8 +100,10 @@ def workspace_dependencies():
         version = "1d8c08055488d15c4eaa7e70f9bdfba1b2c83b5b",  # master @ 2022-03-25T23:36:15Z
         sha256 = "6032db43d2ce09570a0de94b3a2b5e24654a9232c45e0d418b5314867adf4173",
         strip_prefix = "rules_closure-{version}",
-        #urls = ["https://github.com/bazelbuild/rules_closure/archive/refs/tags/{version}.tar.gz"],
         urls = ["https://github.com/bazelbuild/rules_closure/archive/{version}.zip"],
+        patch_cmds = patch_files({
+            "closure/private/defs.bzl": 's/JS_LANGUAGE_IN = "STABLE"/JS_LANGUAGE_IN = "{}"/'.format(JS_TARGET),
+        }),
     )
 
     download_mdn_yari()

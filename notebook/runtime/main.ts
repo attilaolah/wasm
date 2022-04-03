@@ -1,11 +1,19 @@
-const { Module, _malloc, _free } = require("@types/emscripten"); // DELETEME
-
 function main(notebook: { ["root"]: HTMLElement }, layoutHTML: string) : void {
   mdToHTML(notebook.root, layoutHTML);
   populateTOC(notebook.root);
 }
 
-Module["onRuntimeInitialized"] = () : void => {
-  Module["main"] = main;
-  cmarkWrap();
-};
+((
+  // TypeScript: globals.
+  Module: EmscriptenModule,
+) : void => {
+  Module["onRuntimeInitialized"] = () : void => {
+    cmarkWrap();
+
+    // Expose the "main" method via the module.
+    Module["main"] = main;
+  };
+})(
+  self["Module"] as EmscriptenModule,
+);
+

@@ -1,14 +1,14 @@
 function mdToHTML(root: HTMLElement, layoutHTML: string) : void {
   const srcHTML: string = root.innerHTML;
   const size: number = lengthBytesUTF8(srcHTML);
-  const markdown: number = _malloc(size);
+  const markdown: number = __malloc(size);
   stringToUTF8(srcHTML, markdown, size);
 
   const html: number = cmarkMarkdownToHTML(markdown, size - 1, CMARK_OPT_UNSAFE);
-  _free(markdown);
+  __free(markdown);
 
   const dstHTML: string = UTF8ToString(html);
-  _free(html);
+  __free(html);
 
   const tpl: HTMLTemplateElement = document.createElement("template");
   tpl.innerHTML = layoutHTML;
