@@ -1,15 +1,24 @@
 <meta charset="utf-8"><script src="notebook.js"></script><body>
-# WebAssembly Notebooks
+# Web Notebooks
 
-WebAssembly notebooks are a simple yet powerful tool to demonstrate code
-snippets on the web. In fact, this page is such a notebook! Look at the source
-code (`Ctrl+U` in Chrome) to learn more.
+> Self-hosted, executable and extensible web pages.
 
-Currently notebooks support a small set of features:
+Web notebooks are simple, self-hosted Markdown documents, with code blocks that
+are executed entirely in the browser -- no "backend" needed. In fact, this page
+is such a notebook! Look at the source code (`Ctrl+U` in Chrome) to learn more.
 
-- [JavaScript code blocks](#code-blocks)
-- [HTML code blocks](#html-code-blocks)
-- [CSS code blocks](#css-code-blocks)
+The entire page is written in Markdown, with a single script tag and a
+`&lt;body&gt;` on the first line.
+
+The runtime supports a few types of code blocks out of the bock, like
+[JavaScript](#code-blocks), [HTML](#html-blocks) and [CSS](#css-blocks). Here
+is an example:
+
+```js
+`I am a JavaScript code block, executed on ${new Date().toDateString()}!`
+```
+
+TODO: Add a list of supported code blocks.
 
 ## Code Blocks
 
@@ -24,7 +33,7 @@ const answer = 42;
 console.log(answer);
 ```
 
-## HTML Code Blocks
+## HTML Blocks
 
 HTML can be included just like any other code snipped, using the `html`
 language tag. Note, however, that the browser will execute the HTML before it
@@ -43,7 +52,7 @@ the code block. Like in this example:
 </script>
 ```
 
-## CSS Code Blocks
+## CSS Blocks
 
 CSS code blocks are a bit special, in that they have no output, but instead
 modify the stylesheet of the entire page. They can of course target any HTML
@@ -61,3 +70,24 @@ content added in other blocks too:
 
 More types of code blocks, as well as some utility functions will be added
 soon, so stay tuned!
+
+## Config Blocks
+
+
+The `meta` block or `notebook-config` block is used to configure the notebook
+itself. Only the first such blcok is parsed, and its contents must be a JSON
+object encoding a TypeScript `NotebookConfig` object. Here is an example that
+turns on auto-run for code blocks on this page:
+
+```meta
+{
+  "autorun": true
+}
+```
+
+The config is also available at runtime, on the `Notebook` object's `config`
+property:
+
+```js
+notebook.config
+```

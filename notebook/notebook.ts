@@ -1,73 +1,101 @@
 // TODO: AUTO-wrap this into an IIFE!
 
+// These constants will be replaced when packaging.
 const BOOTSTRAP_JS = "bootstrap/bootstrap_trim_js.js";
 const LAYOUT_HTML = "layout.html";
 const MAIN_CSS = "style/main.css";
 
-const script = document.currentScript as HTMLScriptElement;
-const head = script.ownerDocument.head;
-const settings = script.dataset;
+const currentScript = document.currentScript as HTMLScriptElement;
+const ownerDocument = currentScript.ownerDocument;
+const ownerHead = ownerDocument.head;
 
-if (!("bootstrap" in settings)) {
-  settings.bootstrap = [
-    script.src.match(/(.*\/)[^\/]*/)[1],
-    BOOTSTRAP_JS,
-  ].join("");
-}
+const bootstrapURL = [
+  currentScript.src.match(/(.*\/)[^\/]*/)[1],
+  BOOTSTRAP_JS,
+].join("");
 
-const style = document.createElement("style");
-style.className = "loading";
+class Notebook {
+  config: NotebookConfig;
+  root: HTMLElement;
 
-if (settings.loading === "text") {
-  // The loading style was explicitly set to text: pre-format text soure.
-  style.textContent = ":root { font-family: monospace; white-space: pre-wrap; }"
-} else if ((settings.loading === "blank") || !(script.async || script.defer)) {
-  // Blank loading style is also the default unless the script was loaded asynchronously.
-  style.textContent = ":root { display: none !important; }";
-}
-
-script.parentElement.appendChild(style);
-
-// Once the loading is done, remove the style:
-// TODO: Call this function after loading has completed!
-const cleanup = () : void => {
-  script.remove();
-  style.remove();
+  constructor(config: NotebookConfig) {
+    this.config = config;
+    this.root = config.root
+      ? ownerDocument.querySelector(config.root)
+      : ownerDocument.body;
+  }
 };
 
-// Which part of the page to process?
-// By default, we process the entire <body>, but this too can be configured.
-// This is evaluated lazily because the root element might not exist just yet.
-const root = () : HTMLElement => settings.root
-  ? document.querySelector(settings.root)
-  : document.body;
+class NotebookConfig {
+  root: string;
+  autoRun: Array<string> | boolean;
 
-const loadBootstrapJS = new Promise((resolve, reject) => {
-  const script: HTMLScriptElement = document.createElement("script");
+  constructor(doc: HTMLDocument) {
+    let obj: any = {};
+    const parts: Array<string> = doc.body.textContent.split(/```(?:notebook-config|meta)\b/, 2);
+    if (parts.length === 2) {
+      const config: string = parts[1].split(/```/, 2)[0];
+      obj = JSON.parse(config);
+    }
+
+    this.root = obj.hasOwnProperty("root") ? obj.root : "body";
+    this.autoRun = obj.hasOwnProperty("autorun") ? obj.autorun : true;
+  }
+};
+
+let notebook: Notebook;
+function main() : void {
+  notebook = new Notebook(new NotebookConfig(ownerDocument));
+  window["notebook"] = notebook;
+
+  // The bootstrap function is async, but we don't need to wait.
+  bootstrap(notebook);
+}
+
+function prepare() : void {
+  const style = ownerDocument.createElement("style");
+  // Blank loading style, unless the script was loaded asynchronously.
+  style.textContent = ":root{display:none!important}";
+
+  ownerHead.append(style);
+  cleanups.push(() : void => {
+    style.remove();
+  });
+}
+
+async function bootstrap(notebook: Notebook) : Promise<void> {
+  const mod: EmscriptenModule = await bootstrapJS;
+  const callback = mod["bootstrap"] as (HTMLElement, string) => void;
+  callback(notebook.root, await layoutHTML);
+  await mainCSS;
+
+  cleanups.forEach((cleanup) => cleanup());
+}
+
+const bootstrapJS = new Promise<EmscriptenModule>((resolve, reject) => {
+  const script: HTMLScriptElement = ownerDocument.createElement("script");
   script.async = true;
 
-  script.addEventListener("load", async (evt: Event) : Promise<void> => {
+  script.addEventListener("load", async (evt: Event) => {
     const moduleName = "BOOTSTRAP";
     const ctor = window[moduleName];
-    window[moduleName] = undefined;
-    const obj = await ctor();
-
-    obj.bootstrap(root(), await loadLayoutHTML);
-
-    console.log("SCRIPT resolve!");
-    resolve(null);
+    window[moduleName] = undefined; // make private
+    resolve(await ctor());
+    script.remove();
   });
 
-  script.addEventListener("error", (evt: Event) : void => {
-    console.log("SCRIPT reject!");
-    reject();
-  });
+  script.addEventListener("error", reject);
 
-  script.src = settings.bootstrap;
-  head.appendChild(script);
+  script.src = bootstrapURL;
+  ownerHead.appendChild(script);
 });
 
-const loadMainCSS = new Promise((resolve, reject) => {
+const layoutHTML = new Promise<string>(async (resolve) => {
+  const res: Response = await fetch(LAYOUT_HTML);
+  resolve(await res.text());
+});
+
+const mainCSS = new Promise((resolve, reject) => {
   const link: HTMLLinkElement = document.createElement("link");
   link.rel = "stylesheet";
 
@@ -82,16 +110,20 @@ const loadMainCSS = new Promise((resolve, reject) => {
   });
 
   link.href = MAIN_CSS;
-  head.appendChild(link);
+  ownerHead.appendChild(link);
 });
 
-const loadLayoutHTML = new Promise<string>(async (resolve) => {
-  const res: Response = await fetch(LAYOUT_HTML);
-  resolve(await res.text());
-});
+const cleanups: Array<() => void> = [
+  () : void => { currentScript.remove(); },
+];
 
-Promise.all([
-  loadBootstrapJS,
-  loadMainCSS,
-  loadLayoutHTML,
-]).then(cleanup);
+if ((ownerDocument.readyState === "complete") || currentScript.async || currentScript.defer) {
+  // Assume the DOM is already loaded and ready to be parsed.
+  main();
+} else {
+  prepare();
+  // Wait for DOMContentLoaded.
+  ownerDocument.addEventListener("DOMContentLoaded", (evt: Event) : void => {
+    main();
+  });
+}
