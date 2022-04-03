@@ -135,7 +135,9 @@ genrule(
 sed \
   --expression 's/\"import\.meta\.url\"/import.meta.url/g' \
   --expression 's/^var Module[^=]*=/var Module=/' \
-  --expression 's/,\$$jscompDefaultExport\$$.*/;export default Module;/g' \
   <$(RULEDIR)/runtime_wasm_js_2.js >$@
+sed -i $@ \
+  --expression '1h;2,$$H;$$!d;g' \
+  --expression 's/[;\n,]*\$$jscompDefaultExport\$$.*/;export default Module;/g' \
 """,
 )
