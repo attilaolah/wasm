@@ -1,5 +1,5 @@
 // These constants will be replaced when packaging.
-const RUNTIME_JS = "./runtime/runtime.js";
+const RUNTIME_JS = "./runtime/runtime_wasm_js_3.js";
 const LAYOUT_HTML = "layout.html";
 const MAIN_CSS = "style/main.css";
 
@@ -52,13 +52,17 @@ let importJS: (string) => Promise<{
   ["default"]: any,
 }>;
 
+const jsModP: Promise<{
+  ["default"]: any,
+}> = importJS(RUNTIME_JS);
+
 async function main() : Promise<void> {
   const notebook = new Notebook(new NotebookConfig(ownerDocument));
 
   // Export as a global for access from within code blocks:
   window["notebook"] = notebook;
 
-  const jsMod = await importJS(RUNTIME_JS);
+  const jsMod = await jsModP;
   const runtime: EmscriptenModule = await new jsMod.default();
   const callback = runtime["main"] as (HTMLElement, string) => void;
 

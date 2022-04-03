@@ -3,7 +3,14 @@
 //
 // However, that would result in double-declarations since Module is already
 // declared before this code, and _malloc and _free will be declared below.
+//
+// So instead, declare a global EMSCRIPTEN accessor, and use it to access any
+// "local" objects and functions. This will then be removed in post-processing.
 
-const _Module = self["Module"] as EmscriptenModule;
-const __malloc = self["_malloc"] as EmscriptenModule["_malloc"];
-const __free = self["_free"] as EmscriptenModule["_free"];
+// Module accessor.
+// Post-processing removes the "EMSCRIPTEN_" prefix.
+let EMSCRIPTEN_Module: EmscriptenModule;
+
+// Globals accessor.
+// Post-processing removes the "EMSCRIPTEN." prefix.
+let EMSCRIPTEN: EmscriptenModule;
