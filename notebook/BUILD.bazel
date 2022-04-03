@@ -18,24 +18,31 @@ closure_js_binary(
 closure_js_library(
     name = "notebook_lib",
     srcs = [":notebook_iife"],
-    #no_closure_library = True,
+    no_closure_library = True,
     suppress = [
         # Closure Compiler currently does not consume TypeScript .d.ts inputs.
         # Therefore it has no clue about the types, so we disable some optimisations.
         "JSC_UNKNOWN_EXPR_TYPE",
+        # We use dynamic module loading.
+        "JSC_JS_MODULE_LOAD_WARNING",
     ],
 )
 
 iife(
     name = "notebook_iife",
     srcs = [":notebook_ts"],
+    replace = {
+        "let importJS;": "",
+        "importJS": "import",
+    },
 )
 
 ts_project(
     name = "notebook_ts",
     srcs = ["main.ts"],
-    tsconfig = {"compilerOptions": {"target": TS_TARGET}},
-    deps = [
-        "@npm//@types/emscripten",
-    ],
+    tsconfig = {"compilerOptions": {
+        "target": TS_TARGET,
+        "module": "commonjs",
+    }},
+    deps = ["@npm//@types/emscripten"],
 )

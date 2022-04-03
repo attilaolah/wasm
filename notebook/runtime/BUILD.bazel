@@ -1,0 +1,82 @@
+load("@io_bazel_rules_closure//closure:defs.bzl", "closure_js_binary", "closure_js_library")
+load("@npm//@bazel/typescript:index.bzl", "ts_project")
+load("//tools:wasm_library.bzl", "wasm_library")
+load("//notebook:js.bzl", "JS_TARGET", "TS_TARGET")
+
+package(default_visibility = ["//notebook:__subpackages__"])
+
+closure_js_binary(
+    name = "runtime",
+    language = JS_TARGET,
+    deps = [":runtime_lib"],
+)
+
+closure_js_library(
+    name = "runtime_lib",
+    srcs = [":runtime_stripped_js"],
+    no_closure_library = True,
+    suppress = [
+        # Closure Compiler currently does not consume TypeScript .d.ts inputs.
+        # Therefore it has no clue about the types, so we disable some optimisations.
+        "JSC_UNKNOWN_EXPR_TYPE",
+        # Emscripten uses a lot of "environment detection" magic.
+        "JSC_UNDEFINED_VARIABLE",
+        # Emscripten's non-optimised code uses assertions.
+        "JSC_DETERMINISTIC_TEST",
+        # Emscripten re-declares the Module object, unless EXPORT_NAME is provided.
+        "JSC_REDECLARED_VARIABLE",
+        # Suppress use of "use_strict";
+        "JSC_USELESS_CODE",
+    ],
+)
+
+genrule(
+    name = "runtime_stripped_js",
+    srcs = [":runtime_wasm_js"],
+    outs = ["runtime_stripped_js.js"],
+    cmd = " ".join([
+        "sed",
+        r'"s:^.*DELETEME::g"',
+        "<$(location runtime_wasm_js)",
+        ">$@",
+    ]),
+)
+
+wasm_library(
+    name = "runtime_wasm_lib",
+    srcs = [":runtime_src"],
+    exported_functions = [
+        # keep sorted
+        "cmark_markdown_to_html",
+        "cmark_version_string",
+        "free",
+        "malloc",
+    ],
+    deps = ["//lib/cmark"],
+)
+
+filegroup(
+    name = "runtime_wasm_js",
+    srcs = [":runtime_wasm_lib"],
+    output_group = "js",
+)
+
+filegroup(
+    name = "runtime_wasm_binary",
+    srcs = [":runtime_wasm_lib"],
+    output_group = "wasm",
+)
+
+ts_project(
+    name = "runtime_src",
+    srcs = ["main.ts"] + [
+        "cmark_wrap.ts",
+        "md_to_html.ts",
+        "toc.ts",
+    ],
+    tsconfig = {"compilerOptions": {"target": TS_TARGET}},
+    deps = [
+        "@npm//@types/emscripten",
+        "@npm//@types/node",
+    ],
+)

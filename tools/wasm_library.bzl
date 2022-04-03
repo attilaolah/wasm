@@ -59,12 +59,15 @@ def _wasm_library_impl(ctx):
 
     # Default settings:
     settings.setdefault("STRICT", "1")
+
+    # Target web environments only.
+    # Also, use ES6 "export" syntax to export the module.
     settings.setdefault("MODULARIZE", "1")
+    settings.setdefault("EXPORT_ES6", "1")
+    settings.setdefault("ENVIRONMENT", "web,worker")
+
     settings.setdefault("WASM_BIGINT", "1")
     settings.setdefault("INCOMING_MODULE_JS_API", "[onRuntimeInitialized]")
-
-    # TODO: Allow unexported libraries!
-    settings.setdefault("EXPORT_NAME", short_name.upper())
 
     # Override settings:
     if ctx.attr.exported_functions:

@@ -1,19 +1,15 @@
 // These constants will be replaced when packaging.
-const BOOTSTRAP_JS = "bootstrap/bootstrap_trim_js.js";
+const RUNTIME_JS = "./runtime/runtime_stripped_js.js";
 const LAYOUT_HTML = "layout.html";
 const MAIN_CSS = "style/main.css";
 
-const currentScript = document.currentScript as HTMLScriptElement;
+const currentScript = Array.from(
+  document.querySelectorAll('script[type=module]'),
+).pop() as HTMLScriptElement;
 const ownerDocument = currentScript.ownerDocument;
 const ownerHead = ownerDocument.head;
 
-const bootstrapURL = [
-  currentScript.src.match(/(.*\/)[^\/]*/)[1],
-  BOOTSTRAP_JS,
-].join("");
-
 class Notebook {
-  /** @nocollapse */
   config: NotebookConfig;
   root: HTMLElement;
 
@@ -52,13 +48,25 @@ class NotebookConfig {
   }
 };
 
-let notebook: Notebook;
-function main() : void {
-  notebook = new Notebook(new NotebookConfig(ownerDocument));
+let importJS: (string) => Promise<{
+  ["default"]: any,
+}>;
+
+async function main() : Promise<void> {
+  const notebook = new Notebook(new NotebookConfig(ownerDocument));
+
+  // Export as a global for access from within code blocks:
   window["notebook"] = notebook;
 
-  // The bootstrap function is async, but we don't need to wait.
-  bootstrap(notebook);
+  const jsMod = await importJS(RUNTIME_JS);
+  const runtime: EmscriptenModule = await new jsMod.default();
+  const callback = runtime["main"] as (HTMLElement, string) => void;
+
+  callback(notebook, await layoutHTML);
+
+  // Wait for CSS to load, then clean up.
+  await mainCSS;
+  cleanups.forEach((cleanup) => cleanup());
 }
 
 function prepare() : void {
@@ -71,33 +79,6 @@ function prepare() : void {
     style.remove();
   });
 }
-
-async function bootstrap(notebook: Notebook) : Promise<void> {
-  const mod: EmscriptenModule = await bootstrapJS;
-  const callback = mod["bootstrap"] as (HTMLElement, string) => void;
-  callback(notebook.root, await layoutHTML);
-  await mainCSS;
-
-  cleanups.forEach((cleanup) => cleanup());
-}
-
-const bootstrapJS = new Promise<EmscriptenModule>((resolve, reject) => {
-  const script: HTMLScriptElement = ownerDocument.createElement("script");
-  script.async = true;
-
-  script.addEventListener("load", async (evt: Event) => {
-    const moduleName = "BOOTSTRAP";
-    const ctor = window[moduleName];
-    window[moduleName] = undefined; // make private
-    resolve(await ctor());
-    script.remove();
-  });
-
-  script.addEventListener("error", reject);
-
-  script.src = bootstrapURL;
-  ownerHead.appendChild(script);
-});
 
 const layoutHTML = new Promise<string>(async (resolve) => {
   const res: Response = await fetch(LAYOUT_HTML);
