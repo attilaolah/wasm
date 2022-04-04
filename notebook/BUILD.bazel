@@ -58,16 +58,14 @@ genrule(
     srcs = [
         "index.html",
         "notebook.html",
-        "//notebook/runtime:runtime_wasm_binary",
+        "//notebook/runtime",
         "//notebook/style:themes",
     ] + select({
         "//config:opt": [
             ":notebook",
-            "//notebook/runtime:runtime_wasm_js_3",
         ],
         "//conditions:default": [
             ":notebook_iife",
-            "//notebook/runtime:runtime_wasm_js_1",
         ],
     }),
     outs = [
@@ -80,21 +78,22 @@ genrule(
         "server/themes/mdn-yari.css.map",
     ],
     cmd = """
-mkdir -p $(RULEDIR)/server/modules
+mkdir -p "$(RULEDIR)/server/modules"
+mkdir -p "$(RULEDIR)/server/themes"
 cp "$(location index.html)" "$(RULEDIR)/server/index.html"
 cp "$(location notebook.html)" "$(RULEDIR)/server/notebook.html"
-cp "$(location //notebook/runtime:runtime_wasm_binary)" "$(RULEDIR)/server/modules/runtime.wasm"
+cp "$(RULEDIR)/runtime/runtime.wasm" "$(RULEDIR)/server/modules"
 for f in $(locations //notebook/style:themes); do
   cp "$${f}" "$(RULEDIR)/server/themes/$$(basename $${f/_/-})"
 done
 """ + select({
         "//config:opt": """
-cp "$(RULEDIR)/runtime/runtime_wasm_js_3.js" "$(RULEDIR)/server/notebook.mjs"
-cp "$(location //notebook/runtime:runtime_wasm_js_3)" "$(RULEDIR)/server/modules/runtime.mjs"
+cp "$(RULEDIR)/notebook.js" "$(RULEDIR)/server/notebook.mjs"
+cp "$(RULEDIR)/runtime/runtime_wasm_js_3.js" "$(RULEDIR)/server/modules/runtime.mjs"
 """,
         "//conditions:default": """
 cp "$(location :notebook_iife)" "$(RULEDIR)/server/notebook.mjs"
-cp "$(location //notebook/runtime:runtime_wasm_js_1)" "$(RULEDIR)/server/modules/runtime.mjs"
+cp "$(RULEDIR)/runtime/runtime.js" "$(RULEDIR)/server/modules/runtime.mjs"
 """,
-}),
+    }),
 )

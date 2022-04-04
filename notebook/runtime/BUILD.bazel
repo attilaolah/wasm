@@ -7,22 +7,25 @@ package(default_visibility = ["//notebook:__subpackages__"])
 
 filegroup(
     name = "runtime",
-    srcs = [
-        "runtime_wasm_binary",
-        "runtime_wasm_js_1",
-        "runtime_wasm_js_3",
-    ],
+    srcs = select({
+        "//config:opt": [
+            ":runtime_wasm_binary",
+            ":runtime_wasm_js_3",
+        ],
+        "//conditions:default": [":runtime_wasm"],
+    }),
 )
+
+TYPE_HINTS = [
+    "type_hints.ts",
+]
 
 ts_project(
     name = "runtime_ts",
-    srcs = [
-        # Do not sort!
-        # The type hints must come first.
-        "types.ts",
-    ] + [
-        "cmark_wrap.ts",
+    # The type hints must come first.
+    srcs = TYPE_HINTS + [
         "main.ts",
+        "cmark_wrap.ts",
         "md_to_html.ts",
         "toc.ts",
     ],
@@ -46,10 +49,29 @@ wasm_library(
         # We don't need filesystem support:
         "FILESYSTEM": "0",
     },
+    exclude = TYPE_HINTS,
     exported_functions = [
-        # keep sorted
-        "cmark_markdown_to_html",
+        # GFM MD2HTML functions:
+        "cmark_gfm_core_extensions_ensure_registered",
+        "cmark_find_syntax_extension",
+        "cmark_node_free",
+        "cmark_parser_attach_syntax_extension",
+        "cmark_parser_feed",
+        "cmark_parser_finish",
+        "cmark_parser_free",
+        "cmark_parser_new",
+        "cmark_render_html",
         "cmark_version_string",
+
+        # For listing extensions:
+        "cmark_get_default_mem_allocator",
+        "cmark_list_syntax_extensions",
+        "cmark_llist_free",
+
+        # For simple conversion:
+        "cmark_markdown_to_html",
+
+        # Memory allocation:
         "free",
         "malloc",
     ],
@@ -68,11 +90,14 @@ filegroup(
     output_group = "wasm",
 )
 
-# 3-staged compilation for the Emscripten module:
+# 4-staged compilation for the Emscripten module:
 #
-# 1.  Prepare code to be closure-compiler friendly.
-# 2.  Process code by closure-compiler in simple + sort_only mode.
-# 3.  Post-process the minified code to undo changes made in step 1.
+# 1.  Remove type declarations from --pre-js.
+#     In non -c opt builds, this is the final result.
+# 2.  Prepare code to be closure-compiler friendly.
+# 3.  Process code by closure-compiler in simple + sort_only mode.
+# 4.  Post-process the minified code to undo changes made in step 1.
+#     In -c opt builds, this is the final result.
 
 genrule(
     name = "runtime_wasm_js_1",
@@ -81,27 +106,12 @@ genrule(
     cmd = r"""
 sed \
   --expression 's/import\.meta\.url/"import.meta.url"/g' \
-  --expression 's/let EMSCRIPTEN_Module;//g' \
-  --expression 's/let EMSCRIPTEN;//g' \
-  --expression 's/EMSCRIPTEN_//g' \
-  --expression 's/EMSCRIPTEN\.//g' \
   <$< >$@
 """,
 )
 
-#--regexp-extended 's/self\["([^"]+)"\]/\1/g' \
-#-E 's/self\["([^"]+)"\]/\1/g'
-
-closure_js_binary(
-    name = "runtime_wasm_js_2",
-    compilation_level = "SIMPLE",
-    dependency_mode = "SORT_ONLY",
-    language = JS_TARGET,
-    deps = [":runtime_wasm_js_2_lib"],
-)
-
 closure_js_library(
-    name = "runtime_wasm_js_2_lib",
+    name = "runtime_wasm_js_1_lib",
     srcs = [":runtime_wasm_js_1"],
     no_closure_library = True,
     suppress = [
@@ -127,6 +137,14 @@ closure_js_library(
     ],
 )
 
+closure_js_binary(
+    name = "runtime_wasm_js_2",
+    compilation_level = "SIMPLE",
+    dependency_mode = "SORT_ONLY",
+    language = JS_TARGET,
+    deps = [":runtime_wasm_js_2_lib"],
+)
+
 genrule(
     name = "runtime_wasm_js_3",
     srcs = [":runtime_wasm_js_2"],
@@ -134,7 +152,6 @@ genrule(
     cmd = r"""
 sed \
   --expression 's/\"import\.meta\.url\"/import.meta.url/g' \
-  --expression 's/^var Module[^=]*=/var Module=/' \
   <$(RULEDIR)/runtime_wasm_js_2.js >$@
 sed -i $@ \
   --expression '1h;2,$$H;$$!d;g' \

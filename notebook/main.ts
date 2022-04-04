@@ -1,5 +1,5 @@
 const NOTEBOOK_HTML = "notebook.html";
-const RUNTIME_JS = "./modules/runtime.js";
+const RUNTIME_JS = "./modules/runtime.mjs";
 const THEME_CSS = "themes/mdn-yari.css";
 
 const currentScript = Array.from(

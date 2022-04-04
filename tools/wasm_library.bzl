@@ -83,9 +83,22 @@ def _wasm_library_impl(ctx):
         if val != "1":
             flag += "={}".format(val)
         args.add("-s", flag)
+
+    excludes = {}
+    for target in ctx.attr.exclude:
+        for f in target.files.to_list():
+            path = f.path
+            if path.endswith(".ts"):
+                # Exclude the generated .js file instead.
+                path = path.rpartition('.')[0] + '.js'
+            excludes[path] = True
+    excludes = excludes.keys()
+
     for src in ctx.attr.srcs:
         for js in src[JSModuleInfo].direct_sources.to_list():
-            args.add("--pre-js", js)
+            # This is not perfect, but good enough for this case.
+            if not any([js.path.endswith(excl) for excl in excludes]):
+                args.add("--pre-js", js)
     args.add_all(static_libs)
 
     # Append C/C++ compiler flags:
@@ -172,6 +185,11 @@ wasm_library = rule(
             mandatory = True,
             doc = "Sources to pass to emcc using --pre-js.",
             providers = [JSModuleInfo],
+        ),
+        "exclude": attr.label_list(
+            allow_files = [".js", ".ts"],
+            doc = "Sources to exclude from passing to emcc using --pre-js (e.g. type declarations).",
+            default = [],
         ),
         "_acorn": attr.label(
             default = "@npm//acorn",
