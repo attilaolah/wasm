@@ -53,7 +53,7 @@ wasm_library(
         "free",
         "malloc",
     ],
-    deps = ["//lib/cmark"],
+    deps = ["//lib/cmarkgfm"],
 )
 
 filegroup(
