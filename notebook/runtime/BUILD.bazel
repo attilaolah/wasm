@@ -90,15 +90,6 @@ filegroup(
     output_group = "wasm",
 )
 
-# 4-staged compilation for the Emscripten module:
-#
-# 1.  Remove type declarations from --pre-js.
-#     In non -c opt builds, this is the final result.
-# 2.  Prepare code to be closure-compiler friendly.
-# 3.  Process code by closure-compiler in simple + sort_only mode.
-# 4.  Post-process the minified code to undo changes made in step 1.
-#     In -c opt builds, this is the final result.
-
 genrule(
     name = "runtime_wasm_js_1",
     srcs = [":runtime_wasm_js"],
