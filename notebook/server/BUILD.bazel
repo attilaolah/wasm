@@ -8,7 +8,7 @@ http_server(
         "//notebook:index.html",
         "//notebook:layout.html",
         "//notebook/runtime",
-        # "//notebook/style", # TODO!
+        "//notebook/style",
         "@mdn_yari//:client/src/assets/fonts/Inter.var.woff2",
     ],
 )

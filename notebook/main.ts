@@ -89,9 +89,29 @@ const layoutHTML = new Promise<string>(async (resolve) => {
   resolve(await res.text());
 });
 
-const mainCSS = new Promise((resolve, reject) => {
+function fontCSS() : void {
+  const api: string = "https://fonts.googleapis.com"
+  addLink(mkLink(api, true));
+  addLink(mkLink("https://fonts.gstatic.com", true, true));
+  addLink(mkLink(`${api}/css2?family=Inter&display=swap`));
+}
+
+function mkLink(href: string, preConnect: boolean = false, crossOrigin: boolean = false) : HTMLLinkElement {
   const link: HTMLLinkElement = document.createElement("link");
-  link.rel = "stylesheet";
+  link.href = href;
+  link.rel = preConnect ? "preconnect" : "stylesheet";
+  if (crossOrigin) {
+    link.crossOrigin = "";
+  }
+  return link;
+}
+
+function addLink(link: HTMLLinkElement) : void {
+  ownerHead.appendChild(link);
+}
+
+const mainCSS = new Promise((resolve, reject) => {
+  const link: HTMLLinkElement = mkLink(MAIN_CSS);
 
   link.addEventListener("load", (evt: Event) : void => {
     console.log("LINK resolve!");
@@ -103,9 +123,12 @@ const mainCSS = new Promise((resolve, reject) => {
     reject();
   });
 
-  link.href = MAIN_CSS;
-  ownerHead.appendChild(link);
+  addLink(link);
 });
+
+// Font loading is fire-and-forget.
+// We can live without fonts, and we use font-display: swap anyway.
+setTimeout(fontCSS, 0);
 
 const cleanups: Array<() => void> = [
   () : void => { currentScript.remove(); },

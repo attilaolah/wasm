@@ -9,11 +9,12 @@ genrule(
         "main.css",
         "main.css.map",
     ],
-    # TODO: Implement better text substitution!
     cmd = r"""
 for src in $(locations :style_tpl); do
-  sed < "$${src}"> "$${src/_tpl.css/.css}" \
-    's:url("../../assets/:url("/external/mdn_yari/client/src/assets/:g'
+  sed <"$${src}" >"$${src/_tpl.css/.css}" \
+    --regexp-extended 's/@font-face\{[^}]*\}//g'
+  sed -i "$${src/_tpl.css/.css}" \
+    --expression 's/_tpl\.css\.map/.css.map/g'
 done
 """,
 )
