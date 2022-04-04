@@ -1,7 +1,6 @@
-// These constants will be replaced when packaging.
-const RUNTIME_JS = "./runtime/runtime_wasm_js_3.js";
-const LAYOUT_HTML = "layout.html";
-const MAIN_CSS = "style/main.css";
+const NOTEBOOK_HTML = "notebook.html";
+const RUNTIME_JS = "./modules/runtime.js";
+const THEME_CSS = "themes/mdn-yari.css";
 
 const currentScript = Array.from(
   document.querySelectorAll('script[type=module]'),
@@ -85,7 +84,7 @@ function prepare() : void {
 }
 
 const layoutHTML = new Promise<string>(async (resolve) => {
-  const res: Response = await fetch(LAYOUT_HTML);
+  const res: Response = await fetch(NOTEBOOK_HTML);
   resolve(await res.text());
 });
 
@@ -111,7 +110,7 @@ function addLink(link: HTMLLinkElement) : void {
 }
 
 const mainCSS = new Promise((resolve, reject) => {
-  const link: HTMLLinkElement = mkLink(MAIN_CSS);
+  const link: HTMLLinkElement = mkLink(THEME_CSS);
 
   link.addEventListener("load", (evt: Event) : void => {
     console.log("LINK resolve!");

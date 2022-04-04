@@ -2,27 +2,30 @@ load("@io_bazel_rules_sass//:defs.bzl", "sass_binary")
 
 package(default_visibility = ["//visibility:public"])
 
+filegroup(
+    name = "themes",
+    srcs = [":mdn_yari"],
+)
+
 genrule(
-    name = "style",
-    srcs = [":style_tpl"],
+    name = "mdn_yari",
+    srcs = [":mdn_yari_theme"],
     outs = [
-        "main.css",
-        "main.css.map",
+        "mdn_yari.css",
+        "mdn_yari.css.map",
     ],
     cmd = r"""
-for src in $(locations :style_tpl); do
-  sed <"$${src}" >"$${src/_tpl.css/.css}" \
+for src in $(locations :mdn_yari_theme); do
+  sed <"$${src}" >"$${src/_theme.css/.css}" \
     --regexp-extended 's/@font-face\{[^}]*\}//g'
-  sed -i "$${src/_tpl.css/.css}" \
-    --expression 's/_tpl\.css\.map/.css.map/g'
+  sed -i "$${src/_theme.css/.css}" \
+    --expression 's/_theme\.css\.map/.css.map/g'
 done
 """,
 )
 
 sass_binary(
-    name = "style_tpl",
-    src = "main_tpl.sass",
-    deps = [
-        "@mdn_yari//:scss",
-    ],
+    name = "mdn_yari_theme",
+    src = "mdn_yari_theme.sass",
+    deps = ["@mdn_yari//:scss"],
 )

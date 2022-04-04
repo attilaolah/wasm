@@ -1,3 +1,4 @@
+load("@npm//http-server:index.bzl", "http_server")
 load("@io_bazel_rules_closure//closure:defs.bzl", "closure_js_binary", "closure_js_library")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load(":js.bzl", "JS_TARGET", "TS_TARGET", "iife")
@@ -44,4 +45,56 @@ ts_project(
         "module": "commonjs",
     }},
     deps = ["@npm//@types/emscripten"],
+)
+
+http_server(
+    name = "server",
+    args = ["notebook/server"],
+    data = [":server_files"],
+)
+
+genrule(
+    name = "server_files",
+    srcs = [
+        "index.html",
+        "notebook.html",
+        "//notebook/runtime:runtime_wasm_binary",
+        "//notebook/style:themes",
+    ] + select({
+        "//config:opt": [
+            ":notebook",
+            "//notebook/runtime:runtime_wasm_js_3",
+        ],
+        "//conditions:default": [
+            ":notebook_iife",
+            "//notebook/runtime:runtime_wasm_js_1",
+        ],
+    }),
+    outs = [
+        "server/index.html",
+        "server/notebook.html",
+        "server/notebook.mjs",
+        "server/modules/runtime.mjs",
+        "server/modules/runtime.wasm",
+        "server/themes/mdn-yari.css",
+        "server/themes/mdn-yari.css.map",
+    ],
+    cmd = """
+mkdir -p $(RULEDIR)/server/modules
+cp "$(location index.html)" "$(RULEDIR)/server/index.html"
+cp "$(location notebook.html)" "$(RULEDIR)/server/notebook.html"
+cp "$(location //notebook/runtime:runtime_wasm_binary)" "$(RULEDIR)/server/modules/runtime.wasm"
+for f in $(locations //notebook/style:themes); do
+  cp "$${f}" "$(RULEDIR)/server/themes/$$(basename $${f/_/-})"
+done
+""" + select({
+        "//config:opt": """
+cp "$(RULEDIR)/runtime/runtime_wasm_js_3.js" "$(RULEDIR)/server/notebook.mjs"
+cp "$(location //notebook/runtime:runtime_wasm_js_3)" "$(RULEDIR)/server/modules/runtime.mjs"
+""",
+        "//conditions:default": """
+cp "$(location :notebook_iife)" "$(RULEDIR)/server/notebook.mjs"
+cp "$(location //notebook/runtime:runtime_wasm_js_1)" "$(RULEDIR)/server/modules/runtime.mjs"
+""",
+}),
 )
