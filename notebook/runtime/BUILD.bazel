@@ -95,9 +95,9 @@ genrule(
     srcs = [":runtime_wasm_js"],
     outs = ["runtime_wasm_js_1.js"],
     cmd = r"""
-sed \
-  --expression 's/import\.meta\.url/"import.meta.url"/g' \
-  <$< >$@
+sed --expression '
+    s/import\.meta\.url/"import.meta.url"/g
+  ' <$< >$@
 """,
 )
 
@@ -133,7 +133,7 @@ closure_js_binary(
     compilation_level = "SIMPLE",
     dependency_mode = "SORT_ONLY",
     language = JS_TARGET,
-    deps = [":runtime_wasm_js_2_lib"],
+    deps = [":runtime_wasm_js_1_lib"],
 )
 
 genrule(
@@ -141,11 +141,12 @@ genrule(
     srcs = [":runtime_wasm_js_2"],
     outs = ["runtime_wasm_js_3.js"],
     cmd = r"""
-sed \
-  --expression 's/\"import\.meta\.url\"/import.meta.url/g' \
-  <$(RULEDIR)/runtime_wasm_js_2.js >$@
-sed -i $@ \
-  --expression '1h;2,$$H;$$!d;g' \
-  --expression 's/[;\n,]*\$$jscompDefaultExport\$$.*/;export default Module;/g' \
+sed --expression '
+    s/\"import\.meta\.url\"/import.meta.url/g
+  ' <$(RULEDIR)/runtime_wasm_js_2.js >$@
+sed --in-place --expression '
+    1h;2,$$H;$$!d;g;
+    s/[;\n,]*\$$jscompDefaultExport\$$.*/;export default Module;/g
+  ' $@
 """,
 )

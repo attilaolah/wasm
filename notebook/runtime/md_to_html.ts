@@ -1,7 +1,24 @@
 const NULL: number = 0;
 
 let gfmRegistered: boolean = false;
+
 const allExtensions: Array<string> = [];
+const defaultExtensions: Array<string> = [
+    "autolink",
+    "strikethrough",
+    "table",
+    "tasklist",
+]
+
+const defaultOptions: number = (
+  $CMARK_OPT_UNSAFE |
+  $CMARK_OPT_SMART |
+  $CMARK_OPT_GITHUB_PRE_LANG |
+  $CMARK_OPT_LIBERAL_HTML_TAG |
+  $CMARK_OPT_FOOTNOTES |
+  $CMARK_OPT_TABLE_PREFER_STYLE_ATTRIBUTES |
+  $CMARK_OPT_FULL_INFO_STRING
+);
 
 class MDParser {
   parser: number;
@@ -96,21 +113,7 @@ function listExtensions(): Array<string> {
 }
 
 function mdToHTML(root: HTMLElement, layoutHTML: string) : void {
-  const options: number = (
-    $CMARK_OPT_UNSAFE |
-    $CMARK_OPT_SMART |
-    $CMARK_OPT_GITHUB_PRE_LANG |
-    $CMARK_OPT_LIBERAL_HTML_TAG |
-    $CMARK_OPT_FOOTNOTES |
-    $CMARK_OPT_TABLE_PREFER_STYLE_ATTRIBUTES |
-    $CMARK_OPT_FULL_INFO_STRING
-  );
-  const parser: MDParser = new MDParser(options, [
-    "autolink",
-    "strikethrough",
-    "table",
-    "tasklist",
-  ]);
+  const parser: MDParser = new MDParser(defaultOptions, defaultExtensions);
   const html: string = parser.toHTML(root.innerHTML);
   parser.free();
 
@@ -133,4 +136,11 @@ function mdToHTML(root: HTMLElement, layoutHTML: string) : void {
   }
 
   root.appendChild(tpl.content);
+
+  // Code blocks get double-escaped, so remove one layer of escaping.
+  // $0.querySelectorAll('pre:not([lang=html])>code')
+  root.querySelectorAll("#content pre:not([lang=html])>code, :not(pre)>code")
+    .forEach((code: HTMLElement): void => {
+      code.innerHTML = code.innerText;
+    });
 }

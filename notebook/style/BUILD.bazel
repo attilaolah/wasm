@@ -11,15 +11,20 @@ genrule(
     name = "mdn_yari",
     srcs = [":mdn_yari_theme"],
     outs = [
-        "mdn_yari.css",
-        "mdn_yari.css.map",
+        "mdn-yari.css",
+        "mdn-yari.css.map",
     ],
     cmd = r"""
 for src in $(locations :mdn_yari_theme); do
-  sed <"$${src}" >"$${src/_theme.css/.css}" \
-    --regexp-extended 's/@font-face\{[^}]*\}//g'
-  sed -i "$${src/_theme.css/.css}" \
-    --expression 's/_theme\.css\.map/.css.map/g'
+  dst="$$(basename "$${src}")"
+  dst="$${dst/_theme.css/.css}"
+  dst="$$(dirname "$${src}")/$${dst/_/-}"
+  sed --regexp-extended '
+      s/@font-face\{[^}]*\}//g;
+      s:(\.\./)+:/:g;
+      s/_theme\.css\.map/.css.map/g;
+      s/mdn_yari/mdn-yari/g
+    ' <"$${src}" >"$${dst}"
 done
 """,
 )

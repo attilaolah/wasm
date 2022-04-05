@@ -9,7 +9,3 @@ sass_library(
         "client/src/**/*.scss",
     ]),
 )
-
-exports_files([
-    "client/src/assets/fonts/Inter.var.woff2",
-])

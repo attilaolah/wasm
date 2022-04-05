@@ -77,15 +77,14 @@ genrule(
         "server/themes/mdn-yari.css",
         "server/themes/mdn-yari.css.map",
     ],
-    cmd = """
+    cmd = r"""
 mkdir -p "$(RULEDIR)/server/modules"
-mkdir -p "$(RULEDIR)/server/themes"
 cp "$(location index.html)" "$(RULEDIR)/server/index.html"
 cp "$(location notebook.html)" "$(RULEDIR)/server/notebook.html"
 cp "$(RULEDIR)/runtime/runtime.wasm" "$(RULEDIR)/server/modules"
-for f in $(locations //notebook/style:themes); do
-  cp "$${f}" "$(RULEDIR)/server/themes/$$(basename $${f/_/-})"
-done
+
+mkdir -p "$(RULEDIR)/server/themes"
+cp $(locations //notebook/style:themes) "$(RULEDIR)/server/themes"
 """ + select({
         "//config:opt": """
 cp "$(RULEDIR)/notebook.js" "$(RULEDIR)/server/notebook.mjs"
