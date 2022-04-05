@@ -114,7 +114,13 @@ function listExtensions(): Array<string> {
 
 function mdToHTML(root: HTMLElement, layoutHTML: string) : void {
   const parser: MDParser = new MDParser(defaultOptions, defaultExtensions);
-  const html: string = parser.toHTML(root.innerHTML);
+
+  // Undo any escaping that was inserted by the browser.
+  const content: string = root.innerHTML
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">");
+  const html: string = parser.toHTML(content);
+
   parser.free();
 
   const tpl: HTMLTemplateElement = document.createElement("template");
@@ -136,11 +142,4 @@ function mdToHTML(root: HTMLElement, layoutHTML: string) : void {
   }
 
   root.appendChild(tpl.content);
-
-  // Code blocks get double-escaped, so remove one layer of escaping.
-  // $0.querySelectorAll('pre:not([lang=html])>code')
-  root.querySelectorAll("#content pre:not([lang=html])>code, :not(pre)>code")
-    .forEach((code: HTMLElement): void => {
-      code.innerHTML = code.innerText;
-    });
 }
