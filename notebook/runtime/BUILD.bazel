@@ -144,8 +144,9 @@ genrule(
 sed --expression '
     s/\"import\.meta\.url\"/import.meta.url/g
   ' <$(RULEDIR)/runtime_wasm_js_2.js >$@
-sed --in-place --expression '
+sed --in-place --regexp-extended '
     1h;2,$$H;$$!d;g;
+    s/\$$\$$module\$$[^=]+//
     s/[;\n,]*\$$jscompDefaultExport\$$.*/;export default Module;/g
   ' $@
 """,
