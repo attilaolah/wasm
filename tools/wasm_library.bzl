@@ -90,7 +90,7 @@ def _wasm_library_impl(ctx):
             path = f.path
             if path.endswith(".ts"):
                 # Exclude the generated .js file instead.
-                path = path.rpartition('.')[0] + '.js'
+                path = path.rpartition(".")[0] + ".js"
             excludes[path] = True
     excludes = excludes.keys()
 
