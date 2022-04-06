@@ -33,9 +33,9 @@ done
 sass_binary(
     name = "mdn_yari_theme",
     src = "mdn_yari_theme.sass",
-    deps = ["@mdn_yari//:scss"],
     output_style = select({
         "//config:opt": "compressed",
         "//conditions:default": "expanded",
     }),
+    deps = ["@mdn_yari//:scss"],
 )
