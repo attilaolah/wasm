@@ -1,4 +1,4 @@
-function createTOC(root: HTMLElement) : void {
+function createTOC(root: HTMLElement): void {
   const document: HTMLDocument = root.ownerDocument;
 
   const toc: HTMLUListElement = root.querySelector("#toc-entries");

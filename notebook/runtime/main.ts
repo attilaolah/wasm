@@ -1,6 +1,6 @@
 const COPT: boolean = COMPILATION_MODE == "opt";
 
-async function main(notebook: { ["root"]: HTMLElement }, layoutHTML: string) : Promise<void> {
+async function main(notebook: { ["root"]: HTMLElement }, layoutHTML: string): Promise<void> {
   const hl: SyntaxHighlighter = new SyntaxHighlighter();
 
   mdToHTML(notebook.root, layoutHTML);
@@ -9,7 +9,7 @@ async function main(notebook: { ["root"]: HTMLElement }, layoutHTML: string) : P
   await hl.run();
 }
 
-Module["onRuntimeInitialized"] = () : void => {
+Module["onRuntimeInitialized"] = (): void => {
   cmarkWrap();
 
   // Expose the "main" method via the module.
@@ -20,8 +20,8 @@ function loadJS(
   src: string,
   dataset: { [key: string]: string } = {},
   async: boolean = false,
-) : Promise<void> {
-  return new Promise<void>((resolve, reject) : void => {
+): Promise<void> {
+  return new Promise<void>((resolve, reject): void => {
     const script: HTMLScriptElement = document.createElement("script");
 
     Object.entries(dataset).forEach(([key, value]) => {

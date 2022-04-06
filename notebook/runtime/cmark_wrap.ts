@@ -69,7 +69,7 @@ const $CMARK_OPT_FOOTNOTES: number = 1 << 13;
 const $CMARK_OPT_TABLE_PREFER_STYLE_ATTRIBUTES: number = 1 << 15;
 const $CMARK_OPT_FULL_INFO_STRING: number = 1 << 16;
 
-function cmarkWrap() : void {
+function cmarkWrap(): void {
   // Use "number" return type since JSType does not define a "void" return type.
   $cmark_gfm_core_extensions_ensure_registered = cwrap("cmark_gfm_core_extensions_ensure_registered", "number", []);
   $cmark_parser_new = cwrap("cmark_parser_new", "number", ["number"]);

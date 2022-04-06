@@ -7,10 +7,10 @@ let gfmRegistered: boolean = false;
 
 const allExtensions: Array<string> = [];
 const defaultExtensions: Array<string> = [
-    "autolink",
-    "strikethrough",
-    "table",
-    "tasklist",
+  "autolink",
+  "strikethrough",
+  "table",
+  "tasklist",
 ]
 
 const defaultOptions: number = (
@@ -97,16 +97,16 @@ function listExtensions(): Array<string> {
   let pos: number = extensions;
   let result: Array<string> = [];
   while (true) {
-    let next: number = HEAPU32[pos/ptrs+0];
-    let data: number = HEAPU32[pos/ptrs+1];
-    let name: number = HEAPU32[(data/ptrs)+5];
+    let next: number = HEAPU32[pos / ptrs + 0];
+    let data: number = HEAPU32[pos / ptrs + 1];
+    let name: number = HEAPU32[(data / ptrs) + 5];
     result.push(UTF8ToString(name));
 
     if (!next) {
       break;
     }
 
-    pos = HEAPU32[next/ptrs];
+    pos = HEAPU32[next / ptrs];
   }
 
   $cmark_llist_free(mem, extensions);
@@ -114,7 +114,7 @@ function listExtensions(): Array<string> {
   return result;
 }
 
-function mdToHTML(root: HTMLElement, layoutHTML: string) : void {
+function mdToHTML(root: HTMLElement, layoutHTML: string): void {
   // Undo any escaping that was inserted by the browser.
   let content: string = root.innerHTML;
 
@@ -152,15 +152,15 @@ function mdToHTML(root: HTMLElement, layoutHTML: string) : void {
 }
 
 // DOM accessors:
-function getContent() : HTMLElement {
+function getContent(): HTMLElement {
   return document.getElementById("content");
 }
 
-function querySelector(query: string) : HTMLElement {
+function querySelector(query: string): HTMLElement {
   return getContent().querySelector(query);
 }
 
-function querySelectorAll(query: string) : NodeList {
+function querySelectorAll(query: string): NodeList {
   return getContent().querySelectorAll(query);
 }
 
@@ -173,7 +173,7 @@ function ensureMetaCharset(): void {
 }
 
 // Show the theme license as a link.
-function showLicense(root: HTMLElement) : void {
+function showLicense(root: HTMLElement): void {
   const container: HTMLElement = root.querySelector(".page-footer-legal-text");
 
   // Make the name selectable by moving it to the DOM.
@@ -197,7 +197,7 @@ function showLicense(root: HTMLElement) : void {
   licenseEl.appendChild(a);
 }
 
-function getBeforeAfter(el: HTMLElement) : [string, string] {
+function getBeforeAfter(el: HTMLElement): [string, string] {
   return ["::before", "::after"]
     .map((selector: string): CSSStyleDeclaration => window.getComputedStyle(el, selector))
     .map((sd: CSSStyleDeclaration): string => sd.content)
