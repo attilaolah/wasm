@@ -76,12 +76,12 @@ soon, so stay tuned!
 ## Config Blocks
 
 
-The `meta` block or `notebook-config` block is used to configure the notebook
-itself. Only the first such blcok is parsed, and its contents must be a JSON
-object encoding a TypeScript `NotebookConfig` object. Here is an example that
-turns on auto-run for code blocks on this page:
+The `notebook-config` block is used to configure the notebook itself. Only the
+first such blcok is parsed, and its contents must be a JSON object encoding a
+TypeScript `NotebookConfig` object. Here is an example that turns on auto-run
+for code blocks on this page:
 
-```meta
+```notebook-config
 {
   "autorun": true
 }

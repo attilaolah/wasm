@@ -33,7 +33,10 @@ iife(
 
 ts_project(
     name = "notebook_ts",
-    srcs = ["main.ts"],
+    # Compilation mode must come first.
+    srcs = [":compilation_mode_ts"] + [
+        "main.ts",
+    ],
     tsconfig = {"compilerOptions": {
         "target": TS_TARGET,
         "esModuleInterop": True,
@@ -52,12 +55,12 @@ filegroup(
 
 http_server(
     name = "server",
-    args = ["notebook/server_files"],
-    data = [":server_files"],
+    args = ["notebook/server_root"],
+    data = [":server_root_files"],
 )
 
 genrule(
-    name = "server_files",
+    name = "server_root_files",
     srcs = [
         ":notebook_html",
         "//notebook/runtime",
@@ -70,23 +73,44 @@ genrule(
             ":notebook_iife",
         ],
     }),
-    outs = ["server_files"],
+    outs = [
+        "server_root/index.html",
+        "server_root/notebook.mjs",
+        "server_root/notebook.html",
+        "server_root/modules/runtime.mjs",
+        "server_root/modules/runtime.wasm",
+        "server_root/themes/mdn-yari.css",
+        "server_root/themes/mdn-yari.css.map",
+    ],
     cmd = r"""
-mkdir -p "$@/modules"
-cp $(locations :notebook_html) "$@"
-cp "$(RULEDIR)/runtime/runtime.wasm" "$@/modules"
+mkdir -p "$(RULEDIR)/server_root/modules"
+cp $(locations :notebook_html) "$(RULEDIR)/server_root"
+cp "$(RULEDIR)/runtime/runtime.wasm" "$(RULEDIR)/server_root/modules"
 
-mkdir -p "$@/themes"
-cp $(locations //notebook/style:themes) "$@/themes"
+mkdir -p "$(RULEDIR)/themes"
+cp $(locations //notebook/style:themes) "$(RULEDIR)/server_root/themes"
 """ + select({
         "//config:opt": """
-cp "$(RULEDIR)/notebook.js" "$@/notebook.mjs"
-cp "$(RULEDIR)/runtime/runtime_wasm_js_3.js" "$@/modules/runtime.mjs"
+cp "$(RULEDIR)/notebook.js" "$(RULEDIR)/server_root/notebook.mjs"
+cp "$(RULEDIR)/runtime/runtime_wasm_js_3.js" "$(RULEDIR)/server_root/modules/runtime.mjs"
 """,
         "//conditions:default": """
-cp "$(location :notebook_iife)" "$@/notebook.mjs"
-cp "$(RULEDIR)/runtime/runtime.js" "$@/modules/runtime.mjs"
+cp "$(location :notebook_iife)" "$(RULEDIR)/server_root/notebook.mjs"
+cp "$(RULEDIR)/runtime/runtime.js" "$(RULEDIR)/server_root/modules/runtime.mjs"
 """,
     }),
     local = True,
+)
+
+filegroup(
+    name = "compilation_mode_ts",
+    srcs = select({
+        "//config:" + mode: ["compilation_mode_{}.ts".format(mode)]
+        for mode in [
+            "opt",
+            "fastbuild",
+            "dbg",
+        ]
+    }),
+    visibility = ["//visibility:public"],
 )

@@ -13,7 +13,6 @@ const defaultExtensions: Array<string> = [
 const defaultOptions: number = (
   $CMARK_OPT_UNSAFE |
   $CMARK_OPT_SMART |
-  $CMARK_OPT_GITHUB_PRE_LANG |
   $CMARK_OPT_LIBERAL_HTML_TAG |
   $CMARK_OPT_FOOTNOTES |
   $CMARK_OPT_TABLE_PREFER_STYLE_ATTRIBUTES |
@@ -142,4 +141,17 @@ function mdToHTML(root: HTMLElement, layoutHTML: string) : void {
   }
 
   root.appendChild(tpl.content);
+}
+
+// DOM accessors:
+function getContent() : HTMLElement {
+  return document.getElementById("content");
+}
+
+function querySelector(query: string) : HTMLElement {
+  return getContent().querySelector(query);
+}
+
+function querySelectorAll(query: string) : NodeList {
+  return getContent().querySelectorAll(query);
 }

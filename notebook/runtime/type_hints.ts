@@ -11,3 +11,5 @@ const {
 } = require("@types/emscripten");
 
 let getNativeTypeSize: (type: Emscripten.CType | "void*") => number;
+
+const Prism = require("@types/prismjs");

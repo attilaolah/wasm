@@ -18,7 +18,11 @@ config_setting(
     values = {"cpu": "wasm64"},
 )
 
-config_setting(
-    name = "opt",
-    values = {"compilation_mode": "opt"},
-)
+[config_setting(
+    name = mode,
+    values = {"compilation_mode": mode},
+) for mode in [
+    "opt",
+    "fastbuild",
+    "dbg",
+]]

@@ -1,6 +1,11 @@
-const NOTEBOOK_HTML = "notebook.html";
-const RUNTIME_JS = "./modules/runtime.mjs";
-const THEME_CSS = "themes/mdn-yari.css";
+const NOTEBOOK_HTML: string = "notebook.html";
+const RUNTIME_JS: string = "./modules/runtime.mjs";
+const THEME_CSS: string = "themes/mdn-yari.css";
+
+const COPT: boolean = COMPILATION_MODE == "opt";
+
+// PrismJS version to use:
+const PRISM_VERSION: string = "1.27.0";
 
 const currentScript = Array.from(
   document.querySelectorAll('script[type=module]'),
@@ -29,7 +34,7 @@ class NotebookConfig {
 
   constructor(doc: HTMLDocument) {
     let obj: any = {};
-    const parts: Array<string> = doc.body.textContent.split(/```(?:notebook-config|meta)\b/, 2);
+    const parts: Array<string> = doc.body.textContent.split(/```notebook-config\b/, 2);
     if (parts.length === 2) {
       const config: string = parts[1].split(/```/, 2)[0];
       obj = JSON.parse(config);
@@ -63,11 +68,16 @@ async function main() : Promise<void> {
 
   const jsMod = await jsModP;
   const runtime: EmscriptenModule = await new jsMod.default();
-  const callback = runtime["main"] as (HTMLElement, string) => void;
 
-  callback(notebook, await layoutHTML);
+  // Export the runtime via the global notebook object.
+  notebook["runtime"] = runtime;
+
+  // Run the main function of the runtime:
+  const callback = runtime["main"] as (HTMLElement, string) => Promise<void>;
+  await callback(notebook, await layoutHTML);
 
   // Wait for CSS to load, then clean up.
+  // TODO: Do the cleanup sooner; but hand off to the runtime.
   await mainCSS;
   cleanups.forEach((cleanup) => cleanup());
 }
@@ -95,6 +105,21 @@ function fontCSS() : void {
   addLink(mkLink(`${api}/css2?family=Inter&display=swap`));
 }
 
+function highlightCSS() : void {
+  const darkTheme: boolean = (
+    window.matchMedia &&
+    window.matchMedia('(prefers-color-scheme: dark)').matches
+  );
+  const prism = `https://unpkg.com/prismjs@${
+    PRISM_VERSION
+  }/themes/prism${
+    darkTheme ? "-dark" : ""
+  }${
+    COPT ? ".min" : ""
+  }.css`;
+  addLink(mkLink(prism));
+}
+
 function mkLink(href: string, preConnect: boolean = false, crossOrigin: boolean = false) : HTMLLinkElement {
   const link: HTMLLinkElement = document.createElement("link");
   link.href = href;
@@ -112,13 +137,11 @@ function addLink(link: HTMLLinkElement) : void {
 const mainCSS = new Promise((resolve, reject) => {
   const link: HTMLLinkElement = mkLink(THEME_CSS);
 
-  link.addEventListener("load", (evt: Event) : void => {
-    console.log("LINK resolve!");
+  link.addEventListener("load", (ev: Event) : void => {
     resolve(null);
   });
 
-  link.addEventListener("error", (evt: Event) : void => {
-    console.log("LINK reject!");
+  link.addEventListener("error", (ev: Event) : void => {
     reject();
   });
 
@@ -128,6 +151,9 @@ const mainCSS = new Promise((resolve, reject) => {
 // Font loading is fire-and-forget.
 // We can live without fonts, and we use font-display: swap anyway.
 setTimeout(fontCSS, 0);
+
+// Syntax highlighting is also non-essential.
+setTimeout(highlightCSS, 0);
 
 const cleanups: Array<() => void> = [
   () : void => { currentScript.remove(); },
@@ -139,7 +165,7 @@ if ((ownerDocument.readyState === "complete") || currentScript.async || currentS
 } else {
   prepare();
   // Wait for DOMContentLoaded.
-  ownerDocument.addEventListener("DOMContentLoaded", (evt: Event) : void => {
+  ownerDocument.addEventListener("DOMContentLoaded", (ev: Event) : void => {
     main();
   });
 }

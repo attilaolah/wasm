@@ -27,7 +27,8 @@ ts_project(
         "main.ts",
         "cmark_wrap.ts",
         "md_to_html.ts",
-        "toc.ts",
+        "create_toc.ts",
+        "syntax_highlighter.ts",
     ],
     tsconfig = {"compilerOptions": {
         "target": TS_TARGET,
@@ -37,6 +38,7 @@ ts_project(
     deps = [
         "@npm//@types/emscripten",
         "@npm//@types/node",
+        "@npm//@types/prismjs",
     ],
 )
 

@@ -6,9 +6,9 @@ JS_TARGET = "ECMASCRIPT_{}".format(ES)
 TS_TARGET = "es{}".format(ES)
 
 IIFE_WRAP_ALL = """
-echo -n "(() => {{" > $@
-sed {replacements} $< >> $@
-echo -n "}})();" >> $@
+echo "(() => {{" > $@
+sed {replacements} $(SRCS) >> $@
+echo "}})();" >> $@
 """
 
 def iife(name, srcs, replace = None):

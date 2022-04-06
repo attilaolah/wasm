@@ -64,7 +64,6 @@ let $cmark_markdown_to_html: (text: number, len: number, options: number) => num
 
 const $CMARK_OPT_UNSAFE: number = 1 << 17;
 const $CMARK_OPT_SMART: number = 1 << 10;
-const $CMARK_OPT_GITHUB_PRE_LANG: number = 1 << 11;
 const $CMARK_OPT_LIBERAL_HTML_TAG: number = 1 << 12;
 const $CMARK_OPT_FOOTNOTES: number = 1 << 13;
 const $CMARK_OPT_TABLE_PREFER_STYLE_ATTRIBUTES: number = 1 << 15;
