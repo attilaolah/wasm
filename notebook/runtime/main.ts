@@ -18,11 +18,10 @@ Module["onRuntimeInitialized"] = () : void => {
 
 function loadJS(
   src: string,
-  glob: string = "",
-  async: boolean = false,
   dataset: { [key: string]: string } = {},
-) : Promise<unknown> {
-  return new Promise<unknown>((resolve, reject) : void => {
+  async: boolean = false,
+) : Promise<void> {
+  return new Promise<void>((resolve, reject) : void => {
     const script: HTMLScriptElement = document.createElement("script");
 
     Object.entries(dataset).forEach(([key, value]) => {
@@ -30,7 +29,7 @@ function loadJS(
     });
 
     script.addEventListener("load", (ev: Event): void => {
-      resolve(glob ? window[glob] : null);
+      resolve();
     });
     script.addEventListener("error", reject);
     script.async = async;

@@ -1,20 +1,16 @@
 const PRISM_PREFIX: string = "https://unpkg.com/prismjs@1.27.0";
 
 class SyntaxHighlighter {
-  init: Promise<[typeof Prism, unknown]>;
+  init: Promise<[void, void]>;
 
   constructor() {
     // Parallel fetch both prism-core and prism-autoloader.
     this.init = Promise.all([
-      loadJS(`${PRISM_PREFIX}/components/prism-core${COPT ? ".min" : ""}.js`, "Prism", false, {
+      loadJS(`${PRISM_PREFIX}/components/prism-core${COPT ? ".min" : ""}.js`, {
         manual: "",
-      }) as Promise<typeof Prism>,
+      }),
       loadJS(`${PRISM_PREFIX}/plugins/autoloader/prism-autoloader${COPT ? ".min" : ""}.js`),
     ]);
-  }
-
-  async prism() : Promise<typeof Prism> {
-    return (await this.init)[0];
   }
 
   async run() {
@@ -26,8 +22,8 @@ class SyntaxHighlighter {
         code.classList.add("language-json");
       });
 
-    const prism = await this.prism();
-    prism.plugins.autoloader.use_minified = COPT;
-    prism.highlightAllUnder(getContent());
+    await this.init;
+    Prism.plugins.autoloader.use_minified = COPT;
+    Prism.highlightAllUnder(getContent());
   }
 };
