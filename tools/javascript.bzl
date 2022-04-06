@@ -14,17 +14,44 @@ WASM_LD_UNSUPPORTED_FLAGS = [
     "-Wl,-z,relro,-z,now",
 ]
 
-def _find_file(files, name):
-    for f in files:
-        if f.basename == name:
-            return f
-    fail("Failed to find {}!".format(name))
+def _minified_js_impl(ctx):
+    file_js = ctx.attr.src[0].files.to_list()[0]
+    file_min_js = ctx.actions.declare_file(
+        file_js.basename.rpartition(".js")[0] + ".min.js",
+    )
+    ctx.actions.symlink(
+        output = file_min_js,
+        target_file = file_js,
+    )
+    return DefaultInfo(files = depset([file_min_js]))
 
-def _wasm32_transition_impl(settings, attr):
+def _opt_transition_impl(settings, attr):
     return {
         # Old C++ CPU/CROSSTOOL toolchain API:
-        "//command_line_option:cpu": "wasm32",
+        "//command_line_option:compilation_mode": "opt",
     }
+
+opt_transition = transition(
+    implementation = _opt_transition_impl,
+    inputs = [],
+    outputs = ["//command_line_option:compilation_mode"],
+)
+
+minified_js = rule(
+    implementation = _minified_js_impl,
+    attrs = {
+        "src": attr.label(
+            allow_single_file = [".js"],
+            doc = "JavaScript source file (can be generated), using --compilation_mode=opt.",
+            mandatory = True,
+            cfg = opt_transition,
+        ),
+        "_allowlist_function_transition": attr.label(
+            default = "@bazel_tools//tools/allowlists/function_transition_allowlist",
+        ),
+    },
+)
+
 
 def _wasm_library_impl(ctx):
     emcc = _find_file(ctx.files._emscripten, "emcc")
@@ -152,6 +179,12 @@ def _wasm_library_impl(ctx):
         OutputGroupInfo(js = [lib_js], wasm = [lib_wasm]),
     ]
 
+def _wasm32_transition_impl(settings, attr):
+    return {
+        # Old C++ CPU/CROSSTOOL toolchain API:
+        "//command_line_option:cpu": "wasm32",
+    }
+
 wasm32_transition = transition(
     implementation = _wasm32_transition_impl,
     inputs = [],
@@ -224,3 +257,29 @@ wasm_library = rule(
     },
     fragments = ["cpp"],
 )
+
+def _find_file(files, name):
+    for f in files:
+        if f.basename == name:
+            return f
+    fail("Failed to find {}!".format(name))
+
+IIFE_WRAP_ALL = """
+echo "(() => {{" > $@
+sed {replacements} $(SRCS) >> $@
+echo "}})();" >> $@
+"""
+
+def iife(name, srcs, replace = None):
+    """Wraps all inputs in an IIFE."""
+    native.genrule(
+        name = name,
+        srcs = srcs,
+        outs = ["{}.js".format(name)],
+        cmd = IIFE_WRAP_ALL.format(
+            replacements = " ".join([
+                '-e "s/{}/{}/g"'.format(src, dst)
+                for src, dst in (replace or {}).items()
+            ]),
+        ),
+    )

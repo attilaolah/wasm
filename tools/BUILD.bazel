@@ -16,8 +16,8 @@ filegroup(
 )
 
 bzl_library(
-    name = "wasm_library",
-    srcs = ["wasm_library.bzl"],
+    name = "jabascript",
+    srcs = ["jabascript.bzl"],
 )
 
 bzl_library(

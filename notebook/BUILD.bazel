@@ -1,7 +1,8 @@
 load("@npm//http-server:index.bzl", "http_server")
 load("@io_bazel_rules_closure//closure:defs.bzl", "closure_js_binary", "closure_js_library")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
-load(":js.bzl", "JS_TARGET", "TS_TARGET", "iife")
+load("//tools:javascript_target.bzl", "JS_TARGET", "TS_TARGET")
+load("//tools:javascript.bzl", "iife")
 
 package(default_visibility = ["//visibility:public"])
 

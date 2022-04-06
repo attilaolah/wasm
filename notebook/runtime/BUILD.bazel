@@ -1,7 +1,7 @@
 load("@io_bazel_rules_closure//closure:defs.bzl", "closure_js_binary", "closure_js_library")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
-load("//tools:wasm_library.bzl", "wasm_library")
-load("//notebook:js.bzl", "JS_TARGET", "TS_TARGET")
+load("//tools:javascript_target.bzl", "JS_TARGET", "TS_TARGET")
+load("//tools:javascript.bzl", "minified_js", "wasm_library")
 
 package(default_visibility = ["//notebook:__subpackages__"])
 
@@ -152,6 +152,11 @@ sed --in-place --regexp-extended '
     s/[;\n,]*\$$jscompDefaultExport\$$.*/;export default Module;/g
   ' $@
 """,
+)
+
+minified_js(
+    name = "runtime_wasm_js_3_min",
+    src = ":runtime_wasm_js_3",
 )
 
 filegroup(
