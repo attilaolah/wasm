@@ -1,4 +1,4 @@
-<meta charset="utf-8"><script type="module" src="notebook.mjs"></script><body>
+<script type="module" src="notebook.mjs"></script><body><!--
 # Web Notebooks
 
 > Self-hosted, executable and extensible web pages.
@@ -8,7 +8,7 @@ are executed entirely in the browser -- no "backend" needed. In fact, this page
 is such a notebook! Look at the source code (`Ctrl+U` in Chrome) to learn more.
 
 The entire page is written in Markdown, with a single script tag and a
-`&lt;body&gt;` on the first line.
+`<body>` on the first line.
 
 The runtime supports a few types of code blocks out of the bock, like
 [JavaScript](#code-blocks), [HTML](#html-blocks) and [CSS](#css-blocks).
@@ -39,8 +39,8 @@ for (let i = 0; i < 3; i++) {
 
 HTML can be included just like any other code snipped, using the `html`
 language tag. Note, however, that the browser will execute the HTML before it
-gets added to the body! Once Markdown parsing happens, the HTML will be removed
-and replaced by code blocks.
+gets added to the body! To avoid that, you can wrap the entire page in an HTML
+comment, i.e. start the page with `<!--`.
 
 When an HTML "code block" is executed, its contents get appended right below
 the code block. Like in this example:

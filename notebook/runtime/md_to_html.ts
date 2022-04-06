@@ -1,5 +1,8 @@
 const NULL: number = 0;
 
+const COMMENT_START: RegExp = /^\s*<!--/;
+const COMMENT_END: RegExp = /-->\s*$/;
+
 let gfmRegistered: boolean = false;
 
 const allExtensions: Array<string> = [];
@@ -112,14 +115,16 @@ function listExtensions(): Array<string> {
 }
 
 function mdToHTML(root: HTMLElement, layoutHTML: string) : void {
-  const parser: MDParser = new MDParser(defaultOptions, defaultExtensions);
-
   // Undo any escaping that was inserted by the browser.
-  const content: string = root.innerHTML
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">");
-  const html: string = parser.toHTML(content);
+  let content: string = root.innerHTML;
 
+  // The page could be commented out to avoid escaping issues.
+  if (content.match(COMMENT_START)) {
+    content = content.replace(COMMENT_START, "").replace(COMMENT_END, "");
+  }
+
+  const parser: MDParser = new MDParser(defaultOptions, defaultExtensions);
+  const html: string = parser.toHTML(content);
   parser.free();
 
   const tpl: HTMLTemplateElement = document.createElement("template");
@@ -142,6 +147,7 @@ function mdToHTML(root: HTMLElement, layoutHTML: string) : void {
 
   root.appendChild(tpl.content);
 
+  ensureMetaCharset();
   showLicense(root);
 }
 
@@ -156,6 +162,14 @@ function querySelector(query: string) : HTMLElement {
 
 function querySelectorAll(query: string) : NodeList {
   return getContent().querySelectorAll(query);
+}
+
+function ensureMetaCharset(): void {
+  if (!document.querySelector("meta[charset]")) {
+    const meta: HTMLMetaElement = document.createElement("meta");
+    meta.setAttribute("charset", "utf-8");
+    document.head.insertBefore(meta, document.head.firstChild);
+  }
 }
 
 // Show the theme license as a link.
