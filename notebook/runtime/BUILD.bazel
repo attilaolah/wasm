@@ -22,8 +22,8 @@ TYPE_HINTS = [
 
 ts_project(
     name = "runtime_ts",
-    # The type hints must come first.
-    srcs = TYPE_HINTS + [
+    # The type hints must come first, then compilation mode.
+    srcs = TYPE_HINTS + [":compilation_mode_ts"] + [
         "main.ts",
         "cmark_wrap.ts",
         "md_to_html.ts",
@@ -152,4 +152,16 @@ sed --in-place --regexp-extended '
     s/[;\n,]*\$$jscompDefaultExport\$$.*/;export default Module;/g
   ' $@
 """,
+)
+
+filegroup(
+    name = "compilation_mode_ts",
+    srcs = select({
+        "//config:" + mode: ["compilation_mode_{}.ts".format(mode)]
+        for mode in [
+            "opt",
+            "fastbuild",
+            "dbg",
+        ]
+    }),
 )

@@ -20,7 +20,8 @@ for src in $(locations :mdn_yari_theme); do
   dst="$${dst/_theme.css/.css}"
   dst="$$(dirname "$${src}")/$${dst/_/-}"
   sed --regexp-extended '
-      s/@font-face\{[^}]*\}//g;
+      1h;2,$$H;$$!d;g;
+      s/@font-face\s*\{[^}]*\}//g;
       s:(\.\./)+:/:g;
       s/_theme\.css\.map/.css.map/g;
       s/mdn_yari/mdn-yari/g
@@ -33,4 +34,8 @@ sass_binary(
     name = "mdn_yari_theme",
     src = "mdn_yari_theme.sass",
     deps = ["@mdn_yari//:scss"],
+    output_style = select({
+        "//config:opt": "compressed",
+        "//conditions:default": "expanded",
+    }),
 )

@@ -69,7 +69,8 @@ async function main() : Promise<void> {
   const jsMod = await jsModP;
   const runtime: EmscriptenModule = await new jsMod.default();
 
-  // Export the runtime via the global notebook object.
+  /** Export the runtime via the global notebook object.
+    * @suppress {checkTypes} */
   notebook["runtime"] = runtime;
 
   // Run the main function of the runtime:

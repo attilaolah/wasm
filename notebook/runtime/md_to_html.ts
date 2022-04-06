@@ -141,6 +141,8 @@ function mdToHTML(root: HTMLElement, layoutHTML: string) : void {
   }
 
   root.appendChild(tpl.content);
+
+  showLicense(root);
 }
 
 // DOM accessors:
@@ -154,4 +156,38 @@ function querySelector(query: string) : HTMLElement {
 
 function querySelectorAll(query: string) : NodeList {
   return getContent().querySelectorAll(query);
+}
+
+// Show the theme license as a link.
+function showLicense(root: HTMLElement) : void {
+  const container: HTMLElement = root.querySelector(".page-footer-legal-text");
+
+  // Make the name selectable by moving it to the DOM.
+  const nameCls: string = "theme-name";
+  const nameEl: HTMLElement = container.querySelector(`.${nameCls}`);
+  const [, after] = getBeforeAfter(nameEl);
+  nameEl.classList.remove(nameCls);
+  nameEl.innerText += after;
+
+  // Make the license clickable by wrapping it in an achor tag:
+  const licenseCls: string = "theme-license";
+  const licenseEl: HTMLElement = container.querySelector(`.${licenseCls}`)
+  const [name, url] = getBeforeAfter(licenseEl);
+  licenseEl.classList.remove(licenseCls);
+
+  const a: HTMLAnchorElement = document.createElement("a");
+  a.textContent = name;
+  a.href = url;
+
+  licenseEl.innerHTML = "";
+  licenseEl.appendChild(a);
+}
+
+function getBeforeAfter(el: HTMLElement) : [string, string] {
+  return ["::before", "::after"]
+    .map((selector: string): CSSStyleDeclaration => window.getComputedStyle(el, selector))
+    .map((sd: CSSStyleDeclaration): string => sd.content)
+    .map((content: string): string => {
+      return content === "none" ? null : JSON.parse(content)
+    }) as [string, string];
 }

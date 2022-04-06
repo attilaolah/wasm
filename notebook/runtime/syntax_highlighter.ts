@@ -6,10 +6,10 @@ class SyntaxHighlighter {
   constructor() {
     // Parallel fetch both prism-core and prism-autoloader.
     this.init = Promise.all([
-      loadJS(`${PRISM_PREFIX}/components/prism-core.js`, "Prism", false, {
+      loadJS(`${PRISM_PREFIX}/components/prism-core${COPT ? ".min" : ""}.js`, "Prism", false, {
         manual: "",
       }) as Promise<typeof Prism>,
-      loadJS(`${PRISM_PREFIX}/plugins/autoloader/prism-autoloader.js`),
+      loadJS(`${PRISM_PREFIX}/plugins/autoloader/prism-autoloader${COPT ? ".min" : ""}.js`),
     ]);
   }
 
@@ -26,6 +26,8 @@ class SyntaxHighlighter {
         code.classList.add("language-json");
       });
 
-    (await this.prism()).highlightAllUnder(getContent());
+    const prism = await this.prism();
+    prism.plugins.autoloader.use_minified = COPT;
+    prism.highlightAllUnder(getContent());
   }
 };

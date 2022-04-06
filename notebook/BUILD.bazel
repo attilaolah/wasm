@@ -112,5 +112,4 @@ filegroup(
             "dbg",
         ]
     }),
-    visibility = ["//visibility:public"],
 )

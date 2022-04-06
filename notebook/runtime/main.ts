@@ -1,3 +1,5 @@
+const COPT: boolean = COMPILATION_MODE == "opt";
+
 async function main(notebook: { ["root"]: HTMLElement }, layoutHTML: string) : Promise<void> {
   const hl: SyntaxHighlighter = new SyntaxHighlighter();
 
