@@ -19,7 +19,7 @@ Module["onRuntimeInitialized"] = (): void => {
 function loadJS(
   src: string,
   dataset: { [key: string]: string } = {},
-  async: boolean = false,
+  isAsync: boolean = false,
 ): Promise<void> {
   return new Promise<void>((resolve, reject): void => {
     const script: HTMLScriptElement = document.createElement("script");
@@ -32,7 +32,7 @@ function loadJS(
       resolve();
     });
     script.addEventListener("error", reject);
-    script.async = async;
+    script.async = isAsync;
     script.src = src;
 
     document.head.appendChild(script);
