@@ -108,15 +108,6 @@ function fontCSS(): void {
   addLink(mkLink(`${api}/css2?family=Inter&display=swap`));
 }
 
-function highlightCSS(): void {
-  const darkTheme: boolean = (
-    window.matchMedia &&
-    window.matchMedia('(prefers-color-scheme: dark)').matches
-  );
-  const prism = `https://unpkg.com/prismjs@${PRISM_VERSION}/themes/prism${darkTheme ? "-dark" : ""}${COPT ? ".min" : ""}.css`;
-  addLink(mkLink(prism));
-}
-
 function mkLink(href: string, preConnect: boolean = false, crossOrigin: boolean = false): HTMLLinkElement {
   const link: HTMLLinkElement = document.createElement("link");
   link.href = href;
@@ -148,9 +139,6 @@ const mainCSS = new Promise((resolve, reject) => {
 // Font loading is fire-and-forget.
 // We can live without fonts, and we use font-display: swap anyway.
 setTimeout(fontCSS, 0);
-
-// Syntax highlighting is also non-essential.
-setTimeout(highlightCSS, 0);
 
 const cleanups: Array<() => void> = [
   (): void => { currentScript.remove(); },
