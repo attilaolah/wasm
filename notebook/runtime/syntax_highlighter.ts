@@ -1,5 +1,5 @@
-// TODO: Vendor PrismJS, or at least add a hash to these.
-const PRISM_PREFIX: string = "https://unpkg.com/prismjs@1.27.0";
+const PRISM_VERSION: string = "1.29.0";
+const PRISM_URL_PREFIX: string = `https://unpkg.com/prismjs@${PRISM_VERSION}`;
 
 class SyntaxHighlighter {
   init: Promise<[void, void]>;
@@ -7,10 +7,10 @@ class SyntaxHighlighter {
   constructor() {
     // Parallel fetch both prism-core and prism-autoloader.
     this.init = Promise.all([
-      loadJS(`${PRISM_PREFIX}/components/prism-core${COPT ? ".min" : ""}.js`, {
+      loadJS(`${PRISM_URL_PREFIX}/components/prism-core${COPT ? ".min" : ""}.js`, {
         manual: "",
       }),
-      loadJS(`${PRISM_PREFIX}/plugins/autoloader/prism-autoloader${COPT ? ".min" : ""}.js`),
+      loadJS(`${PRISM_URL_PREFIX}/plugins/autoloader/prism-autoloader${COPT ? ".min" : ""}.js`),
     ]);
   }
 

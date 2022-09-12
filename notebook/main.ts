@@ -4,9 +4,6 @@ const THEME_CSS: string = "themes/mdn-yari.css";
 
 const COPT: boolean = COMPILATION_MODE == "opt";
 
-// PrismJS version to use:
-const PRISM_VERSION: string = "1.27.0";
-
 const currentScript: HTMLScriptElement =
   (document["currentScript"] || Array.from(
     // In case this script is loaded as a module:
