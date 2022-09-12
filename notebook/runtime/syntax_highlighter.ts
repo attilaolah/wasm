@@ -1,3 +1,4 @@
+// TODO: Vendor PrismJS, or at least add a hash to these.
 const PRISM_PREFIX: string = "https://unpkg.com/prismjs@1.27.0";
 
 class SyntaxHighlighter {
