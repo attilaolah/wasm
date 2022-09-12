@@ -50,7 +50,10 @@ the code block. Like in this example:
 <span>This is some text…</span>
 <script>
   // But beware of inline script tags!
-  console.log("This will be eagerly executed by the browser!");
+  console.log(`
+    Unless wrapped in a comment block,
+    this script will be eagerly executed by the browser!
+  `);
 </script>
 ```
 
