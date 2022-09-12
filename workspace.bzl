@@ -88,10 +88,10 @@ def workspace_dependencies():
 
     http_archive(
         name = "io_bazel_rules_sass",
-        version = "1.49.11",
+        version = "1.54.9",
         urls = ["https://github.com/bazelbuild/rules_sass/archive/refs/tags/{version}.tar.gz"],
         strip_prefix = "rules_sass-{version}",
-        sha256 = "fc6952f55ae9fbce6be058cbecbf5f0bf60fb715ca06994921f8127df1cf52be",
+        sha256 = "8153959858eb898a8eca9f4408f0287c73bfdb85f048a14a8a271fe12b780433",
         build_file_content = None,
     )
 
