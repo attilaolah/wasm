@@ -148,6 +148,7 @@ function mdToHTML(root: HTMLElement, layoutHTML: string): void {
   root.appendChild(tpl.content);
 
   ensureMetaCharset();
+  createHeadingAnchors();
   showLicense(root);
 }
 
@@ -162,6 +163,26 @@ function querySelector(query: string): HTMLElement {
 
 function querySelectorAll(query: string): NodeList {
   return getContent().querySelectorAll(query);
+}
+
+function createHeadingAnchors(): void {
+  // TODO: Remove when the upstream issue is fixed:
+  // https://github.com/github/cmark-gfm/issues/186
+  // TODO: Avoid duplicates!
+  querySelectorAll(
+    Array
+      .from(Array(6).keys())
+      .map(level => `h${level+1}`)
+      .join()
+  ).forEach((heading: HTMLElement): void => {
+    heading.id = heading
+      .innerText
+      .normalize("NFKD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .trim()
+      .replace(/\s+/g, '-')
+      .toLowerCase();
+  });
 }
 
 function ensureMetaCharset(): void {
