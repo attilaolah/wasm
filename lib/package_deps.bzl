@@ -8,6 +8,7 @@ PACKAGE_DEPS = [
     "//lib/bz2:package",
     "//lib/ceres:package",
     "//lib/cmark:package",
+    "//lib/cmarkgfm:package",
     "//lib/curl:package",
     "//lib/deflate:package",
     "//lib/eigen:package",
