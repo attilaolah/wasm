@@ -147,29 +147,26 @@ function mdToHTML(root: HTMLElement, layoutHTML: string): void {
 
   root.appendChild(tpl.content);
 
-  ensureMetaCharset();
-  createHeadingAnchors();
+  ensureMetaCharset(root);
+  createHeadingAnchors(root);
   showLicense(root);
 }
 
-// DOM accessors:
-function getContent(): HTMLElement {
-  return document.getElementById("content");
+function ensureMetaCharset(root: HTMLElement): void {
+  const document: HTMLDocument = root.ownerDocument;
+
+  if (!document.querySelector("meta[charset]")) {
+    const meta: HTMLMetaElement = document.createElement("meta");
+    meta.setAttribute("charset", "utf-8");
+    document.head.insertBefore(meta, document.head.firstChild);
+  }
 }
 
-function querySelector(query: string): HTMLElement {
-  return getContent().querySelector(query);
-}
-
-function querySelectorAll(query: string): NodeList {
-  return getContent().querySelectorAll(query);
-}
-
-function createHeadingAnchors(): void {
-  // TODO: Remove when the upstream issue is fixed:
+// TODO: Avoid duplicates!
+function createHeadingAnchors(root: HTMLElement): void {
+  // NOTE: Remove when the upstream issue is fixed:
   // https://github.com/github/cmark-gfm/issues/186
-  // TODO: Avoid duplicates!
-  querySelectorAll(
+  root.querySelectorAll(
     Array
       .from(Array(6).keys())
       .map(level => `h${level+1}`)
@@ -183,14 +180,6 @@ function createHeadingAnchors(): void {
       .replace(/\s+/g, '-')
       .toLowerCase();
   });
-}
-
-function ensureMetaCharset(): void {
-  if (!document.querySelector("meta[charset]")) {
-    const meta: HTMLMetaElement = document.createElement("meta");
-    meta.setAttribute("charset", "utf-8");
-    document.head.insertBefore(meta, document.head.firstChild);
-  }
 }
 
 // Show the theme license as a link.

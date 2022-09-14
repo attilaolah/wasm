@@ -14,10 +14,10 @@ class SyntaxHighlighter {
     ]);
   }
 
-  async run() {
+  async run(root: HTMLElement): Promise<void> {
     // If there are any notebook-config blocks, remove the language-xxxx class to
     // prevent it from triggering a pointless lookup during syntax highlighting.
-    querySelectorAll(`pre>code.language-notebook-config`)
+    root.querySelectorAll(`pre>code.language-notebook-config`)
       .forEach((code: HTMLElement): void => {
         code.classList.remove("language-notebook-config");
         code.classList.add("language-json");
@@ -25,6 +25,6 @@ class SyntaxHighlighter {
 
     await this.init;
     Prism.plugins.autoloader.use_minified = COPT;
-    Prism.highlightAllUnder(getContent());
+    Prism.highlightAllUnder(root);
   }
 };

@@ -5,8 +5,9 @@ async function main(notebook: { ["root"]: HTMLElement }, layoutHTML: string): Pr
 
   mdToHTML(notebook.root, layoutHTML);
   createTOC(notebook.root);
+  prepareBlocks(notebook.root);
 
-  await hl.run();
+  await hl.run(notebook.root);
 }
 
 Module["onRuntimeInitialized"] = (): void => {

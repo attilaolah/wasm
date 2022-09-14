@@ -1,4 +1,4 @@
-load("@io_bazel_rules_sass//:defs.bzl", "sass_binary")
+load("@io_bazel_rules_sass//:defs.bzl", "sass_binary", "sass_library")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -37,5 +37,19 @@ sass_binary(
         "//config:opt": "compressed",
         "//conditions:default": "expanded",
     }),
-    deps = ["@mdn_yari//:scss"],
+    deps = [
+        ":code_blocks",
+        ":mdn_yari_footer",
+        "@mdn_yari//:scss",
+    ],
+)
+
+sass_library(
+    name = "code_blocks",
+    srcs = ["code_blocks.sass"],
+)
+
+sass_library(
+    name = "mdn_yari_footer",
+    srcs = ["mdn_yari_footer.sass"],
 )

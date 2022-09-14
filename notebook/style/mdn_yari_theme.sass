@@ -3,12 +3,6 @@
 @import "external/mdn_yari/client/src/document/organisms/toc"
 @import "external/mdn_yari/client/src/ui/organisms/footer"
 
-.page-footer-legal-text
-  .theme-name::after
-    content: "MDN Yari"
-    cursor: text
-  .theme-license
-    &::before
-      content: "MPL-2.0"
-    &::after
-      content: "https://github.com/mdn/yari/blob/main/LICENSE"
+@import "code_blocks"
+
+@import "mdn_yari_footer"
