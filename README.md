@@ -78,7 +78,7 @@ toolchain, pass `--cpu=wasm32`. Pass `-c opt` for an optimised build.
 [`//lib/python`](https://github.com/attilaolah/wasm/blob/main/lib/python/BUILD.bazel) | 3.10.7 [🔗](https://www.python.org/ftp/python/3.10.7/Python-3.10.7.tar.xz)
 [`//lib/quirc`](https://github.com/attilaolah/wasm/blob/main/lib/quirc/BUILD.bazel) | 1.0.1 [🔗](https://github.com/evolation/libquirc/archive/refs/tags/1.0.1.tar.gz)
 [`//lib/readline`](https://github.com/attilaolah/wasm/blob/main/lib/readline/BUILD.bazel) | 8.0 [🔗](https://ftp.gnu.org/gnu/readline/readline-8.0.tar.gz)
-[`//lib/sdl`](https://github.com/attilaolah/wasm/blob/main/lib/sdl/BUILD.bazel) | 2.0.20 [🔗](https://www.libsdl.org/release/SDL2-2.0.20.tar.gz)
+[`//lib/sdl`](https://github.com/attilaolah/wasm/blob/main/lib/sdl/BUILD.bazel) | 2.24.0 [🔗](https://www.libsdl.org/release/SDL2-2.24.0.tar.gz)
 [`//lib/sqlite`](https://github.com/attilaolah/wasm/blob/main/lib/sqlite/BUILD.bazel) | 3.35.5 [🔗](https://www.sqlite.org/2021/sqlite-autoconf-3350500.tar.gz)
 [`//lib/suitesparse`](https://github.com/attilaolah/wasm/blob/main/lib/suitesparse/BUILD.bazel) | 5.9.0 [🔗](https://github.com/DrTimothyAldenDavis/SuiteSparse/archive/v5.9.0.tar.gz)
 [`//lib/szip`](https://github.com/attilaolah/wasm/blob/main/lib/szip/BUILD.bazel) | 2.1.1 [🔗](https://support.hdfgroup.org/ftp/lib-external/szip/2.1.1/src/szip-2.1.1.tar.gz)
