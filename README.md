@@ -27,7 +27,7 @@ toolchain, pass `--cpu=wasm32`. Pass `-c opt` for an optimised build.
 | Build Label | Version |
 |-------------|---------|
 [`//lib/aec`](https://github.com/attilaolah/wasm/blob/main/lib/aec/BUILD.bazel) | 1.0.6 [🔗](https://gitlab.dkrz.de/k202009/libaec/-/archive/v1.0.6/libaec-v1.0.6.tar.bz2)
-[`//lib/bison`](https://github.com/attilaolah/wasm/blob/main/lib/bison/BUILD.bazel) | 3.7.6 [🔗](https://ftp.gnu.org/gnu/bison/bison-3.7.6.tar.xz)
+[`//lib/bison`](https://github.com/attilaolah/wasm/blob/main/lib/bison/BUILD.bazel) | 3.8.2 [🔗](https://ftp.gnu.org/gnu/bison/bison-3.8.2.tar.xz)
 [`//lib/blas`](https://github.com/attilaolah/wasm/blob/main/lib/blas/BUILD.bazel) | 3.10.0 [🔗](http://www.netlib.org/blas/blas-3.10.0.tgz)
 [`//lib/boost`](https://github.com/attilaolah/wasm/blob/main/lib/boost/BUILD.bazel) | 1.77.0 [🔗](https://boostorg.jfrog.io/ui/api/v1/download?repoKey=main&path=release/1.77.0/source/boost_1_77_0.tar.gz)
 [`//lib/bz2`](https://github.com/attilaolah/wasm/blob/main/lib/bz2/BUILD.bazel) | 1.0.8 [🔗](https://sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz)
