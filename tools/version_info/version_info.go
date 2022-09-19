@@ -17,21 +17,25 @@ import (
 var (
 	// GRASS and others have a glued-on release candidate:
 	rxPreRelease = regexp.MustCompile(`(v?\d+(?:\.\d+)*)(RC\d+)`)
+	// Bison version numbers: 1.2x -> 1.2.0+x
 	// OpenSSL version numbers: 1.2.3x -> 1.2.3+x
 	// CMark-GFM version numbers: 0.29.0.gfm.3 -> 0.29.0+gfm.3
-	rxBuild = regexp.MustCompile(`(v?\d+(?:\.\d+){2})\.?([0-9a-z.]+)`)
+	rxBuild = regexp.MustCompile(`(v?\d+(?:\.\d+){1,2})\.?([a-z]+\.*[0-9]*)`)
 )
 
 func fixPreRelease(v string) string {
 	if m := rxPreRelease.FindAllStringSubmatch(v, 1); len(m) == 1 {
-		v = m[0][1] + "-" + m[0][2]
+		return m[0][1] + "-" + m[0][2]
 	}
 	return v
 }
 
 func fixBuild(v string) string {
 	if m := rxBuild.FindAllStringSubmatch(v, 1); len(m) == 1 {
-		v = m[0][1] + "+" + m[0][2]
+		if strings.Count(m[0][1], ".") == 1 {
+			return m[0][1] + ".0+" + m[0][2]
+		}
+		return m[0][1] + "+" + m[0][2]
 	}
 	return v
 }
