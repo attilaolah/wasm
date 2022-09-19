@@ -70,7 +70,7 @@ toolchain, pass `--cpu=wasm32`. Pass `-c opt` for an optimised build.
 [`//lib/opencv`](https://github.com/attilaolah/wasm/blob/main/lib/opencv/BUILD.bazel) | 4.6.0 [🔗](https://github.com/opencv/opencv/archive/4.6.0.zip)
 [`//lib/openexr`](https://github.com/attilaolah/wasm/blob/main/lib/openexr/BUILD.bazel) | 3.1.4 [🔗](https://github.com/AcademySoftwareFoundation/openexr/archive/refs/tags/v3.1.4.tar.gz)
 [`//lib/openjpeg`](https://github.com/attilaolah/wasm/blob/main/lib/openjpeg/BUILD.bazel) | 2.4.0 [🔗](https://github.com/uclouvain/openjpeg/archive/v2.4.0.tar.gz)
-[`//lib/openssl`](https://github.com/attilaolah/wasm/blob/main/lib/openssl/BUILD.bazel) | 3.0.2 [🔗](https://www.openssl.org/source/openssl-3.0.2.tar.gz)
+[`//lib/openssl`](https://github.com/attilaolah/wasm/blob/main/lib/openssl/BUILD.bazel) | 3.0.5 [🔗](https://www.openssl.org/source/openssl-3.0.5.tar.gz)
 [`//lib/pano13`](https://github.com/attilaolah/wasm/blob/main/lib/pano13/BUILD.bazel) | 2.9.19 [🔗](https://download.sourceforge.net/panotools/libpano13-2.9.19.tar.gz)
 [`//lib/png`](https://github.com/attilaolah/wasm/blob/main/lib/png/BUILD.bazel) | 1.6.37 [🔗](https://downloads.sourceforge.net/libpng/libpng-1.6.37.tar.gz)
 [`//lib/proj`](https://github.com/attilaolah/wasm/blob/main/lib/proj/BUILD.bazel) | 8.0.1 [🔗](https://download.osgeo.org/proj/proj-8.0.1.tar.gz)
