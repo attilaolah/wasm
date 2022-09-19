@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 
 	"golang.org/x/mod/modfile"
@@ -31,9 +32,17 @@ func TestGoConsistency(t *testing.T) {
 	set[goBzl] = struct{}{}
 	set[goWfl] = struct{}{}
 
-	if len(set) != 1 {
-		t.Errorf("multiple go versions detected: mod = %q, workspace = %q, workflows = %q", goMod, goBzl, goWfl)
+	if len(set) == 1 {
+		return // All versions are in sync.
 	}
+
+	if strings.HasPrefix(goBzl, goMod+".") && goBzl == goWfl {
+		// It is possible that a patch version is specified in the workspace rules.
+		// In this case, the same patch version must be specified for the GitHub actions too.
+		return
+	}
+
+	t.Errorf("multiple go versions detected: mod = %q, workspace = %q, workflows = %q", goMod, goBzl, goWfl)
 }
 
 func goVersionMod() (string, error) {
