@@ -1,4 +1,5 @@
 load("//lib:lib.bzl", "package_lib")
+load("//toolchains:utils.bzl", "no_error")
 load("//toolchains/cmake:cmake.bzl", "cache_entries", "cmake_lib")
 load(":package.bzl", "NAME", "STATIC_LIBS")
 
@@ -12,6 +13,10 @@ package_lib(
 cmake_lib(
     name = NAME,
     cache_entries = cache_entries(
+        cmake_c_flags = no_error([
+            # keep sorted
+            "sign-compare",
+        ]),
         cmark_shared = False,
         cmark_static = True,
         cmark_tests = False,
