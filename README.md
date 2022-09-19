@@ -33,7 +33,7 @@ toolchain, pass `--cpu=wasm32`. Pass `-c opt` for an optimised build.
 [`//lib/bz2`](https://github.com/attilaolah/wasm/blob/main/lib/bz2/BUILD.bazel) | 1.0.8 [🔗](https://sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz)
 [`//lib/ceres`](https://github.com/attilaolah/wasm/blob/main/lib/ceres/BUILD.bazel) | 2.1.0 [🔗](https://github.com/ceres-solver/ceres-solver/archive/2.1.0.tar.gz)
 [`//lib/cmark`](https://github.com/attilaolah/wasm/blob/main/lib/cmark/BUILD.bazel) | 0.30.2 [🔗](https://github.com/commonmark/cmark/archive/refs/tags/0.30.2.tar.gz)
-[`//lib/cmarkgfm`](https://github.com/attilaolah/wasm/blob/main/lib/cmarkgfm/BUILD.bazel) | 0.29.0.gfm.3 [🔗](https://github.com/github/cmark-gfm/archive/refs/tags/0.29.0.gfm.3.tar.gz)
+[`//lib/cmarkgfm`](https://github.com/attilaolah/wasm/blob/main/lib/cmarkgfm/BUILD.bazel) | 0.29.0.gfm.6 [🔗](https://github.com/github/cmark-gfm/archive/refs/tags/0.29.0.gfm.6.tar.gz)
 [`//lib/curl`](https://github.com/attilaolah/wasm/blob/main/lib/curl/BUILD.bazel) | 7.82.0 [🔗](https://curl.se/download/curl-7.82.0.tar.xz)
 [`//lib/deflate`](https://github.com/attilaolah/wasm/blob/main/lib/deflate/BUILD.bazel) | 1.7 [🔗](https://github.com/ebiggers/libdeflate/archive/v1.7.tar.gz)
 [`//lib/eigen`](https://github.com/attilaolah/wasm/blob/main/lib/eigen/BUILD.bazel) | 3.4.0 [🔗](https://gitlab.com/libeigen/eigen/-/archive/3.4.0/eigen-3.4.0.tar.bz2)
