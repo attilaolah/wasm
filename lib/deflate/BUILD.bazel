@@ -4,6 +4,9 @@ load(":package.bzl", "NAME")
 
 package(default_visibility = ["//:__subpackages__"])
 
-package_lib()
+package_lib(
+    version_regex = r'<include-fragment loading="lazy" src="https://github.com/ebiggers/libdeflate/releases/expanded_assets/v([^"]+)" data-test-selector="lazy-asset-list-fragment">',
+    version_url = "https://github.com/ebiggers/libdeflate/releases",
+)
 
 make_lib(name = NAME)

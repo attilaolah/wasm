@@ -3,11 +3,11 @@
 load("//lib:http_archive.bzl", "http_archive")
 
 NAME = "deflate"
-VERSION = "1.7"
+VERSION = "1.14"
 
 URL = "https://github.com/ebiggers/lib{name}/archive/v{version}.tar.gz"
 
-SHA256 = "a5e6a0a9ab69f40f0f59332106532ca76918977a974e7004977a9498e3f11350"
+SHA256 = "89e7df898c37c3427b0f39aadcf733731321a278771d20fc553f92da8d4808ac"
 
 def download():
     http_archive(
