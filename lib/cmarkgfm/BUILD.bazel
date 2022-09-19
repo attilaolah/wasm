@@ -5,8 +5,8 @@ load(":package.bzl", "NAME", "STATIC_LIBS")
 package(default_visibility = ["//:__subpackages__"])
 
 package_lib(
-    version_regex = r'href="/github/cmark-gfm/archive/refs/tags/([^<]+)\.tar\.gz"',
-    version_url = "https://github.com/github/cmark-gfm/releases",
+    github_release = ('github', 'cmark-gfm'),
+    github_version_prefix = '',
 )
 
 cmake_lib(

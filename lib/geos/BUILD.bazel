@@ -5,8 +5,8 @@ load(":package.bzl", "NAME", "STATIC_LIBS")
 package(default_visibility = ["//:__subpackages__"])
 
 package_lib(
-    version_regex = r'href="/libgeos/geos/archive/refs/tags/([^"]+).tar.gz"',
-    version_url = "https://github.com/libgeos/geos/tags",
+    github_release = ('lib{name}', '{name}'),
+    github_version_prefix = '',
 )
 
 CACHE_ENTRIES = cache_entries(

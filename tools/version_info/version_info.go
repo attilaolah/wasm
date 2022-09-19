@@ -16,11 +16,11 @@ import (
 
 var (
 	// GRASS and others have a glued-on release candidate:
-	rxPreRelease = regexp.MustCompile(`(v?\d+(?:\.\d+)*)(RC\d+)`)
+	rxPreRelease = regexp.MustCompile(`(?i)(v?\d+(?:\.\d+)*)(rc\d+)`)
 	// Bison version numbers: 1.2x -> 1.2.0+x
 	// OpenSSL version numbers: 1.2.3x -> 1.2.3+x
 	// CMark-GFM version numbers: 0.29.0.gfm.3 -> 0.29.0+gfm.3
-	rxBuild = regexp.MustCompile(`(v?\d+(?:\.\d+){1,2})\.?([a-z]+\.*[0-9]*)`)
+	rxBuild = regexp.MustCompile(`(?i)(v?\d+(?:\.\d+){1,2})\.?([a-z]+\.*[0-9]*)`)
 )
 
 func fixPreRelease(v string) string {

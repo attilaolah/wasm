@@ -4,7 +4,9 @@ load(":package.bzl", "NAME", "STATIC_LIBS")
 
 package(default_visibility = ["//:__subpackages__"])
 
-package_lib()
+package_lib(
+    github_release = ('{tname}', '{name}'),
+)
 
 cmake_lib(
     name = NAME,

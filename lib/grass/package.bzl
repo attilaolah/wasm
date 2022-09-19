@@ -4,11 +4,11 @@ load("//lib:defs.bzl", "major_minor", "static_lib")
 load("//lib:http_archive.bzl", "http_archive")
 
 NAME = "grass"
-VERSION = "8.0.1"
+VERSION = "8.2.0"
 
-URL = "https://{name}.osgeo.org/{name}{versionmmx}/source/{name}-{version}.tar.gz"
+URL = "https://github.com/OSGeo/{name}/archive/refs/tags/{version}.tar.gz"
 
-SHA256 = "e925bf8c44e1809459974457f2ab3c61dd5a24c0655ed026de665d1494f68a96"
+SHA256 = "621c3304a563be19c0220ae28f931a5e9ba74a53218c5556cd3f7fbfcca33a80"
 
 STATIC_LIBS = [
     static_lib("{}_{}.{}".format(NAME, lib, major_minor(VERSION)))

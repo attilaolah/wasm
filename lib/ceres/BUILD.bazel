@@ -4,7 +4,10 @@ load("//toolchains/cmake:cmake.bzl", "cache_entries", "cmake_lib")
 
 package(default_visibility = ["//:__subpackages__"])
 
-package_lib()
+package_lib(
+    github_tag = '{name}-solver',
+    github_version_prefix = '',
+)
 
 SS_LIBS = [
     # keep sorted

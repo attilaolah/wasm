@@ -4,6 +4,8 @@ load(":package.bzl", "NAME")
 
 package(default_visibility = ["//:__subpackages__"])
 
-package_lib()
+package_lib(
+    github_release = ('ebiggers', 'lib{name}'),
+)
 
 make_lib(name = NAME)

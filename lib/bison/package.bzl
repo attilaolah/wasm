@@ -4,11 +4,11 @@ load("//lib:defs.bzl", "static_lib")
 load("//lib:http_archive.bzl", "http_archive")
 
 NAME = "bison"
-VERSION = "3.7.6"
+VERSION = "3.8.2"
 
 URL = "https://ftp.gnu.org/gnu/{name}/{name}-{version}.tar.xz"
 
-SHA256 = "67d68ce1e22192050525643fc0a7a22297576682bef6a5c51446903f5aeef3cf"
+SHA256 = "9bba0214ccf7f1079c5d59210045227bcf619519840ebfa80cd3849cff5a5bf2"
 
 STATIC_LIBS = [static_lib("y")]
 
