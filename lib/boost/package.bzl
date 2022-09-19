@@ -4,11 +4,11 @@ load("//lib:defs.bzl", "static_lib")
 load("//lib:http_archive.bzl", "http_archive")
 
 NAME = "boost"
-VERSION = "1.77.0"
+VERSION = "1.80.0"
 
-URL = "https://boostorg.jfrog.io/ui/api/v1/download?repoKey=main&path=release/{version}/source/{name}_{version_}.tar.gz"
+URL = "https://boostorg.jfrog.io/artifactory/main/release/{version}/source/{name}_{version_}.tar.bz2"
 
-SHA256 = "5347464af5b14ac54bb945dc68f1dd7c56f0dad7262816b956138fc53bcc0131"
+SHA256 = "1e19565d82e43bc59209a168f5ac899d3ba471d55c7610c677d4ccf2c9c500c0"
 
 STATIC_LIBS = [static_lib("_".join([NAME, lib])) for lib in [
     # keep sorted
@@ -60,10 +60,10 @@ def download():
         version = VERSION,
         urls = [URL],
         sha256 = SHA256,
-        type = "tar.gz",
         strip_prefix = "{name}_{version_}",
         patch_cmds = [
-            # Remove files with Non-ASCII names to prevent Bazel from freaking out.
+            # Remove test files with Non-ASCII names.
+            # These produce Bazel warnings, and we don't use them anyway.
             "rm -r libs/wave/test/testwave/testfiles/utf8-test-*",
         ],
     )
