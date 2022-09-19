@@ -6,8 +6,9 @@ load(":package.bzl", "NAME")
 package(default_visibility = ["//:__subpackages__"])
 
 package_lib(
-    version_regex = r">\s*The current stable version is bzip2 ([^<]+)\.\s*<",
-    version_url = "https://www.sourceware.org/bzip2/downloads.html",
+    # Quite specific, to exclude bzip2-latest.tar.gz.
+    version_regex = r'<a href="bzip2-([0-9][^"]+).tar.gz">',
+    version_url = "https://sourceware.org/pub/bzip2/",
 )
 
 make_lib(
