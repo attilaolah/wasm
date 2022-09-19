@@ -44,7 +44,7 @@ toolchain, pass `--cpu=wasm32`. Pass `-c opt` for an optimised build.
 [`//lib/flex`](https://github.com/attilaolah/wasm/blob/main/lib/flex/BUILD.bazel) | 2.6.4 [🔗](https://github.com/westes/flex/releases/download/v2.6.4/flex-2.6.4.tar.gz)
 [`//lib/gcc`](https://github.com/attilaolah/wasm/blob/main/lib/gcc/BUILD.bazel) | 10.2.0 [🔗](https://ftp.gnu.org/gnu/gcc/gcc-10.2.0/gcc-10.2.0.tar.xz) [🔗](https://mirror.kumi.systems/gnu/gcc/gcc-10.2.0/gcc-10.2.0.tar.xz)
 [`//lib/gdal`](https://github.com/attilaolah/wasm/blob/main/lib/gdal/BUILD.bazel) | 3.4.2 [🔗](http://download.osgeo.org/gdal/3.4.2/gdal-3.4.2.tar.gz) [🔗](https://github.com/OSGeo/gdal/releases/download/v3.4.2/gdal-3.4.2.tar.gz)
-[`//lib/geos`](https://github.com/attilaolah/wasm/blob/main/lib/geos/BUILD.bazel) | 3.10.2 [🔗](https://github.com/libgeos/geos/archive/3.10.2.tar.gz)
+[`//lib/geos`](https://github.com/attilaolah/wasm/blob/main/lib/geos/BUILD.bazel) | 3.11.0 [🔗](https://github.com/libgeos/geos/archive/3.11.0.tar.gz)
 [`//lib/geotiff`](https://github.com/attilaolah/wasm/blob/main/lib/geotiff/BUILD.bazel) | 1.6.0 [🔗](https://github.com/OSGeo/libgeotiff/releases/download/1.6.0/libgeotiff-1.6.0.tar.gz)
 [`//lib/gflags`](https://github.com/attilaolah/wasm/blob/main/lib/gflags/BUILD.bazel) | 2.2.2 [🔗](https://github.com/gflags/gflags/archive/v2.2.2.tar.gz)
 [`//lib/gif`](https://github.com/attilaolah/wasm/blob/main/lib/gif/BUILD.bazel) | 5.2.1 [🔗](https://downloads.sourceforge.net/project/giflib/giflib-5.2.1.tar.gz)
