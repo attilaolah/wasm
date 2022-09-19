@@ -5,8 +5,8 @@ load("//toolchains/cmake:cmake.bzl", "cache_entries", "cmake_lib")
 package(default_visibility = ["//:__subpackages__"])
 
 package_lib(
-    version_regex = '<a href="/ceres-solver/ceres-solver/releases/tag/([^"]+)">',
-    version_url = "https://github.com/ceres-solver/ceres-solver/tags",
+    github_tag = '{name}-solver',
+    github_version_prefix = '',
 )
 
 SS_LIBS = [

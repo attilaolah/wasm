@@ -8,8 +8,8 @@ load(":package.bzl", "NAME", "STATIC_LIBS", "VERSION")
 package(default_visibility = ["//:__subpackages__"])
 
 package_lib(
-    version_regex = r">https://grass\.osgeo\.org/[^<]+/source/grass-([^<]+)\.tar\.gz<",
-    version_url = "https://github.com/OSGeo/grass/releases",
+    github_release = ('OSGeo', '{name}'),
+    github_version_prefix = '',
 )
 
 BUILD_DEPS = [

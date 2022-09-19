@@ -5,8 +5,8 @@ load(":package.bzl", "NAME")
 package(default_visibility = ["//:__subpackages__"])
 
 package_lib(
-    version_regex = r'<include-fragment loading="lazy" src="https://github.com/commonmark/cmark/releases/expanded_assets/([^"]+)" data-test-selector="lazy-asset-list-fragment">',
-    version_url = "https://github.com/commonmark/cmark/releases",
+    github_release = ('commonmark', '{name}'),
+    github_version_prefix = '',
 )
 
 cmake_lib(

@@ -5,8 +5,8 @@ load(":package.bzl", "NAME", "STATIC_LIBS")
 package(default_visibility = ["//:__subpackages__"])
 
 package_lib(
-    version_regex = r'<include-fragment loading="lazy" src="https://github.com/libgeos/geos/releases/expanded_assets/([^"]+)" data-test-selector="lazy-asset-list-fragment">',
-    version_url = "https://github.com/libgeos/geos/releases",
+    github_release = ('lib{name}', '{name}'),
+    github_version_prefix = '',
 )
 
 CACHE_ENTRIES = cache_entries(
