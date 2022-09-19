@@ -5,11 +5,11 @@ load("//lib:http_archive.bzl", "http_archive")
 
 NAME = "cmarkgfm"
 LNAME = "cmark-gfm"
-VERSION = "0.29.0.gfm.3"
+VERSION = "0.29.0.gfm.6"
 
 URL = "https://github.com/github/cmark-gfm/archive/refs/tags/{version}.tar.gz"
 
-SHA256 = "56fba15e63676c756566743dcd43c61c6a77cc1d17ad8be88a56452276ba4d4c"
+SHA256 = "b17d86164c0822b5db3818780b44cb130ff30e9c6ec6a64f199b6d142684dba0"
 
 STATIC_LIBS = [
     static_lib(LNAME),

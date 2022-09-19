@@ -4,11 +4,11 @@ load("//lib:defs.bzl", "major", "static_lib")
 load("//lib:http_archive.bzl", "http_archive")
 
 NAME = "sdl"
-VERSION = "2.0.20"
+VERSION = "2.24.0"
 
 URL = "https://www.lib{name}.org/release/{uname}{versionm}-{version}.tar.gz"
 
-SHA256 = "c56aba1d7b5b0e7e999e4a7698c70b63a3394ff9704b5f6e1c57e0c16f04dd06"
+SHA256 = "91e4c34b1768f92d399b078e171448c6af18cafda743987ed2064a28954d6d97"
 
 STATIC_LIBS = [
     static_lib(NAME.upper() + major(VERSION)),
