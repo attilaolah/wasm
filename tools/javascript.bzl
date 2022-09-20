@@ -52,7 +52,6 @@ minified_js = rule(
     },
 )
 
-
 def _wasm_library_impl(ctx):
     emcc = _find_file(ctx.files._emscripten, "emcc")
 

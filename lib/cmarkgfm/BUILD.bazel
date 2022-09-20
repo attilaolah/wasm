@@ -6,8 +6,8 @@ load(":package.bzl", "NAME", "STATIC_LIBS")
 package(default_visibility = ["//:__subpackages__"])
 
 package_lib(
-    github_release = ('github', 'cmark-gfm'),
-    github_version_prefix = '',
+    github_release = ("github", "cmark-gfm"),
+    github_version_prefix = "",
 )
 
 cmake_lib(

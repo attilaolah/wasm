@@ -12,7 +12,7 @@ package(default_visibility = ["//:__subpackages__"])
 
 package_lib(
     github_release = True,
-    github_version_prefix = '',
+    github_version_prefix = "",
 )
 
 C_FLAGS = include_flags(OPENJPEG_SPEC["include_dir"])

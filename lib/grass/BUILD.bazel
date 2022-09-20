@@ -8,8 +8,8 @@ load(":package.bzl", "NAME", "STATIC_LIBS", "VERSION")
 package(default_visibility = ["//:__subpackages__"])
 
 package_lib(
-    github_release = ('OSGeo', '{name}'),
-    github_version_prefix = '',
+    github_release = ("OSGeo", "{name}"),
+    github_version_prefix = "",
 )
 
 BUILD_DEPS = [
