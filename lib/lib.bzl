@@ -72,7 +72,7 @@ def package_lib(
             prefix = github_version_prefix,
         )
     elif github_tag:
-        version_regex = '<a href="/{owner}/{repo}/releases/tag/{prefix}([^"]+)">'.format(
+        version_regex = _GH_TAG_REGEX.format(
             prefix = github_version_prefix,
             **gh_params,
         )
