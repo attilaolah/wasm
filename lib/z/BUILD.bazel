@@ -13,4 +13,5 @@ configure_make_lib(
         # Needed by //lib/python:runtime?
         "CFLAGS": "-fPIC",
     },
+    hdrs = ["zlib.h"],
 )
