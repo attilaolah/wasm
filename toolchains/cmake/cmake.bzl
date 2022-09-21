@@ -8,12 +8,14 @@ load("@rules_foreign_cc//foreign_cc:cmake.bzl", "cmake")
 load("//lib:cache_entries.bzl", "include_dir_key", "library_key")
 load("//lib:defs.bzl", "dep_spec")
 load("//toolchains/make:configure.bzl", "emscripten_env", _build_data = "build_data", _lib_source = "lib_source")
+load("//tools:parsed_headers.bzl", "parsed_headers")
 load("//tools/archive_symbols:archive_symbols.bzl", "archive_symbols")
 
 def cmake_lib(
         name,
         lib_source = None,
         build_data = None,
+        hdrs = None,
         out_static_libs = None,
         cache_entries = None,
         env = None,
@@ -26,6 +28,7 @@ def cmake_lib(
       lib_source: Passed on to cmake(). Guessed from name.
       build_data: Additional build-time dependencies, compiled with cfg =
         "exec".
+      hdrs: List of headers to parse and generate symbols for.
       out_static_libs: Passed on to cmake(). Guessed from name.
       cache_entries: Convert True/False to "ON"/"OFF", then passed on to
         cmake().
@@ -76,6 +79,13 @@ def cmake_lib(
         out_static_libs = out_static_libs,
         **kwargs
     )
+
+    if hdrs != None:
+        parsed_headers(
+            name = "{}_h".format(name),
+            deps = [":{}".format(name)],
+            hdrs = hdrs,
+        )
 
     archive_symbols(
         archive = name,
