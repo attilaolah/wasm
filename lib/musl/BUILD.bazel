@@ -4,7 +4,10 @@ load(":package.bzl", "NAME", "STATIC_LIBS")
 
 package(default_visibility = ["//lib:__subpackages__"])
 
-package_lib()
+package_lib(
+    version_regex = '<a href="releases/musl-([^"]+).tar.gz">',
+    version_url = "https://musl.libc.org/releases.html",
+)
 
 configure_make_lib(
     name = NAME,

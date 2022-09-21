@@ -64,7 +64,7 @@ toolchain, pass `--cpu=wasm32`. Pass `-c opt` for an optimised build.
 [`//lib/m4`](https://github.com/attilaolah/wasm/blob/main/lib/m4/BUILD.bazel) | 1.4.19 [🔗](https://ftp.gnu.org/gnu/m4/m4-1.4.19.tar.xz)
 [`//lib/mpdecimal`](https://github.com/attilaolah/wasm/blob/main/lib/mpdecimal/BUILD.bazel) | 2.5.1 [🔗](https://www.bytereef.org/software/mpdecimal/releases/mpdecimal-2.5.1.tar.gz)
 [`//lib/mpfr`](https://github.com/attilaolah/wasm/blob/main/lib/mpfr/BUILD.bazel) | 4.1.0 [🔗](https://www.mpfr.org/mpfr-current/mpfr-4.1.0.tar.xz) [🔗](https://ftp.gnu.org/gnu/mpfr/mpfr-4.1.0.tar.xz)
-[`//lib/musl`](https://github.com/attilaolah/wasm/blob/main/lib/musl/BUILD.bazel) | 1.2.2 [🔗](https://musl.libc.org/releases/musl-1.2.2.tar.gz)
+[`//lib/musl`](https://github.com/attilaolah/wasm/blob/main/lib/musl/BUILD.bazel) | 1.2.3 [🔗](https://musl.libc.org/releases/musl-1.2.3.tar.gz)
 [`//lib/ncurses`](https://github.com/attilaolah/wasm/blob/main/lib/ncurses/BUILD.bazel) | 6.2 [🔗](https://ftp.gnu.org/pub/gnu/ncurses/ncurses-6.2.tar.gz)
 [`//lib/oniguruma`](https://github.com/attilaolah/wasm/blob/main/lib/oniguruma/BUILD.bazel) | 6.9.6 [🔗](https://github.com/kkos/oniguruma/releases/download/v6.9.6/onig-6.9.6.tar.gz)
 [`//lib/opencv`](https://github.com/attilaolah/wasm/blob/main/lib/opencv/BUILD.bazel) | 4.6.0 [🔗](https://github.com/opencv/opencv/archive/4.6.0.zip)

@@ -4,11 +4,11 @@ load("//lib:defs.bzl", "static_lib")
 load("//lib:http_archive.bzl", "http_archive")
 
 NAME = "musl"
-VERSION = "1.2.2"
+VERSION = "1.2.3"
 
 URL = "https://{name}.libc.org/releases/{name}-{version}.tar.gz"
 
-SHA256 = "9b969322012d796dc23dda27a35866034fa67d8fb67e0e2c45c913c3d43219dd"
+SHA256 = "7d5b0b6062521e4627e099e4c9dc8248d32a30285e959b7eecaa780cf8cfd4a4"
 
 STATIC_LIBS = [static_lib("c")]
 
