@@ -33,6 +33,7 @@ def _parsed_headers_impl(ctx):
         outputs.append(name_i)
 
         args = ctx.actions.args()
+        args.add("-dD")
         args.add("-o", name_i)
         args.add(wrapper)
 
