@@ -33,12 +33,16 @@ def _parsed_headers_impl(ctx):
         outputs.append(name_i)
 
         args = ctx.actions.args()
+        # Only run the preprocessor:
+        args.add("-E")
+        # Print macro definitions in -E mode in addition to normal output:
         args.add("-dD")
+        # Write output to the declared file:
         args.add("-o", name_i)
         args.add(wrapper)
 
         ctx.actions.run(
-            executable = ctx.executable._clang_cpp,
+            executable = ctx.executable._clang,
             arguments = [common_args, args],
             inputs = [wrapper] + ctx.files.deps,
             outputs = [name_i],
@@ -88,8 +92,8 @@ parsed_headers = rule(
             providers = [CcInfo],
             mandatory = True,
         ),
-        "_clang_cpp": attr.label(
-            default = "@llvm//:clang-cpp",
+        "_clang": attr.label(
+            default = "@llvm//:clang",
             executable = True,
             cfg = "exec",
         ),
