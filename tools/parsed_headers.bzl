@@ -1,6 +1,10 @@
 """Rule for parsing header files."""
 
+# Directory where output files will be located.
 _DIR = "hdrs"
+
+# Use a high column limit to avoid folding long enums, etc.
+_COL_LIMIT = 10000
 
 def _parsed_headers_impl(ctx):
     outputs = []
@@ -47,11 +51,19 @@ def _parsed_headers_impl(ctx):
         outputs.append(name_i_1)
 
         args = ctx.actions.args()
-        args.add_all([ctx.executable._clang_format, name_i, name_i_1])
+        args.add_all([
+            ctx.executable._clang_format, # $1
+            name_i, # $2
+            name_i_1, # $3
+        ])
+        args.add( # $4
+            # Passed to clang-format directly via --style.
+            '{{MaxEmptyLinesToKeep: 0, ColumnLimit: {}}}'.format(_COL_LIMIT),
+        )
 
         # NOTE: clang-format cannot redirect its output, so we use run_shell().
         ctx.actions.run_shell(
-            command = "$1 $2 --style '{MaxEmptyLinesToKeep: 0, ColumnLimit: 1000}' > $3",
+            command = "$1 $2 --style \"$4\" > $3",
             tools = [ctx.executable._clang_format],
             arguments = [args],
             inputs = [name_i],
