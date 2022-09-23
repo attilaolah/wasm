@@ -103,6 +103,7 @@ function fontCSS(): void {
   addLink(mkLink(api, true));
   addLink(mkLink("https://fonts.gstatic.com", true, true));
   addLink(mkLink(`${api}/css2?family=Inter&display=swap`));
+  addLink(mkLink(`${api}/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200`));
 }
 
 function mkLink(href: string, preConnect: boolean = false, crossOrigin: boolean = false): HTMLLinkElement {
