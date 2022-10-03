@@ -17,17 +17,17 @@ The runtime supports a few types of code blocks out of the bock, like
 ## Code Blocks
 
 Code blocks must be tagged with a language tag. Currently only JavaScript is
-supported, but other languages may be added in the future.
-
-Here is an example:
+supported, but other languages may be added in the future. Here is an simple
+example:
 
 ```js
 new Date()
 ```
 
 The entire block is passed to `eval?.(…)` as-is, and the return value is
-printed, unless it is `undefined`. The return value of the previous block is
-accessible using the `_` variable:
+JSON-formatted, unless it is `undefined`. As a special-case, if the return
+value is a DOM `Node` instance, it is added directly to the output. The return
+value of the previous block is accessible using the `_` variable:
 
 ```js
 const [year, month, day] = [
@@ -52,20 +52,28 @@ if (day % 2) {
 
 ## HTML Blocks
 
-HTML can be included just like any other code snipped, using the `html`
-tag. The HTML is simply copied to the output, no questions asked. The `_`
-variable will refer to the last element.
+HTML can be included just like any other code snipped, using the `html` tag.
+The HTML is simply copied to the output, no questions asked.
 
 
 ```html
-<ol class="things">
-  <li><span>First</span> things first.</li>
-  <li><span>Second</span> things second.</li>
-</ol>
+<img
+  src="https://attilaolah.eu/avatar/192.jpg"
+  class="avatar">
+```
+
+The `_` variable will refer to the last element, which is handy when accessing
+it from subsequent JavaScript blocks:
+
+```js
+_.addEventListener("click", () => {
+  document.body.classList.toggle("dark");
+})
 ```
 
 The HTML block is most useful to declare custom outputs, for example a
-`<canvas>` tag that subsequent JavaScript blocks will paint on.
+`<canvas>` tag that subsequent JavaScript blocks will paint on. Or a simple
+button to interact with the page:
 
 ## CSS Blocks
 
@@ -74,17 +82,18 @@ modify the stylesheet of the entire page. They can of course target any HTML
 content added in other blocks too:
 
 ```css
-.things span {
-  text-decoration: underline;
-  color: forestgreen;
-}
-.things li + li span {
-  color: deeppink;
+img.avatar {
+  --size: 64px;
+  width: var(--size);
+  height: var(--size);
+  border-radius: calc(var(--size) / 2);
+  border: none !important;
 }
 ```
 
 The CSS block can be used to provide basic styling to HTML blocks in a less
-cumbersome way.
+cumbersome way. The resulting `_` variable will hold the generated
+`CSSStyleSheet` instance.
 
 ## Config Blocks
 

@@ -6,6 +6,8 @@ MODULES["css"] = (cell: HTMLDivElement): void => {
   const style: HTMLStyleElement = document.createElement("style");
   style.innerHTML = src.innerText;
 
+  out.classList.add("ok");
+  out.classList.remove("fail");
   out.innerHTML = style.outerHTML;
 
   // _ points to the CSSStyleSheet instance.

@@ -23,8 +23,24 @@ MODULES["js"] = (cell: HTMLDivElement): void => {
   // Make the result available globally; useful for debugging.
   window["_"] = result;
 
-  if (!ok) {
-    // TODO: Display an error message!
+  clearChildren(out);
+
+  if (result && !ok) {
+    out.classList.add("fail");
+    out.classList.remove("ok");
+
+    const pre: HTMLPreElement = document.createElement("pre");
+    pre.innerText = result.toString();
+    out.append(pre);
+    return;
+  }
+
+  out.classList.add("ok");
+  out.classList.remove("fail");
+
+  if (result instanceof Node) {
+    out.append(result);
+    return;
   }
 
   if (result === undefined) {
@@ -32,13 +48,13 @@ MODULES["js"] = (cell: HTMLDivElement): void => {
   }
 
   const pre: HTMLPreElement = document.createElement("pre");
-  pre.innerHTML = Prism.highlight(
-    JSON.stringify(result, null, 2),
-    Prism.languages.javascript,
-    "javascript",
-  );
-  clearChildren(out);
+  pre.className = "language-json";
+
+  const code: HTMLElement = document.createElement("code");
+  code.innerHTML = JSON.stringify(result, null, 2);
+  pre.append(code);
   out.append(pre);
 
+  // Apply JSON highlighting:
   Prism.highlightAllUnder(out)
 };

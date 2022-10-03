@@ -8,12 +8,17 @@ const MODULES: {
   [key: string]: (cell: HTMLDivElement) => void
 } = {};
 
-// Prepares code blocks for execution.
-function prepareBlocks(root: HTMLElement): void {
+const RUN_ALL: Array<() => void> = [];
+
+// Prepares code blocks for execution. Returns a function that executes
+// auto-run, which should be executed once the syntax highlighter is ready.
+function prepareBlocks(root: HTMLElement): () => void {
   let id: number = 1;
   root
     .querySelectorAll(`pre>code[class^=${LANG_PREFIX}]`)
     .forEach((code: HTMLElement): void => prepareBlock(code, id++));
+
+  return (): void => RUN_ALL.forEach((fn: () => void): void => fn());
 }
 
 // Prepares a single code block for execution.
@@ -39,21 +44,26 @@ function prepareBlock(code: HTMLElement, id: number): void {
     return;
   }
 
-  const run: HTMLButtonElement = document.createElement("button");
-  const icon: HTMLElement = document.createElement("span");
+  RUN_ALL.push((): void => MODULES[lang](cell));
 
+  const controls: HTMLDivElement = document.createElement("div");
+  controls.className = "controls";
+
+  const run: HTMLButtonElement = document.createElement("button");
   run.className = "run";
   run.addEventListener("click", (evt: Event): void => {
     MODULES[lang](cell);
   });
 
-  icon.className = "material-symbols-outlined";
+  const icon: HTMLElement = document.createElement("span");
+  icon.className = "material-symbols-outlined icon";
   icon.innerText = "play_circle";
 
-  run.append(icon, "RUN");
+  controls.append(run);
+  run.append(icon, "Run snippet");
 
   const out: HTMLDivElement = document.createElement("div");
   out.className = CLS_OUT;
 
-  cell.append(run, out);
+  cell.append(out, controls);
 }

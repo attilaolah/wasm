@@ -1,13 +1,22 @@
 const COPT: boolean = COMPILATION_MODE == "opt";
 
-async function main(notebook: { ["root"]: HTMLElement }, layoutHTML: string): Promise<void> {
+async function main(notebook: {
+  ["root"]: HTMLElement,
+  ["config"]: {
+    ["autorun"]: boolean,
+  },
+}, layoutHTML: string): Promise<void> {
   const hl: SyntaxHighlighter = new SyntaxHighlighter();
 
   mdToHTML(notebook.root, layoutHTML);
   createTOC(notebook.root);
-  prepareBlocks(notebook.root);
+  const runAll: () => void = prepareBlocks(notebook.root);
 
   await hl.run(notebook.root);
+
+  if (notebook.config.autorun) {
+    runAll();
+  }
 }
 
 Module["onRuntimeInitialized"] = (): void => {
