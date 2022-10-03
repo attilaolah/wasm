@@ -30,6 +30,9 @@ ts_project(
         "create_toc.ts",
         "syntax_highlighter.ts",
         "code_blocks.ts",
+        "code_blocks_css.ts",
+        "code_blocks_html.ts",
+        "code_blocks_js.ts",
     ],
     tsconfig = {"compilerOptions": {
         "target": TS_TARGET,

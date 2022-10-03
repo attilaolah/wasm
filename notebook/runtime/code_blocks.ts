@@ -1,3 +1,6 @@
+const CLS_SRC: string = "src";
+const CLS_OUT: string = "out";
+
 const LANG_PREFIX: string = "language-";
 const LANG_PREFIX_RE: RegExp = new RegExp(`^${LANG_PREFIX}`);
 
@@ -7,75 +10,50 @@ const MODULES: {
 
 // Prepares code blocks for execution.
 function prepareBlocks(root: HTMLElement): void {
+  let id: number = 1;
   root
     .querySelectorAll(`pre>code[class^=${LANG_PREFIX}]`)
-    .forEach(prepareBlock);
+    .forEach((code: HTMLElement): void => prepareBlock(code, id++));
 }
 
-
 // Prepares a single code block for execution.
-function prepareBlock(code: HTMLElement): void {
+function prepareBlock(code: HTMLElement, id: number): void {
   const lang: string = ((
     Array
       .from(code.classList.values())
       .find((cls: string): boolean => !!cls.match(LANG_PREFIX_RE))
   ) ?? "").replace(LANG_PREFIX_RE, "");
 
+  code.classList.add(CLS_SRC);
+  const pre: HTMLPreElement = code.parentElement as HTMLPreElement;
+  const cell: HTMLDivElement = document.createElement("div");
+  cell.className = "cell";
+  cell.dataset["id"] = id.toString();
+  cell.id = `cell-${id}`;
+
+  pre.parentNode.insertBefore(cell, pre);
+  cell.append(pre)
+
   if (!MODULES.hasOwnProperty(lang)) {
-    // Language not specified or unsupported.
+    // Language not specified or unsupported, no run button needed.
     return;
   }
 
-  const pre: HTMLPreElement = code.parentElement as HTMLPreElement;
+  const run: HTMLButtonElement = document.createElement("button");
+  const icon: HTMLElement = document.createElement("span");
 
-  const cell: HTMLDivElement = newDiv("cell");
-
-  const src: HTMLDivElement = newDivChild(cell, "src");
-  const srcGutter: HTMLDivElement = newDivChild(src, "gut");
-  const srcRun: HTMLButtonElement = document.createElement("button");
-  srcRun.className = "run";
-  srcRun.innerText = "RUN";
-  srcRun.addEventListener("click", (evt: Event): void => {
+  run.className = "run";
+  run.addEventListener("click", (evt: Event): void => {
     MODULES[lang](cell);
   });
-  srcGutter.append(srcRun);
 
-  const dst: HTMLDivElement = newDivChild(cell, "dst");
-  const dstGutter: HTMLDivElement = newDivChild(dst, "gut");
-  const dstOut: HTMLDivElement = newDivChild(dst, "out");
+  icon.className = "material-symbols-outlined";
+  icon.innerText = "play_circle";
 
-  pre.parentNode.insertBefore(cell, pre);
-  src.append(pre);
-}
+  run.append(icon, "RUN");
 
-// Built-in HTML module.
-MODULES["html"] = (cell: HTMLDivElement): void => {
-  const code: HTMLElement = cell.querySelector(".src code");
-  const out: HTMLElement = cell.querySelector(".dst>.out");
+  const out: HTMLDivElement = document.createElement("div");
+  out.className = CLS_OUT;
 
-  out.innerHTML = code.innerText;
-};
-
-// Built-in CSS module.
-MODULES["css"] = (cell: HTMLDivElement): void => {
-  const code: HTMLElement = cell.querySelector(".src code");
-  const out: HTMLElement = cell.querySelector(".dst>.out");
-
-  const style: HTMLStyleElement = document.createElement("style");
-  style.innerHTML = code.innerText;
-  out.innerHTML = style.outerHTML;
-};
-
-
-// TODO: Move this somewhere!
-function newDiv(cls: string): HTMLDivElement {
-  const div: HTMLDivElement = document.createElement("div");
-  div.className = cls;
-  return div;
-}
-
-function newDivChild(parent: HTMLElement, cls: string): HTMLDivElement {
-  const div: HTMLDivElement = newDiv(cls);
-  parent.append(div);
-  return div;
+  cell.append(run, out);
 }

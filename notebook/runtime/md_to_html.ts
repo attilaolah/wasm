@@ -139,13 +139,8 @@ function mdToHTML(root: HTMLElement, layoutHTML: string): void {
     }
   }
 
-  // Clear the root node.
-  // See https://stackoverflow.com/a/3955238 for why the first/last child combo.
-  while (root.firstChild) {
-    root.removeChild(root.lastChild);
-  }
-
-  root.appendChild(tpl.content);
+  clearChildren(root);
+  root.append(tpl.content);
 
   ensureMetaCharset(root);
   createHeadingAnchors(root);
@@ -204,7 +199,7 @@ function showLicense(root: HTMLElement): void {
   a.href = url;
 
   licenseEl.innerHTML = "";
-  licenseEl.appendChild(a);
+  licenseEl.append(a);
 }
 
 function getBeforeAfter(el: HTMLElement): [string, string] {
@@ -214,4 +209,12 @@ function getBeforeAfter(el: HTMLElement): [string, string] {
     .map((content: string): string => {
       return content === "none" ? null : JSON.parse(content)
     }) as [string, string];
+}
+
+  // Clear the node.
+  // See https://stackoverflow.com/a/3955238 for why the first/last child combo.
+function clearChildren(el: HTMLElement): void {
+  while (el.firstChild) {
+    el.removeChild(el.lastChild);
+  }
 }
