@@ -1,8 +1,10 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@npm//http-server:index.bzl", "http_server")
 load("@io_bazel_rules_closure//closure:defs.bzl", "closure_js_binary", "closure_js_library")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("//tools:javascript_target.bzl", "JS_TARGET", "TS_TARGET")
 load("//tools:javascript.bzl", "iife")
+load(":notebook_page.bzl", "notebook_page")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -46,10 +48,15 @@ ts_project(
     deps = ["@npm//@types/emscripten"],
 )
 
+notebook_page(
+    name = "index",
+    srcs = ["index.md"],
+)
+
 filegroup(
     name = "notebook_html",
     srcs = [
-        "index.html",
+        ":index",
         "notebook.html",
     ],
 )
@@ -113,4 +120,10 @@ filegroup(
             "dbg",
         ]
     }),
+)
+
+bzl_library(
+    name = "notebook_page_bzl",
+    srcs = ["notebook_page.bzl"],
+    deps = ["@bazel_skylib//lib:shell"],
 )

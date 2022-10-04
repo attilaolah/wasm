@@ -1,5 +1,3 @@
-<!doctype html>
-<script src="notebook.mjs"></script><body><!--
 # Web Notebooks
 
 > Self-hosted, executable and extensible web pages.
@@ -114,4 +112,3 @@ property:
 ```js
 notebook.config
 ```
--->
