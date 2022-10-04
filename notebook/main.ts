@@ -1,4 +1,4 @@
-const NOTEBOOK_HTML: string = "notebook.html";
+const TEMPLATE_HTML: string = "template.html";
 const RUNTIME_JS: string = "./modules/runtime.mjs";
 const THEME_CSS: string = "themes/mdn-yari.css";
 
@@ -94,7 +94,7 @@ function prepare(): void {
 }
 
 const layoutHTML = new Promise<string>(async (resolve) => {
-  const res: Response = await fetch(NOTEBOOK_HTML);
+  const res: Response = await fetch(TEMPLATE_HTML);
   resolve(await res.text());
 });
 

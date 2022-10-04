@@ -21,6 +21,11 @@ bzl_library(
 )
 
 bzl_library(
+    name = "slim",
+    srcs = ["slim.bzl"],
+)
+
+bzl_library(
     name = "package",
     srcs = ["package.bzl"],
     visibility = ["//:__pkg__"],

@@ -35,12 +35,13 @@ npm_install(
 )
 
 load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
+load("@bazelruby_rules_ruby//ruby:deps.bzl", "rules_ruby_dependencies", "rules_ruby_select_sdk")
 load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
 load("@io_bazel_rules_closure//closure:repositories.bzl", "rules_closure_dependencies", "rules_closure_toolchains")
 load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
 load("@io_bazel_rules_sass//:defs.bzl", "sass_repositories")
 load("//:deps.bzl", "external_dependencies", "go_dependencies")
-load("//:versions.bzl", "GO_VERSION")
+load("//:versions.bzl", "GO_VERSION", "RUBY_VERSION")
 
 go_rules_dependencies()
 
@@ -69,3 +70,19 @@ sass_repositories()
 rules_closure_dependencies()
 
 rules_closure_toolchains()
+
+rules_ruby_dependencies()
+
+load("@bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")
+
+bazel_skylib_workspace()
+
+rules_ruby_select_sdk(version = RUBY_VERSION)
+
+load("@bazelruby_rules_ruby//ruby:defs.bzl", "ruby_bundle")
+
+ruby_bundle(
+    name = "bundle",
+    gemfile = "//:Gemfile",
+    gemfile_lock = "//:Gemfile.lock",
+)

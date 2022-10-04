@@ -5,3 +5,5 @@
 GO_VERSION = "1.19.1"
 
 OS_VERSION = "ubuntu-20.04"
+
+RUBY_VERSION = "3.1.1"

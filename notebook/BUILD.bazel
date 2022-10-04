@@ -4,6 +4,7 @@ load("@io_bazel_rules_closure//closure:defs.bzl", "closure_js_binary", "closure_
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("//tools:javascript_target.bzl", "JS_TARGET", "TS_TARGET")
 load("//tools:javascript.bzl", "iife")
+load("//tools:slim.bzl", "slim_library")
 load(":notebook_page.bzl", "notebook_page")
 
 package(default_visibility = ["//visibility:public"])
@@ -53,11 +54,16 @@ notebook_page(
     srcs = ["index.md"],
 )
 
+slim_library(
+    name = "template",
+    srcs = ["template.slim"],
+)
+
 filegroup(
     name = "notebook_html",
     srcs = [
         ":index",
-        "notebook.html",
+        ":template",
     ],
 )
 
@@ -84,7 +90,7 @@ genrule(
     outs = [
         "server_root/index.html",
         "server_root/notebook.mjs",
-        "server_root/notebook.html",
+        "server_root/template.html",
         "server_root/modules/runtime.mjs",
         "server_root/modules/runtime.wasm",
         "server_root/themes/mdn-yari.css",
