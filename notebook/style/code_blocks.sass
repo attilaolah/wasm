@@ -1,3 +1,9 @@
+pre,
+code
+  --elem-radius: 0
+
+  border-width: 0
+
 #content
   .cell
     display: flex
@@ -9,8 +15,6 @@
     > pre,
     > .out > pre
       margin: 0
-      --elem-radius: 0
-      border-width: 0
 
     &:has(.out.ok) > pre
       border-bottom: 4px solid green
@@ -33,7 +37,7 @@
       align-items: center
 
     > .controls
-      margin: 8px 0
+      margin: 16px 0
 
     > .controls button
       border-radius: 40px

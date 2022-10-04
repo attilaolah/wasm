@@ -185,8 +185,9 @@ function showLicense(root: HTMLElement): void {
   const nameCls: string = "theme-name";
   const nameEl: HTMLElement = container.querySelector(`.${nameCls}`);
   const [, after] = getBeforeAfter(nameEl);
+  nameEl.style.textDecoration = "underline";
   nameEl.classList.remove(nameCls);
-  nameEl.innerText += after;
+  nameEl.innerText = after;
 
   // Make the license clickable by wrapping it in an achor tag:
   const licenseCls: string = "theme-license";
