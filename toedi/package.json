@@ -4,7 +4,6 @@
   "version": "0.1.0",
   "scripts": {
     "build": "rimraf dist pkg && webpack",
-    "start": "rimraf dist pkg && webpack-dev-server --open -d",
     "test": "cargo test && wasm-pack test --headless"
   },
   "devDependencies": {
@@ -12,7 +11,6 @@
     "copy-webpack-plugin": "^11.0.0",
     "rimraf": "^3.0.2",
     "webpack": "^5.75.0",
-    "webpack-cli": "^5.0.1",
-    "webpack-dev-server": "^4.11.1"
+    "webpack-cli": "^5.0.1"
   }
 }
