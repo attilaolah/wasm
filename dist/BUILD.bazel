@@ -6,7 +6,7 @@ webpack_bundle(
     srcs = [
         "//:runtime",
     ],
-    entry_point = "js/index.js",
+    entry_point = "//:entry_point",
     output_dir = True,
     webpack_config = "webpack.config.js",
 )

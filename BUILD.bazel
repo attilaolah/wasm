@@ -24,6 +24,14 @@ rust_shared_library(
     deps = all_crate_deps(normal = True),
 )
 
+genrule(
+    name = "entry_point",
+    outs = ["entry_point.js"],
+    srcs = [":runtime"],
+    cmd = "cp $$(ls -1 $(locations :runtime) | grep /runtime.js) $@",
+    visibility = ["//dist:__pkg__"],
+)
+
 # gazelle:prefix github.com/attilaolah/wasm
 gazelle(name = "gazelle")
 
