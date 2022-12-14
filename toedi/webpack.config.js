@@ -17,12 +17,15 @@ module.exports = {
     contentBase: dist,
   },
   plugins: [
-    new CopyPlugin([
-      path.resolve(__dirname, "static")
-    ]),
+    new CopyPlugin({
+      patterns: [path.resolve(__dirname, "static")],
+    }),
 
     new WasmPackPlugin({
       crateDirectory: __dirname,
     }),
-  ]
+  ],
+  experiments: {
+    futureDefaults: true,
+  },
 };
