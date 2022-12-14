@@ -2,9 +2,9 @@ load("@bazel_gazelle//:def.bzl", "gazelle")
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@com_github_bazelbuild_buildtools//buildifier:def.bzl", "buildifier")
 load("@crate_index//:defs.bzl", "aliases", "all_crate_deps")
+load("@rules_rust//rust:defs.bzl", "rust_shared_library")
 load("@rules_rust//wasm_bindgen:wasm_bindgen.bzl", "rust_wasm_bindgen")
 load("//toolchains/cc:clang.bzl", "clang_toolchain")
-load("@rules_rust//rust:defs.bzl", "rust_shared_library")
 
 clang_toolchain(name = "linux_x86_64_clang")
 
