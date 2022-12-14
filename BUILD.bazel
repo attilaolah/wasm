@@ -8,6 +8,22 @@ load("@rules_rust//rust:defs.bzl", "rust_shared_library")
 
 clang_toolchain(name = "linux_x86_64_clang")
 
+rust_wasm_bindgen(
+    name = "runtime",
+    visibility = ["//dist:__pkg__"],
+    wasm_file = ":runtime_lib",
+)
+
+rust_shared_library(
+    name = "runtime_lib",
+    srcs = ["src/lib.rs"],
+    aliases = aliases(normal = True),
+    proc_macro_deps = all_crate_deps(
+        proc_macro = True,
+    ),
+    deps = all_crate_deps(normal = True),
+)
+
 # gazelle:prefix github.com/attilaolah/wasm
 gazelle(name = "gazelle")
 
@@ -35,23 +51,6 @@ filegroup(
     name = "readme",
     srcs = ["README.md"],
     visibility = ["//tests:__pkg__"],
-)
-
-
-rust_shared_library(
-    name = "runtime",
-    srcs = ["src/lib.rs"],
-    aliases = aliases(normal = True),
-    proc_macro_deps = all_crate_deps(
-        proc_macro = True,
-    ),
-    deps = all_crate_deps(normal = True),
-)
-
-rust_wasm_bindgen(
-    name = "runtime_wasm",
-    wasm_file = ":runtime",
-    visibility = ["//dist:__pkg__"],
 )
 
 bzl_library(

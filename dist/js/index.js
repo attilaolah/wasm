@@ -1,1 +1,1 @@
-import("../../runtime_wasm.js").catch(console.error);
+import("../../runtime.js").catch(console.error);

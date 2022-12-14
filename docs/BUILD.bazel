@@ -6,4 +6,3 @@ page(
     name = "index",
     srcs = ["index.md"],
 )
-

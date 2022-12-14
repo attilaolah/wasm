@@ -4,7 +4,7 @@ load("@npm//http-server:index.bzl", "http_server")
 webpack_bundle(
     name = "runtime",
     srcs = [
-        "//:runtime_wasm",
+        "//:runtime",
     ],
     entry_point = "js/index.js",
     output_dir = True,
