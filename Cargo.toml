@@ -25,12 +25,12 @@ wee_alloc = { version = "0.4.2", optional = true }
 version = "0.3.22"
 features = ["console"]
 
-[target."cfg(debug_assertions)".dependencies]
-console_error_panic_hook = "0.1.5"
+#[target."cfg(debug_assertions)".dependencies]
+#console_error_panic_hook = "0.1.5"
 
-# These crates are used for running unit tests.
 [dev-dependencies]
-wasm-bindgen-test = "0.2.45"
-futures = "0.1.27"
-js-sys = "0.3.22"
-wasm-bindgen-futures = "0.3.22"
+futures = "0.3.25"
+js-sys = "0.3.60"
+wasm-bindgen-futures = "0.4.33"
+wasm-bindgen-test = "0.3.33"
+wasm-pack = "0.10.3"

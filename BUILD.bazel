@@ -1,7 +1,12 @@
+load("@aspect_rules_webpack//webpack:defs.bzl", "webpack_bundle", "webpack_devserver")
+load("@npm//http-server:index.bzl", "http_server")
 load("@bazel_gazelle//:def.bzl", "gazelle")
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@com_github_bazelbuild_buildtools//buildifier:def.bzl", "buildifier")
+load("@crate_index//:defs.bzl", "aliases", "all_crate_deps", "crate_deps")
+load("@rules_rust//wasm_bindgen:wasm_bindgen.bzl", "rust_wasm_bindgen")
 load("//toolchains/cc:clang.bzl", "clang_toolchain")
+load("@rules_rust//rust:defs.bzl", "rust_shared_library")
 
 clang_toolchain(name = "linux_x86_64_clang")
 
@@ -32,6 +37,47 @@ filegroup(
     name = "readme",
     srcs = ["README.md"],
     visibility = ["//tests:__pkg__"],
+)
+
+webpack_bundle(
+    name = "runtime",
+    srcs = [
+        ":toedi_wasm",
+    ],
+    entry_point = "js/index.js",
+    webpack_config = "webpack.config.js",
+    output_dir = True,
+)
+
+http_server(
+    name = "server",
+    args = ["."],
+    data = [
+        ":runtime",
+        "//notebook:index",
+    ],
+)
+
+filegroup(
+    name = "server_files",
+    srcs = [
+        "//notebook:index",
+    ],
+)
+
+rust_shared_library(
+    name = "toedi",
+    srcs = ["src/lib.rs"],
+    aliases = aliases(normal = True),
+    deps = all_crate_deps(normal = True),
+    proc_macro_deps = all_crate_deps(
+        proc_macro = True,
+    ),
+)
+
+rust_wasm_bindgen(
+    name = "toedi_wasm",
+    wasm_file = ":toedi",
 )
 
 bzl_library(

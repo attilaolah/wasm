@@ -52,6 +52,7 @@ ts_project(
 notebook_page(
     name = "index",
     srcs = ["index.md"],
+    visibility = ["//:__pkg__"],
 )
 
 slim_library(

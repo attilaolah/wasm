@@ -48,12 +48,12 @@ def workspace_dependencies():
 
     http_archive(
         name = "platforms",
-        version = "0.0.3",
+        version = "0.0.6",
         urls = [
             "https://github.com/bazelbuild/{name}/releases/download/{version}/{name}-{version}.tar.gz",
             "https://mirror.bazel.build/github.com/bazelbuild/{name}/releases/download/{version}/{name}-{version}.tar.gz",
         ],
-        sha256 = "460caee0fa583b908c622913334ec3c1b842572b9c23cf0d3da0c2543a1a157d",
+        sha256 = "5308fc1d8865406a49427ba24a9ab53087f17f5266a7aabbfc28823f3916e1ca",
         build_file_content = None,
     )
 
@@ -112,6 +112,22 @@ def workspace_dependencies():
         sha256 = "21eb494757d8062eaf699bc85e0aa29bcf851268ff78d23737967099e5bb9417",
         strip_prefix = "rules_ruby-{version}",
         urls = ["https://github.com/bazelruby/rules_ruby/archive/{version}.zip"],
+    )
+
+    http_archive(
+        name = "aspect_rules_webpack",
+        version = "0.6.1",
+        sha256 = "c7ccb778a24ec7033ab796e4b480153299b7ff0d75e64a957824055f201fa2af",
+        strip_prefix = "rules_webpack-{version}",
+        urls = ["https://github.com/aspect-build/rules_webpack/archive/refs/tags/v{version}.tar.gz"],
+    )
+
+    http_archive(
+        name = "rules_rust",
+		version = "0.14.0",
+        sha256 = "dd79bd4e2e2adabae738c5e93c36d351cf18071ff2acf6590190acf4138984f6",
+        urls = ["https://github.com/bazelbuild/rules_rust/releases/download/{version}/rules_rust-v{version}.tar.gz"],
+        build_file_content = None,
     )
 
     download_mdn_yari()
