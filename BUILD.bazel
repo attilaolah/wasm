@@ -45,8 +45,8 @@ webpack_bundle(
         ":toedi_wasm",
     ],
     entry_point = "js/index.js",
-    webpack_config = "webpack.config.js",
     output_dir = True,
+    webpack_config = "webpack.config.js",
 )
 
 http_server(
@@ -69,10 +69,10 @@ rust_shared_library(
     name = "toedi",
     srcs = ["src/lib.rs"],
     aliases = aliases(normal = True),
-    deps = all_crate_deps(normal = True),
     proc_macro_deps = all_crate_deps(
         proc_macro = True,
     ),
+    deps = all_crate_deps(normal = True),
 )
 
 rust_wasm_bindgen(

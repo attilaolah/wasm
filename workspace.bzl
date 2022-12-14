@@ -124,7 +124,7 @@ def workspace_dependencies():
 
     http_archive(
         name = "rules_rust",
-		version = "0.14.0",
+        version = "0.14.0",
         sha256 = "dd79bd4e2e2adabae738c5e93c36d351cf18071ff2acf6590190acf4138984f6",
         urls = ["https://github.com/bazelbuild/rules_rust/releases/download/{version}/rules_rust-v{version}.tar.gz"],
         build_file_content = None,
