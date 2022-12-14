@@ -2,12 +2,12 @@
 
 load("@bazel_skylib//lib:shell.bzl", "shell")
 
-def _notebook_page_impl(ctx):
+def _page_impl(ctx):
     output_html = ctx.actions.declare_file("{}.html".format(ctx.attr.name))
     ctx.actions.run_shell(
         command = "\n".join([
             'echo "<!doctype html>" > {output_html}',
-            'echo "<script src="/runtime/runtime.js"></script><body><!--" >> {output_html}',
+            'echo "<script src="/dist/runtime/runtime.js"></script><body><!--" >> {output_html}',
         ] + [
             "cat {src} >> {{output_html}}".format(src = shell.quote(src.path))
             for src in ctx.files.srcs
@@ -21,8 +21,8 @@ def _notebook_page_impl(ctx):
     )
     return DefaultInfo(files = depset([output_html]))
 
-notebook_page = rule(
-    implementation = _notebook_page_impl,
+page = rule(
+    implementation = _page_impl,
     attrs = {
         "srcs": attr.label_list(
             doc = "Markdown files to include in the output.",

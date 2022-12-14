@@ -5,7 +5,6 @@ load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("//tools:javascript_target.bzl", "JS_TARGET", "TS_TARGET")
 load("//tools:javascript.bzl", "iife")
 load("//tools:slim.bzl", "slim_library")
-load(":notebook_page.bzl", "notebook_page")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -47,12 +46,6 @@ ts_project(
         "module": "commonjs",
     }},
     deps = ["@npm//@types/emscripten"],
-)
-
-notebook_page(
-    name = "index",
-    srcs = ["index.md"],
-    visibility = ["//:__pkg__"],
 )
 
 slim_library(

@@ -1,0 +1,9 @@
+load(":page.bzl", "page")
+
+package(default_visibility = ["//visibility:public"])
+
+page(
+    name = "index",
+    srcs = ["index.md"],
+)
+

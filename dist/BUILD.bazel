@@ -1,0 +1,21 @@
+load("@aspect_rules_webpack//webpack:defs.bzl", "webpack_bundle")
+load("@npm//http-server:index.bzl", "http_server")
+
+webpack_bundle(
+    name = "runtime",
+    srcs = [
+        "//:runtime_wasm",
+    ],
+    entry_point = "js/index.js",
+    output_dir = True,
+    webpack_config = "webpack.config.js",
+)
+
+http_server(
+    name = "server",
+    args = ["."],
+    data = [
+        ":runtime",
+        "//docs:index",
+    ],
+)
