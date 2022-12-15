@@ -1,5 +1,5 @@
 {
-  "checksum": "2947ec823dd079a0558b785a2488d92e0728e0be4788d8db7378c208dc269652",
+  "checksum": "ad05a2940b20dc4e0e3555facf1dc8272745c30b809cdc8a5bf46c312212a02a",
   "crates": {
     "addr2line 0.19.0": {
       "name": "addr2line",
@@ -12610,6 +12610,10 @@
         "deps": {
           "common": [
             {
+              "id": "js-sys 0.3.60",
+              "target": "js_sys"
+            },
+            {
               "id": "pulldown-cmark 0.9.2",
               "target": "pulldown_cmark"
             },
@@ -12624,6 +12628,10 @@
             {
               "id": "wasm-bindgen 0.2.83",
               "target": "wasm_bindgen"
+            },
+            {
+              "id": "wasm-bindgen-futures 0.4.33",
+              "target": "wasm_bindgen_futures"
             },
             {
               "id": "web-sys 0.3.60",
@@ -12645,14 +12653,6 @@
             {
               "id": "futures 0.3.25",
               "target": "futures"
-            },
-            {
-              "id": "js-sys 0.3.60",
-              "target": "js_sys"
-            },
-            {
-              "id": "wasm-bindgen-futures 0.4.33",
-              "target": "wasm_bindgen_futures"
             },
             {
               "id": "wasm-bindgen-test 0.3.33",
@@ -14925,13 +14925,20 @@
         ],
         "crate_features": [
           "Document",
+          "DocumentFragment",
           "DomTokenList",
           "Element",
           "Event",
           "EventTarget",
+          "Headers",
           "HtmlElement",
+          "HtmlTemplateElement",
           "MessageEvent",
           "Node",
+          "Request",
+          "RequestInit",
+          "RequestMode",
+          "Response",
           "Window",
           "Worker",
           "console"

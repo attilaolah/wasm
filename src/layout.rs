@@ -1,10 +1,45 @@
+use js_sys::JsString;
 use pulldown_cmark::{html, Options, Parser};
-use wasm_bindgen::JsValue;
-use web_sys::{Document, HtmlElement};
+use wasm_bindgen::{JsCast, JsValue};
+use wasm_bindgen_futures::JsFuture;
+use web_sys::{
+    console, Document, HtmlElement, HtmlTemplateElement, Request, RequestInit, RequestMode,
+    Response,
+};
 
 use crate::notebook_config;
 
-pub fn display_content(doc: &Document, root: &HtmlElement) -> Result<(), JsValue> {
+pub fn load_external() -> Result<(), JsValue> {
+    // TODO: Load CSS!
+    // TODO: Load JS!
+    Ok(())
+}
+
+pub async fn display_content(doc: &Document, root: &HtmlElement) -> Result<(), JsValue> {
+    let (cfg, md_html) = parse_markdown(root);
+    let tpl_html = load_template().await?;
+
+    let tpl: HtmlTemplateElement = doc.create_element("template")?.dyn_into()?;
+    tpl.set_inner_html(&tpl_html);
+
+    match tpl.content().query_selector("#content")? {
+        Some(el) => el.set_inner_html(&md_html),
+        None => {
+            return Err("#content not found in template".into());
+        }
+    }
+
+    clear_children(root)?;
+    root.append_child(&tpl.content())?;
+
+    if cfg.autorun() {
+        console::log_1(&"todo: autorun enabled, run all code blocks".into());
+    }
+
+    Ok(())
+}
+
+fn parse_markdown(root: &HtmlElement) -> (notebook_config::NotebookConfig, String) {
     let inner_html = root.inner_html();
     let mut markdown_src = inner_html.trim();
     markdown_src = markdown_src.strip_prefix("<!--").unwrap_or(markdown_src);
@@ -14,23 +49,32 @@ pub fn display_content(doc: &Document, root: &HtmlElement) -> Result<(), JsValue
     let md_doc = notebook_config::parse_doc(&markdown_src);
     markdown_src = &md_doc.content;
 
-    let parser = Parser::new_ext(markdown_src, Options::all());
-
     let mut buf = String::new();
-    html::push_html(&mut buf, parser);
+    html::push_html(&mut buf, Parser::new_ext(markdown_src, Options::all()));
 
-    let pre = doc.create_element("pre")?;
-    pre.set_inner_html(&buf);
+    (md_doc.metadata, buf.into())
+}
 
-    // TODO: Just to see if it worked:
-    if md_doc.metadata.autorun() {
-        pre.class_list().add_1("autorun")?;
-    }
+async fn load_template() -> Result<String, JsValue> {
+    let mut opts = RequestInit::new();
+    opts.method("GET");
+    opts.mode(RequestMode::Cors);
 
-    clear_children(root)?;
-    root.append_child(&pre)?;
+    let req = Request::new_with_str_and_init("/notebook/template.html".into(), &opts)?;
+    req.headers().set("Accept", "text/html")?;
 
-    Ok(())
+    let window = web_sys::window().unwrap();
+    let res_value = JsFuture::from(window.fetch_with_request(&req)).await?;
+
+    // `res_value` is a `Response` object.
+    assert!(res_value.is_instance_of::<Response>());
+    let res: Response = res_value.dyn_into().unwrap();
+
+    let text_value = JsFuture::from(res.text()?).await?;
+
+    let text: JsString = text_value.dyn_into().unwrap();
+
+    Ok(text.into())
 }
 
 // Clear the node.

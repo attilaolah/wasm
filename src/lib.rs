@@ -8,12 +8,13 @@ mod notebook_config;
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
 #[wasm_bindgen(start)]
-pub fn run() -> Result<(), JsValue> {
+pub async fn main() -> Result<(), JsValue> {
     let win = web_sys::window().expect("`window` not found");
     let doc = win.document().expect("`window.document` not found");
     let body = doc.body().expect("`window.document.body` not found");
 
-    layout::display_content(&doc, &body)?;
+    layout::load_external()?;
+    layout::display_content(&doc, &body).await?;
 
     Ok(())
 }
