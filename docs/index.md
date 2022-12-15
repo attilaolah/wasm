@@ -1,3 +1,7 @@
+---
+autorun: true
+---
+
 # Web Notebooks
 
 > Self-hosted, executable and extensible web pages.
@@ -64,14 +68,14 @@ The `_` variable will refer to the last element, which is handy when accessing
 it from subsequent JavaScript blocks:
 
 ```js
-_.addEventListener("click", () => {
-  document.body.classList.toggle("dark");
+_.addEventListener("click", (evt) => {
+  evt.target.classList.toggle("on");
 })
 ```
 
 The HTML block is most useful to declare custom outputs, for example a
 `<canvas>` tag that subsequent JavaScript blocks will paint on. Or a simple
-button to interact with the page:
+button to interact with the page.
 
 ## CSS Blocks
 
@@ -85,7 +89,10 @@ img.avatar {
   width: var(--size);
   height: var(--size);
   border-radius: calc(var(--size) / 2);
-  border: none !important;
+  border: none;
+}
+img.avatar.on {
+  border: 2px solid purple;
 }
 ```
 
@@ -93,17 +100,13 @@ The CSS block can be used to provide basic styling to HTML blocks in a less
 cumbersome way. The resulting `_` variable will hold the generated
 `CSSStyleSheet` instance.
 
-## Config Blocks
+## Front Matter
 
-The `notebook-config` block is used to configure the notebook itself. Only the
-first such block is parsed, and its contents must be a JSON object encoding a
-TypeScript `NotebookConfig` object. Here is an example that turns on auto-run
-for code blocks on this page:
+The Markdown front matter is used to configure the notebook itself. This page
+has the following config in the front matter:
 
-```notebook-config
-{
-  "autorun": true
-}
+```yaml
+autorun: true
 ```
 
 The config is also available at runtime, on the `Notebook` object's `config`

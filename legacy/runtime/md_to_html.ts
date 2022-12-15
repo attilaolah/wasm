@@ -212,8 +212,8 @@ function getBeforeAfter(el: HTMLElement): [string, string] {
     }) as [string, string];
 }
 
-  // Clear the node.
-  // See https://stackoverflow.com/a/3955238 for why the first/last child combo.
+// Clear the node.
+// See https://stackoverflow.com/a/3955238 for why the first/last child combo.
 function clearChildren(el: HTMLElement): void {
   while (el.firstChild) {
     el.removeChild(el.lastChild);
