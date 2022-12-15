@@ -23,7 +23,14 @@ wee_alloc = { version = "0.4.2", optional = true }
 
 [dependencies.web-sys]
 version = "0.3.22"
-features = ["console"]
+features = [
+  "Document",
+  "Element",
+  "HtmlElement",
+  "Node",
+  "Window",
+  "console",
+]
 
 #[target."cfg(debug_assertions)".dependencies]
 #console_error_panic_hook = "0.1.5"
