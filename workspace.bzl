@@ -1,7 +1,7 @@
 """Repository rules for downloading all dependencies."""
 
 load(":http_archive.bzl", "http_archive")
-load("//notebook/style:themes/mdn_yari.bzl", download_mdn_yari = "download")
+load("//legacy/style:themes/mdn_yari.bzl", download_mdn_yari = "download")
 load("//tools:javascript_target.bzl", "JS_TARGET")
 load("//toolchains:utils.bzl", "patch_files")
 
