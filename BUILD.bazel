@@ -21,7 +21,6 @@ rust_shared_library(
         "src/lib.rs",
         "src/layout.rs",
         "src/notebook.rs",
-        "src/notebook_config.rs",
     ],
     aliases = aliases(normal = True),
     proc_macro_deps = all_crate_deps(

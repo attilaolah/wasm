@@ -5,7 +5,6 @@ use crate::notebook::Notebook;
 
 mod layout;
 mod notebook;
-mod notebook_config;
 
 #[cfg(feature = "wee_alloc")]
 #[global_allocator]
@@ -13,9 +12,8 @@ static ALLOC: WeeAlloc = WeeAlloc::INIT;
 
 #[wasm_bindgen(start)]
 pub async fn main() -> Result<(), Error> {
-    let nb = Notebook::new()?;
+    let nb = Notebook::parse()?;
 
-    nb.load_external()?;
     nb.display_content().await?;
 
     Ok(())
