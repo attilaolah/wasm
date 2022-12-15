@@ -48,7 +48,7 @@ mkdir -p dist/notebook
 cp $(locations :bundle)/bundle.js $$(echo $(OUTS) | tr ' ' '\n' | grep /runtime.mjs)
 cp $(locations :bundle)/*.module.wasm $$(echo $(OUTS) | tr ' ' '\n' | grep /runtime.module.wasm)
 
-# Copy HTML wtemplate file:
+# Copy HTML template file:
 cp $(location //:template) $$(echo $(OUTS) | tr ' ' '\n' | grep /template.html)
 
 # Make substitutions in JS to load deterministic WASM module:
