@@ -1,27 +1,13 @@
 load("@aspect_rules_webpack//webpack:defs.bzl", "webpack_bundle")
 load("@npm//http-server:index.bzl", "http_server")
 
-genrule(
-    name = "notebook",
-    srcs = [
-        ":bundle",
-        "//:template",
+http_server(
+    name = "server",
+    args = [package_name()],
+    data = [
+        ":dist",
+        ":docs",
     ],
-    outs = [
-        "notebook/runtime.mjs",
-        "notebook/runtime.module.wasm",
-        "notebook/template.html",
-    ],
-    cmd = "\n".join([
-        "mkdir -p dist/notebook",
-        # Copy JS & WASM files:
-        "cp $(locations :bundle)/bundle.js $$(echo $(OUTS) | tr ' ' '\n' | grep /runtime.mjs)",
-        "cp $(locations :bundle)/*.module.wasm $$(echo $(OUTS) | tr ' ' '\n' | grep /runtime.module.wasm)",
-        # Copy HTML wtemplate file:
-        "cp $(location //:template) $$(echo $(OUTS) | tr ' ' '\n' | grep /template.html)",
-        # Make substitutions in JS to load deterministic WASM module:
-        "sed s/$$(basename $(locations :bundle)/*.module.wasm .module.wasm)/runtime/g -i $$(echo $(OUTS) | tr ' ' '\n' | grep /runtime.mjs)",
-    ]),
 )
 
 genrule(
@@ -29,15 +15,6 @@ genrule(
     srcs = ["//docs:index"],
     outs = ["index.html"],
     cmd = "cp $(location //docs:index) $@",
-)
-
-http_server(
-    name = "server",
-    args = [package_name()],
-    data = [
-        ":docs",
-        ":notebook",
-    ],
 )
 
 webpack_bundle(
@@ -51,4 +28,30 @@ webpack_bundle(
     entry_point = "//:entry_point",
     output_dir = True,
     webpack_config = "webpack.config.js",
+)
+
+genrule(
+    name = "dist",
+    srcs = [
+        ":bundle",
+        "//:template",
+    ],
+    outs = [
+        "notebook/runtime.mjs",
+        "notebook/runtime.module.wasm",
+        "notebook/template.html",
+    ],
+    cmd = """
+mkdir -p dist/notebook
+
+# Copy JS & WASM files:
+cp $(locations :bundle)/bundle.js $$(echo $(OUTS) | tr ' ' '\n' | grep /runtime.mjs)
+cp $(locations :bundle)/*.module.wasm $$(echo $(OUTS) | tr ' ' '\n' | grep /runtime.module.wasm)
+
+# Copy HTML wtemplate file:
+cp $(location //:template) $$(echo $(OUTS) | tr ' ' '\n' | grep /template.html)
+
+# Make substitutions in JS to load deterministic WASM module:
+sed s/$$(basename $(locations :bundle)/*.module.wasm .module.wasm)/runtime/g -i $$(echo $(OUTS) | tr ' ' '\n' | grep /runtime.mjs)
+""",
 )
