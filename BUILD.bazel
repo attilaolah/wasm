@@ -20,6 +20,7 @@ rust_shared_library(
     srcs = [
         "src/lib.rs",
         "src/layout.rs",
+        "src/notebook.rs",
         "src/notebook_config.rs",
     ],
     aliases = aliases(normal = True),

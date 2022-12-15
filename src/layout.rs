@@ -1,10 +1,11 @@
+use js_sys::Error;
 use js_sys::JsString;
 use pulldown_cmark::{html, Options, Parser};
 use wasm_bindgen::{JsCast, JsValue};
 use wasm_bindgen_futures::JsFuture;
 use web_sys::{
-    console, Document, HtmlElement, HtmlTemplateElement, Request, RequestInit, RequestMode,
-    Response,
+    console, Document, HtmlElement, HtmlMetaElement, HtmlTemplateElement, Request, RequestInit,
+    RequestMode, Response,
 };
 
 use crate::notebook_config;
@@ -30,6 +31,7 @@ pub async fn display_content(doc: &Document, root: &HtmlElement) -> Result<(), J
     }
 
     clear_children(root)?;
+    ensure_meta_charset(doc)?;
     root.append_child(&tpl.content())?;
 
     if cfg.autorun() {
@@ -75,6 +77,21 @@ async fn load_template() -> Result<String, JsValue> {
     let text: JsString = text_value.dyn_into().unwrap();
 
     Ok(text.into())
+}
+
+fn ensure_meta_charset(doc: &Document) -> Result<(), Error> {
+    if !doc.query_selector("meta[charset]")?.is_none() {
+        return Ok(());
+    }
+
+    let head = doc.head().ok_or(Error::new("`head` not found"))?;
+    let meta: HtmlMetaElement = doc.create_element("meta")?.dyn_into().or_else(|_| {
+        Err(Error::new("create_element() returned wrong type"))
+    })?;
+    meta.set_attribute("charset", "utf-8")?;
+    head.insert_before(&meta, head.first_child().as_ref())?;
+
+    Ok(())
 }
 
 // Clear the node.
