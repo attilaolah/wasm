@@ -13,10 +13,10 @@ static ALLOC: WeeAlloc = WeeAlloc::INIT;
 
 #[wasm_bindgen(start)]
 pub async fn main() -> Result<(), Error> {
-    let nb = Notebook{};
+    let nb = Notebook {};
 
-    layout::load_external()?;
-    layout::display_content(&nb.document()?, &nb.root()?).await?;
+    nb.load_external()?;
+    nb.display_content().await?;
 
     Ok(())
 }

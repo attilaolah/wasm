@@ -4,41 +4,64 @@ use pulldown_cmark::{html, Options, Parser};
 use wasm_bindgen::{JsCast, JsValue};
 use wasm_bindgen_futures::JsFuture;
 use web_sys::{
-    console, Document, HtmlElement, HtmlMetaElement, HtmlTemplateElement, Request, RequestInit,
-    RequestMode, Response,
+    console, HtmlElement, HtmlMetaElement, HtmlTemplateElement, Request, RequestInit, RequestMode,
+    Response,
 };
 
+use crate::notebook::Notebook;
 use crate::notebook_config;
 
-pub fn load_external() -> Result<(), JsValue> {
-    // TODO: Load CSS!
-    // TODO: Load JS!
-    Ok(())
-}
+impl Notebook {
+    pub fn load_external(&self) -> Result<(), JsValue> {
+        // TODO: Load CSS!
+        // TODO: Load JS!
+        Ok(())
+    }
 
-pub async fn display_content(doc: &Document, root: &HtmlElement) -> Result<(), JsValue> {
-    let (cfg, md_html) = parse_markdown(root);
-    let tpl_html = load_template().await?;
+    pub async fn display_content(&self) -> Result<(), JsValue> {
+        let root = &self.root()?;
+        let doc = &self.document()?;
 
-    let tpl: HtmlTemplateElement = doc.create_element("template")?.dyn_into()?;
-    tpl.set_inner_html(&tpl_html);
+        let (cfg, md_html) = parse_markdown(root);
+        let tpl_html = load_template().await?;
 
-    match tpl.content().query_selector("#content")? {
-        Some(el) => el.set_inner_html(&md_html),
-        None => {
-            return Err("#content not found in template".into());
+        let tpl: HtmlTemplateElement = doc.create_element("template")?.dyn_into()?;
+        tpl.set_inner_html(&tpl_html);
+
+        match tpl.content().query_selector("#content")? {
+            Some(el) => el.set_inner_html(&md_html),
+            None => {
+                return Err("#content not found in template".into());
+            }
         }
+
+        clear_children(root)?;
+        self.ensure_meta_charset()?;
+        root.append_child(&tpl.content())?;
+
+        if cfg.autorun() {
+            console::log_1(&"todo: autorun enabled, run all code blocks".into());
+        }
+
+        Ok(())
     }
 
-    clear_children(root)?;
-    ensure_meta_charset(doc)?;
-    root.append_child(&tpl.content())?;
+    fn ensure_meta_charset(&self) -> Result<(), Error> {
+        let doc = &self.document()?;
+        if !doc.query_selector("meta[charset]")?.is_none() {
+            return Ok(());
+        }
 
-    if cfg.autorun() {
-        console::log_1(&"todo: autorun enabled, run all code blocks".into());
+        let head = &self.head()?;
+        let meta: HtmlMetaElement = doc
+            .create_element("meta")?
+            .dyn_into()
+            .or_else(|_| Err(Error::new("create_element() returned wrong type")))?;
+        meta.set_attribute("charset", "utf-8")?;
+        head.insert_before(&meta, head.first_child().as_ref())?;
+
+        Ok(())
     }
-
-    Ok(())
 }
 
 fn parse_markdown(root: &HtmlElement) -> (notebook_config::NotebookConfig, String) {
@@ -77,21 +100,6 @@ async fn load_template() -> Result<String, JsValue> {
     let text: JsString = text_value.dyn_into().unwrap();
 
     Ok(text.into())
-}
-
-fn ensure_meta_charset(doc: &Document) -> Result<(), Error> {
-    if !doc.query_selector("meta[charset]")?.is_none() {
-        return Ok(());
-    }
-
-    let head = doc.head().ok_or(Error::new("`head` not found"))?;
-    let meta: HtmlMetaElement = doc.create_element("meta")?.dyn_into().or_else(|_| {
-        Err(Error::new("create_element() returned wrong type"))
-    })?;
-    meta.set_attribute("charset", "utf-8")?;
-    head.insert_before(&meta, head.first_child().as_ref())?;
-
-    Ok(())
 }
 
 // Clear the node.
