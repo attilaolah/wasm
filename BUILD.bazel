@@ -5,6 +5,7 @@ load("@crate_index//:defs.bzl", "aliases", "all_crate_deps")
 load("@rules_rust//rust:defs.bzl", "rust_shared_library")
 load("@rules_rust//wasm_bindgen:wasm_bindgen.bzl", "rust_wasm_bindgen")
 load("//toolchains/cc:clang.bzl", "clang_toolchain")
+load("//tools:slim.bzl", "slim_library")
 
 clang_toolchain(name = "linux_x86_64_clang")
 
@@ -26,9 +27,15 @@ rust_shared_library(
 
 genrule(
     name = "entry_point",
-    outs = ["entry_point.js"],
     srcs = [":runtime"],
+    outs = ["entry_point.js"],
     cmd = "cp $$(ls -1 $(locations :runtime) | grep /runtime.js) $@",
+    visibility = ["//dist:__pkg__"],
+)
+
+slim_library(
+    name = "template",
+    srcs = ["template.slim"],
     visibility = ["//dist:__pkg__"],
 )
 

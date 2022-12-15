@@ -7,7 +7,7 @@ def _page_impl(ctx):
     ctx.actions.run_shell(
         command = "\n".join([
             'echo "<!doctype html>" > {output_html}',
-            'echo "<script src="/dist/runtime/runtime.js"></script><body><!--" >> {output_html}',
+            'echo "<script type="module" src="/notebook/runtime.mjs" defer></script><body><!--" >> {output_html}',
         ] + [
             "cat {src} >> {{output_html}}".format(src = shell.quote(src.path))
             for src in ctx.files.srcs

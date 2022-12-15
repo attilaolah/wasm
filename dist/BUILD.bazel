@@ -1,21 +1,54 @@
 load("@aspect_rules_webpack//webpack:defs.bzl", "webpack_bundle")
 load("@npm//http-server:index.bzl", "http_server")
 
-webpack_bundle(
-    name = "runtime",
+genrule(
+    name = "notebook",
     srcs = [
-        "//:runtime",
+        ":bundle",
+        "//:template",
     ],
-    entry_point = "//:entry_point",
-    output_dir = True,
-    webpack_config = "webpack.config.js",
+    outs = [
+        "notebook/runtime.mjs",
+        "notebook/runtime.module.wasm",
+        "notebook/template.html",
+    ],
+    cmd = "\n".join([
+        "mkdir -p dist/notebook",
+        # Copy JS & WASM files:
+        "cp $(locations :bundle)/bundle.js $$(echo $(OUTS) | tr ' ' '\n' | grep /runtime.mjs)",
+        "cp $(locations :bundle)/*.module.wasm $$(echo $(OUTS) | tr ' ' '\n' | grep /runtime.module.wasm)",
+        # Copy HTML wtemplate file:
+        "cp $(location //:template) $$(echo $(OUTS) | tr ' ' '\n' | grep /template.html)",
+        # Make substitutions in JS to load deterministic WASM module:
+        "sed s/$$(basename $(locations :bundle)/*.module.wasm .module.wasm)/runtime/g -i $$(echo $(OUTS) | tr ' ' '\n' | grep /runtime.mjs)",
+    ]),
+)
+
+genrule(
+    name = "docs",
+    srcs = ["//docs:index"],
+    outs = ["index.html"],
+    cmd = "cp $(location //docs:index) $@",
 )
 
 http_server(
     name = "server",
-    args = ["."],
+    args = [package_name()],
     data = [
-        ":runtime",
-        "//docs:index",
+        ":docs",
+        ":notebook",
     ],
+)
+
+webpack_bundle(
+    name = "bundle",
+    srcs = ["//:runtime"],
+    args = select({
+        "//config:opt": ["--mode=production"],
+        "//config:dbg": ["--mode=development"],
+        "//conditions:default": ["--mode=none"],
+    }),
+    entry_point = "//:entry_point",
+    output_dir = True,
+    webpack_config = "webpack.config.js",
 )

@@ -1,28 +1,23 @@
 const path = require("path");
-//const WasmPackPlugin = require("@wasm-tool/wasm-pack-plugin");
 
 module.exports = {
-  mode: "production",
   output: {
+	asyncChunks: false,
     filename: "[name].js",
+	module: true,
   },
   experiments: {
     futureDefaults: true,
+	outputModule: true,
   },
-  //plugins: [
-  //  new WasmPackPlugin({
-  //    crateDirectory: __dirname,
-  //  }),
-  //],
-    module: {
-        rules: [
-            {
-                test: /\.wasm$/,
-                //type: "asset/inline",
-                type: "webassembly/async",
-            },
-        ],
-    },
+  module: {
+    rules: [
+      {
+        test: /\.wasm$/,
+        type: "webassembly/async",
+      },
+    ],
+  },
   devServer: {
     hot: false,
     liveReload: false,
