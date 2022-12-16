@@ -1,3 +1,5 @@
+const CopyPlugin = require("copy-webpack-plugin");
+
 module.exports = {
   output: {
     asyncChunks: false,
@@ -16,4 +18,13 @@ module.exports = {
       },
     ],
   },
+  plugins: [
+    new CopyPlugin({
+      patterns: [
+        { from: "style/style.css", to: "style.css" },
+        { from: "style/style.css.map", to: "style.css.map" },
+        { from: "template.html", to: "template.html" },
+      ],
+    }),
+  ],
 };

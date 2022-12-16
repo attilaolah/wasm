@@ -12,7 +12,6 @@ http_server(
     name = "server",
     data = [
         ":index",
-        "//:template",
-        "//style",
+        "//dist",
     ],
 )

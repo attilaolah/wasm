@@ -1,5 +1,5 @@
-use js_sys::Error;
 use js_sys::JsString;
+use js_sys::{Error, Object, Promise, Reflect};
 use pulldown_cmark::{html, Options, Parser};
 use wasm_bindgen::JsCast;
 use wasm_bindgen_futures::JsFuture;
@@ -17,7 +17,7 @@ impl Notebook {
         self.load_resources()?;
         self.set_meta_charset()?;
 
-        let tpl_html = self.load_template().await?;
+        let tpl_html = self.template().await?;
 
         let tpl: HtmlTemplateElement = self.create_element("template")?;
         tpl.set_inner_html(&tpl_html);
@@ -40,7 +40,7 @@ impl Notebook {
     }
 
     fn load_resources(&self) -> Result<(), Error> {
-        self.load_css("notebook/style.css")?;
+        // TODO: Load any additional styles if needed.
 
         Ok(())
     }
@@ -67,30 +67,17 @@ impl Notebook {
         Ok(())
     }
 
-    async fn load_template(&self) -> Result<String, Error> {
-        let mut opts = RequestInit::new();
-        opts.method("GET");
-        opts.mode(RequestMode::Cors);
-
-        let req = Request::new_with_str_and_init(TEMPLATE_URL.into(), &opts)?;
-        req.headers().set("Accept", "text/html")?;
-
-        let res_value = JsFuture::from(self.win.fetch_with_request(&req)).await?;
-        let res: Response = res_value.dyn_into().or_else(wrong_type("fetch"))?;
-
-        if !res.ok() {
-            return Err(Error::new(&format!(
-                "failed to load template: {} {:?}",
-                res.status(),
-                res.status_text().to_lowercase()
-            ))
-            .into());
-        }
-
-        let text_value = JsFuture::from(res.text()?).await?;
-        let text: JsString = text_value.dyn_into().or_else(wrong_type("text"))?;
-
-        Ok(text.into())
+    pub async fn template(&self) -> Result<String, Error> {
+        // Load the template promise set by the preloader.
+        let notebook: Object = self
+            .win
+            .get("notebook")
+            .ok_or_else(|| Error::new("`notebook` not found"))?;
+        let tpl: Promise = Reflect::get(&notebook, &"template".into())?.dyn_into()?;
+        JsFuture::from(tpl)
+            .await?
+            .as_string()
+            .ok_or_else(|| Error::new("`template` did not resolve with a string"))
     }
 
     fn create_element<T>(&self, tag_name: &str) -> Result<T, Error>
