@@ -65,7 +65,7 @@ impl Notebook {
         opts.method("GET");
         opts.mode(RequestMode::Cors);
 
-        let req = Request::new_with_str_and_init("/notebook/template.html".into(), &opts)?;
+        let req = Request::new_with_str_and_init("notebook/template.html".into(), &opts)?;
         req.headers().set("Accept", "text/html")?;
 
         let res_value = JsFuture::from(self.win.fetch_with_request(&req)).await?;
