@@ -1,7 +1,7 @@
 use js_sys::Error;
 use js_sys::JsString;
 use pulldown_cmark::{html, Options, Parser};
-use wasm_bindgen::{JsCast, JsValue};
+use wasm_bindgen::JsCast;
 use wasm_bindgen_futures::JsFuture;
 use web_sys::{
     console, HtmlElement, HtmlMetaElement, HtmlTemplateElement, Request, RequestInit, RequestMode,
@@ -10,20 +10,26 @@ use web_sys::{
 
 use crate::notebook::Notebook;
 
+const TEMPLATE_URL: &str = "notebook/template.html";
+
 impl Notebook {
-    pub async fn display_content(&self) -> Result<(), JsValue> {
+    pub async fn display_content(&self) -> Result<(), Error> {
         self.load_resources()?;
         self.set_meta_charset()?;
 
         let tpl_html = self.load_template().await?;
 
-        let tpl: HtmlTemplateElement = self.doc.create_element("template")?.dyn_into()?;
+        let tpl: HtmlTemplateElement = self
+            .doc
+            .create_element("template")?
+            .dyn_into()
+            .or_else(wrong_type("create_element"))?;
         tpl.set_inner_html(&tpl_html);
 
         match tpl.content().query_selector("#content")? {
             Some(el) => el.set_inner_html(&parse_markdown(&self.src.content)),
             None => {
-                return Err("#content not found in template".into());
+                return Err(Error::new("#content not found in template"));
             }
         }
 
@@ -37,7 +43,7 @@ impl Notebook {
         Ok(())
     }
 
-    fn load_resources(&self) -> Result<(), JsValue> {
+    fn load_resources(&self) -> Result<(), Error> {
         // TODO: Load CSS!
         // TODO: Load JS!
         Ok(())
@@ -52,7 +58,7 @@ impl Notebook {
             .doc
             .create_element("meta")?
             .dyn_into()
-            .or_else(|_| Err(Error::new("create_element() returned wrong type")))?;
+            .or_else(wrong_type("create_element"))?;
         meta.set_attribute("charset", "utf-8")?;
         self.head
             .insert_before(&meta, self.head.first_child().as_ref())?;
@@ -60,16 +66,16 @@ impl Notebook {
         Ok(())
     }
 
-    async fn load_template(&self) -> Result<String, JsValue> {
+    async fn load_template(&self) -> Result<String, Error> {
         let mut opts = RequestInit::new();
         opts.method("GET");
         opts.mode(RequestMode::Cors);
 
-        let req = Request::new_with_str_and_init("notebook/template.html".into(), &opts)?;
+        let req = Request::new_with_str_and_init(TEMPLATE_URL.into(), &opts)?;
         req.headers().set("Accept", "text/html")?;
 
         let res_value = JsFuture::from(self.win.fetch_with_request(&req)).await?;
-        let res: Response = res_value.dyn_into().unwrap();
+        let res: Response = res_value.dyn_into().or_else(wrong_type("fetch"))?;
 
         if !res.ok() {
             return Err(Error::new(&format!(
@@ -81,7 +87,7 @@ impl Notebook {
         }
 
         let text_value = JsFuture::from(res.text()?).await?;
-        let text: JsString = text_value.dyn_into().unwrap();
+        let text: JsString = text_value.dyn_into().or_else(wrong_type("text"))?;
 
         Ok(text.into())
     }
@@ -95,7 +101,7 @@ fn parse_markdown(content: &str) -> String {
 
 // Clear the node.
 // See https://stackoverflow.com/a/3955238 for why the first/last child combo.
-fn clear_children(el: &HtmlElement) -> Result<(), JsValue> {
+fn clear_children(el: &HtmlElement) -> Result<(), Error> {
     while !el.first_child().is_none() {
         if let Some(node) = el.last_child() {
             el.remove_child(&node)?;
@@ -103,4 +109,8 @@ fn clear_children(el: &HtmlElement) -> Result<(), JsValue> {
     }
 
     Ok(())
+}
+
+fn wrong_type<T, U>(func: &str) -> impl Fn(T) -> Result<U, Error> + '_ {
+    move |_| Err(Error::new(&format!("{}() returned wrong type", func)))
 }
