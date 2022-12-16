@@ -1,0 +1,19 @@
+load("@io_bazel_rules_sass//:defs.bzl", "sass_binary", "sass_library")
+
+sass_binary(
+    name = "style",
+    src = "style.sass",
+    output_style = select({
+        "//config:opt": "compressed",
+        "//conditions:default": "expanded",
+    }),
+    deps = [
+        ":page_layout",
+    ],
+    visibility = ["//dist:__pkg__"],
+)
+
+sass_library(
+    name = "page_layout",
+    srcs = ["page_layout.sass"],
+)

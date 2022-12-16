@@ -35,21 +35,32 @@ genrule(
     srcs = [
         ":bundle",
         "//:template",
+        "//style",
     ],
     outs = [
         "notebook/runtime.mjs",
         "notebook/runtime.module.wasm",
         "notebook/template.html",
+        "notebook/style.css",
+        "notebook/style.css.map",
     ],
     cmd = """
 mkdir -p dist/notebook
 
+# Copy HTML template file:
+cp $(location //:template) $$(echo $(OUTS) | tr ' ' '\n' | grep /template.html)
+
+# Copy CSS files:
+cp \\
+  $$(echo $(locations //style) | tr ' ' '\n' | grep --extended-regexp /style.css$$) \\
+  $$(echo $(OUTS) | tr ' ' '\n' | grep --extended-regexp /style.css$$)
+cp \\
+  $$(echo $(locations //style) | tr ' ' '\n' | grep --extended-regexp /style.css.map$$) \\
+  $$(echo $(OUTS) | tr ' ' '\n' | grep --extended-regexp /style.css.map$$)
+
 # Copy JS & WASM files:
 cp $(locations :bundle)/bundle.js $$(echo $(OUTS) | tr ' ' '\n' | grep /runtime.mjs)
 cp $(locations :bundle)/*.module.wasm $$(echo $(OUTS) | tr ' ' '\n' | grep /runtime.module.wasm)
-
-# Copy HTML template file:
-cp $(location //:template) $$(echo $(OUTS) | tr ' ' '\n' | grep /template.html)
 
 # Make substitutions in JS to load deterministic WASM module:
 sed s/$$(basename $(locations :bundle)/*.module.wasm .module.wasm)/runtime/g -i $$(echo $(OUTS) | tr ' ' '\n' | grep /runtime.mjs)
