@@ -19,11 +19,7 @@ impl Notebook {
 
         let tpl_html = self.load_template().await?;
 
-        let tpl: HtmlTemplateElement = self
-            .doc
-            .create_element("template")?
-            .dyn_into()
-            .or_else(wrong_type("create_element"))?;
+        let tpl: HtmlTemplateElement = self.create_element("template")?;
         tpl.set_inner_html(&tpl_html);
 
         match tpl.content().query_selector("#content")? {
@@ -54,11 +50,7 @@ impl Notebook {
             return Ok(());
         }
 
-        let meta: HtmlMetaElement = self
-            .doc
-            .create_element("meta")?
-            .dyn_into()
-            .or_else(wrong_type("create_element"))?;
+        let meta: HtmlMetaElement = self.create_element("meta")?;
         meta.set_attribute("charset", "utf-8")?;
         self.head
             .insert_before(&meta, self.head.first_child().as_ref())?;
@@ -90,6 +82,16 @@ impl Notebook {
         let text: JsString = text_value.dyn_into().or_else(wrong_type("text"))?;
 
         Ok(text.into())
+    }
+
+    fn create_element<T>(&self, tag_name: &str) -> Result<T, Error>
+    where
+        T: 'static + wasm_bindgen::JsCast,
+    {
+        self.doc
+            .create_element(tag_name)?
+            .dyn_into()
+            .or_else(wrong_type("create_element"))
     }
 }
 
