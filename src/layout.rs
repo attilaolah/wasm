@@ -4,8 +4,8 @@ use pulldown_cmark::{html, Options, Parser};
 use wasm_bindgen::JsCast;
 use wasm_bindgen_futures::JsFuture;
 use web_sys::{
-    console, HtmlElement, HtmlMetaElement, HtmlTemplateElement, Request, RequestInit, RequestMode,
-    Response,
+    console, HtmlElement, HtmlLinkElement, HtmlMetaElement, HtmlTemplateElement, Request,
+    RequestInit, RequestMode, Response,
 };
 
 use crate::notebook::Notebook;
@@ -40,8 +40,17 @@ impl Notebook {
     }
 
     fn load_resources(&self) -> Result<(), Error> {
-        // TODO: Load CSS!
-        // TODO: Load JS!
+        self.load_css("notebook/style.css")?;
+
+        Ok(())
+    }
+
+    fn load_css(&self, url: &str) -> Result<(), Error> {
+        let link: HtmlLinkElement = self.create_element("link")?;
+        link.set_attribute("rel", "stylesheet")?;
+        link.set_attribute("href", url)?;
+        self.head.append_child(&link)?;
+
         Ok(())
     }
 

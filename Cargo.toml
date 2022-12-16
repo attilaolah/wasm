@@ -36,6 +36,7 @@ features = [
   "Headers",
   "HtmlElement",
   "HtmlHeadElement",
+  "HtmlLinkElement",
   "HtmlMetaElement",
   "HtmlTemplateElement",
   "Node",
