@@ -130,4 +130,15 @@ def workspace_dependencies():
         build_file_content = None,
     )
 
+    http_archive(
+        name = "rules_pkg",
+        version = "0.8.0",
+        urls = [
+            "https://mirror.bazel.build/github.com/bazelbuild/rules_pkg/releases/download/{version}/rules_pkg-{version}.tar.gz",
+            "https://github.com/bazelbuild/rules_pkg/releases/download/{version}/rules_pkg-{version}.tar.gz",
+        ],
+        sha256 = "eea0f59c28a9241156a47d7a8e32db9122f3d50b505fae0f33de6ce4d9b61834",
+        build_file_content = None,
+    )
+
     download_mdn_yari()

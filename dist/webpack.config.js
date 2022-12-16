@@ -1,12 +1,12 @@
 module.exports = {
   output: {
-	asyncChunks: false,
+    asyncChunks: false,
     filename: "[name].js",
-	module: true,
+    module: true,
   },
   experiments: {
     futureDefaults: true,
-	outputModule: true,
+    outputModule: true,
   },
   module: {
     rules: [
@@ -15,10 +15,5 @@ module.exports = {
         type: "webassembly/async",
       },
     ],
-  },
-  devServer: {
-    hot: false,
-    liveReload: false,
-    watchFiles: [],
   },
 };

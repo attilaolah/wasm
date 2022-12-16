@@ -7,10 +7,13 @@ sass_binary(
         "//config:opt": "compressed",
         "//conditions:default": "expanded",
     }),
+    visibility = [
+        "//dist:__pkg__",
+        "//docs:__pkg__",
+    ],
     deps = [
         ":page_layout",
     ],
-    visibility = ["//dist:__pkg__"],
 )
 
 sass_library(

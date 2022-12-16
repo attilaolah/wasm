@@ -1,3 +1,4 @@
+load("@npm//http-server:index.bzl", "http_server")
 load(":page.bzl", "page")
 
 package(default_visibility = ["//visibility:public"])
@@ -5,4 +6,13 @@ package(default_visibility = ["//visibility:public"])
 page(
     name = "index",
     srcs = ["index.md"],
+)
+
+http_server(
+    name = "server",
+    data = [
+        ":index",
+        "//:template",
+        "//style",
+    ],
 )

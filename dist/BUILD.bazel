@@ -1,68 +1,101 @@
 load("@aspect_rules_webpack//webpack:defs.bzl", "webpack_bundle")
-load("@npm//http-server:index.bzl", "http_server")
-
-http_server(
-    name = "server",
-    args = [package_name()],
-    data = [
-        ":dist",
-        ":docs",
-    ],
-)
-
-genrule(
-    name = "docs",
-    srcs = ["//docs:index"],
-    outs = ["index.html"],
-    cmd = "cp $(location //docs:index) $@",
-)
+load("@rules_rust//wasm_bindgen:wasm_bindgen.bzl", "rust_wasm_bindgen")
+load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_filegroup", "pkg_files", "pkg_mkdirs", "strip_prefix", "filter_directory", "pkg_mklink")
+load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
 
 webpack_bundle(
     name = "bundle",
-    srcs = ["//:runtime"],
-    args = select({
-        "//config:opt": ["--mode=production"],
-        "//config:dbg": ["--mode=development"],
-        "//conditions:default": ["--mode=none"],
-    }),
-    entry_point = "//:entry_point",
+    srcs = [":runtime"],
+    entry_point = ":entry_point",
     output_dir = True,
     webpack_config = "webpack.config.js",
 )
 
-genrule(
-    name = "dist",
-    srcs = [
-        ":bundle",
-        "//:template",
-        "//style",
-    ],
-    outs = [
-        "notebook/runtime.mjs",
-        "notebook/runtime.module.wasm",
-        "notebook/template.html",
-        "notebook/style.css",
-        "notebook/style.css.map",
-    ],
-    cmd = """
-mkdir -p dist/notebook
-
-# Copy HTML template file:
-cp $(location //:template) $$(echo $(OUTS) | tr ' ' '\n' | grep /template.html)
-
-# Copy CSS files:
-cp \\
-  $$(echo $(locations //style) | tr ' ' '\n' | grep --extended-regexp /style.css$$) \\
-  $$(echo $(OUTS) | tr ' ' '\n' | grep --extended-regexp /style.css$$)
-cp \\
-  $$(echo $(locations //style) | tr ' ' '\n' | grep --extended-regexp /style.css.map$$) \\
-  $$(echo $(OUTS) | tr ' ' '\n' | grep --extended-regexp /style.css.map$$)
-
-# Copy JS & WASM files:
-cp $(locations :bundle)/bundle.js $$(echo $(OUTS) | tr ' ' '\n' | grep /runtime.mjs)
-cp $(locations :bundle)/*.module.wasm $$(echo $(OUTS) | tr ' ' '\n' | grep /runtime.module.wasm)
-
-# Make substitutions in JS to load deterministic WASM module:
-sed s/$$(basename $(locations :bundle)/*.module.wasm .module.wasm)/runtime/g -i $$(echo $(OUTS) | tr ' ' '\n' | grep /runtime.mjs)
-""",
+filter_directory(
+    name = "bundle_files",
+    src = ":bundle",
+    outdir_name = "pkg",
 )
+
+rust_wasm_bindgen(
+    name = "runtime",
+    wasm_file = "//:runtime_lib",
+)
+
+genrule(
+    name = "entry_point",
+    srcs = [":runtime"],
+    outs = ["entry_point.js"],
+    cmd = "cp $$(ls -1 $(execpaths :runtime) | grep --extended-regexp /runtime.js$$) $@",
+)
+
+pkg_filegroup(
+    name = "pkg",
+    srcs = [
+        ":pkg_js",
+        ":pkg_css",
+        ":pkg_html",
+    ],
+)
+
+pkg_tar(
+    name = "pkg_tar",
+    srcs = [":pkg"],
+)
+
+pkg_files(
+    name = "pkg_js",
+    srcs = [":bundle_files"],
+)
+
+pkg_files(
+    name = "pkg_css",
+    srcs = ["//style"],
+    prefix = "pkg",
+)
+
+pkg_files(
+    name = "pkg_html",
+    srcs = ["//:template"],
+    renames = {
+        "//:template": "pkg/template.html",
+    },
+)
+
+
+#genrule(
+#    name = "dist_genrule",
+#    srcs = [
+#        ":bundle",
+#        "//:template",
+#        "//style",
+#    ],
+#    outs = [
+#        "notebook/runtime.mjs",
+#        "notebook/runtime.module.wasm",
+#        "notebook/template.html",
+#        "notebook/style.css",
+#        "notebook/style.css.map",
+#    ],
+#    cmd = """
+#mkdir -p dist/notebook
+#
+## Copy HTML template file:
+#cp $(location //:template) $$(echo $(OUTS) | tr ' ' '\n' | grep /template.html)
+#
+## Copy CSS files:
+#cp \\
+#  $$(echo $(locations //style) | tr ' ' '\n' | grep --extended-regexp /style.css$$) \\
+#  $$(echo $(OUTS) | tr ' ' '\n' | grep --extended-regexp /style.css$$)
+#cp \\
+#  $$(echo $(locations //style) | tr ' ' '\n' | grep --extended-regexp /style.css.map$$) \\
+#  $$(echo $(OUTS) | tr ' ' '\n' | grep --extended-regexp /style.css.map$$)
+#
+## Copy JS & WASM files:
+#cp $(locations :bundle)/bundle.js $$(echo $(OUTS) | tr ' ' '\n' | grep /runtime.mjs)
+#cp $(locations :bundle)/*.module.wasm $$(echo $(OUTS) | tr ' ' '\n' | grep /runtime.module.wasm)
+#
+## Make substitutions in JS to load deterministic WASM module:
+#sed s/$$(basename $(locations :bundle)/*.module.wasm .module.wasm)/runtime/g -i $$(echo $(OUTS) | tr ' ' '\n' | grep /runtime.mjs)
+#""",
+#)

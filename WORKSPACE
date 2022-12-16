@@ -166,3 +166,9 @@ load("@io_bazel_rules_closure//closure:repositories.bzl", "rules_closure_depende
 rules_closure_dependencies()
 
 rules_closure_toolchains()
+
+## Packaging rules dependencies.
+
+load("@rules_pkg//:deps.bzl", "rules_pkg_dependencies")
+
+rules_pkg_dependencies()
