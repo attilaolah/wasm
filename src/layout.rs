@@ -15,7 +15,7 @@ impl Notebook {
         self.load_resources()?;
         self.set_meta_charset()?;
 
-        let tpl_html = load_template().await?;
+        let tpl_html = self.load_template().await?;
 
         let tpl: HtmlTemplateElement = self.doc.create_element("template")?.dyn_into()?;
         tpl.set_inner_html(&tpl_html);
@@ -59,28 +59,32 @@ impl Notebook {
 
         Ok(())
     }
-}
 
-async fn load_template() -> Result<String, JsValue> {
-    let mut opts = RequestInit::new();
-    opts.method("GET");
-    opts.mode(RequestMode::Cors);
+    async fn load_template(&self) -> Result<String, JsValue> {
+        let mut opts = RequestInit::new();
+        opts.method("GET");
+        opts.mode(RequestMode::Cors);
 
-    let req = Request::new_with_str_and_init("/notebook/template.html".into(), &opts)?;
-    req.headers().set("Accept", "text/html")?;
+        let req = Request::new_with_str_and_init("/notebook/template.html".into(), &opts)?;
+        req.headers().set("Accept", "text/html")?;
 
-    let window = web_sys::window().unwrap();
-    let res_value = JsFuture::from(window.fetch_with_request(&req)).await?;
+        let res_value = JsFuture::from(self.win.fetch_with_request(&req)).await?;
+        let res: Response = res_value.dyn_into().unwrap();
 
-    // `res_value` is a `Response` object.
-    assert!(res_value.is_instance_of::<Response>());
-    let res: Response = res_value.dyn_into().unwrap();
+        if !res.ok() {
+            return Err(Error::new(&format!(
+                "failed to load template: {} {:?}",
+                res.status(),
+                res.status_text().to_lowercase()
+            ))
+            .into());
+        }
 
-    let text_value = JsFuture::from(res.text()?).await?;
+        let text_value = JsFuture::from(res.text()?).await?;
+        let text: JsString = text_value.dyn_into().unwrap();
 
-    let text: JsString = text_value.dyn_into().unwrap();
-
-    Ok(text.into())
+        Ok(text.into())
+    }
 }
 
 fn parse_markdown(content: &str) -> String {
