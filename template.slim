@@ -1,7 +1,26 @@
-.grid
-  header
-  aside
-    section.actions
-    section.actions
-  main.main-content role="main"
-    #content
+.notebook-ui
+  .grid
+    .logo
+      .image
+        span.material-symbols-outlined stars
+      | Web Notebooks
+
+    header.head
+      button#toggle-dark
+        span.material-symbols-outlined light_mode
+      button#toggle-light
+        span.material-symbols-outlined dark_mode
+      button#toggle-default-brightness
+        span.material-symbols-outlined brightness_medium
+
+    aside.left
+      section.actions.main
+        button#run-all
+          span.material-symbols-outlined fast_forward
+          | Run All
+      section.actions
+
+    main.main-content role="main"
+      #content
+
+    aside.right

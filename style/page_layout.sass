@@ -1,2 +1,74 @@
+$header-height: 64px
+$left-sidebar-width: 256px
+
+$pad-half: 4px
+$pad: $pad-half * 2
+$pad-double: $pad * 2
+
+$button-size: 48px
+
+// TODO: Move to typography sass.
+:root
+  --font-fallback: BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif
+  --font-body: Inter, var(--font-fallback)
+  --font-heading: var(--font-body)
+  --font-code: Menlo, Consolas, Monaco, Liberation Mono, Lucida Console, monospace
+
+// TODO: Remove when adding normalize.css.
 body
-  background: yellow
+  margin: 0
+  padding: 0
+  font-family: var(--font-body)
+
+.notebook-ui
+  display: flex
+  flex-direction: column
+  height: 100%
+  overflow: hidden
+
+  .grid
+    display: grid
+    grid-template-areas: "logo head head" "left main side"
+    grid-template-columns: 1fr auto
+    grid-template-rows: auto auto 1fr
+
+    .logo
+      grid-area: logo
+      background: orange
+
+
+    header.head
+      grid-area: head
+      display: flex
+      flex-direction: row
+      justify-content: flex-end
+      padding: $pad-half
+
+      button
+        width: $button-size
+        height: $button-size
+        border: none
+        border-radius: 100%
+        margin: $pad-half
+
+        // Turn the buttons into flex elements.
+        // Otherwise the icons would be slightly misaligned vertically.
+        display: flex
+        align-items: center
+        justify-content: center
+
+        span
+          line-height: $button-size
+
+
+    aside.left
+      grid-area: left
+      width: $left-sidebar-width - $pad-double - $pad-double
+      padding: $pad-double
+
+
+    main.main-content
+      grid-area: main
+
+    aside.right
+      grid-area: side
