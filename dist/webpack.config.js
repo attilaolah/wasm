@@ -1,6 +1,15 @@
 const CopyPlugin = require("copy-webpack-plugin");
+const path = require("path");
+
+const parentDir = path.dirname(__dirname);
 
 module.exports = {
+  entry: {
+    style: [
+      path.resolve(parentDir, process.env.NODE_PATH + "/normalize.css/normalize.css"),
+      path.resolve(parentDir, "style/style.css"),
+    ]
+  },
   output: {
     asyncChunks: false,
     filename: "[name].js",
@@ -21,7 +30,6 @@ module.exports = {
   plugins: [
     new CopyPlugin({
       patterns: [
-        { from: "style/style.css", to: "style.css" },
         { from: "style/style.css.map", to: "style.css.map" },
         { from: "template.html", to: "template.html" },
       ],

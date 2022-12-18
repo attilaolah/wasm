@@ -13,10 +13,16 @@ sass_binary(
     ],
     deps = [
         ":page_layout",
+        ":typography",
     ],
 )
 
 sass_library(
     name = "page_layout",
     srcs = ["page_layout.sass"],
+)
+
+sass_library(
+    name = "typography",
+    srcs = ["typography.sass"],
 )
