@@ -6,8 +6,9 @@ const currentScript: HTMLScriptElement =
 const ownerDocument = currentScript.ownerDocument;
 const ownerHead = ownerDocument.head;
 
-const STYLE_CSS = '/pc/dist/pkg/style.css';
-const TEMPLATE_URL = '/pc/dist/pkg/template.html';
+const DIR = currentScript.src.replace(/\/*[^/]*$/, '')
+const STYLE_CSS = `${DIR}/style.css`;
+const TEMPLATE_URL = `${DIR}/template.html`;
 
 class Notebook {
   template: Promise<string>;
@@ -18,7 +19,6 @@ class Notebook {
 }
 
 export function preload(): void {
-  console.log(currentScript.src);
   loadStyle();
   loadFonts();
 

@@ -7,19 +7,6 @@ $pad-double: $pad * 2
 
 $button-size: 48px
 
-// TODO: Move to typography sass.
-:root
-  --font-fallback: BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif
-  --font-body: Inter, var(--font-fallback)
-  --font-heading: var(--font-body)
-  --font-code: Menlo, Consolas, Monaco, Liberation Mono, Lucida Console, monospace
-
-// TODO: Remove when adding normalize.css.
-body
-  margin: 0
-  padding: 0
-  font-family: var(--font-body)
-
 .notebook-ui
   display: flex
   flex-direction: column
@@ -42,7 +29,8 @@ body
       display: flex
       flex-direction: row
       justify-content: flex-end
-      padding: $pad-half
+      padding: $pad
+      gap: $pad
 
       button
         width: $button-size
@@ -72,3 +60,17 @@ body
 
     aside.right
       grid-area: side
+
+body
+  &.dark .toggle-dark,
+  &.light .toggle-light,
+  &:not(.dark):not(.light) .toggle-default-brightness
+    display: none !important
+
+@media (prefers-color-scheme: dark)
+  body:not(.light) .toggle-dark
+    display: none !important
+
+@media (prefers-color-scheme: light)
+  body:not(.dark) .toggle-light
+    display: none !important
