@@ -1,5 +1,5 @@
 [package]
-name = "toedi"
+name = "webnb"
 description = "Interactive Markdown-based notebooks."
 version = "0.1.0"
 authors = ["Attila Oláh <attilaolah@gmail.com>"]

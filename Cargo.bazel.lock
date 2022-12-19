@@ -12593,8 +12593,8 @@
       },
       "license": "MIT OR Apache-2.0 OR Zlib"
     },
-    "toedi 0.1.0": {
-      "name": "toedi",
+    "webnb 0.1.0": {
+      "name": "webnb",
       "version": "0.1.0",
       "repository": null,
       "targets": [],
@@ -16696,7 +16696,7 @@
     "wasm-pack 0.10.3"
   ],
   "workspace_members": {
-    "toedi 0.1.0": ""
+    "webnb 0.1.0": ""
   },
   "conditions": {
     "aarch64-pc-windows-gnullvm": [],
