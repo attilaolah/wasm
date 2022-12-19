@@ -7,7 +7,7 @@ module.exports = {
   entry: {
     style: [
       path.resolve(parentDir, process.env.NODE_PATH + "/normalize.css/normalize.css"),
-      path.resolve(parentDir, "style/style.css"),
+      path.resolve(parentDir, "src/style/style.css"),
     ]
   },
   output: {
@@ -30,7 +30,7 @@ module.exports = {
   plugins: [
     new CopyPlugin({
       patterns: [
-        { from: "style/style.css.map", to: "style.css.map" },
+        { from: "src/style/style.css.map", to: "style.css.map" },
         { from: "src/template.html", to: "template.html" },
       ],
     }),

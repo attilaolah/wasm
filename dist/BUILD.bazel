@@ -9,7 +9,7 @@ webpack_bundle(
         ":runtime_wasm",
         "//src:loader_ts",
         "//src:template",
-        "//style",
+        "//src/style",
         "@npm//normalize.css",
     ] + [
         # Strictly speaking, these are not sources.
