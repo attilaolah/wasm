@@ -7,8 +7,8 @@ webpack_bundle(
     name = "notebook",
     srcs = [
         ":runtime_wasm",
-        "//:loader_ts",
-        "//:template",
+        "//src:loader_ts",
+        "//src:template",
         "//style",
         "@npm//normalize.css",
     ] + [

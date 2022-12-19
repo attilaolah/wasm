@@ -1,63 +1,22 @@
 load("@bazel_gazelle//:def.bzl", "gazelle")
-load("@npm//@bazel/typescript:index.bzl", "ts_project")
-load("//tools:javascript_target.bzl", "JS_TARGET", "TS_TARGET")
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@com_github_bazelbuild_buildtools//buildifier:def.bzl", "buildifier")
 load("@crate_index//:defs.bzl", "aliases", "all_crate_deps")
 load("@rules_rust//rust:defs.bzl", "rust_shared_library")
 load("//toolchains/cc:clang.bzl", "clang_toolchain")
-load("//tools:slim.bzl", "slim_library")
 
 clang_toolchain(name = "linux_x86_64_clang")
 
-ts_project(
-    name = "loader_ts",
-    # Compilation mode must come first.
-    srcs = [":compilation_mode_ts"] + [
-        "src/loader.ts",
-    ],
-    tsconfig = {"compilerOptions": {
-        "target": TS_TARGET,
-        "esModuleInterop": True,
-        "module": "commonjs",
-    }},
-    visibility = ["//dist:__pkg__"],
-)
 
 rust_shared_library(
     name = "runtime_lib",
-    srcs = [
-        "src/layout.rs",
-        "src/lib.rs",
-        "src/notebook.rs",
-    ],
+    srcs = ["//src"],
     aliases = aliases(normal = True),
     proc_macro_deps = all_crate_deps(
         proc_macro = True,
     ),
     visibility = ["//dist:__pkg__"],
     deps = all_crate_deps(normal = True),
-)
-
-slim_library(
-    name = "template",
-    srcs = ["template.slim"],
-    visibility = [
-        "//dist:__pkg__",
-        "//docs:__pkg__",
-    ],
-)
-
-filegroup(
-    name = "compilation_mode_ts",
-    srcs = select({
-        "//config:" + mode: ["src/compilation_mode_{}.ts".format(mode)]
-        for mode in [
-            "opt",
-            "fastbuild",
-            "dbg",
-        ]
-    }),
 )
 
 # gazelle:prefix github.com/attilaolah/wasm

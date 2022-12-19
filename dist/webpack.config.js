@@ -31,7 +31,7 @@ module.exports = {
     new CopyPlugin({
       patterns: [
         { from: "style/style.css.map", to: "style.css.map" },
-        { from: "template.html", to: "template.html" },
+        { from: "src/template.html", to: "template.html" },
       ],
     }),
   ],
