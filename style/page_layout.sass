@@ -4,62 +4,103 @@ $left-sidebar-width: 256px
 $pad-half: 4px
 $pad: $pad-half * 2
 $pad-double: $pad * 2
+$pad-content: $pad-double + $pad
 
 $button-size: 48px
 
 .notebook-ui
-  display: flex
-  flex-direction: column
-  height: 100%
-  overflow: hidden
+  display: grid
+  grid-template-areas: "head head head" "left main side"
+  grid-template-columns: 1fr auto
+  grid-template-rows: auto auto 1fr
 
-  .grid
-    display: grid
-    grid-template-areas: "logo head head" "left main side"
-    grid-template-columns: 1fr auto
-    grid-template-rows: auto auto 1fr
+  color: rgb(var(--on-background))
+  background-color: rgb(var(--background))
+
+  header.head
+    grid-area: head
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+    padding: $pad
 
     .logo
-      grid-area: logo
-      background: orange
+      display: flex
+      align-items: center
+      font-size: 32px
 
-
-    header.head
-      grid-area: head
+    .icons
       display: flex
       flex-direction: row
+
+
+    .right
       justify-content: flex-end
-      padding: $pad
-      gap: $pad
 
-      button
-        width: $button-size
-        height: $button-size
-        border: none
-        border-radius: 100%
-        margin: $pad-half
+    button.icon
+      width: $button-size
+      height: $button-size
+      border: none
+      border-radius: 100%
+      margin: $pad-half
 
-        // Turn the buttons into flex elements.
-        // Otherwise the icons would be slightly misaligned vertically.
-        display: flex
-        align-items: center
-        justify-content: center
+      display: flex
+      align-items: center
+      justify-content: center
 
-        span
-          line-height: $button-size
+      span
+        line-height: $button-size
 
 
-    aside.left
-      grid-area: left
-      width: $left-sidebar-width - $pad-double - $pad-double
-      padding: $pad-double
+  aside.left
+    grid-area: left
+    width: $left-sidebar-width - $pad-double - $pad-double
+    padding: $pad-double
 
 
-    main.main-content
-      grid-area: main
+  main.main-content
+    grid-area: main
+    margin-right: $pad-double
+    margin-bottom: $pad-double
+    line-height: 1.75
+    font-size: 16px
 
-    aside.right
-      grid-area: side
+    p, pre
+      margin: 16px 0 32px
+
+    pre
+      padding: 16px
+
+    pre, code
+      font-family: var(--font-code)
+      color: var(--on-surface-variant)
+      background-color: var(--surface-variant)
+
+    :not(pre) > code
+      padding: 2px 4px
+
+    a
+      color: var(--primary)
+
+      &:hover
+        color: var(--on-primary-container)
+
+  aside.right
+    grid-area: side
+
+button.icon
+  color: inherit
+  background-color: transparent
+  cursor: pointer
+
+  --alpha: 0
+  background-color: rgba(var(--on-background), var(--alpha))
+
+  &:hover
+    --alpha: 0.08
+
+  &:active
+    --alpha: 0.12
 
 body
   &.dark .toggle-dark,

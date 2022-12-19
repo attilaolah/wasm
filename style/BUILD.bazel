@@ -12,9 +12,15 @@ sass_binary(
         "//docs:__pkg__",
     ],
     deps = [
+        ":colours",
         ":page_layout",
         ":typography",
     ],
+)
+
+sass_library(
+    name = "colours",
+    srcs = ["colours.sass"],
 )
 
 sass_library(

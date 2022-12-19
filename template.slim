@@ -1,26 +1,23 @@
 .notebook-ui
-  .grid
+  header.head
     .logo
-      .image
-        span.material-symbols-outlined stars
-      | Web Notebooks
+      span @web//:nb
 
-    header.head
-      button#toggle-light.toggle-light
+    .icons.right
+      button#toggle-light.toggle-light.icon
         span.material-symbols-outlined light_mode
-      button#toggle-dark.toggle-dark
+      button#toggle-dark.toggle-dark.icon
         span.material-symbols-outlined dark_mode
-      button#toggle-default-brightness.toggle-default-brightness
+      button#toggle-default-brightness.toggle-default-brightness.icon
         span.material-symbols-outlined brightness_medium
 
-    aside.left
-      section.actions.main
-        button#run-all
-          span.material-symbols-outlined fast_forward
-          | Run All
-      section.actions
+  aside.left
+    section.actions.main
+      button#run-all
+        span.material-symbols-outlined fast_forward
+        | Run All
+    section.actions
 
-    main.main-content role="main"
-      #content
+  main#content.main-content role="main"
 
-    aside.right
+  aside.right
