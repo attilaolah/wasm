@@ -11,6 +11,8 @@ webpack_bundle(
         "//src:template",
         "//src/style",
         "@npm//normalize.css",
+        "@npm//prism-themes",
+        "@npm//prismjs",
     ] + [
         # Strictly speaking, these are not sources.
         # However, they are required by the compilation process.

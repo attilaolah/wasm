@@ -1,9 +1,8 @@
-use js_sys::{Error, Object, Promise, Reflect};
+use js_sys::Error;
 use serde::Deserialize;
 use std::clone::Clone;
 use std::marker::Copy;
 use wasm_bindgen::JsCast;
-use wasm_bindgen_futures::JsFuture;
 use web_sys::console;
 use web_sys::{Document, HtmlElement, HtmlHeadElement, Window};
 use yaml_front_matter::{Document as SrcDoc, YamlFrontMatter};

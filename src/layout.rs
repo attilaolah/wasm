@@ -1,20 +1,13 @@
-use js_sys::JsString;
-use js_sys::{Error, Object, Promise, Reflect};
+use js_sys::{Array, Error, Function, Object, Promise, Reflect};
 use pulldown_cmark::{html, Options, Parser};
 use wasm_bindgen::JsCast;
 use wasm_bindgen_futures::JsFuture;
-use web_sys::{
-    console, HtmlElement, HtmlLinkElement, HtmlMetaElement, HtmlTemplateElement, Request,
-    RequestInit, RequestMode, Response,
-};
+use web_sys::{console, HtmlElement, HtmlMetaElement, HtmlTemplateElement};
 
 use crate::notebook::Notebook;
 
-const TEMPLATE_URL: &str = "notebook/template.html";
-
 impl Notebook {
     pub async fn display_content(&self) -> Result<(), Error> {
-        self.load_resources()?;
         self.set_meta_charset()?;
 
         let tpl_html = self.template().await?;
@@ -31,25 +24,11 @@ impl Notebook {
 
         clear_children(&self.root)?;
         self.root.append_child(&tpl.content())?;
+        self.highlight()?;
 
         if self.src.metadata.autorun() {
             console::log_1(&"todo: autorun enabled, run all code blocks".into());
         }
-
-        Ok(())
-    }
-
-    fn load_resources(&self) -> Result<(), Error> {
-        // TODO: Load any additional styles if needed.
-
-        Ok(())
-    }
-
-    fn load_css(&self, url: &str) -> Result<(), Error> {
-        let link: HtmlLinkElement = self.create_element("link")?;
-        link.set_attribute("rel", "stylesheet")?;
-        link.set_attribute("href", url)?;
-        self.head.append_child(&link)?;
 
         Ok(())
     }
@@ -67,7 +46,7 @@ impl Notebook {
         Ok(())
     }
 
-    pub async fn template(&self) -> Result<String, Error> {
+    async fn template(&self) -> Result<String, Error> {
         // Load the template promise set by the preloader.
         let notebook: Object = self
             .win
@@ -78,6 +57,18 @@ impl Notebook {
             .await?
             .as_string()
             .ok_or_else(|| Error::new("`template` did not resolve with a string"))
+    }
+
+    fn highlight(&self) -> Result<(), Error> {
+        let prism: Object = self
+            .win
+            .get("Prism")
+            .ok_or_else(|| Error::new("`Prism` not found"))?;
+        let func: Function = Reflect::get(&prism, &"highlightAllUnder".into())?.dyn_into()?;
+        let args = Array::of1(&self.root);
+        Reflect::apply(&func, &prism, &args)?;
+
+        Ok(())
     }
 
     fn create_element<T>(&self, tag_name: &str) -> Result<T, Error>
