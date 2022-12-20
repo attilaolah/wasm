@@ -7,14 +7,14 @@ def _page_impl(ctx):
     ctx.actions.run_shell(
         command = "\n".join([
             'echo "<!doctype html>" > {output_html}',
-            'echo "<script type="module" src="{js_url}" async></script><body><!--" >> {output_html}',
+            'echo "<script type="module" src="{loader_js}" async></script><body><!--" >> {output_html}',
         ] + [
             "cat {src} >> {{output_html}}".format(src = shell.quote(src.path))
             for src in ctx.files.srcs
         ] + [
             'echo "-->" >> {output_html}',
         ]).format(
-            js_url = ctx.attr.js,
+            loader_js = ctx.attr.loader_js,
             output_html = shell.quote(output_html.path),
         ),
         inputs = ctx.files.srcs,
@@ -25,9 +25,9 @@ def _page_impl(ctx):
 page = rule(
     implementation = _page_impl,
     attrs = {
-        "js": attr.string(
+        "loader_js": attr.string(
             doc = "URL to load the notebook.js file from.",
-            default = "../dist/pkg/notebook.js",
+            default = "/webnb.js",
         ),
         "srcs": attr.label_list(
             doc = "Markdown files to include in the output.",

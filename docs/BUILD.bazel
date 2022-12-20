@@ -6,6 +6,7 @@ package(default_visibility = ["//visibility:public"])
 page(
     name = "index",
     srcs = ["index.md"],
+    loader_js = "../dist/pkg/webnb.js",
 )
 
 http_server(

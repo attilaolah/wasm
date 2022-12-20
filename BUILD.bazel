@@ -7,14 +7,15 @@ load("//toolchains/cc:clang.bzl", "clang_toolchain")
 
 clang_toolchain(name = "linux_x86_64_clang")
 
+# TODO: Try moving this rule to //src.
 rust_shared_library(
     name = "runtime_lib",
-    srcs = ["//src"],
+    srcs = ["//src:runtime_files"],
     aliases = aliases(normal = True),
     proc_macro_deps = all_crate_deps(
         proc_macro = True,
     ),
-    visibility = ["//dist:__pkg__"],
+    visibility = ["//src:__pkg__"],
     deps = all_crate_deps(normal = True),
 )
 

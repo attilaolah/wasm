@@ -1,0 +1,28 @@
+load("@npm//@bazel/typescript:index.bzl", "ts_project")
+load("//tools:javascript_target.bzl", "TS_TARGET")
+
+ts_project(
+    name = "loader",
+    # Compilation mode must come first.
+    srcs = [":compilation_mode_ts"] + [
+        "loader.ts",
+    ],
+    tsconfig = {"compilerOptions": {
+        "target": TS_TARGET,
+        "esModuleInterop": True,
+        "module": "commonjs",
+    }},
+    visibility = ["//dist:__pkg__"],
+)
+
+filegroup(
+    name = "compilation_mode_ts",
+    srcs = select({
+        "//config:" + mode: ["compilation_mode_{}.ts".format(mode)]
+        for mode in [
+            "opt",
+            "fastbuild",
+            "dbg",
+        ]
+    }),
+)
