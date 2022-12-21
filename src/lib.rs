@@ -14,7 +14,9 @@ static ALLOC: WeeAlloc = WeeAlloc::INIT;
 pub async fn main() -> Result<(), Error> {
     let nb = Notebook::parse()?;
 
-    nb.display_content().await?;
+    nb.set_meta_charset()?;
+    nb.init_ui_content().await?;
+    nb.init_ui_callbacks()?;
 
     Ok(())
 }

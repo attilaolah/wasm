@@ -1,15 +1,27 @@
 use js_sys::{Array, Error, Function, Object, Promise, Reflect};
 use pulldown_cmark::{html, Options, Parser};
+use wasm_bindgen::closure::Closure;
 use wasm_bindgen::JsCast;
 use wasm_bindgen_futures::JsFuture;
-use web_sys::{console, HtmlElement, HtmlMetaElement, HtmlTemplateElement};
+use web_sys::{console, HtmlElement, HtmlMetaElement, HtmlTemplateElement, MouseEvent};
 
 use crate::notebook::Notebook;
 
 impl Notebook {
-    pub async fn display_content(&self) -> Result<(), Error> {
-        self.set_meta_charset()?;
+    pub fn set_meta_charset(&self) -> Result<(), Error> {
+        if !self.doc.query_selector("meta[charset]")?.is_none() {
+            return Ok(());
+        }
 
+        let meta: HtmlMetaElement = self.create_element("meta")?;
+        meta.set_attribute("charset", "utf-8")?;
+        self.head
+            .insert_before(&meta, self.head.first_child().as_ref())?;
+
+        Ok(())
+    }
+
+    pub async fn init_ui_content(&self) -> Result<(), Error> {
         let tpl_html = self.template().await?;
 
         let tpl: HtmlTemplateElement = self.create_element("template")?;
@@ -33,15 +45,19 @@ impl Notebook {
         Ok(())
     }
 
-    fn set_meta_charset(&self) -> Result<(), Error> {
-        if !self.doc.query_selector("meta[charset]")?.is_none() {
-            return Ok(());
-        }
+    pub fn init_ui_callbacks(&self) -> Result<(), Error> {
+        let use_light = Closure::wrap(Box::new(move |evt| {
+            if let Err(err) = use_light_theme(evt) {
+                console::log_2(&"click event failed:".into(), &err);
+            }
+        }) as Box<dyn Fn(_)>);
+        self.root
+            .query_selector("#toggle-light".into())?
+            .ok_or_else(|| Error::new("`#toggle-light` not found"))?
+            .add_event_listener_with_callback("click", use_light.as_ref().unchecked_ref())?;
 
-        let meta: HtmlMetaElement = self.create_element("meta")?;
-        meta.set_attribute("charset", "utf-8")?;
-        self.head
-            .insert_before(&meta, self.head.first_child().as_ref())?;
+        // TODO: Don't .forget(), instead take ownership of the closure.
+        use_light.forget();
 
         Ok(())
     }
@@ -102,4 +118,17 @@ fn clear_children(el: &HtmlElement) -> Result<(), Error> {
 
 fn wrong_type<T, U>(func: &str) -> impl Fn(T) -> Result<U, Error> + '_ {
     move |_| Err(Error::new(&format!("{}() returned wrong type", func)))
+}
+
+fn use_light_theme(evt: MouseEvent) -> Result<(), Error> {
+    let target: HtmlElement = evt
+        .target()
+        .ok_or_else(|| Error::new("event target not found"))?
+        .dyn_into()
+        .or_else(wrong_type("target"))?;
+
+    // TODO: Implement actual toggle here:
+    console::log_2(&"clicked on:".into(), &target.id().into());
+
+    Ok(())
 }

@@ -77,30 +77,29 @@ $button-size: 48px
   aside.right
     grid-area: side
 
-button.icon
-  color: inherit
-  background-color: transparent
-  cursor: pointer
+  button.icon
+    color: inherit
+    background-color: transparent
+    cursor: pointer
 
-  --alpha: 0
-  background-color: rgba(var(--on-background), var(--alpha))
+    --alpha: 0
+    background-color: rgba(var(--on-background), var(--alpha))
 
-  &:hover
-    --alpha: 0.08
+    &:hover
+      --alpha: 0.08
 
-  &:active
-    --alpha: 0.12
+    &:active
+      --alpha: 0.12
 
-body
   &.dark .toggle-dark,
   &.light .toggle-light,
   &:not(.dark):not(.light) .toggle-default-brightness
     display: none !important
 
 @media (prefers-color-scheme: dark)
-  body:not(.light) .toggle-dark
+  .notebook-ui:not(.light) .toggle-dark
     display: none !important
 
 @media (prefers-color-scheme: light)
-  body:not(.dark) .toggle-light
+  .notebook-ui:not(.dark) .toggle-light
     display: none !important
