@@ -1,5 +1,5 @@
 {
-  "checksum": "0e2e594b76d2faa922eb398dc97df82fee9aa9aa62d40a6793dcb52f2d1eaf91",
+  "checksum": "332b94fd03a2505807b6128a0297e7c7a2ee4c7aaf26a5b06b163ff2e6576574",
   "crates": {
     "addr2line 0.19.0": {
       "name": "addr2line",
@@ -14912,6 +14912,7 @@
           "RequestInit",
           "RequestMode",
           "Response",
+          "Storage",
           "UiEvent",
           "Window",
           "Worker",

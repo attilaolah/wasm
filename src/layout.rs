@@ -36,10 +36,27 @@ impl Notebook {
 
         clear_children(&self.root)?;
         self.root.append_child(&tpl.content())?;
+        self.init_theme()?;
         self.highlight()?;
 
         if self.src.metadata.autorun() {
             console::log_1(&"todo: autorun enabled, run all code blocks".into());
+        }
+
+        Ok(())
+    }
+
+    fn init_theme(&self) -> Result<(), Error> {
+        if let Some(ls) = window()?.local_storage()? {
+            if let Some(theme) = ls.get_item("config:theme")? {
+                self.root
+                    .owner_document()
+                    .ok_or_else(|| Error::new("owner document not found"))?
+                    .body()
+                    .ok_or_else(|| Error::new("body not found"))?
+                    .class_list()
+                    .add_1(&theme)?
+            }
         }
 
         Ok(())
@@ -156,17 +173,34 @@ fn toggle_theme(evt: MouseEvent) -> Result<(), Error> {
         .body()
         .ok_or_else(|| Error::new("body not found"))?
         .class_list();
-    if class_list.contains("light") || class_list.contains("dark") {
-        class_list.toggle("light")?;
-        class_list.toggle("dark")?;
-        return Ok(());
+
+    let old_theme = if class_list.contains("dark") {
+        // Explicit "dark" preference takes precedence over "light" preference.
+        "dark"
+    } else if class_list.contains("light") {
+        "light"
+    } else {
+        match window()?.match_media("(prefers-color-scheme: dark)")? {
+            Some(mql) => {
+                if mql.matches() {
+                    "dark"
+                } else {
+                    "light"
+                }
+            }
+            None => "light",
+        }
+    };
+    let new_theme = if old_theme == "dark" { "light" } else { "dark" };
+
+    if let Some(ls) = window()?.local_storage()? {
+        if let Err(err) = ls.set_item("config:theme", new_theme) {
+            console::warn_2(&"local_storage.set_item failed:".into(), &err);
+        }
     }
 
-    let dark_theme: bool = match window()?.match_media("(prefers-color-scheme: dark)")? {
-        Some(mql) => mql.matches(),
-        None => false,
-    };
-    class_list.toggle(if dark_theme { "light" } else { "dark" })?;
+    class_list.toggle_with_force(old_theme, false)?;
+    class_list.toggle_with_force(new_theme, true)?;
 
     Ok(())
 }
@@ -184,6 +218,10 @@ fn toggle_theme_default(evt: MouseEvent) -> Result<(), Error> {
         .ok_or_else(|| Error::new("body not found"))?
         .class_list()
         .remove_2("light", "dark")?;
+
+    if let Some(ls) = window()?.local_storage()? {
+        ls.remove_item("config:theme")?;
+    }
 
     Ok(())
 }

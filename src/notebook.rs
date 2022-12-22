@@ -25,11 +25,9 @@ static DEFAULT: NotebookConfig = NotebookConfig { autorun: None };
 impl Notebook {
     pub fn parse() -> Result<Self, Error> {
         let win = window()?;
-        let doc = win
-            .document()
-            .ok_or_else(|| Error::new("`document` not found"))?;
-        let head = doc.head().ok_or_else(|| Error::new("`head` not found"))?;
-        let root = doc.body().ok_or_else(|| Error::new("`body` not found"))?;
+        let doc = document()?;
+        let head = head()?;
+        let root = body()?;
 
         let inner_html = root.inner_html();
         let mut src_content = inner_html.trim();
@@ -67,4 +65,22 @@ impl NotebookConfig {
 
 pub fn window() -> Result<Window, Error> {
     web_sys::window().ok_or_else(|| Error::new("`window` not found"))
+}
+
+pub fn document() -> Result<Document, Error> {
+    window()?
+        .document()
+        .ok_or_else(|| Error::new("`document` not found"))
+}
+
+pub fn head() -> Result<HtmlHeadElement, Error> {
+    document()?
+        .head()
+        .ok_or_else(|| Error::new("`head` not found"))
+}
+
+pub fn body() -> Result<HtmlElement, Error> {
+    document()?
+        .body()
+        .ok_or_else(|| Error::new("`body` not found"))
 }

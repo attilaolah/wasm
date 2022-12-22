@@ -47,6 +47,7 @@ features = [
   "RequestInit",
   "RequestMode",
   "Response",
+  "Storage",
   "Window",
   "console",
 ]
