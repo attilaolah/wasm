@@ -101,15 +101,8 @@ cumbersome way. The resulting `_` variable will hold the generated
 ## Front Matter
 
 The Markdown front matter is used to configure the notebook itself. This page
-has the following config in the front matter:
+has the following config:
 
 ```yaml
 autorun: true
-```
-
-The config is also available at runtime, on the `Notebook` object's `config`
-property:
-
-```js
-notebook.config
 ```
