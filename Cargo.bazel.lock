@@ -1,5 +1,5 @@
 {
-  "checksum": "547cd2e00249da71a2db8c81d2b1ab4dcab5d21193de6c0604e71321c018a812",
+  "checksum": "0e2e594b76d2faa922eb398dc97df82fee9aa9aa62d40a6793dcb52f2d1eaf91",
   "crates": {
     "addr2line 0.19.0": {
       "name": "addr2line",
@@ -14904,6 +14904,7 @@
           "HtmlLinkElement",
           "HtmlMetaElement",
           "HtmlTemplateElement",
+          "MediaQueryList",
           "MessageEvent",
           "MouseEvent",
           "Node",

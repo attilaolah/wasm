@@ -1,15 +1,14 @@
-.notebook-ui
+#notebook.notebook-ui
   header.head
     .logo
       span @web//:nb
 
     .icons.right
-      button#toggle-light.toggle-light.icon
-        span.material-symbols-outlined light_mode
-      button#toggle-dark.toggle-dark.icon
-        span.material-symbols-outlined dark_mode
-      button#toggle-default-brightness.toggle-default-brightness.icon
+      button#toggle-theme-default.toggle-theme-default.icon
         span.material-symbols-outlined brightness_medium
+      button#toggle-theme.toggle-theme.icon
+        span.material-symbols-outlined.toggle-light light_mode
+        span.material-symbols-outlined.toggle-dark dark_mode
 
   aside.left
     section.actions.main

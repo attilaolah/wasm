@@ -91,15 +91,16 @@ $button-size: 48px
     &:active
       --alpha: 0.12
 
-  &.dark .toggle-dark,
-  &.light .toggle-light,
-  &:not(.dark):not(.light) .toggle-default-brightness
+body
+  &.dark button.toggle-theme .toggle-dark,
+  &.light button.toggle-theme .toggle-light,
+  &:not(.dark):not(.light) .toggle-theme-default
     display: none !important
 
 @media (prefers-color-scheme: dark)
-  .notebook-ui:not(.light) .toggle-dark
+  body:not(.light) .toggle-theme .toggle-dark
     display: none !important
 
 @media (prefers-color-scheme: light)
-  .notebook-ui:not(.dark) .toggle-light
+  body:not(.dark) .toggle-theme .toggle-light
     display: none !important

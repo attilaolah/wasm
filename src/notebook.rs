@@ -24,7 +24,7 @@ static DEFAULT: NotebookConfig = NotebookConfig { autorun: None };
 
 impl Notebook {
     pub fn parse() -> Result<Self, Error> {
-        let win = web_sys::window().ok_or_else(|| Error::new("`window` not found"))?;
+        let win = window()?;
         let doc = win
             .document()
             .ok_or_else(|| Error::new("`document` not found"))?;
@@ -63,4 +63,8 @@ impl NotebookConfig {
     pub fn autorun(self) -> bool {
         self.autorun.unwrap_or(false)
     }
+}
+
+pub fn window() -> Result<Window, Error> {
+    web_sys::window().ok_or_else(|| Error::new("`window` not found"))
 }

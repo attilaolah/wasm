@@ -40,6 +40,7 @@ features = [
   "HtmlLinkElement",
   "HtmlMetaElement",
   "HtmlTemplateElement",
+  "MediaQueryList",
   "MouseEvent",
   "Node",
   "Request",

@@ -5,7 +5,7 @@ use wasm_bindgen::JsCast;
 use wasm_bindgen_futures::JsFuture;
 use web_sys::{console, HtmlElement, HtmlMetaElement, HtmlTemplateElement, MouseEvent};
 
-use crate::notebook::Notebook;
+use crate::notebook::{window, Notebook};
 
 impl Notebook {
     pub fn set_meta_charset(&self) -> Result<(), Error> {
@@ -46,18 +46,42 @@ impl Notebook {
     }
 
     pub fn init_ui_callbacks(&self) -> Result<(), Error> {
-        let use_light = Closure::wrap(Box::new(move |evt| {
-            if let Err(err) = use_light_theme(evt) {
+        self.init_toggle_theme()?;
+        self.init_toggle_theme_default()?;
+
+        Ok(())
+    }
+
+    fn init_toggle_theme(&self) -> Result<(), Error> {
+        let callback = Closure::wrap(Box::new(move |evt| {
+            if let Err(err) = toggle_theme(evt) {
                 console::log_2(&"click event failed:".into(), &err);
             }
         }) as Box<dyn Fn(_)>);
         self.root
-            .query_selector("#toggle-light".into())?
-            .ok_or_else(|| Error::new("`#toggle-light` not found"))?
-            .add_event_listener_with_callback("click", use_light.as_ref().unchecked_ref())?;
+            .query_selector("#toggle-theme".into())?
+            .ok_or_else(|| Error::new("`#toggle-theme` not found"))?
+            .add_event_listener_with_callback("click", callback.as_ref().unchecked_ref())?;
 
         // TODO: Don't .forget(), instead take ownership of the closure.
-        use_light.forget();
+        callback.forget();
+
+        Ok(())
+    }
+
+    fn init_toggle_theme_default(&self) -> Result<(), Error> {
+        let callback = Closure::wrap(Box::new(move |evt| {
+            if let Err(err) = toggle_theme_default(evt) {
+                console::log_2(&"click event failed:".into(), &err);
+            }
+        }) as Box<dyn Fn(_)>);
+        self.root
+            .query_selector("#toggle-theme-default".into())?
+            .ok_or_else(|| Error::new("`#toggle-theme-default` not found"))?
+            .add_event_listener_with_callback("click", callback.as_ref().unchecked_ref())?;
+
+        // TODO: Don't .forget(), instead take ownership of the closure.
+        callback.forget();
 
         Ok(())
     }
@@ -120,15 +144,46 @@ fn wrong_type<T, U>(func: &str) -> impl Fn(T) -> Result<U, Error> + '_ {
     move |_| Err(Error::new(&format!("{}() returned wrong type", func)))
 }
 
-fn use_light_theme(evt: MouseEvent) -> Result<(), Error> {
+fn toggle_theme(evt: MouseEvent) -> Result<(), Error> {
     let target: HtmlElement = evt
         .target()
         .ok_or_else(|| Error::new("event target not found"))?
         .dyn_into()
         .or_else(wrong_type("target"))?;
+    let class_list = target
+        .owner_document()
+        .ok_or_else(|| Error::new("owner document not found"))?
+        .body()
+        .ok_or_else(|| Error::new("body not found"))?
+        .class_list();
+    if class_list.contains("light") || class_list.contains("dark") {
+        class_list.toggle("light")?;
+        class_list.toggle("dark")?;
+        return Ok(());
+    }
 
-    // TODO: Implement actual toggle here:
-    console::log_2(&"clicked on:".into(), &target.id().into());
+    let dark_theme: bool = match window()?.match_media("(prefers-color-scheme: dark)")? {
+        Some(mql) => mql.matches(),
+        None => false,
+    };
+    class_list.toggle(if dark_theme { "light" } else { "dark" })?;
+
+    Ok(())
+}
+
+fn toggle_theme_default(evt: MouseEvent) -> Result<(), Error> {
+    let target: HtmlElement = evt
+        .target()
+        .ok_or_else(|| Error::new("event target not found"))?
+        .dyn_into()
+        .or_else(wrong_type("target"))?;
+    target
+        .owner_document()
+        .ok_or_else(|| Error::new("owner document not found"))?
+        .body()
+        .ok_or_else(|| Error::new("body not found"))?
+        .class_list()
+        .remove_2("light", "dark")?;
 
     Ok(())
 }
