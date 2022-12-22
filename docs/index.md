@@ -4,8 +4,6 @@ autorun: true
 
 # Web Notebooks
 
-> Self-hosted, executable and extensible web pages.
-
 Web notebooks are simple, self-hosted Markdown documents, with code blocks that
 are executed entirely in the browser -- no "backend" needed. In fact, this page
 is such a notebook! Look at the source code (`Ctrl+U` in Chrome) to learn more.

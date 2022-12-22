@@ -2,9 +2,10 @@ use js_sys::Error;
 use serde::Deserialize;
 use std::clone::Clone;
 use std::marker::Copy;
-use web_sys::console;
-use web_sys::{Document, HtmlElement, HtmlHeadElement, Window};
+use web_sys::{console, Document, HtmlElement, HtmlHeadElement, Window};
 use yaml_front_matter::{Document as SrcDoc, YamlFrontMatter};
+
+use crate::dom::{body, document, head, window};
 
 pub struct Notebook {
     pub win: Window,
@@ -61,26 +62,4 @@ impl NotebookConfig {
     pub fn autorun(self) -> bool {
         self.autorun.unwrap_or(false)
     }
-}
-
-pub fn window() -> Result<Window, Error> {
-    web_sys::window().ok_or_else(|| Error::new("`window` not found"))
-}
-
-pub fn document() -> Result<Document, Error> {
-    window()?
-        .document()
-        .ok_or_else(|| Error::new("`document` not found"))
-}
-
-pub fn head() -> Result<HtmlHeadElement, Error> {
-    document()?
-        .head()
-        .ok_or_else(|| Error::new("`head` not found"))
-}
-
-pub fn body() -> Result<HtmlElement, Error> {
-    document()?
-        .body()
-        .ok_or_else(|| Error::new("`body` not found"))
 }

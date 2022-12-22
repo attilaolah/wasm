@@ -1,14 +1,66 @@
-.notebook-ui main.main-content
-    pre
-      padding: 16px
+// Values from https://developer.mozilla.org.
+.token
+  &.comment,
+  &.prolog,
+  &.doctype,
+  &.cdata
+    color: rgb(var(--code-token-comment))
 
-    pre, code
-      font-family: var(--font-code)
-      line-height: 1.75
-      border-radius: 0
+  &.punctuation
+    color: rgb(var(--code-token-punctuation))
 
-    :not(pre) > code
-      color: var(--on-surface-variant)
-      background-color: var(--surface-variant)
-      padding: 2px 4px
+  &.attr-name,
+  &.builtin,
+  &.inserted,
+  &.selector,
+  &.property,
+  &.class-name,
+  &.function
+    color: rgb(var(--code-token-attribute-name))
+
+  &.atrule,
+  &.attr-value
+    color: rgb(var(--code-token-attribute-value))
+
+  &.keyword
+    color: rgb(var(--code-token-tag))
+
+  &.tag,
+  &.char,
+  &.string,
+  &.boolean,
+  &.number,
+  &.constant,
+  &.symbol,
+  &.deleted
+    color: rgb(var(--code-token-attribute-value))
+
+  &.selector,
+  &.builtin,
+  &.template-string > .token.string,
+  &.inserted
+    color: rgb(var(--code-token-selector))
+
+  &.important,
+  &.bold
+    font-weight: bold
+
+  &.italic
+    font-style: italic
+
+  &.entity
+    cursor: help
+
+.notebook-ui
+  pre
+    padding: 16px
+
+  pre, code
+    background-color: rgb(var(--code-bg))
+    font-family: var(--font-code)
+    line-height: 1.75
+    border-radius: 0
+
+  :not(pre) > code
+    padding: 2px 4px
 

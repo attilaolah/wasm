@@ -10,7 +10,6 @@ webpack_bundle(
         "//src/style",
         "//src/template",
         "@npm//normalize.css",
-        "@npm//prism-themes",
         "@npm//prismjs",
     ] + [
         # Strictly speaking, these are not sources.

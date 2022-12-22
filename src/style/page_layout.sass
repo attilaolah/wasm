@@ -14,8 +14,8 @@ $button-size: 48px
   grid-template-columns: 1fr auto
   grid-template-rows: auto auto 1fr
 
-  color: rgb(var(--on-background))
-  background-color: rgb(var(--background))
+  color: rgb(var(--primary))
+  background-color: rgb(var(--primary-bg))
 
   header.head
     grid-area: head
@@ -25,9 +25,16 @@ $button-size: 48px
     padding: $pad
 
     .logo
+      color: #fff
+      background: rgb(var(--magenta))
+      font-family: rgb(var(--font-logo))
       display: flex
       align-items: center
-      font-size: 48px
+      font-size: 32px
+      padding: 8px 12px
+
+      .l
+        background: rgb(var(--cyan))
 
     .icons
       display: flex
@@ -51,12 +58,40 @@ $button-size: 48px
       span
         line-height: $button-size
 
+  aside.left,
+  aside.left .actions
+    display: flex
+    flex-direction: column
 
   aside.left
     grid-area: left
     width: $left-sidebar-width - $pad-double - $pad-double
     padding: $pad-double
 
+    .actions
+      gap: 8px
+
+      button
+        --size: 48px
+        display: flex
+        align-items: center
+        padding-left: 24px
+        height: var(--size)
+        gap: 8px
+
+        border-style: none
+        border-radius: var(--size)
+
+        font-size: 14px
+        font-weight: 400
+
+        &.main-action
+          --size: 56px
+          color: rgb(var(--primary))
+          background: rgb(var(--primary-bg))
+
+          font-size: 16px
+          font-weight: 500
 
   main.main-content
     grid-area: main
@@ -69,10 +104,7 @@ $button-size: 48px
       margin: 16px 0 32px
 
     a
-      color: var(--primary)
-
-      &:hover
-        color: var(--on-primary-container)
+      color: rgb(var(--link))
 
   aside.right
     grid-area: side
@@ -83,7 +115,7 @@ $button-size: 48px
     cursor: pointer
 
     --alpha: 0
-    background-color: rgba(var(--on-background), var(--alpha))
+    background-color: rgba(var(--primary), var(--alpha))
 
     &:hover
       --alpha: 0.08

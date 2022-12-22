@@ -7,7 +7,6 @@ module.exports = {
   entry: {
     style: [
       path.resolve(parentDir, process.env.NODE_PATH + "/normalize.css/normalize.css"),
-      path.resolve(parentDir, process.env.NODE_PATH + "/prism-themes/themes/prism-solarized-dark-atom.css"),
       path.resolve(parentDir, "src/style/style.css"),
     ]
   },

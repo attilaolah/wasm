@@ -35,7 +35,7 @@ function loadFonts(): void {
   const fontsAPI: string = "https://fonts.googleapis.com"
   addLink(mkLink(fontsAPI, true));
   addLink(mkLink("https://fonts.gstatic.com", true, true));
-  addLink(mkLink(`${fontsAPI}/css2?family=Inter&display=swap`));
+  addLink(mkLink(`${fontsAPI}/css2?family=Inter:wght@400;500;700&family=Roboto+Condensed&display=swap`));
   addLink(mkLink(`${fontsAPI}/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200`));
 }
 

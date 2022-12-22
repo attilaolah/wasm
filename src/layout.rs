@@ -5,18 +5,17 @@ use wasm_bindgen::JsCast;
 use wasm_bindgen_futures::JsFuture;
 use web_sys::{console, HtmlElement, HtmlMetaElement, HtmlTemplateElement, MouseEvent};
 
-use crate::notebook::{window, Notebook};
+use crate::dom::{body, clear_children, create_element, not_defined, throw, window, wrong_type};
+use crate::notebook::Notebook;
 
 impl Notebook {
     pub fn set_meta_charset(&self) -> Result<(), Error> {
-        if !self.doc.query_selector("meta[charset]")?.is_none() {
-            return Ok(());
+        if self.doc.query_selector("meta[charset]")?.is_none() {
+            let meta: HtmlMetaElement = create_element("meta")?;
+            meta.set_attribute("charset", "utf-8")?;
+            self.head
+                .insert_before(&meta, self.head.first_child().as_ref())?;
         }
-
-        let meta: HtmlMetaElement = self.create_element("meta")?;
-        meta.set_attribute("charset", "utf-8")?;
-        self.head
-            .insert_before(&meta, self.head.first_child().as_ref())?;
 
         Ok(())
     }
@@ -24,7 +23,7 @@ impl Notebook {
     pub async fn init_ui_content(&self) -> Result<(), Error> {
         let tpl_html = self.template().await?;
 
-        let tpl: HtmlTemplateElement = self.create_element("template")?;
+        let tpl: HtmlTemplateElement = create_element("template")?;
         tpl.set_inner_html(&tpl_html);
 
         match tpl.content().query_selector("#content")? {
@@ -35,27 +34,24 @@ impl Notebook {
         }
 
         clear_children(&self.root)?;
+        self.doc
+            .set_title(&match tpl.content().query_selector("h1")? {
+                Some(el) => {
+                    let html_el: HtmlElement =
+                        el.dyn_into().or_else(wrong_type("query_selector"))?;
+                    html_el.text_content().unwrap_or("Web Notebook".to_string())
+                }
+                None => "Web Notebook".to_string(),
+            });
         self.root.append_child(&tpl.content())?;
-        self.init_theme()?;
-        self.highlight()?;
-
-        if self.src.metadata.autorun() {
-            console::log_1(&"todo: autorun enabled, run all code blocks".into());
-        }
 
         Ok(())
     }
 
-    fn init_theme(&self) -> Result<(), Error> {
-        if let Some(ls) = window()?.local_storage()? {
+    pub fn init_ui_theme(&self) -> Result<(), Error> {
+        if let Some(ls) = self.win.local_storage()? {
             if let Some(theme) = ls.get_item("config:theme")? {
-                self.root
-                    .owner_document()
-                    .ok_or_else(|| Error::new("owner document not found"))?
-                    .body()
-                    .ok_or_else(|| Error::new("body not found"))?
-                    .class_list()
-                    .add_1(&theme)?
+                self.root.class_list().add_1(&theme)?
             }
         }
 
@@ -69,6 +65,28 @@ impl Notebook {
         Ok(())
     }
 
+    pub fn highlight(&self) -> Result<(), Error> {
+        let prism: Object = self.win.get("Prism").ok_or_else(not_defined("Prism"))?;
+        let func: Function = Reflect::get(&prism, &"highlightAllUnder".into())?.dyn_into()?;
+        let args = Array::of1(&self.root);
+        Reflect::apply(&func, &prism, &args)?;
+
+        Ok(())
+    }
+
+    async fn template(&self) -> Result<String, Error> {
+        // Load the template promise set by the preloader.
+        let notebook: Object = self
+            .win
+            .get("notebook")
+            .ok_or_else(not_defined("notebook"))?;
+        let tpl: Promise = Reflect::get(&notebook, &"template".into())?.dyn_into()?;
+        JsFuture::from(tpl)
+            .await?
+            .as_string()
+            .ok_or_else(throw("`template` did not resolve with a string"))
+    }
+
     fn init_toggle_theme(&self) -> Result<(), Error> {
         let callback = Closure::wrap(Box::new(move |evt| {
             if let Err(err) = toggle_theme(evt) {
@@ -77,7 +95,7 @@ impl Notebook {
         }) as Box<dyn Fn(_)>);
         self.root
             .query_selector("#toggle-theme".into())?
-            .ok_or_else(|| Error::new("`#toggle-theme` not found"))?
+            .ok_or_else(throw("#toggle-theme not found"))?
             .add_event_listener_with_callback("click", callback.as_ref().unchecked_ref())?;
 
         // TODO: Don't .forget(), instead take ownership of the closure.
@@ -94,48 +112,13 @@ impl Notebook {
         }) as Box<dyn Fn(_)>);
         self.root
             .query_selector("#toggle-theme-default".into())?
-            .ok_or_else(|| Error::new("`#toggle-theme-default` not found"))?
+            .ok_or_else(throw("#toggle-theme-default not found"))?
             .add_event_listener_with_callback("click", callback.as_ref().unchecked_ref())?;
 
         // TODO: Don't .forget(), instead take ownership of the closure.
         callback.forget();
 
         Ok(())
-    }
-
-    async fn template(&self) -> Result<String, Error> {
-        // Load the template promise set by the preloader.
-        let notebook: Object = self
-            .win
-            .get("notebook")
-            .ok_or_else(|| Error::new("`notebook` not found"))?;
-        let tpl: Promise = Reflect::get(&notebook, &"template".into())?.dyn_into()?;
-        JsFuture::from(tpl)
-            .await?
-            .as_string()
-            .ok_or_else(|| Error::new("`template` did not resolve with a string"))
-    }
-
-    fn highlight(&self) -> Result<(), Error> {
-        let prism: Object = self
-            .win
-            .get("Prism")
-            .ok_or_else(|| Error::new("`Prism` not found"))?;
-        let func: Function = Reflect::get(&prism, &"highlightAllUnder".into())?.dyn_into()?;
-        let args = Array::of1(&self.root);
-        Reflect::apply(&func, &prism, &args)?;
-
-        Ok(())
-    }
-
-    fn create_element<T>(&self, tag_name: &str) -> Result<T, Error>
-    where
-        T: 'static + wasm_bindgen::JsCast,
-    {
-        self.doc
-            .create_element(tag_name)?
-            .dyn_into()
-            .or_else(wrong_type("create_element"))
     }
 }
 
@@ -145,34 +128,9 @@ fn parse_markdown(content: &str) -> String {
     buf.into()
 }
 
-// Clear the node.
-// See https://stackoverflow.com/a/3955238 for why the first/last child combo.
-fn clear_children(el: &HtmlElement) -> Result<(), Error> {
-    while !el.first_child().is_none() {
-        if let Some(node) = el.last_child() {
-            el.remove_child(&node)?;
-        }
-    }
-
-    Ok(())
-}
-
-fn wrong_type<T, U>(func: &str) -> impl Fn(T) -> Result<U, Error> + '_ {
-    move |_| Err(Error::new(&format!("{}() returned wrong type", func)))
-}
-
-fn toggle_theme(evt: MouseEvent) -> Result<(), Error> {
-    let target: HtmlElement = evt
-        .target()
-        .ok_or_else(|| Error::new("event target not found"))?
-        .dyn_into()
-        .or_else(wrong_type("target"))?;
-    let class_list = target
-        .owner_document()
-        .ok_or_else(|| Error::new("owner document not found"))?
-        .body()
-        .ok_or_else(|| Error::new("body not found"))?
-        .class_list();
+fn toggle_theme(_evt: MouseEvent) -> Result<(), Error> {
+    let win = window()?;
+    let class_list = body()?.class_list();
 
     let old_theme = if class_list.contains("dark") {
         // Explicit "dark" preference takes precedence over "light" preference.
@@ -180,7 +138,7 @@ fn toggle_theme(evt: MouseEvent) -> Result<(), Error> {
     } else if class_list.contains("light") {
         "light"
     } else {
-        match window()?.match_media("(prefers-color-scheme: dark)")? {
+        match win.match_media("(prefers-color-scheme: dark)")? {
             Some(mql) => {
                 if mql.matches() {
                     "dark"
@@ -193,7 +151,7 @@ fn toggle_theme(evt: MouseEvent) -> Result<(), Error> {
     };
     let new_theme = if old_theme == "dark" { "light" } else { "dark" };
 
-    if let Some(ls) = window()?.local_storage()? {
+    if let Some(ls) = win.local_storage()? {
         if let Err(err) = ls.set_item("config:theme", new_theme) {
             console::warn_2(&"local_storage.set_item failed:".into(), &err);
         }
@@ -205,19 +163,8 @@ fn toggle_theme(evt: MouseEvent) -> Result<(), Error> {
     Ok(())
 }
 
-fn toggle_theme_default(evt: MouseEvent) -> Result<(), Error> {
-    let target: HtmlElement = evt
-        .target()
-        .ok_or_else(|| Error::new("event target not found"))?
-        .dyn_into()
-        .or_else(wrong_type("target"))?;
-    target
-        .owner_document()
-        .ok_or_else(|| Error::new("owner document not found"))?
-        .body()
-        .ok_or_else(|| Error::new("body not found"))?
-        .class_list()
-        .remove_2("light", "dark")?;
+fn toggle_theme_default(_evt: MouseEvent) -> Result<(), Error> {
+    body()?.class_list().remove_2("light", "dark")?;
 
     if let Some(ls) = window()?.local_storage()? {
         ls.remove_item("config:theme")?;

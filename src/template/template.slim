@@ -1,7 +1,11 @@
 #notebook.notebook-ui
   header.head
     .logo
-      span @web//:nb
+      span.p @
+      span.l web
+      span.p
+        | //:
+      span.l nb
 
     .icons.right
       button#toggle-theme-default.toggle-theme-default.icon
@@ -11,11 +15,13 @@
         span.material-symbols-outlined.toggle-dark dark_mode
 
   aside.left
-    section.actions.main
-      button#run-all
-        span.material-symbols-outlined fast_forward
-        | Run All
     section.actions
+      button#run-all.main-action
+        span.material-symbols-outlined fast_forward
+        | Run all code
+      button#run-current
+        span.material-symbols-outlined play_arrow
+        | Run next block
 
   main#content.main-content role="main"
 

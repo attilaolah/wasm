@@ -9,6 +9,7 @@ rust_wasm_bindgen(
 filegroup(
     name = "runtime_files",
     srcs = ["lib.rs"] + [
+        "dom.rs",
         "layout.rs",
         "notebook.rs",
     ],
