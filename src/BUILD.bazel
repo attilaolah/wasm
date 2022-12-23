@@ -9,9 +9,10 @@ rust_wasm_bindgen(
 filegroup(
     name = "runtime_files",
     srcs = ["lib.rs"] + [
-        "dom.rs",
-        "layout.rs",
+        "code_blocks.rs",
+        "dom_helpers.rs",
         "notebook.rs",
+        "page_layout.rs",
     ],
     visibility = ["//:__pkg__"],
 )

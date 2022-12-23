@@ -6,7 +6,8 @@ use wasm_bindgen::JsCast;
 use wasm_bindgen_futures::JsFuture;
 use web_sys::{console, HtmlElement, HtmlMetaElement, HtmlTemplateElement, MouseEvent};
 
-use crate::dom::{
+use crate::code_blocks::run_all;
+use crate::dom_helpers::{
     body, clear_children, create_element, not_defined, throw, window, wrong_type, H1TO6,
 };
 use crate::notebook::Notebook;
@@ -55,8 +56,8 @@ impl Notebook {
             });
 
         // Set the page content.
-        clear_children(&self.root)?;
-        self.root.append_child(&tpl.content())?;
+        clear_children(&self.body)?;
+        self.body.append_child(&tpl.content())?;
 
         Ok(())
     }
@@ -64,7 +65,7 @@ impl Notebook {
     pub fn init_ui_theme(&self) -> Result<(), Error> {
         if let Some(ls) = self.win.local_storage()? {
             if let Some(theme) = ls.get_item("config:theme")? {
-                self.root.class_list().add_1(&theme)?
+                self.body.class_list().add_1(&theme)?
             }
         }
 
@@ -72,6 +73,7 @@ impl Notebook {
     }
 
     pub fn init_ui_callbacks(&self) -> Result<(), Error> {
+        self.init_run_all()?;
         self.init_toggle_theme()?;
         self.init_toggle_theme_default()?;
 
@@ -81,7 +83,7 @@ impl Notebook {
     pub fn highlight(&self) -> Result<(), Error> {
         let prism: Object = self.win.get("Prism").ok_or_else(not_defined("Prism"))?;
         let func: Function = Reflect::get(&prism, &"highlightAllUnder".into())?.dyn_into()?;
-        let args = Array::of1(&self.root);
+        let args = Array::of1(&self.body);
         Reflect::apply(&func, &prism, &args)?;
 
         Ok(())
@@ -100,13 +102,30 @@ impl Notebook {
             .ok_or_else(throw("`template` did not resolve with a string"))
     }
 
-    fn init_toggle_theme(&self) -> Result<(), Error> {
-        let callback = Closure::wrap(Box::new(move |evt| {
-            if let Err(err) = toggle_theme(evt) {
+    fn init_run_all(&self) -> Result<(), Error> {
+        let callback = Closure::wrap(Box::new(move |_| {
+            if let Err(err) = run_all() {
                 console::log_2(&"click event failed:".into(), &err);
             }
-        }) as Box<dyn Fn(_)>);
-        self.root
+        }) as Box<dyn Fn(MouseEvent)>);
+        self.body
+            .query_selector("#run-all".into())?
+            .ok_or_else(throw("#run-all not found"))?
+            .add_event_listener_with_callback("click", callback.as_ref().unchecked_ref())?;
+
+        // TODO: Don't .forget(), instead take ownership of the closure.
+        callback.forget();
+
+        Ok(())
+    }
+
+    fn init_toggle_theme(&self) -> Result<(), Error> {
+        let callback = Closure::wrap(Box::new(move |_| {
+            if let Err(err) = toggle_theme() {
+                console::log_2(&"click event failed:".into(), &err);
+            }
+        }) as Box<dyn Fn(MouseEvent)>);
+        self.body
             .query_selector("#toggle-theme".into())?
             .ok_or_else(throw("#toggle-theme not found"))?
             .add_event_listener_with_callback("click", callback.as_ref().unchecked_ref())?;
@@ -118,12 +137,12 @@ impl Notebook {
     }
 
     fn init_toggle_theme_default(&self) -> Result<(), Error> {
-        let callback = Closure::wrap(Box::new(move |evt| {
-            if let Err(err) = toggle_theme_default(evt) {
+        let callback = Closure::wrap(Box::new(move |_| {
+            if let Err(err) = toggle_theme_default() {
                 console::log_2(&"click event failed:".into(), &err);
             }
-        }) as Box<dyn Fn(_)>);
-        self.root
+        }) as Box<dyn Fn(MouseEvent)>);
+        self.body
             .query_selector("#toggle-theme-default".into())?
             .ok_or_else(throw("#toggle-theme-default not found"))?
             .add_event_listener_with_callback("click", callback.as_ref().unchecked_ref())?;
@@ -141,7 +160,7 @@ fn parse_markdown(content: &str) -> String {
     buf.into()
 }
 
-fn toggle_theme(_evt: MouseEvent) -> Result<(), Error> {
+fn toggle_theme() -> Result<(), Error> {
     let win = window()?;
     let class_list = body()?.class_list();
 
@@ -176,7 +195,7 @@ fn toggle_theme(_evt: MouseEvent) -> Result<(), Error> {
     Ok(())
 }
 
-fn toggle_theme_default(_evt: MouseEvent) -> Result<(), Error> {
+fn toggle_theme_default() -> Result<(), Error> {
     body()?.class_list().remove_2("light", "dark")?;
 
     if let Some(ls) = window()?.local_storage()? {

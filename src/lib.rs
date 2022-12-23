@@ -1,13 +1,15 @@
 use js_sys::Error;
 use wasm_bindgen::prelude::wasm_bindgen;
-use web_sys::console;
 use wee_alloc::WeeAlloc;
 
+use crate::code_blocks::run_all;
 use crate::notebook::Notebook;
 
-mod dom;
-mod layout;
 mod notebook;
+
+mod code_blocks;
+mod dom_helpers;
+mod page_layout;
 
 #[global_allocator]
 static ALLOC: WeeAlloc = WeeAlloc::INIT;
@@ -23,7 +25,7 @@ pub async fn main() -> Result<(), Error> {
     nb.highlight()?;
 
     if nb.src.metadata.autorun() {
-        console::log_1(&"todo: autorun enabled, run all code blocks".into());
+        run_all()?;
     }
 
     Ok(())

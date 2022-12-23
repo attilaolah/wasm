@@ -5,13 +5,13 @@ use std::marker::Copy;
 use web_sys::{console, Document, HtmlElement, HtmlHeadElement, Window};
 use yaml_front_matter::{Document as SrcDoc, YamlFrontMatter};
 
-use crate::dom::{body, document, head, window};
+use crate::dom_helpers::{body, document, head, window};
 
 pub struct Notebook {
     pub win: Window,
     pub doc: Document,
     pub head: HtmlHeadElement,
-    pub root: HtmlElement,
+    pub body: HtmlElement,
 
     pub src: SrcDoc<NotebookConfig>,
 }
@@ -28,9 +28,9 @@ impl Notebook {
         let win = window()?;
         let doc = document()?;
         let head = head()?;
-        let root = body()?;
+        let body = body()?;
 
-        let inner_html = root.inner_html();
+        let inner_html = body.inner_html();
         let mut src_content = inner_html.trim();
         src_content = src_content.strip_prefix("<!--").unwrap_or(src_content);
         src_content = src_content.strip_suffix("-->").unwrap_or(src_content);
@@ -52,7 +52,7 @@ impl Notebook {
             win,
             doc,
             head,
-            root,
+            body,
             src,
         })
     }
