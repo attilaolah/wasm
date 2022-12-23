@@ -16,7 +16,7 @@ static ALLOC: WeeAlloc = WeeAlloc::INIT;
 
 #[wasm_bindgen(start)]
 pub async fn main() -> Result<(), Error> {
-    let nb = Notebook::parse()?;
+    let mut nb = Notebook::parse()?;
 
     nb.set_meta_charset()?;
     nb.init_ui_content().await?;
@@ -27,6 +27,9 @@ pub async fn main() -> Result<(), Error> {
     if nb.src.metadata.autorun() {
         run_all()?;
     }
+
+    // Keep the notebook callbacks alive forever.
+    nb.on_clicks.leak();
 
     Ok(())
 }

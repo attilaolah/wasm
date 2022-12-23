@@ -51,7 +51,12 @@ pub fn clear_children(el: &HtmlElement) -> Result<(), Error> {
 
 // Event handlers.
 
-pub fn on_click(id: &str, callback: &'static dyn Fn() -> Result<(), Error>) -> Result<(), Error> {
+// Register a "click" handler.
+// The returned closure must be kept alive or forgotten using .forget().
+pub fn on_click(
+    id: &str,
+    callback: &'static dyn Fn() -> Result<(), Error>,
+) -> Result<Closure<dyn Fn(MouseEvent)>, Error> {
     let closure = Closure::wrap(Box::new(move |_| {
         if let Err(err) = callback() {
             console::log_2(&"click event failed:".into(), &err);
@@ -62,10 +67,7 @@ pub fn on_click(id: &str, callback: &'static dyn Fn() -> Result<(), Error>) -> R
         .ok_or_else(throw(&format!("#{} not found", id)))?
         .add_event_listener_with_callback("click", closure.as_ref().unchecked_ref())?;
 
-    // TODO: Don't .forget(), instead take ownership of the closure.
-    closure.forget();
-
-    Ok(())
+    Ok(closure)
 }
 
 // Errors.
