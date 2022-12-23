@@ -9,10 +9,8 @@ $pad-content: $pad-double + $pad
 $button-size: 48px
 
 .notebook-ui
-  display: grid
-  grid-template-areas: "head head head" "left main side"
-  grid-template-columns: 1fr auto
-  grid-template-rows: auto auto 1fr
+  display: flex
+  flex-direction: column
 
   color: rgb(var(--primary))
   background-color: rgb(var(--primary-bg))
@@ -39,9 +37,11 @@ $button-size: 48px
     .icons
       display: flex
       flex-direction: row
+      padding-left: 8px
 
 
     .right
+      flex: 1
       justify-content: flex-end
 
     button.icon
@@ -58,45 +58,9 @@ $button-size: 48px
       span
         line-height: $button-size
 
-  aside.left,
-  aside.left .actions
-    display: flex
-    flex-direction: column
-
-  aside.left
-    grid-area: left
-    width: $left-sidebar-width - $pad-double - $pad-double
-    padding: $pad-double
-
-    .actions
-      gap: 8px
-
-      button
-        --size: 48px
-        display: flex
-        align-items: center
-        padding-left: 24px
-        height: var(--size)
-        gap: 8px
-
-        border-style: none
-        border-radius: var(--size)
-
-        font-size: 14px
-        font-weight: 400
-
-        &.main-action
-          --size: 56px
-          color: rgb(var(--primary))
-          background: rgb(var(--primary-bg))
-
-          font-size: 16px
-          font-weight: 500
-
   main.main-content
     grid-area: main
-    margin-right: $pad-double
-    margin-bottom: $pad-double
+    margin: $pad-double
     line-height: 1.75
     font-size: 16px
 
