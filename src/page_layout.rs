@@ -12,6 +12,12 @@ use crate::dom_helpers::{
 };
 use crate::notebook::Notebook;
 
+static DEFAULT_TITLE: &str = "Web Notebook";
+static CONFIG_THEME: &str = "config:theme";
+
+static DARK: &str = "dark";
+static LIGHT: &str = "light";
+
 impl Notebook {
     pub fn set_meta_charset(&self) -> Result<(), Error> {
         if self.doc.query_selector("meta[charset]")?.is_none() {
@@ -50,9 +56,9 @@ impl Notebook {
             .set_title(&match tpl.content().query_selector("h1")? {
                 Some(node) => {
                     let el: HtmlElement = node.dyn_into().or_else(wrong_type("query_selector"))?;
-                    el.text_content().unwrap_or("Web Notebook".to_string())
+                    el.text_content().unwrap_or(DEFAULT_TITLE.to_string())
                 }
-                None => "Web Notebook".to_string(),
+                None => DEFAULT_TITLE.to_string(),
             });
 
         // Set the page content.
@@ -64,7 +70,7 @@ impl Notebook {
 
     pub fn init_ui_theme(&self) -> Result<(), Error> {
         if let Some(ls) = self.win.local_storage()? {
-            if let Some(theme) = ls.get_item("config:theme")? {
+            if let Some(theme) = ls.get_item(CONFIG_THEME)? {
                 self.body.class_list().add_1(&theme)?
             }
         }
@@ -164,27 +170,27 @@ fn toggle_theme() -> Result<(), Error> {
     let win = window()?;
     let class_list = body()?.class_list();
 
-    let old_theme = if class_list.contains("dark") {
-        // Explicit "dark" preference takes precedence over "light" preference.
-        "dark"
-    } else if class_list.contains("light") {
-        "light"
+    let old_theme = if class_list.contains(DARK) {
+        // Explicit DARK preference takes precedence over LIGHT preference.
+        DARK
+    } else if class_list.contains(LIGHT) {
+        LIGHT
     } else {
         match win.match_media("(prefers-color-scheme: dark)")? {
             Some(mql) => {
                 if mql.matches() {
-                    "dark"
+                    DARK
                 } else {
-                    "light"
+                    LIGHT
                 }
             }
-            None => "light",
+            None => LIGHT,
         }
     };
-    let new_theme = if old_theme == "dark" { "light" } else { "dark" };
+    let new_theme = if old_theme == DARK { LIGHT } else { DARK };
 
     if let Some(ls) = win.local_storage()? {
-        if let Err(err) = ls.set_item("config:theme", new_theme) {
+        if let Err(err) = ls.set_item(CONFIG_THEME, new_theme) {
             console::warn_2(&"local_storage.set_item failed:".into(), &err);
         }
     }
@@ -196,10 +202,10 @@ fn toggle_theme() -> Result<(), Error> {
 }
 
 fn toggle_theme_default() -> Result<(), Error> {
-    body()?.class_list().remove_2("light", "dark")?;
+    body()?.class_list().remove_2(LIGHT, DARK)?;
 
     if let Some(ls) = window()?.local_storage()? {
-        ls.remove_item("config:theme")?;
+        ls.remove_item(CONFIG_THEME)?;
     }
 
     Ok(())
