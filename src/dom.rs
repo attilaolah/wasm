@@ -2,6 +2,8 @@ use js_sys::Error;
 use wasm_bindgen::JsCast;
 use web_sys::{Document, HtmlElement, HtmlHeadElement, Window};
 
+pub static H1TO6: &str = "h1,h2,h3,h4,h5,h6";
+
 pub fn window() -> Result<Window, Error> {
     web_sys::window().ok_or_else(not_defined("window"))
 }

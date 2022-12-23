@@ -1,5 +1,5 @@
 {
-  "checksum": "1ca59f3f537fc194cec588cfab53ba59d8ef591534341c53727b63a352538b3d",
+  "checksum": "86043a3d3163c7726cd672b648471333018a8e22284ab736ad1bdbe0c0a44f8c",
   "crates": {
     "addr2line 0.19.0": {
       "name": "addr2line",
@@ -2813,6 +2813,39 @@
         "version": "1.0.85"
       },
       "license": "MIT OR Apache-2.0"
+    },
+    "deunicode 0.4.3": {
+      "name": "deunicode",
+      "version": "0.4.3",
+      "repository": {
+        "Http": {
+          "url": "https://crates.io/api/v1/crates/deunicode/0.4.3/download",
+          "sha256": "850878694b7933ca4c9569d30a34b55031b9b139ee1fc7b94a527c4ef960d690"
+        }
+      },
+      "targets": [
+        {
+          "Library": {
+            "crate_name": "deunicode",
+            "crate_root": "src/lib.rs",
+            "srcs": {
+              "include": [
+                "**/*.rs"
+              ],
+              "exclude": []
+            }
+          }
+        }
+      ],
+      "library_target_name": "deunicode",
+      "common_attrs": {
+        "compile_data_glob": [
+          "**"
+        ],
+        "edition": "2015",
+        "version": "0.4.3"
+      },
+      "license": "BSD-3-Clause"
     },
     "dialoguer 0.3.0": {
       "name": "dialoguer",
@@ -11513,6 +11546,48 @@
       },
       "license": "MIT"
     },
+    "slug 0.1.4": {
+      "name": "slug",
+      "version": "0.1.4",
+      "repository": {
+        "Http": {
+          "url": "https://crates.io/api/v1/crates/slug/0.1.4/download",
+          "sha256": "b3bc762e6a4b6c6fcaade73e77f9ebc6991b676f88bb2358bddb56560f073373"
+        }
+      },
+      "targets": [
+        {
+          "Library": {
+            "crate_name": "slug",
+            "crate_root": "src/lib.rs",
+            "srcs": {
+              "include": [
+                "**/*.rs"
+              ],
+              "exclude": []
+            }
+          }
+        }
+      ],
+      "library_target_name": "slug",
+      "common_attrs": {
+        "compile_data_glob": [
+          "**"
+        ],
+        "deps": {
+          "common": [
+            {
+              "id": "deunicode 0.4.3",
+              "target": "deunicode"
+            }
+          ],
+          "selects": {}
+        },
+        "edition": "2015",
+        "version": "0.1.4"
+      },
+      "license": "MIT/Apache-2.0"
+    },
     "smallvec 0.6.14": {
       "name": "smallvec",
       "version": "0.6.14",
@@ -14908,6 +14983,7 @@
           "MessageEvent",
           "MouseEvent",
           "Node",
+          "NodeList",
           "Request",
           "RequestInit",
           "RequestMode",
@@ -14963,6 +15039,10 @@
             {
               "id": "serde_json 1.0.91",
               "target": "serde_json"
+            },
+            {
+              "id": "slug 0.1.4",
+              "target": "slug"
             },
             {
               "id": "wasm-bindgen 0.2.83",

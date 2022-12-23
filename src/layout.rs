@@ -1,11 +1,14 @@
 use js_sys::{Array, Error, Function, Object, Promise, Reflect};
 use pulldown_cmark::{html, Options, Parser};
+use slug::slugify;
 use wasm_bindgen::closure::Closure;
 use wasm_bindgen::JsCast;
 use wasm_bindgen_futures::JsFuture;
 use web_sys::{console, HtmlElement, HtmlMetaElement, HtmlTemplateElement, MouseEvent};
 
-use crate::dom::{body, clear_children, create_element, not_defined, throw, window, wrong_type};
+use crate::dom::{
+    body, clear_children, create_element, not_defined, throw, window, wrong_type, H1TO6,
+};
 use crate::notebook::Notebook;
 
 impl Notebook {
@@ -33,16 +36,26 @@ impl Notebook {
             }
         }
 
-        clear_children(&self.root)?;
+        let headings = tpl.content().query_selector_all(H1TO6)?;
+        for i in 0..headings.length() {
+            if let Some(node) = headings.get(i) {
+                let el: HtmlElement = node.dyn_into().or_else(wrong_type("query_selector_all"))?;
+                el.set_id(&slugify(el.inner_text()));
+            }
+        }
+
+        // Set the page title.
         self.doc
             .set_title(&match tpl.content().query_selector("h1")? {
-                Some(el) => {
-                    let html_el: HtmlElement =
-                        el.dyn_into().or_else(wrong_type("query_selector"))?;
-                    html_el.text_content().unwrap_or("Web Notebook".to_string())
+                Some(node) => {
+                    let el: HtmlElement = node.dyn_into().or_else(wrong_type("query_selector"))?;
+                    el.text_content().unwrap_or("Web Notebook".to_string())
                 }
                 None => "Web Notebook".to_string(),
             });
+
+        // Set the page content.
+        clear_children(&self.root)?;
         self.root.append_child(&tpl.content())?;
 
         Ok(())
