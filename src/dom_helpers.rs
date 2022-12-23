@@ -1,8 +1,13 @@
 use js_sys::Error;
+use wasm_bindgen::closure::Closure;
 use wasm_bindgen::JsCast;
-use web_sys::{Document, HtmlElement, HtmlHeadElement, Window};
+use web_sys::{console, Document, HtmlElement, HtmlHeadElement, MouseEvent, Window};
+
+// Selectors.
 
 pub static H1TO6: &str = "h1,h2,h3,h4,h5,h6";
+
+// Accessors.
 
 pub fn window() -> Result<Window, Error> {
     web_sys::window().ok_or_else(not_defined("window"))
@@ -19,6 +24,8 @@ pub fn head() -> Result<HtmlHeadElement, Error> {
 pub fn body() -> Result<HtmlElement, Error> {
     document()?.body().ok_or_else(not_defined("body"))
 }
+
+// Create & remove elements.
 
 pub fn create_element<T>(tag_name: &str) -> Result<T, Error>
 where
@@ -41,6 +48,27 @@ pub fn clear_children(el: &HtmlElement) -> Result<(), Error> {
 
     Ok(())
 }
+
+// Event handlers.
+
+pub fn on_click(id: &str, callback: &'static dyn Fn() -> Result<(), Error>) -> Result<(), Error> {
+    let closure = Closure::wrap(Box::new(move |_| {
+        if let Err(err) = callback() {
+            console::log_2(&"click event failed:".into(), &err);
+        }
+    }) as Box<dyn Fn(MouseEvent)>);
+    document()?
+        .get_element_by_id(id.into())
+        .ok_or_else(throw(&format!("#{} not found", id)))?
+        .add_event_listener_with_callback("click", closure.as_ref().unchecked_ref())?;
+
+    // TODO: Don't .forget(), instead take ownership of the closure.
+    closure.forget();
+
+    Ok(())
+}
+
+// Errors.
 
 pub fn throw(text: &str) -> impl Fn() -> Error + '_ {
     move || Error::new(text)

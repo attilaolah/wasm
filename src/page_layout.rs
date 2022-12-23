@@ -1,14 +1,13 @@
 use js_sys::{Array, Error, Function, Object, Promise, Reflect};
 use pulldown_cmark::{html, Options, Parser};
 use slug::slugify;
-use wasm_bindgen::closure::Closure;
 use wasm_bindgen::JsCast;
 use wasm_bindgen_futures::JsFuture;
-use web_sys::{console, HtmlElement, HtmlMetaElement, HtmlTemplateElement, MouseEvent};
+use web_sys::{console, HtmlElement, HtmlMetaElement, HtmlTemplateElement};
 
 use crate::code_blocks::run_all;
 use crate::dom_helpers::{
-    body, clear_children, create_element, not_defined, throw, window, wrong_type, H1TO6,
+    body, clear_children, create_element, not_defined, on_click, throw, window, wrong_type, H1TO6,
 };
 use crate::notebook::Notebook;
 
@@ -79,9 +78,9 @@ impl Notebook {
     }
 
     pub fn init_ui_callbacks(&self) -> Result<(), Error> {
-        self.init_run_all()?;
-        self.init_toggle_theme()?;
-        self.init_toggle_theme_default()?;
+        on_click("run-all", &run_all)?;
+        on_click("toggle-theme", &toggle_theme)?;
+        on_click("toggle-theme-default", &toggle_theme_default)?;
 
         Ok(())
     }
@@ -106,57 +105,6 @@ impl Notebook {
             .await?
             .as_string()
             .ok_or_else(throw("`template` did not resolve with a string"))
-    }
-
-    fn init_run_all(&self) -> Result<(), Error> {
-        let callback = Closure::wrap(Box::new(move |_| {
-            if let Err(err) = run_all() {
-                console::log_2(&"click event failed:".into(), &err);
-            }
-        }) as Box<dyn Fn(MouseEvent)>);
-        self.body
-            .query_selector("#run-all".into())?
-            .ok_or_else(throw("#run-all not found"))?
-            .add_event_listener_with_callback("click", callback.as_ref().unchecked_ref())?;
-
-        // TODO: Don't .forget(), instead take ownership of the closure.
-        callback.forget();
-
-        Ok(())
-    }
-
-    fn init_toggle_theme(&self) -> Result<(), Error> {
-        let callback = Closure::wrap(Box::new(move |_| {
-            if let Err(err) = toggle_theme() {
-                console::log_2(&"click event failed:".into(), &err);
-            }
-        }) as Box<dyn Fn(MouseEvent)>);
-        self.body
-            .query_selector("#toggle-theme".into())?
-            .ok_or_else(throw("#toggle-theme not found"))?
-            .add_event_listener_with_callback("click", callback.as_ref().unchecked_ref())?;
-
-        // TODO: Don't .forget(), instead take ownership of the closure.
-        callback.forget();
-
-        Ok(())
-    }
-
-    fn init_toggle_theme_default(&self) -> Result<(), Error> {
-        let callback = Closure::wrap(Box::new(move |_| {
-            if let Err(err) = toggle_theme_default() {
-                console::log_2(&"click event failed:".into(), &err);
-            }
-        }) as Box<dyn Fn(MouseEvent)>);
-        self.body
-            .query_selector("#toggle-theme-default".into())?
-            .ok_or_else(throw("#toggle-theme-default not found"))?
-            .add_event_listener_with_callback("click", callback.as_ref().unchecked_ref())?;
-
-        // TODO: Don't .forget(), instead take ownership of the closure.
-        callback.forget();
-
-        Ok(())
     }
 }
 
