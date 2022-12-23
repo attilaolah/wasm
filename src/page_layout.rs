@@ -78,10 +78,9 @@ impl Notebook {
     }
 
     pub fn init_ui_callbacks(&mut self) -> Result<(), Error> {
-        let cbs = &mut self.on_clicks;
-        cbs.push(on_click("run-all", &run_all)?);
-        cbs.push(on_click("toggle-theme", &toggle_theme)?);
-        cbs.push(on_click("toggle-theme-default", &toggle_theme_default)?);
+        on_click("run-all", &run_all)?;
+        on_click("toggle-theme", &toggle_theme)?;
+        on_click("toggle-theme-default", &toggle_theme_default)?;
 
         Ok(())
     }

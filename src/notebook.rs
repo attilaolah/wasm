@@ -2,8 +2,7 @@ use js_sys::Error;
 use serde::Deserialize;
 use std::clone::Clone;
 use std::marker::Copy;
-use wasm_bindgen::closure::Closure;
-use web_sys::{console, Document, HtmlElement, HtmlHeadElement, MouseEvent, Window};
+use web_sys::{console, Document, HtmlElement, HtmlHeadElement, Window};
 use yaml_front_matter::{Document as SrcDoc, YamlFrontMatter};
 
 use crate::dom_helpers::{body, document, head, window};
@@ -16,10 +15,6 @@ pub struct Notebook {
 
     // MD source & metadata.
     pub src: SrcDoc<NotebookConfig>,
-
-    // Callback event handlers.
-    // These need to be kept alive for event handlers to work.
-    pub on_clicks: Vec<Closure<dyn Fn(MouseEvent)>>,
 }
 
 #[derive(Copy, Clone, Deserialize)]
@@ -37,7 +32,6 @@ impl Notebook {
             head: head()?,
             body: body()?,
             src: parse_src()?,
-            on_clicks: vec![],
         })
     }
 }

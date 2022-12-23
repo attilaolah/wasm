@@ -28,8 +28,5 @@ pub async fn main() -> Result<(), Error> {
         run_all()?;
     }
 
-    // Keep the notebook callbacks alive forever.
-    nb.on_clicks.leak();
-
     Ok(())
 }
