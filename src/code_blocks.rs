@@ -1,8 +1,10 @@
 use js_sys::Error;
 use wasm_bindgen::JsCast;
-use web_sys::{console, HtmlButtonElement, HtmlDivElement, HtmlElement, HtmlPreElement};
+use web_sys::{
+    console, HtmlButtonElement, HtmlDivElement, HtmlElement, HtmlPreElement, MouseEvent,
+};
 
-use crate::dom_helpers::{create_element, document, not_defined, wrong_type};
+use crate::dom_helpers::{create_element, document, not_defined, on_el_click, wrong_type};
 
 static SRC: &str = "src";
 static OUT: &str = "out";
@@ -16,12 +18,6 @@ pub fn prepare_all() -> Result<(), Error> {
             prepare_block(&el, i)?;
         }
     }
-
-    Ok(())
-}
-
-pub fn run_all() -> Result<(), Error> {
-    console::log_1(&"todo: run all code blocks".into());
 
     Ok(())
 }
@@ -53,11 +49,11 @@ fn prepare_block(code: &HtmlElement, id: u32) -> Result<(), Error> {
 
     let run: HtmlButtonElement = create_element("button")?;
     run.set_class_name("run");
-
-    // TODO: Set up the click handler on the "run" button.
+    on_el_click(&run, &on_run)?;
 
     let icon: HtmlElement = create_element("span")?;
-    icon.class_list().add_2("material-symbols-outlined", "icon");
+    icon.class_list()
+        .add_2("material-symbols-outlined", "icon")?;
     icon.set_inner_text("play_circle");
 
     controls.append_child(&run)?;
@@ -68,6 +64,18 @@ fn prepare_block(code: &HtmlElement, id: u32) -> Result<(), Error> {
     out.set_class_name(OUT);
 
     cell.append_with_node_2(&out, &controls)?;
+
+    Ok(())
+}
+
+pub fn run_all() -> Result<(), Error> {
+    console::log_1(&"todo: run all code blocks".into());
+
+    Ok(())
+}
+
+fn on_run(_: Option<MouseEvent>) -> Result<(), Error> {
+    console::log_1(&"todo: run code block".into());
 
     Ok(())
 }

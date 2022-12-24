@@ -51,18 +51,28 @@ pub fn clear_children(el: &HtmlElement) -> Result<(), Error> {
 
 // Event handlers.
 
-// Register a "click" handler.
-// The returned closure must be kept alive or forgotten using .forget().
-pub fn on_click(id: &str, callback: &'static dyn Fn() -> Result<(), Error>) -> Result<(), Error> {
-    let closure = Closure::wrap(Box::new(move |_| {
-        if let Err(err) = callback() {
+pub fn on_click(
+    id: &str,
+    callback: &'static dyn Fn(Option<MouseEvent>) -> Result<(), Error>,
+) -> Result<(), Error> {
+    let el: HtmlElement = document()?
+        .get_element_by_id(id.into())
+        .ok_or_else(throw(&format!("#{} not found", id)))?
+        .dyn_into()
+        .or_else(wrong_type("get_element_by_id"))?;
+    on_el_click(&el, callback)
+}
+
+pub fn on_el_click(
+    el: &HtmlElement,
+    callback: &'static dyn Fn(Option<MouseEvent>) -> Result<(), Error>,
+) -> Result<(), Error> {
+    let closure = Closure::wrap(Box::new(move |evt| {
+        if let Err(err) = callback(Some(evt)) {
             console::log_2(&"click event failed:".into(), &err);
         }
     }) as Box<dyn Fn(MouseEvent)>);
-    document()?
-        .get_element_by_id(id.into())
-        .ok_or_else(throw(&format!("#{} not found", id)))?
-        .add_event_listener_with_callback("click", closure.as_ref().unchecked_ref())?;
+    el.add_event_listener_with_callback("click", closure.as_ref().unchecked_ref())?;
 
     // Prevent JS from garbage-collecting the callback.
     closure.forget();

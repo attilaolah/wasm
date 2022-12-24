@@ -3,7 +3,7 @@ use pulldown_cmark::{html, Options, Parser};
 use slug::slugify;
 use wasm_bindgen::JsCast;
 use wasm_bindgen_futures::JsFuture;
-use web_sys::{console, HtmlElement, HtmlMetaElement, HtmlTemplateElement};
+use web_sys::{console, HtmlElement, HtmlMetaElement, HtmlTemplateElement, MouseEvent};
 
 use crate::code_blocks::run_all;
 use crate::dom_helpers::{
@@ -78,9 +78,9 @@ impl Notebook {
     }
 
     pub fn init_ui_callbacks(&mut self) -> Result<(), Error> {
-        on_click("run-all", &run_all)?;
-        on_click("toggle-theme", &toggle_theme)?;
-        on_click("toggle-theme-default", &toggle_theme_default)?;
+        on_click("run-all", &on_run_all)?;
+        on_click("toggle-theme", &on_toggle_theme)?;
+        on_click("toggle-theme-default", &on_toggle_theme_default)?;
 
         Ok(())
     }
@@ -114,7 +114,11 @@ fn parse_markdown(content: &str) -> String {
     buf.into()
 }
 
-fn toggle_theme() -> Result<(), Error> {
+fn on_run_all(_: Option<MouseEvent>) -> Result<(), Error> {
+    run_all()
+}
+
+fn on_toggle_theme(_: Option<MouseEvent>) -> Result<(), Error> {
     let win = window()?;
     let class_list = body()?.class_list();
 
@@ -149,7 +153,7 @@ fn toggle_theme() -> Result<(), Error> {
     Ok(())
 }
 
-fn toggle_theme_default() -> Result<(), Error> {
+fn on_toggle_theme_default(_: Option<MouseEvent>) -> Result<(), Error> {
     body()?.class_list().remove_2(LIGHT, DARK)?;
 
     if let Some(ls) = window()?.local_storage()? {
