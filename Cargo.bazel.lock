@@ -1,5 +1,5 @@
 {
-  "checksum": "86043a3d3163c7726cd672b648471333018a8e22284ab736ad1bdbe0c0a44f8c",
+  "checksum": "e30507dd1420efffa563a0f36c4ab6826857bf6c65dda152fd10a2c1264194e9",
   "crates": {
     "addr2line 0.19.0": {
       "name": "addr2line",
@@ -14969,15 +14969,19 @@
         "crate_features": [
           "Document",
           "DocumentFragment",
+          "DomStringMap",
           "DomTokenList",
           "Element",
           "Event",
           "EventTarget",
           "Headers",
+          "HtmlButtonElement",
+          "HtmlDivElement",
           "HtmlElement",
           "HtmlHeadElement",
           "HtmlLinkElement",
           "HtmlMetaElement",
+          "HtmlPreElement",
           "HtmlTemplateElement",
           "MediaQueryList",
           "MessageEvent",

@@ -2,7 +2,7 @@ use js_sys::Error;
 use wasm_bindgen::prelude::wasm_bindgen;
 use wee_alloc::WeeAlloc;
 
-use crate::code_blocks::run_all;
+use crate::code_blocks::{prepare_all, run_all};
 use crate::notebook::Notebook;
 
 mod notebook;
@@ -24,6 +24,7 @@ pub async fn main() -> Result<(), Error> {
     nb.init_ui_callbacks()?;
     nb.highlight()?;
 
+    prepare_all()?;
     if nb.src.metadata.autorun() {
         run_all()?;
     }
