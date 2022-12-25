@@ -11,11 +11,11 @@ use crate::dom_helpers::{
 };
 use crate::notebook::Notebook;
 
-static DEFAULT_TITLE: &str = "Web Notebook";
-static CONFIG_THEME: &str = "config:theme";
+const DEFAULT_TITLE: &str = "Web Notebook";
+const CONFIG_THEME: &str = "config:theme";
 
-static DARK: &str = "dark";
-static LIGHT: &str = "light";
+const DARK: &str = "dark";
+const LIGHT: &str = "light";
 
 impl Notebook {
     pub fn set_meta_charset(&self) -> Result<(), Error> {

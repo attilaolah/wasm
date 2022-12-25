@@ -6,9 +6,9 @@ use web_sys::{
 
 use crate::dom_helpers::{create_element, document, not_defined, on_el_click, wrong_type};
 
-static SRC: &str = "src";
-static OUT: &str = "out";
-static PREFIX: &str = "language-";
+const SRC: &str = "src";
+const OUT: &str = "out";
+const PREFIX: &str = "language-";
 
 pub fn prepare_all() -> Result<(), Error> {
     let codes = document()?.query_selector_all(&format!("pre>code[class^={}]", PREFIX))?;

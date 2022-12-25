@@ -5,7 +5,7 @@ use web_sys::{console, Document, HtmlElement, HtmlHeadElement, MouseEvent, Windo
 
 // Selectors.
 
-pub static H1TO6: &str = "h1,h2,h3,h4,h5,h6";
+pub const H1TO6: &str = "h1,h2,h3,h4,h5,h6";
 
 // Accessors.
 

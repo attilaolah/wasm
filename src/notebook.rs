@@ -22,7 +22,7 @@ pub struct NotebookConfig {
     autorun: Option<bool>,
 }
 
-static DEFAULT: NotebookConfig = NotebookConfig { autorun: None };
+const DEFAULT: NotebookConfig = NotebookConfig { autorun: None };
 
 impl Notebook {
     pub fn parse() -> Result<Self, Error> {
