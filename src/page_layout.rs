@@ -114,11 +114,11 @@ fn parse_markdown(content: &str) -> String {
     buf.into()
 }
 
-fn on_run_all(_: Option<MouseEvent>) -> Result<(), Error> {
+fn on_run_all(_: MouseEvent) -> Result<(), Error> {
     run_all()
 }
 
-fn on_toggle_theme(_: Option<MouseEvent>) -> Result<(), Error> {
+fn on_toggle_theme(_: MouseEvent) -> Result<(), Error> {
     let win = window()?;
     let class_list = body()?.class_list();
 
@@ -153,7 +153,7 @@ fn on_toggle_theme(_: Option<MouseEvent>) -> Result<(), Error> {
     Ok(())
 }
 
-fn on_toggle_theme_default(_: Option<MouseEvent>) -> Result<(), Error> {
+fn on_toggle_theme_default(_: MouseEvent) -> Result<(), Error> {
     body()?.class_list().remove_2(LIGHT, DARK)?;
 
     if let Some(ls) = window()?.local_storage()? {

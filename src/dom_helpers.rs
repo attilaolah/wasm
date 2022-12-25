@@ -53,7 +53,7 @@ pub fn clear_children(el: &HtmlElement) -> Result<(), Error> {
 
 pub fn on_click(
     id: &str,
-    callback: &'static dyn Fn(Option<MouseEvent>) -> Result<(), Error>,
+    callback: &'static dyn Fn(MouseEvent) -> Result<(), Error>,
 ) -> Result<(), Error> {
     let el: HtmlElement = document()?
         .get_element_by_id(id.into())
@@ -65,10 +65,10 @@ pub fn on_click(
 
 pub fn on_el_click(
     el: &HtmlElement,
-    callback: &'static dyn Fn(Option<MouseEvent>) -> Result<(), Error>,
+    callback: &'static dyn Fn(MouseEvent) -> Result<(), Error>,
 ) -> Result<(), Error> {
     let closure = Closure::wrap(Box::new(move |evt| {
-        if let Err(err) = callback(Some(evt)) {
+        if let Err(err) = callback(evt) {
             console::log_2(&"click event failed:".into(), &err);
         }
     }) as Box<dyn Fn(MouseEvent)>);

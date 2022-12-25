@@ -74,7 +74,7 @@ pub fn run_all() -> Result<(), Error> {
     Ok(())
 }
 
-fn on_run(_: Option<MouseEvent>) -> Result<(), Error> {
+fn on_run(_: MouseEvent) -> Result<(), Error> {
     console::log_1(&"todo: run code block".into());
 
     Ok(())
