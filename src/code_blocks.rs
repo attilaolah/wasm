@@ -10,6 +10,8 @@ const SRC: &str = "src";
 const OUT: &str = "out";
 const PREFIX: &str = "language-";
 
+const LANGS:  [&str;3] = ["html", "css", "js"];
+
 pub fn prepare_all() -> Result<(), Error> {
     let codes = document()?.query_selector_all(&format!("pre>code[class^={}]", PREFIX))?;
     for i in 0..codes.length() {
@@ -24,8 +26,6 @@ pub fn prepare_all() -> Result<(), Error> {
 
 // Prepares a single code block for execution.
 fn prepare_block(code: &HtmlElement, id: u32) -> Result<(), Error> {
-    let lang = language_class(&code);
-
     code.class_list().add_1(SRC)?;
     let pre: HtmlPreElement = code
         .parent_element()
@@ -42,7 +42,10 @@ fn prepare_block(code: &HtmlElement, id: u32) -> Result<(), Error> {
         .insert_before(&cell, Some(&pre))?;
     cell.append_child(&pre)?;
 
-    // TODO: Stop here if running this block is not supported.
+    let lang = &language_class(&code).unwrap_or("".to_string());
+    if !LANGS.contains(&lang.as_str()) {
+        return Ok(());
+    }
 
     let controls: HtmlDivElement = create_element("div")?;
     controls.set_class_name("controls");
