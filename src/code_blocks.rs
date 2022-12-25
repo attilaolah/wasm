@@ -56,9 +56,11 @@ fn prepare_block(code: &HtmlElement, id: u32) -> Result<(), Error> {
         .add_2("material-symbols-outlined", "icon")?;
     icon.set_inner_text("play_circle");
 
+    let text: HtmlElement = create_element("span")?;
+    text.set_inner_text("Run block");
+
     controls.append_child(&run)?;
-    run.append_child(&icon)?;
-    run.append_with_str_1("Run block")?;
+    run.append_with_node_2(&icon, &text)?;
 
     let out: HtmlDivElement = create_element("div")?;
     out.set_class_name(OUT);
