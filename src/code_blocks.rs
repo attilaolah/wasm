@@ -4,13 +4,12 @@ use web_sys::{
     console, HtmlButtonElement, HtmlDivElement, HtmlElement, HtmlPreElement, MouseEvent,
 };
 
-use crate::dom_helpers::{create_element, document, not_defined, on_el_click, wrong_type};
+use crate::dom_helpers::{create_element, document, not_defined, on_el_click, throw, wrong_type};
+use crate::modules::has_mod;
 
 const SRC: &str = "src";
 const OUT: &str = "out";
 const PREFIX: &str = "language-";
-
-const LANGS:  [&str;3] = ["html", "css", "js"];
 
 pub fn prepare_all() -> Result<(), Error> {
     let codes = document()?.query_selector_all(&format!("pre>code[class^={}]", PREFIX))?;
@@ -43,7 +42,7 @@ fn prepare_block(code: &HtmlElement, id: u32) -> Result<(), Error> {
     cell.append_child(&pre)?;
 
     let lang = &language_class(&code).unwrap_or("".to_string());
-    if !LANGS.contains(&lang.as_str()) {
+    if !has_mod(&lang)? {
         return Ok(());
     }
 
@@ -79,8 +78,25 @@ pub fn run_all() -> Result<(), Error> {
     Ok(())
 }
 
-fn on_run(_: MouseEvent) -> Result<(), Error> {
-    console::log_1(&"todo: run code block".into());
+fn on_run(evt: MouseEvent) -> Result<(), Error> {
+    let target: HtmlElement = evt
+        .current_target()
+        .ok_or_else(not_defined("current_target"))?
+        .dyn_into()
+        .or_else(wrong_type("current_target"))?;
+    let cell: HtmlElement = target
+        .closest(".cell")?
+        .ok_or_else(throw("cell not found"))?
+        .dyn_into()
+        .or_else(wrong_type("closest"))?;
+    let code_src: HtmlElement = cell
+        .query_selector(".src")?
+        .ok_or_else(throw("code block not found"))?
+        .dyn_into()
+        .or_else(wrong_type("query_selector"))?;
+    let lang: String = language_class(&code_src).ok_or_else(throw("language class not found"))?;
+
+    console::log_3(&"todo: run".into(), &lang.into(), &cell);
 
     Ok(())
 }

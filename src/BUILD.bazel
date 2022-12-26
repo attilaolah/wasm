@@ -11,6 +11,7 @@ filegroup(
     srcs = ["lib.rs"] + [
         "code_blocks.rs",
         "dom_helpers.rs",
+        "modules.rs",
         "notebook.rs",
         "page_layout.rs",
     ],

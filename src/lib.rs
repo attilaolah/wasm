@@ -3,8 +3,10 @@ use wasm_bindgen::prelude::wasm_bindgen;
 use wee_alloc::WeeAlloc;
 
 use crate::code_blocks::{prepare_all, run_all};
+use crate::modules::register_all;
 use crate::notebook::Notebook;
 
+mod modules;
 mod notebook;
 
 mod code_blocks;
@@ -23,6 +25,9 @@ pub async fn main() -> Result<(), Error> {
     nb.init_ui_theme()?;
     nb.init_ui_callbacks()?;
     nb.highlight()?;
+
+    // We need to register any modules before preparing the cells.
+    register_all()?;
 
     prepare_all()?;
     if nb.src.metadata.autorun() {

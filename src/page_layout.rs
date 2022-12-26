@@ -100,11 +100,11 @@ impl Notebook {
             .win
             .get("notebook")
             .ok_or_else(not_defined("notebook"))?;
-        let tpl: Promise = Reflect::get(&notebook, &"template".into())?.dyn_into()?;
+        let tpl: Promise = Reflect::get(&notebook, &"tpl".into())?.dyn_into()?;
         JsFuture::from(tpl)
             .await?
             .as_string()
-            .ok_or_else(throw("`template` did not resolve with a string"))
+            .ok_or_else(throw("`tpl` did not resolve with a string"))
     }
 }
 

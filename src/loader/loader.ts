@@ -11,10 +11,11 @@ const STYLE_CSS = `${DIR}/style.css`;
 const TEMPLATE_URL = `${DIR}/template.html`;
 
 class Notebook {
-  template: Promise<string>;
+  tpl: Promise<string>;
+  mod: { [key: string]: (src: string) => any } = {};
 
-  constructor(init: { template: Promise<string> }) {
-    this.template = init.template;
+  constructor(init: { tpl: Promise<string> }) {
+    this.tpl = init.tpl;
   }
 }
 
@@ -23,7 +24,7 @@ export function preload(): void {
   loadFonts();
 
   window["notebook"] = new Notebook({
-    template: loadTemplate(),
+    tpl: loadTemplate(),
   });
 }
 
