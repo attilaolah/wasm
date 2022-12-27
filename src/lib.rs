@@ -20,15 +20,17 @@ static ALLOC: WeeAlloc = WeeAlloc::INIT;
 pub async fn main() -> Result<(), Error> {
     let mut nb = Notebook::parse()?;
 
+    // UI setup.
     nb.set_meta_charset()?;
     nb.init_ui_content().await?;
     nb.init_ui_theme()?;
     nb.init_ui_callbacks()?;
     nb.highlight()?;
 
-    // We need to register any modules before preparing the cells.
+    // We need to register all modules before preparing the cells.
     register_all()?;
 
+    // Prepare & run code blocks.
     prepare_all()?;
     if nb.src.metadata.autorun() {
         run_all()?;

@@ -1,17 +1,22 @@
-use js_sys::Error;
+use js_sys::{Error, Reflect};
 use wasm_bindgen::JsCast;
 use web_sys::{
     console, HtmlButtonElement, HtmlDivElement, HtmlElement, HtmlPreElement, MouseEvent,
 };
 
 use crate::dom_helpers::{create_element, document, not_defined, on_el_click, throw, wrong_type};
-use crate::modules::has_mod;
+use crate::modules::{mod_has, mod_run};
 
 const SRC: &str = "src";
 const OUT: &str = "out";
 const PREFIX: &str = "language-";
 
+// Name of the "result" variable.
+const RES_VAR: &str = "_";
+
 pub fn prepare_all() -> Result<(), Error> {
+    // TODO: Ideally we'd use an iterator, but that requires
+    // https://github.com/rustwasm/wasm-bindgen/issues/1036 to be implemented.
     let codes = document()?.query_selector_all(&format!("pre>code[class^={}]", PREFIX))?;
     for i in 0..codes.length() {
         if let Some(node) = codes.get(i) {
@@ -42,7 +47,7 @@ fn prepare_block(code: &HtmlElement, id: u32) -> Result<(), Error> {
     cell.append_child(&pre)?;
 
     let lang = &language_class(&code).unwrap_or("".to_string());
-    if !has_mod(&lang)? {
+    if !mod_has(&lang)? {
         return Ok(());
     }
 
@@ -79,24 +84,55 @@ pub fn run_all() -> Result<(), Error> {
 }
 
 fn on_run(evt: MouseEvent) -> Result<(), Error> {
-    let target: HtmlElement = evt
+    let target: HtmlButtonElement = evt
         .current_target()
         .ok_or_else(not_defined("current_target"))?
         .dyn_into()
         .or_else(wrong_type("current_target"))?;
-    let cell: HtmlElement = target
-        .closest(".cell")?
+    let cell: HtmlDivElement = target
+        .closest("div.cell")?
         .ok_or_else(throw("cell not found"))?
         .dyn_into()
         .or_else(wrong_type("closest"))?;
+
+    run_cell(&cell)
+}
+
+fn run_cell(cell: &HtmlDivElement) -> Result<(), Error> {
     let code_src: HtmlElement = cell
-        .query_selector(".src")?
+        .query_selector("code.src")?
         .ok_or_else(throw("code block not found"))?
         .dyn_into()
         .or_else(wrong_type("query_selector"))?;
-    let lang: String = language_class(&code_src).ok_or_else(throw("language class not found"))?;
+    let div_out: HtmlDivElement = cell
+        .query_selector("div.out")?
+        .ok_or_else(throw("output div not found"))?
+        .dyn_into()
+        .or_else(wrong_type("query_selector"))?;
+    let text = code_src
+        .text_content()
+        .ok_or_else(throw("code block contains no text"))?;
+    let lang = language_class(&code_src).ok_or_else(throw("language class not found"))?;
 
-    console::log_3(&"todo: run".into(), &lang.into(), &cell);
+    //console::log_3(&"todo: run".into(), &lang.into(), &cell);
+    //console::log_1(&text.into());
+
+    let ok = match mod_run(&div_out, &text, &lang) {
+        Ok(res) => {
+            Reflect::set(&cell, &RES_VAR.into(), &res)?;
+            true
+        }
+        Err(err) => {
+            Reflect::set(&cell, &RES_VAR.into(), &err)?;
+            console::error_1(&"run: fail".into());
+            console::error_1(&err);
+            false
+        }
+    };
+
+    let class_list = cell.class_list();
+    class_list.toggle_with_force("run-ok", ok)?;
+    class_list.toggle_with_force("run-fail", !ok)?;
 
     Ok(())
 }
