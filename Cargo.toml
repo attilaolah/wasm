@@ -41,6 +41,7 @@ features = [
   "HtmlLinkElement",
   "HtmlMetaElement",
   "HtmlPreElement",
+  "HtmlStyleElement",
   "HtmlTemplateElement",
   "MediaQueryList",
   "MouseEvent",
@@ -51,6 +52,8 @@ features = [
   "RequestMode",
   "Response",
   "Storage",
+  "StyleSheet",
+  "StyleSheetList",
   "Window",
   "console",
 ]

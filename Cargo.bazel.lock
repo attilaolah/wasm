@@ -1,5 +1,5 @@
 {
-  "checksum": "e30507dd1420efffa563a0f36c4ab6826857bf6c65dda152fd10a2c1264194e9",
+  "checksum": "03745ddedeaa1dc50e671e00e2ca7dad98b94329caef1dee3fb107270bb09897",
   "crates": {
     "addr2line 0.19.0": {
       "name": "addr2line",
@@ -1031,7 +1031,7 @@
               "target": "semver"
             },
             {
-              "id": "serde 1.0.151",
+              "id": "serde 1.0.152",
               "target": "serde"
             },
             {
@@ -1045,7 +1045,7 @@
         "proc_macro_deps": {
           "common": [
             {
-              "id": "serde_derive 1.0.151",
+              "id": "serde_derive 1.0.152",
               "target": "serde_derive"
             }
           ],
@@ -1811,7 +1811,7 @@
               "target": "publicsuffix"
             },
             {
-              "id": "serde 1.0.151",
+              "id": "serde 1.0.152",
               "target": "serde"
             },
             {
@@ -5127,7 +5127,7 @@
               "target": "os_type"
             },
             {
-              "id": "serde 1.0.151",
+              "id": "serde 1.0.152",
               "target": "serde"
             },
             {
@@ -5149,7 +5149,7 @@
         "proc_macro_deps": {
           "common": [
             {
-              "id": "serde_derive 1.0.151",
+              "id": "serde_derive 1.0.152",
               "target": "serde_derive"
             }
           ],
@@ -10401,7 +10401,7 @@
               "target": "native_tls"
             },
             {
-              "id": "serde 1.0.151",
+              "id": "serde 1.0.152",
               "target": "serde"
             },
             {
@@ -11024,7 +11024,7 @@
               "target": "semver_parser"
             },
             {
-              "id": "serde 1.0.151",
+              "id": "serde 1.0.152",
               "target": "serde"
             }
           ],
@@ -11068,13 +11068,13 @@
       },
       "license": "MIT/Apache-2.0"
     },
-    "serde 1.0.151": {
+    "serde 1.0.152": {
       "name": "serde",
-      "version": "1.0.151",
+      "version": "1.0.152",
       "repository": {
         "Http": {
-          "url": "https://crates.io/api/v1/crates/serde/1.0.151/download",
-          "sha256": "97fed41fc1a24994d044e6db6935e69511a1153b52c15eb42493b26fa87feba0"
+          "url": "https://crates.io/api/v1/crates/serde/1.0.152/download",
+          "sha256": "bb7d1f0d3021d347a83e556fc4683dea2ea09d87bccdf88ff5c12545d89d5efb"
         }
       },
       "targets": [
@@ -11117,7 +11117,7 @@
         "deps": {
           "common": [
             {
-              "id": "serde 1.0.151",
+              "id": "serde 1.0.152",
               "target": "build_script_build"
             }
           ],
@@ -11127,13 +11127,13 @@
         "proc_macro_deps": {
           "common": [
             {
-              "id": "serde_derive 1.0.151",
+              "id": "serde_derive 1.0.152",
               "target": "serde_derive"
             }
           ],
           "selects": {}
         },
-        "version": "1.0.151"
+        "version": "1.0.152"
       },
       "build_script_attrs": {
         "data_glob": [
@@ -11142,13 +11142,13 @@
       },
       "license": "MIT OR Apache-2.0"
     },
-    "serde_derive 1.0.151": {
+    "serde_derive 1.0.152": {
       "name": "serde_derive",
-      "version": "1.0.151",
+      "version": "1.0.152",
       "repository": {
         "Http": {
-          "url": "https://crates.io/api/v1/crates/serde_derive/1.0.151/download",
-          "sha256": "255abe9a125a985c05190d687b320c12f9b1f0b99445e608c21ba0782c719ad8"
+          "url": "https://crates.io/api/v1/crates/serde_derive/1.0.152/download",
+          "sha256": "af487d118eecd09402d70a5d72551860e788df87b464af30e5ea6a38c75c541e"
         }
       },
       "targets": [
@@ -11196,7 +11196,7 @@
               "target": "quote"
             },
             {
-              "id": "serde_derive 1.0.151",
+              "id": "serde_derive 1.0.152",
               "target": "build_script_build"
             },
             {
@@ -11207,7 +11207,7 @@
           "selects": {}
         },
         "edition": "2015",
-        "version": "1.0.151"
+        "version": "1.0.152"
       },
       "build_script_attrs": {
         "data_glob": [
@@ -11247,7 +11247,7 @@
         "deps": {
           "common": [
             {
-              "id": "serde 1.0.151",
+              "id": "serde 1.0.152",
               "target": "serde"
             }
           ],
@@ -11313,7 +11313,7 @@
               "target": "ryu"
             },
             {
-              "id": "serde 1.0.151",
+              "id": "serde 1.0.152",
               "target": "serde"
             },
             {
@@ -11372,7 +11372,7 @@
               "target": "itoa"
             },
             {
-              "id": "serde 1.0.151",
+              "id": "serde 1.0.152",
               "target": "serde"
             },
             {
@@ -11426,7 +11426,7 @@
               "target": "ryu"
             },
             {
-              "id": "serde 1.0.151",
+              "id": "serde 1.0.152",
               "target": "serde"
             },
             {
@@ -13358,7 +13358,7 @@
         "deps": {
           "common": [
             {
-              "id": "serde 1.0.151",
+              "id": "serde 1.0.152",
               "target": "serde"
             }
           ],
@@ -13403,7 +13403,7 @@
         "deps": {
           "common": [
             {
-              "id": "serde 1.0.151",
+              "id": "serde 1.0.152",
               "target": "serde"
             }
           ],
@@ -14886,7 +14886,7 @@
               "target": "semver"
             },
             {
-              "id": "serde 1.0.151",
+              "id": "serde 1.0.152",
               "target": "serde"
             },
             {
@@ -14928,7 +14928,7 @@
         "proc_macro_deps": {
           "common": [
             {
-              "id": "serde_derive 1.0.151",
+              "id": "serde_derive 1.0.152",
               "target": "serde_derive"
             }
           ],
@@ -14982,6 +14982,7 @@
           "HtmlLinkElement",
           "HtmlMetaElement",
           "HtmlPreElement",
+          "HtmlStyleElement",
           "HtmlTemplateElement",
           "MediaQueryList",
           "MessageEvent",
@@ -14993,6 +14994,8 @@
           "RequestMode",
           "Response",
           "Storage",
+          "StyleSheet",
+          "StyleSheetList",
           "UiEvent",
           "Window",
           "Worker",
@@ -15037,7 +15040,7 @@
               "target": "pulldown_cmark"
             },
             {
-              "id": "serde 1.0.151",
+              "id": "serde 1.0.152",
               "target": "serde"
             },
             {
@@ -16692,7 +16695,7 @@
         "deps": {
           "common": [
             {
-              "id": "serde 1.0.151",
+              "id": "serde 1.0.152",
               "target": "serde"
             },
             {
