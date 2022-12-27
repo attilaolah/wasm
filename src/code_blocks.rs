@@ -1,5 +1,5 @@
 use js_sys::{Error, Reflect};
-use wasm_bindgen::JsCast;
+use wasm_bindgen::{JsCast, JsValue};
 use web_sys::{
     console, HtmlButtonElement, HtmlDivElement, HtmlElement, HtmlPreElement, MouseEvent,
 };
@@ -11,7 +11,6 @@ const SRC: &str = "src";
 const OUT: &str = "out";
 const PREFIX: &str = "language-";
 
-// Name of the "result" variable.
 const RES_VAR: &str = "_";
 
 pub fn prepare_all() -> Result<(), Error> {
@@ -26,6 +25,41 @@ pub fn prepare_all() -> Result<(), Error> {
     }
 
     Ok(())
+}
+
+pub fn run_all() -> Result<(), Error> {
+    console::log_1(&"todo: run all code blocks".into());
+
+    Ok(())
+}
+
+pub fn get_src(cell: &HtmlDivElement) -> Result<HtmlElement, Error> {
+    cell.query_selector("code.src")?
+        .ok_or_else(throw("code block not found"))?
+        .dyn_into()
+        .or_else(wrong_type("query_selector"))
+}
+
+pub fn get_out(cell: &HtmlDivElement) -> Result<HtmlDivElement, Error> {
+    cell.query_selector("div.out")?
+        .ok_or_else(throw("output div not found"))?
+        .dyn_into()
+        .or_else(wrong_type("query_selector"))
+}
+
+pub fn get_text(src: &HtmlElement) -> Result<String, Error> {
+    src.text_content()
+        .ok_or_else(throw("code block contains no text"))
+}
+
+pub fn get_lang(src: &HtmlElement) -> Result<String, Error> {
+    language_class(&src).ok_or_else(throw("language class not found"))
+}
+
+pub fn set_res(cell: &HtmlDivElement, res: &JsValue) -> Result<bool, Error> {
+    let ok = Reflect::set(&cell, &RES_VAR.into(), &res)?;
+
+    Ok(ok)
 }
 
 // Prepares a single code block for execution.
@@ -77,12 +111,6 @@ fn prepare_block(code: &HtmlElement, id: u32) -> Result<(), Error> {
     Ok(())
 }
 
-pub fn run_all() -> Result<(), Error> {
-    console::log_1(&"todo: run all code blocks".into());
-
-    Ok(())
-}
-
 fn on_run(evt: MouseEvent) -> Result<(), Error> {
     let target: HtmlButtonElement = evt
         .current_target()
@@ -99,40 +127,10 @@ fn on_run(evt: MouseEvent) -> Result<(), Error> {
 }
 
 fn run_cell(cell: &HtmlDivElement) -> Result<(), Error> {
-    let code_src: HtmlElement = cell
-        .query_selector("code.src")?
-        .ok_or_else(throw("code block not found"))?
-        .dyn_into()
-        .or_else(wrong_type("query_selector"))?;
-    let div_out: HtmlDivElement = cell
-        .query_selector("div.out")?
-        .ok_or_else(throw("output div not found"))?
-        .dyn_into()
-        .or_else(wrong_type("query_selector"))?;
-    let text = code_src
-        .text_content()
-        .ok_or_else(throw("code block contains no text"))?;
-    let lang = language_class(&code_src).ok_or_else(throw("language class not found"))?;
-
-    //console::log_3(&"todo: run".into(), &lang.into(), &cell);
-    //console::log_1(&text.into());
-
-    let ok = match mod_run(&div_out, &text, &lang) {
-        Ok(res) => {
-            Reflect::set(&cell, &RES_VAR.into(), &res)?;
-            true
-        }
-        Err(err) => {
-            Reflect::set(&cell, &RES_VAR.into(), &err)?;
-            console::error_1(&"run: fail".into());
-            console::error_1(&err);
-            false
-        }
-    };
-
+    let res = mod_run(&cell);
     let class_list = cell.class_list();
-    class_list.toggle_with_force("run-ok", ok)?;
-    class_list.toggle_with_force("run-fail", !ok)?;
+    class_list.toggle_with_force("run-ok", res.is_ok())?;
+    class_list.toggle_with_force("run-err", res.is_err())?;
 
     Ok(())
 }

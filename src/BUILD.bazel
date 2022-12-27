@@ -12,6 +12,7 @@ filegroup(
         "code_blocks.rs",
         "dom_helpers.rs",
         "modules.rs",
+        "builtin_modules.rs",
         "notebook.rs",
         "page_layout.rs",
     ],

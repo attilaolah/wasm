@@ -6,11 +6,11 @@ use crate::code_blocks::{prepare_all, run_all};
 use crate::modules::register_all;
 use crate::notebook::Notebook;
 
-mod modules;
-mod notebook;
-
+mod builtin_modules;
 mod code_blocks;
 mod dom_helpers;
+mod modules;
+mod notebook;
 mod page_layout;
 
 #[global_allocator]
