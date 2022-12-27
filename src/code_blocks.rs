@@ -4,7 +4,9 @@ use web_sys::{
     console, HtmlButtonElement, HtmlDivElement, HtmlElement, HtmlPreElement, MouseEvent,
 };
 
-use crate::dom_helpers::{create_element, document, not_defined, on_el_click, throw, wrong_type};
+use crate::dom_helpers::{
+    create_element, document, not_defined, on_el_click, throw, window, wrong_type,
+};
 use crate::modules::{mod_has, mod_run};
 
 const SRC: &str = "src";
@@ -57,9 +59,10 @@ pub fn get_lang(src: &HtmlElement) -> Result<String, Error> {
 }
 
 pub fn set_res(cell: &HtmlDivElement, res: &JsValue) -> Result<bool, Error> {
-    let ok = Reflect::set(&cell, &RES_VAR.into(), &res)?;
+    let ok_cell = Reflect::set(&cell, &RES_VAR.into(), &res)?;
+    let ok_win = Reflect::set(&window()?.into(), &RES_VAR.into(), &res)?;
 
-    Ok(ok)
+    Ok(ok_cell && ok_win)
 }
 
 // Prepares a single code block for execution.

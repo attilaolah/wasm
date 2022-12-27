@@ -1,13 +1,30 @@
-use js_sys::Error;
-use web_sys::{console, HtmlDivElement, HtmlStyleElement};
+use js_sys::{eval, Error};
+use wasm_bindgen::JsCast;
+use web_sys::{console, HtmlDivElement, HtmlPreElement, HtmlStyleElement};
 
 use crate::code_blocks::{get_out, get_src, get_text, set_res};
-use crate::dom_helpers::{document, create_element};
+use crate::dom_helpers::{clear_children, create_element, document};
 
-pub fn mod_js(_cell: &HtmlDivElement) -> Result<(), Error> {
-    console::log_1(&"todo: run js".into());
+pub fn mod_js(cell: &HtmlDivElement) -> Result<(), Error> {
+    let out = get_out(&cell)?;
 
-    Ok(())
+    match eval(&get_text(&get_src(&cell)?)?) {
+        Ok(val) => {
+            set_res(&cell, &val)?;
+            Ok(())
+        }
+        Err(val) => {
+            let err: Error = val.dyn_into()?;
+            let pre: HtmlPreElement = create_element("pre")?;
+            pre.set_inner_text(&err.to_string().as_string().unwrap_or("".to_string()));
+
+            clear_children(&out)?;
+            out.append_child(&pre)?;
+
+            set_res(&cell, &err)?;
+            Err(err)
+        }
+    }
 }
 
 pub fn mod_html(cell: &HtmlDivElement) -> Result<(), Error> {
