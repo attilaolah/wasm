@@ -42,7 +42,7 @@ const [year, month, day] = [
   _.getDate(),
 ];
 
-// Explicitly set the "today" variable:
+// Explicitly set the "today" variable.
 self.today = ({year, month, day});
 ```
 
@@ -80,8 +80,8 @@ it from subsequent JavaScript blocks:
 ```js
 let level = 0;
 _.addEventListener("click", (evt) => {
-  evt.currentTarget.innerText = `LVL: {++times}`;
-})
+  evt.currentTarget.innerText = `LVL: ${++level}`;
+});
 ```
 
 The HTML block is most useful to declare custom outputs, for example a
@@ -96,12 +96,13 @@ content added in other blocks too:
 
 ```css
 button.lvl {
-  --size: 48px;
+  --size: 40px;
   border-style: none;
   border-radius: calc(var(--size) / 2);
   background-color: rgb(var(--magenta));
   line-height: calc(var(--size) / 2);
   height: var(--size);
+  padding: 8px 24px;
 }
 ```
 
