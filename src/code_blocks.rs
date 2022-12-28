@@ -132,8 +132,9 @@ fn on_run(evt: MouseEvent) -> Result<(), Error> {
 fn run_cell(cell: &HtmlDivElement) -> Result<(), Error> {
     let res = mod_run(&cell);
     let class_list = cell.class_list();
-    class_list.toggle_with_force("run-ok", res.is_ok())?;
-    class_list.toggle_with_force("run-err", res.is_err())?;
+    class_list.add_1("run")?;
+    class_list.toggle_with_force("ok", res.is_ok())?;
+    class_list.toggle_with_force("err", res.is_err())?;
 
     Ok(())
 }

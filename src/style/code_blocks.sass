@@ -53,13 +53,11 @@
 
 .notebook-ui
   pre
-    padding: 16px
+    padding: $pad
 
   pre, code
     background-color: rgb(var(--code-bg))
     font-family: var(--font-code)
-    line-height: 1.75
-    border-radius: 0
 
   :not(pre) > code
     padding: 2px 4px
@@ -68,13 +66,27 @@
     display: flex
     flex-direction: column
     margin: 16px 0 32px
+    gap: $pad
 
-    > pre
+    > div:empty
+      display: none
+
+    pre
       margin: 0 !important
+
+    &.run
+      &.ok
+        --border: var(--green)
+      &.err
+        --border: var(--red)
+      &.pending
+        --border: var(--orange)
+      pre
+        border-left: 4px solid rgb(var(--border))
+        margin-left: -4px !important
 
     .controls
       display: flex
-      margin-top: 16px
 
       button
         --text: var(--white)
