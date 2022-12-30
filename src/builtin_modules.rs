@@ -23,30 +23,20 @@ pub fn mod_js(cell: &HtmlDivElement) -> Result<(), Error> {
 
     match result {
         Err(val) => {
-            let err: Error;
-            let text: String = if val.has_type::<Error>() {
-                // Ideally the exception that was thrown is an error.
-                err = val.into();
-                err.to_string()
-                    .as_string()
-                    .unwrap_or("unknown error".to_string())
-            } else {
-                // If the exception is not an error, create one using the value's to_string().
-                let obj: Object = val.into();
-                let text = obj
-                    .to_string()
-                    .as_string()
-                    .unwrap_or("unknown error".to_string());
-                err = Error::new(&text);
-                text
-            };
+            let err = ensure_error(val);
+            let text: String = err
+                .to_string()
+                .as_string()
+                .unwrap_or("unknown error".to_string());
             let pre: HtmlPreElement = create_element("pre")?;
+
+            // TODO: <strong>*Error:</strong>!
+            pre.set_inner_text(&text);
+            out.append_child(&pre)?;
 
             // Log stack trace information to the console.
             console::error_1(&err);
 
-            pre.set_inner_text(&text);
-            out.append_child(&pre)?;
             Err(err)
         }
         Ok(val) => {
@@ -132,4 +122,17 @@ pub fn mod_fetch(_cell: &HtmlDivElement) -> Result<(), Error> {
     console::log_1(&"todo: run fetch".into());
 
     Ok(())
+}
+
+fn ensure_error(val: JsValue) -> Error {
+    if val.has_type::<Error>() {
+        val.into()
+    } else {
+        let object: Object = val.into();
+        let message = object
+            .to_string()
+            .as_string()
+            .unwrap_or("unknown error".to_string());
+        Error::new(&message)
+    }
 }

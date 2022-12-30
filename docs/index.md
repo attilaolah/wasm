@@ -58,9 +58,9 @@ failure, `_` will hold the value that was thrown.
 const {day} = today;
 
 if (day % 2) {
-  throw `error: ${day} is too odd`;
+  throw `${day} is too odd`;
 } else {
-  throw `panic: ${day} is not odd enough`;
+  throw `${day} is not odd enough`;
 }
 ```
 
@@ -96,13 +96,14 @@ content added in other blocks too:
 
 ```css
 button.lvl {
-  --size: 40px;
-  border-style: none;
-  border-radius: calc(var(--size) / 2);
+  color: white;
   background-color: rgb(var(--magenta));
-  line-height: calc(var(--size) / 2);
-  height: var(--size);
+  border-style: none;
   padding: 8px 24px;
+  height: 40px
+}
+button.lvl::after {
+  content: " | click to increment!";
 }
 ```
 
