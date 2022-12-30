@@ -23,43 +23,31 @@ pub fn mod_js(cell: &HtmlDivElement) -> Result<(), Error> {
 
     match result {
         Err(val) => {
-            console::error_1(&val);
-            let pre: HtmlPreElement = create_element("pre")?;
-            out.append_child(&pre)?;
-
-            // TODO: Try to just pass the error as-is to pre.set_inner_text().
-            // If that doesn't work, try to reflect-execute the toString method.
-
-            // Ideally only errors would be thrown.
-            if val.has_type::<Error>() {
-                let err: Error = val.dyn_into()?;
-                pre.set_inner_text(&err.to_string().as_string().unwrap_or("".to_string()));
-                return Err(err);
-            }
-
-            // But throwing any object is supported.
-            if val.has_type::<Object>() {
-                let obj: Object = val.dyn_into()?;
-                let text: String = obj
+            let err: Error;
+            let text: String = if val.has_type::<Error>() {
+                // Ideally the exception that was thrown is an error.
+                err = val.into();
+                err.to_string()
+                    .as_string()
+                    .unwrap_or("unknown error".to_string())
+            } else {
+                // If the exception is not an error, create one using the value's to_string().
+                let obj: Object = val.into();
+                let text = obj
                     .to_string()
                     .as_string()
                     .unwrap_or("unknown error".to_string());
-                pre.set_inner_text(&text);
-                return Err(Error::new(&text));
-            }
+                err = Error::new(&text);
+                text
+            };
+            let pre: HtmlPreElement = create_element("pre")?;
 
-            // String is the only basic type that is supported.
-            if val.is_string() {
-                if let Some(text) = val.as_string() {
-                    pre.set_inner_text(&text);
-                    return Err(Error::new(&text));
-                }
-            }
+            // Log stack trace information to the console.
+            console::error_1(&err);
 
-            const ERR_TEXT: &str = "caught value is not an error type";
-            console::warn_1(&"HINT: Only throw instances of Error or a subclass, e.g. `throw new Error('reason');`.".into());
-            pre.set_inner_text(&ERR_TEXT);
-            Err(Error::new(&ERR_TEXT))
+            pre.set_inner_text(&text);
+            out.append_child(&pre)?;
+            Err(err)
         }
         Ok(val) => {
             if val.has_type::<Node>() {
@@ -105,6 +93,7 @@ pub fn mod_css(cell: &HtmlDivElement) -> Result<(), Error> {
 
     style.set_inner_html(&get_text(&get_src(&cell)?)?);
     out.set_inner_html(&style.outer_html());
+    out.class_list().add_1("hidden")?;
 
     // TODO: Ideally we'd use an iterator, but that requires
     // https://github.com/rustwasm/wasm-bindgen/issues/1036 to be implemented.

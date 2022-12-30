@@ -14,6 +14,7 @@ sass_binary(
     deps = [
         ":code_blocks",
         ":colours",
+        ":common",
         ":page_layout",
         ":typography",
     ],
@@ -22,6 +23,11 @@ sass_binary(
 sass_library(
     name = "colours",
     srcs = ["colours.sass"],
+)
+
+sass_library(
+    name = "common",
+    srcs = ["common.sass"],
 )
 
 sass_library(
