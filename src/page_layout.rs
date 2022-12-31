@@ -85,15 +85,6 @@ impl Notebook {
         Ok(())
     }
 
-    pub fn highlight(&self) -> Result<(), Error> {
-        let prism: Object = self.win.get("Prism").ok_or_else(not_defined("Prism"))?;
-        let func: Function = Reflect::get(&prism, &"highlightAllUnder".into())?.dyn_into()?;
-        let args = Array::of1(&self.body);
-        Reflect::apply(&func, &prism, &args)?;
-
-        Ok(())
-    }
-
     async fn template(&self) -> Result<String, Error> {
         // Load the template promise set by the preloader.
         let notebook: Object = self
@@ -106,6 +97,15 @@ impl Notebook {
             .as_string()
             .ok_or_else(throw("`tpl` did not resolve with a string"))
     }
+}
+
+pub fn highlight_all_under(root: &HtmlElement) -> Result<(), Error> {
+    let prism: Object = window()?.get("Prism").ok_or_else(not_defined("Prism"))?;
+    let func: Function = Reflect::get(&prism, &"highlightAllUnder".into())?.dyn_into()?;
+    let args = Array::of1(root);
+    Reflect::apply(&func, &prism, &args)?;
+
+    Ok(())
 }
 
 fn parse_markdown(content: &str) -> String {
