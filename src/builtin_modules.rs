@@ -24,15 +24,22 @@ pub fn mod_js(cell: &HtmlDivElement) -> Result<(), Error> {
     match result {
         Err(val) => {
             let err = ensure_error(val);
-            let text: String = err
-                .to_string()
-                .as_string()
-                .unwrap_or("unknown error".to_string());
             let pre: HtmlPreElement = create_element("pre")?;
 
-            // TODO: <strong>*Error:</strong>!
-            pre.set_inner_text(&text);
-            out.append_child(&pre)?;
+            let mut has_content = false;
+            if let Some(text) = err.name().as_string() {
+                let strong: HtmlElement = create_element("strong")?;
+                strong.append_with_str_2(&text, ":")?;
+                pre.append_child(&strong)?;
+                has_content = true;
+            }
+            if let Some(text) = err.message().as_string() {
+                pre.append_with_str_2(" ", &text)?;
+                has_content = true;
+            }
+            if has_content {
+                out.append_child(&pre)?;
+            }
 
             // Log stack trace information to the console.
             console::error_1(&err);

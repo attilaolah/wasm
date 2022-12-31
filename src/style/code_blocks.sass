@@ -82,8 +82,9 @@
       &.pending
         --border: var(--orange)
       pre
-        border-left: 4px solid rgb(var(--border))
-        margin-left: -4px !important
+        --gutter: 4px
+        border-left: var(--gutter) solid rgb(var(--border))
+        margin-left: calc(0px - var(--gutter)) !important
 
     .controls
       display: flex

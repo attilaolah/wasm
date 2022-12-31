@@ -71,11 +71,12 @@ The HTML is simply copied to the output, no questions asked.
 
 
 ```html
-<button class="lvl">LVL: 0</button>
+<button class="lvl">LVL: 0</button> —
+Click to increment!
 ```
 
-The `_` variable will refer to the last element, which is handy when accessing
-it from subsequent JavaScript blocks:
+The `_` variable will refer to the last inserted `Element`, which is handy when
+accessing it from subsequent JavaScript blocks:
 
 ```js
 let level = 0;
@@ -101,9 +102,6 @@ button.lvl {
   border-style: none;
   padding: 8px 24px;
   height: 40px
-}
-button.lvl::after {
-  content: " | click to increment!";
 }
 ```
 
