@@ -9,8 +9,8 @@ pub fn mod_js(cell: &HtmlDivElement) -> Result<(), Error> {
     let out = get_out(&cell)?;
     let result = eval(&get_text(&get_src(&cell)?)?);
     let result_val: &JsValue = match result {
-        Ok(ref val) => val,
         Err(ref val) => val,
+        Ok(ref val) => val,
     };
 
     clear_children(&out)?;
@@ -22,55 +22,59 @@ pub fn mod_js(cell: &HtmlDivElement) -> Result<(), Error> {
     }
 
     match result {
-        Err(val) => {
-            let err = ensure_error(val);
-            let pre: HtmlPreElement = create_element("pre")?;
-
-            let mut has_content = false;
-            if let Some(text) = err.name().as_string() {
-                let strong: HtmlElement = create_element("strong")?;
-                strong.append_with_str_2(&text, ":")?;
-                pre.append_child(&strong)?;
-                has_content = true;
-            }
-            if let Some(text) = err.message().as_string() {
-                pre.append_with_str_2(" ", &text)?;
-                has_content = true;
-            }
-            if has_content {
-                out.append_child(&pre)?;
-            }
-
-            // Log stack trace information to the console.
-            console::error_1(&err);
-
-            Err(err)
-        }
-        Ok(val) => {
-            if val.has_type::<Node>() {
-                let node: Node = val.dyn_into()?;
-                out.append_child(&node)?;
-                return Ok(());
-            }
-
-            let pre: HtmlPreElement = create_element("pre")?;
-            pre.set_class_name("language-json");
-
-            let code: HtmlElement = create_element("code")?;
-            code.set_inner_html(
-                &JSON::stringify_with_replacer_and_space(&val, &JsValue::NULL, &2.into())?
-                    .as_string()
-                    .unwrap_or("could not json-encode value".to_string()),
-            );
-
-            pre.append_child(&code)?;
-            out.append_child(&pre)?;
-
-            // TODO: prism_highlight_all_under(pre);
-
-            Ok(())
-        }
+        Err(val) => Err(mod_js_err(&out, val)?),
+        Ok(val) => Ok(mod_js_ok(&out, val)?),
     }
+}
+
+fn mod_js_err(out: &HtmlDivElement, val: JsValue) -> Result<Error, Error> {
+    let err = ensure_error(val);
+    let pre: HtmlPreElement = create_element("pre")?;
+
+    let mut has_content = false;
+    if let Some(text) = err.name().as_string() {
+        let strong: HtmlElement = create_element("strong")?;
+        strong.append_with_str_2(&text, ":")?;
+        pre.append_child(&strong)?;
+        has_content = true;
+    }
+    if let Some(text) = err.message().as_string() {
+        pre.append_with_str_2(" ", &text)?;
+        has_content = true;
+    }
+    if has_content {
+        out.append_child(&pre)?;
+    }
+
+    // Log stack trace information to the console.
+    console::error_1(&err);
+
+    Ok(err)
+}
+
+fn mod_js_ok(out: &HtmlDivElement, val: JsValue) -> Result<(), Error> {
+    if val.has_type::<Node>() {
+        let node: Node = val.dyn_into()?;
+        out.append_child(&node)?;
+        return Ok(());
+    }
+
+    let pre: HtmlPreElement = create_element("pre")?;
+    pre.set_class_name("language-json");
+
+    let code: HtmlElement = create_element("code")?;
+    code.set_inner_html(
+        &JSON::stringify_with_replacer_and_space(&val, &JsValue::NULL, &2.into())?
+            .as_string()
+            .unwrap_or("could not json-encode value".to_string()),
+    );
+
+    pre.append_child(&code)?;
+    out.append_child(&pre)?;
+
+    // TODO: prism_highlight_all_under(pre);
+
+    Ok(())
 }
 
 pub fn mod_html(cell: &HtmlDivElement) -> Result<(), Error> {
