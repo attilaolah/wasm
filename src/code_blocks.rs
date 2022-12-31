@@ -1,19 +1,22 @@
 use js_sys::{Error, Reflect};
 use wasm_bindgen::{JsCast, JsValue};
 use web_sys::{
-    console, HtmlButtonElement, HtmlDivElement, HtmlElement, HtmlPreElement, MouseEvent,
+    Event, EventInit, HtmlButtonElement, HtmlDivElement, HtmlElement, HtmlPreElement, MouseEvent,
 };
 
 use crate::dom_helpers::{
-    create_element, document, not_defined, on_el_click, throw, window, wrong_type,
+    create_element, document, not_defined, on_el_evt, throw, window, wrong_type, EVT_CLICK,
 };
 use crate::modules::{mod_has, mod_run};
 
 const SRC: &str = "src";
 const OUT: &str = "out";
+const CELL: &str = "cell";
 const PREFIX: &str = "language-";
 
 const RES_VAR: &str = "_";
+
+const EVT_RUN: &str = "run";
 
 pub fn prepare_all() -> Result<(), Error> {
     // TODO: Ideally we'd use an iterator, but that requires
@@ -30,7 +33,14 @@ pub fn prepare_all() -> Result<(), Error> {
 }
 
 pub fn run_all() -> Result<(), Error> {
-    console::log_1(&"todo: run all code blocks".into());
+    // TODO: Ideally we'd use an iterator, but that requires
+    // https://github.com/rustwasm/wasm-bindgen/issues/1036 to be implemented.
+    let cells = document()?.get_elements_by_class_name(CELL);
+    for i in 0..cells.length() {
+        if let Some(el) = cells.get_with_index(i) {
+            el.dispatch_event(&Event::new(EVT_RUN)?)?;
+        }
+    }
 
     Ok(())
 }
@@ -74,9 +84,10 @@ fn prepare_block(code: &HtmlElement, id: u32) -> Result<(), Error> {
         .dyn_into()
         .or_else(wrong_type("parent_element"))?;
     let cell: HtmlDivElement = create_element("div")?;
-    cell.set_class_name("cell");
+    cell.set_class_name(CELL);
     cell.dataset().set("id", &id.to_string())?;
     cell.set_id(&format!("cell-{}", id));
+    on_el_evt(EVT_RUN, &cell, &on_cell_run)?;
 
     pre.parent_element()
         .ok_or_else(not_defined("parent_element"))?
@@ -93,7 +104,7 @@ fn prepare_block(code: &HtmlElement, id: u32) -> Result<(), Error> {
 
     let run: HtmlButtonElement = create_element("button")?;
     run.set_class_name("run");
-    on_el_click(&run, &on_run)?;
+    on_el_evt(EVT_CLICK, &run, &on_run_click)?;
 
     let icon: HtmlElement = create_element("span")?;
     icon.class_list()
@@ -114,27 +125,30 @@ fn prepare_block(code: &HtmlElement, id: u32) -> Result<(), Error> {
     Ok(())
 }
 
-fn on_run(evt: MouseEvent) -> Result<(), Error> {
-    let target: HtmlButtonElement = evt
+fn on_run_click(evt: MouseEvent) -> Result<(), Error> {
+    evt.current_target()
+        .ok_or_else(not_defined("current_target"))?
+        .dispatch_event(&Event::new_with_event_init_dict(
+            EVT_RUN,
+            EventInit::new().bubbles(true),
+        )?)?;
+
+    Ok(())
+}
+
+fn on_cell_run(evt: MouseEvent) -> Result<(), Error> {
+    let cell: HtmlDivElement = evt
         .current_target()
         .ok_or_else(not_defined("current_target"))?
         .dyn_into()
         .or_else(wrong_type("current_target"))?;
-    let cell: HtmlDivElement = target
-        .closest("div.cell")?
-        .ok_or_else(throw("cell not found"))?
-        .dyn_into()
-        .or_else(wrong_type("closest"))?;
-
-    run_cell(&cell)
-}
-
-fn run_cell(cell: &HtmlDivElement) -> Result<(), Error> {
     let res = mod_run(&cell);
     let class_list = cell.class_list();
+
     class_list.add_1("run")?;
     class_list.toggle_with_force("ok", res.is_ok())?;
     class_list.toggle_with_force("err", res.is_err())?;
+    evt.stop_propagation();
 
     Ok(())
 }

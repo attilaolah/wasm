@@ -72,19 +72,18 @@
       display: none
 
     pre
-      margin: 0 !important
+      --gutter: 4px
+      --border: rgba(var(--primary), 0.2)
+      margin: 0 0 0 calc(0px - var(--gutter)) !important
+      border-left: var(--gutter) solid var(--border)
 
     &.run
-      &.ok
-        --border: var(--green)
-      &.err
-        --border: var(--red)
-      &.pending
-        --border: var(--orange)
-      pre
-        --gutter: 4px
-        border-left: var(--gutter) solid rgb(var(--border))
-        margin-left: calc(0px - var(--gutter)) !important
+      &.ok pre
+        --border: rgb(var(--green))
+      &.err pre
+        --border: rgb(var(--red))
+      &.pending pre
+        --border: rgb(var(--orange))
 
     .controls
       display: flex

@@ -1,5 +1,5 @@
 {
-  "checksum": "03745ddedeaa1dc50e671e00e2ca7dad98b94329caef1dee3fb107270bb09897",
+  "checksum": "20b30f422cbd46e5350a8e0e15bb5762a04b2022dbc002d8b2190207a9127bc4",
   "crates": {
     "addr2line 0.19.0": {
       "name": "addr2line",
@@ -1482,13 +1482,13 @@
       },
       "license": "Apache-2.0"
     },
-    "console 0.15.2": {
+    "console 0.15.3": {
       "name": "console",
-      "version": "0.15.2",
+      "version": "0.15.3",
       "repository": {
         "Http": {
-          "url": "https://crates.io/api/v1/crates/console/0.15.2/download",
-          "sha256": "c050367d967ced717c04b65d8c619d863ef9292ce0c5760028655a2fb298718c"
+          "url": "https://crates.io/api/v1/crates/console/0.15.3/download",
+          "sha256": "5556015fe3aad8b968e5d4124980fbe2f6aaee7aeec6b749de1faaa2ca5d0a4c"
         }
       },
       "targets": [
@@ -1526,10 +1526,6 @@
               "target": "libc"
             },
             {
-              "id": "terminal_size 0.1.17",
-              "target": "terminal_size"
-            },
-            {
               "id": "unicode-width 0.1.10",
               "target": "unicode_width"
             }
@@ -1541,14 +1537,14 @@
                 "target": "encode_unicode"
               },
               {
-                "id": "winapi 0.3.9",
-                "target": "winapi"
+                "id": "windows-sys 0.42.0",
+                "target": "windows_sys"
               }
             ]
           }
         },
         "edition": "2018",
-        "version": "0.15.2"
+        "version": "0.15.3"
       },
       "license": "MIT"
     },
@@ -2701,7 +2697,7 @@
               "target": "codespan_reporting"
             },
             {
-              "id": "once_cell 1.16.0",
+              "id": "once_cell 1.17.0",
               "target": "once_cell"
             },
             {
@@ -2878,7 +2874,7 @@
         "deps": {
           "common": [
             {
-              "id": "console 0.15.2",
+              "id": "console 0.15.3",
               "target": "console"
             },
             {
@@ -7626,13 +7622,13 @@
       },
       "license": "Apache-2.0 OR MIT"
     },
-    "once_cell 1.16.0": {
+    "once_cell 1.17.0": {
       "name": "once_cell",
-      "version": "1.16.0",
+      "version": "1.17.0",
       "repository": {
         "Http": {
-          "url": "https://crates.io/api/v1/crates/once_cell/1.16.0/download",
-          "sha256": "86f0b0d4bf799edbc74508c1e8bf170ff5f41238e5f8225603ca7caaae2b7860"
+          "url": "https://crates.io/api/v1/crates/once_cell/1.17.0/download",
+          "sha256": "6f61fba1741ea2b3d6a1e3178721804bb716a68a6aeba1149b5d52e3d464ea66"
         }
       },
       "targets": [
@@ -7661,7 +7657,7 @@
           "std"
         ],
         "edition": "2021",
-        "version": "1.16.0"
+        "version": "1.17.0"
       },
       "license": "MIT OR Apache-2.0"
     },
@@ -7728,7 +7724,7 @@
               "target": "libc"
             },
             {
-              "id": "once_cell 1.16.0",
+              "id": "once_cell 1.17.0",
               "target": "once_cell"
             },
             {
@@ -12326,56 +12322,6 @@
       },
       "license": "Unlicense OR MIT"
     },
-    "terminal_size 0.1.17": {
-      "name": "terminal_size",
-      "version": "0.1.17",
-      "repository": {
-        "Http": {
-          "url": "https://crates.io/api/v1/crates/terminal_size/0.1.17/download",
-          "sha256": "633c1a546cee861a1a6d0dc69ebeca693bf4296661ba7852b9d21d159e0506df"
-        }
-      },
-      "targets": [
-        {
-          "Library": {
-            "crate_name": "terminal_size",
-            "crate_root": "src/lib.rs",
-            "srcs": {
-              "include": [
-                "**/*.rs"
-              ],
-              "exclude": []
-            }
-          }
-        }
-      ],
-      "library_target_name": "terminal_size",
-      "common_attrs": {
-        "compile_data_glob": [
-          "**"
-        ],
-        "deps": {
-          "common": [],
-          "selects": {
-            "cfg(not(windows))": [
-              {
-                "id": "libc 0.2.139",
-                "target": "libc"
-              }
-            ],
-            "cfg(windows)": [
-              {
-                "id": "winapi 0.3.9",
-                "target": "winapi"
-              }
-            ]
-          }
-        },
-        "edition": "2018",
-        "version": "0.1.17"
-      },
-      "license": "MIT OR Apache-2.0"
-    },
     "termios 0.3.3": {
       "name": "termios",
       "version": "0.3.3",
@@ -14408,7 +14354,7 @@
               "target": "log"
             },
             {
-              "id": "once_cell 1.16.0",
+              "id": "once_cell 1.17.0",
               "target": "once_cell"
             },
             {
@@ -14973,9 +14919,11 @@
           "DomTokenList",
           "Element",
           "Event",
+          "EventInit",
           "EventTarget",
           "Headers",
           "HtmlButtonElement",
+          "HtmlCollection",
           "HtmlDivElement",
           "HtmlElement",
           "HtmlHeadElement",
@@ -15709,9 +15657,13 @@
           "Win32_Storage",
           "Win32_Storage_FileSystem",
           "Win32_System",
+          "Win32_System_Console",
           "Win32_System_LibraryLoader",
           "Win32_System_SystemServices",
           "Win32_System_WindowsProgramming",
+          "Win32_UI",
+          "Win32_UI_Input",
+          "Win32_UI_Input_KeyboardAndMouse",
           "default"
         ],
         "deps": {

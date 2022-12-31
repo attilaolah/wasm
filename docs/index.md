@@ -98,10 +98,10 @@ content added in other blocks too:
 ```css
 button.lvl {
   color: white;
-  background-color: rgb(var(--magenta));
-  border-style: none;
+  background: rgb(var(--magenta));
+  line-height: 24px;
   padding: 8px 24px;
-  height: 40px
+  border: none;
 }
 ```
 

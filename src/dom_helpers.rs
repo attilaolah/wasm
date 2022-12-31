@@ -3,6 +3,10 @@ use wasm_bindgen::closure::Closure;
 use wasm_bindgen::JsCast;
 use web_sys::{console, Document, HtmlElement, HtmlHeadElement, MouseEvent, Window};
 
+// Events.
+
+pub const EVT_CLICK: &str = "click";
+
 // Selectors.
 
 pub const H1TO6: &str = "h1,h2,h3,h4,h5,h6";
@@ -51,33 +55,42 @@ pub fn clear_children(el: &HtmlElement) -> Result<(), Error> {
 
 // Event handlers.
 
-pub fn on_click(
-    id: &str,
+pub fn on_evt(
+    evt: &str,
+    el_id: &str,
     callback: &'static dyn Fn(MouseEvent) -> Result<(), Error>,
 ) -> Result<(), Error> {
     let el: HtmlElement = document()?
-        .get_element_by_id(id.into())
-        .ok_or_else(throw(&format!("#{} not found", id)))?
+        .get_element_by_id(el_id.into())
+        .ok_or_else(throw(&format!("#{} not found", el_id)))?
         .dyn_into()
         .or_else(wrong_type("get_element_by_id"))?;
-    on_el_click(&el, callback)
+    on_el_evt(evt, &el, callback)
 }
 
-pub fn on_el_click(
+pub fn on_el_evt(
+    evt: &str,
     el: &HtmlElement,
     callback: &'static dyn Fn(MouseEvent) -> Result<(), Error>,
 ) -> Result<(), Error> {
     let closure = Closure::wrap(Box::new(move |evt| {
         if let Err(err) = callback(evt) {
-            console::log_2(&"click event failed:".into(), &err);
+            console::log_2(&"event failed:".into(), &err);
         }
     }) as Box<dyn Fn(MouseEvent)>);
-    el.add_event_listener_with_callback("click", closure.as_ref().unchecked_ref())?;
+    el.add_event_listener_with_callback(evt, closure.as_ref().unchecked_ref())?;
 
     // Prevent JS from garbage-collecting the callback.
     closure.forget();
 
     Ok(())
+}
+
+pub fn on_click(
+    el_id: &str,
+    callback: &'static dyn Fn(MouseEvent) -> Result<(), Error>,
+) -> Result<(), Error> {
+    on_evt(EVT_CLICK, el_id, callback)
 }
 
 // Errors.
