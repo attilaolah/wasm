@@ -68,7 +68,7 @@ impl Notebook {
     }
 
     pub fn init_ui_theme(&self) -> Result<(), Error> {
-        if let Some(ls) = self.win.local_storage()? {
+        if let Some(ls) = window()?.local_storage()? {
             if let Some(theme) = ls.get_item(CONFIG_THEME)? {
                 self.body.class_list().add_1(&theme)?
             }
@@ -86,11 +86,9 @@ impl Notebook {
     }
 
     async fn template(&self) -> Result<String, Error> {
+        const NB: &str = "notebook";
         // Load the template promise set by the preloader.
-        let notebook: Object = self
-            .win
-            .get("notebook")
-            .ok_or_else(not_defined("notebook"))?;
+        let notebook: Object = window()?.get(NB).ok_or_else(not_defined(NB))?;
         let tpl: Promise = Reflect::get(&notebook, &"tpl".into())?.dyn_into()?;
         JsFuture::from(tpl)
             .await?
