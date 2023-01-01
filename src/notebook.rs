@@ -2,16 +2,14 @@ use js_sys::Error;
 use serde::Deserialize;
 use std::clone::Clone;
 use std::marker::Copy;
-use web_sys::{console, HtmlElement};
-use yaml_front_matter::{Document as SrcDoc, YamlFrontMatter};
+use web_sys::console;
+use yaml_front_matter::{Document, YamlFrontMatter};
 
 use crate::dom_helpers::body;
 
 pub struct Notebook {
-    pub body: HtmlElement,
-
     // MD source & metadata.
-    pub src: SrcDoc<NotebookConfig>,
+    pub src: Document<NotebookConfig>,
 }
 
 #[derive(Copy, Clone, Deserialize)]
@@ -23,10 +21,7 @@ const DEFAULT: NotebookConfig = NotebookConfig { autorun: None };
 
 impl Notebook {
     pub fn parse() -> Result<Self, Error> {
-        Ok(Self {
-            body: body()?,
-            src: parse_src()?,
-        })
+        Ok(Self { src: parse_src()? })
     }
 }
 
@@ -36,7 +31,7 @@ impl NotebookConfig {
     }
 }
 
-fn parse_src() -> Result<SrcDoc<NotebookConfig>, Error> {
+fn parse_src() -> Result<Document<NotebookConfig>, Error> {
     let inner_html = body()?.inner_html();
     let mut src_content = inner_html.trim();
     src_content = src_content.strip_prefix("<!--").unwrap_or(src_content);
@@ -50,7 +45,7 @@ fn parse_src() -> Result<SrcDoc<NotebookConfig>, Error> {
                 &err.to_string().into(),
             );
             // Don't fail if there is no front matter, just return the default.
-            SrcDoc {
+            Document {
                 metadata: DEFAULT,
                 content: src_content.into(),
             }

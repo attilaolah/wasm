@@ -61,8 +61,9 @@ impl Notebook {
         });
 
         // Set the page content.
-        clear_children(&self.body)?;
-        self.body.append_child(&tpl.content())?;
+        let b = body()?;
+        clear_children(&b)?;
+        b.append_child(&tpl.content())?;
 
         Ok(())
     }
@@ -70,7 +71,7 @@ impl Notebook {
     pub fn init_ui_theme(&self) -> Result<(), Error> {
         if let Some(ls) = window()?.local_storage()? {
             if let Some(theme) = ls.get_item(CONFIG_THEME)? {
-                self.body.class_list().add_1(&theme)?
+                body()?.class_list().add_1(&theme)?
             }
         }
 
