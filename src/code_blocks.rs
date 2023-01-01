@@ -154,16 +154,7 @@ fn on_cell_run(evt: MouseEvent) -> Result<(), Error> {
 }
 
 fn language_class(el: &HtmlElement) -> Option<String> {
-    // TODO: Ideally we'd use an iterator, but that requires
-    // https://github.com/rustwasm/wasm-bindgen/issues/1036 to be implemented.
     let class_list = el.class_list();
-    for i in 0..class_list.length() {
-        if let Some(class) = class_list.get(i) {
-            if let Some(l) = class.strip_prefix(PREFIX) {
-                return Some(l.to_string());
-            }
-        }
-    }
-
-    None
+    (0..class_list.length())
+        .find_map(|i| Some(class_list.get(i)?.strip_prefix(PREFIX)?.to_string()))
 }

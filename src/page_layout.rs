@@ -1,4 +1,4 @@
-use js_sys::{Array, Error, Function, Object, Promise, Reflect};
+use js_sys::{Error, Object, Promise, Reflect};
 use pulldown_cmark::{html, Options, Parser};
 use slug::slugify;
 use wasm_bindgen::JsCast;
@@ -97,15 +97,6 @@ impl Notebook {
             .as_string()
             .ok_or_else(throw("`tpl` did not resolve with a string"))
     }
-}
-
-pub fn highlight_all_under(root: &HtmlElement) -> Result<(), Error> {
-    let prism: Object = window()?.get("Prism").ok_or_else(not_defined("Prism"))?;
-    let func: Function = Reflect::get(&prism, &"highlightAllUnder".into())?.dyn_into()?;
-    let args = Array::of1(root);
-    Reflect::apply(&func, &prism, &args)?;
-
-    Ok(())
 }
 
 fn parse_markdown(content: &str) -> String {

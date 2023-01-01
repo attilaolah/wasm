@@ -4,7 +4,7 @@ use web_sys::{console, HtmlDivElement, HtmlElement, HtmlPreElement, HtmlStyleEle
 
 use crate::code_blocks::{get_out, get_src, get_text, set_res};
 use crate::dom_helpers::{clear_children, create_element, document};
-use crate::page_layout::highlight_all_under;
+use crate::prism;
 
 pub fn mod_js(cell: &HtmlDivElement) -> Result<(), Error> {
     let out = get_out(&cell)?;
@@ -73,7 +73,7 @@ fn mod_js_ok(out: &HtmlDivElement, val: JsValue) -> Result<(), Error> {
     pre.append_child(&code)?;
     out.append_child(&pre)?;
 
-    highlight_all_under(&out)?;
+    prism::highlight_all_under(&out)?;
 
     Ok(())
 }
