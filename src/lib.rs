@@ -10,7 +10,7 @@ mod code_blocks;
 mod dom_helpers;
 mod modules;
 mod notebook;
-mod page_layout;
+mod layout;
 mod prism;
 
 #[macro_use]
@@ -22,10 +22,10 @@ static ALLOC: WeeAlloc = WeeAlloc::INIT;
 #[wasm_bindgen(start)]
 pub async fn main() -> Result<(), Error> {
     // UI setup.
-    page_layout::set_meta_charset()?;
-    page_layout::init_ui_content().await?;
-    page_layout::init_ui_theme()?;
-    page_layout::init_ui_callbacks()?;
+    layout::set_meta_charset()?;
+    layout::init_ui_content().await?;
+    layout::init_ui_theme()?;
+    layout::init_ui_callbacks()?;
     prism::highlight_all_under(&body()?)?;
 
     // We need to register all modules before preparing the cells.
