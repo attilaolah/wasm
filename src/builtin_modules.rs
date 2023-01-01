@@ -1,14 +1,20 @@
-use js_sys::{eval, Error, Object, JSON};
+use js_sys::{eval, Error, Object, Reflect, JSON};
 use wasm_bindgen::{JsCast, JsValue};
 use web_sys::{console, HtmlDivElement, HtmlElement, HtmlPreElement, HtmlStyleElement, Node};
 
-use crate::code_blocks::{get_out, get_src, get_text, set_res};
-use crate::dom::{clear_children, create_element, document};
+use crate::code_blocks::{get_out, get_src, get_text};
+use crate::dom::{clear_children, create_element, document, throw};
 use crate::prism;
+
+const RES_PROP: &str = "nbres";
 
 pub fn mod_js(cell: &HtmlDivElement) -> Result<(), Error> {
     let out = get_out(&cell)?;
-    let result = eval(&get_text(&get_src(&cell)?)?);
+    let result = eval(&format!(
+        "{}{}",
+        &mod_js_prefix(&cell)?,
+        &get_text(&get_src(&cell)?)?
+    ));
     let result_val: &JsValue = match result {
         Err(ref val) => val,
         Ok(ref val) => val,
@@ -25,6 +31,23 @@ pub fn mod_js(cell: &HtmlDivElement) -> Result<(), Error> {
     match result {
         Err(val) => Err(mod_js_err(&out, val)?),
         Ok(val) => Ok(mod_js_ok(&out, val)?),
+    }
+}
+
+fn mod_js_prefix(cell: &HtmlDivElement) -> Result<String, Error> {
+    let id: i32 = cell
+        .dataset()
+        .get("id")
+        .ok_or_else(throw("missing cell id"))?
+        .parse()
+        .or_else(|err| Err(Error::new(&format!("malformed cell id: {}", err))))?;
+    match id {
+        0 => Ok("".to_string()),
+        _ => Ok(format!(
+            "const _ = document?.getElementById('cell-{}')?.{};\n",
+            id - 1,
+            RES_PROP
+        )),
     }
 }
 
@@ -132,6 +155,10 @@ pub fn mod_fetch(_cell: &HtmlDivElement) -> Result<(), Error> {
     console::log_1(&"todo: run fetch".into());
 
     Ok(())
+}
+
+fn set_res(cell: &HtmlDivElement, res: &JsValue) -> Result<bool, Error> {
+    Ok(Reflect::set(&cell, &RES_PROP.into(), &res)?)
 }
 
 fn ensure_error(val: JsValue) -> Error {

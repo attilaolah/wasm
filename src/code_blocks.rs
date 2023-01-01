@@ -1,20 +1,16 @@
-use js_sys::{Error, Reflect};
-use wasm_bindgen::{JsCast, JsValue};
+use js_sys::Error;
+use wasm_bindgen::JsCast;
 use web_sys::{
     Event, EventInit, HtmlButtonElement, HtmlDivElement, HtmlElement, HtmlPreElement, MouseEvent,
 };
 
-use crate::dom::{
-    create_element, document, not_defined, on_el_evt, throw, window, wrong_type, EVT_CLICK,
-};
+use crate::dom::{create_element, document, not_defined, on_el_evt, throw, wrong_type, EVT_CLICK};
 use crate::modules::{mod_has, mod_run};
 
 const SRC: &str = "src";
 const OUT: &str = "out";
 const CELL: &str = "cell";
 const PREFIX: &str = "language-";
-
-const RES_VAR: &str = "_";
 
 const EVT_RUN: &str = "run";
 
@@ -62,13 +58,6 @@ pub fn get_text(src: &HtmlElement) -> Result<String, Error> {
 
 pub fn get_lang(src: &HtmlElement) -> Result<String, Error> {
     language_class(&src).ok_or_else(throw("language class not found"))
-}
-
-pub fn set_res(cell: &HtmlDivElement, res: &JsValue) -> Result<bool, Error> {
-    let ok_cell = Reflect::set(&cell, &RES_VAR.into(), &res)?;
-    let ok_win = Reflect::set(&window()?.into(), &RES_VAR.into(), &res)?;
-
-    Ok(ok_cell && ok_win)
 }
 
 // Prepares a single code block for execution.
