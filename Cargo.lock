@@ -2694,6 +2694,7 @@ version = "0.1.0"
 dependencies = [
  "futures 0.3.25",
  "js-sys",
+ "lazy_static 1.4.0",
  "pulldown-cmark",
  "serde",
  "serde_json",

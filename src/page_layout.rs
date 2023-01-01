@@ -10,7 +10,7 @@ use crate::dom_helpers::{
     body, clear_children, create_element, document, head, not_defined, on_click, throw, window,
     wrong_type, H1TO6,
 };
-use crate::notebook::Notebook;
+use crate::notebook::NB;
 
 const DEFAULT_TITLE: &str = "Web Notebook";
 const CONFIG_THEME: &str = "config:theme";
@@ -18,84 +18,82 @@ const CONFIG_THEME: &str = "config:theme";
 const DARK: &str = "dark";
 const LIGHT: &str = "light";
 
-impl Notebook {
-    pub fn set_meta_charset(&self) -> Result<(), Error> {
-        if document()?.query_selector("meta[charset]")?.is_none() {
-            let h = head()?;
-            let meta: HtmlMetaElement = create_element("meta")?;
-            meta.set_attribute("charset", "utf-8")?;
-            h.insert_before(&meta, h.first_child().as_ref())?;
+pub fn set_meta_charset() -> Result<(), Error> {
+    if document()?.query_selector("meta[charset]")?.is_none() {
+        let h = head()?;
+        let meta: HtmlMetaElement = create_element("meta")?;
+        meta.set_attribute("charset", "utf-8")?;
+        h.insert_before(&meta, h.first_child().as_ref())?;
+    }
+
+    Ok(())
+}
+
+pub async fn init_ui_content() -> Result<(), Error> {
+    let tpl_html = template().await?;
+
+    let tpl: HtmlTemplateElement = create_element("template")?;
+    tpl.set_inner_html(&tpl_html);
+
+    match tpl.content().query_selector("#content")? {
+        Some(el) => el.set_inner_html(&parse_markdown(&NB.src.content)),
+        None => {
+            return Err(Error::new("#content not found in template"));
         }
-
-        Ok(())
     }
 
-    pub async fn init_ui_content(&self) -> Result<(), Error> {
-        let tpl_html = self.template().await?;
-
-        let tpl: HtmlTemplateElement = create_element("template")?;
-        tpl.set_inner_html(&tpl_html);
-
-        match tpl.content().query_selector("#content")? {
-            Some(el) => el.set_inner_html(&parse_markdown(&self.src.content)),
-            None => {
-                return Err(Error::new("#content not found in template"));
-            }
+    let headings = tpl.content().query_selector_all(H1TO6)?;
+    for i in 0..headings.length() {
+        if let Some(node) = headings.get(i) {
+            let el: HtmlElement = node.dyn_into().or_else(wrong_type("query_selector_all"))?;
+            el.set_id(&slugify(el.inner_text()));
         }
+    }
 
-        let headings = tpl.content().query_selector_all(H1TO6)?;
-        for i in 0..headings.length() {
-            if let Some(node) = headings.get(i) {
-                let el: HtmlElement = node.dyn_into().or_else(wrong_type("query_selector_all"))?;
-                el.set_id(&slugify(el.inner_text()));
-            }
+    // Set the page title.
+    document()?.set_title(&match tpl.content().query_selector("h1")? {
+        Some(node) => {
+            let el: HtmlElement = node.dyn_into().or_else(wrong_type("query_selector"))?;
+            el.text_content().unwrap_or(DEFAULT_TITLE.to_string())
         }
+        None => DEFAULT_TITLE.to_string(),
+    });
 
-        // Set the page title.
-        document()?.set_title(&match tpl.content().query_selector("h1")? {
-            Some(node) => {
-                let el: HtmlElement = node.dyn_into().or_else(wrong_type("query_selector"))?;
-                el.text_content().unwrap_or(DEFAULT_TITLE.to_string())
-            }
-            None => DEFAULT_TITLE.to_string(),
-        });
+    // Set the page content.
+    let b = body()?;
+    clear_children(&b)?;
+    b.append_child(&tpl.content())?;
 
-        // Set the page content.
-        let b = body()?;
-        clear_children(&b)?;
-        b.append_child(&tpl.content())?;
+    Ok(())
+}
 
-        Ok(())
-    }
-
-    pub fn init_ui_theme(&self) -> Result<(), Error> {
-        if let Some(ls) = window()?.local_storage()? {
-            if let Some(theme) = ls.get_item(CONFIG_THEME)? {
-                body()?.class_list().add_1(&theme)?
-            }
+pub fn init_ui_theme() -> Result<(), Error> {
+    if let Some(ls) = window()?.local_storage()? {
+        if let Some(theme) = ls.get_item(CONFIG_THEME)? {
+            body()?.class_list().add_1(&theme)?
         }
-
-        Ok(())
     }
 
-    pub fn init_ui_callbacks(&mut self) -> Result<(), Error> {
-        on_click("run-all", &on_run_all)?;
-        on_click("toggle-theme", &on_toggle_theme)?;
-        on_click("toggle-theme-default", &on_toggle_theme_default)?;
+    Ok(())
+}
 
-        Ok(())
-    }
+pub fn init_ui_callbacks() -> Result<(), Error> {
+    on_click("run-all", &on_run_all)?;
+    on_click("toggle-theme", &on_toggle_theme)?;
+    on_click("toggle-theme-default", &on_toggle_theme_default)?;
 
-    async fn template(&self) -> Result<String, Error> {
-        const NB: &str = "notebook";
-        // Load the template promise set by the preloader.
-        let notebook: Object = window()?.get(NB).ok_or_else(not_defined(NB))?;
-        let tpl: Promise = Reflect::get(&notebook, &"tpl".into())?.dyn_into()?;
-        JsFuture::from(tpl)
-            .await?
-            .as_string()
-            .ok_or_else(throw("`tpl` did not resolve with a string"))
-    }
+    Ok(())
+}
+
+async fn template() -> Result<String, Error> {
+    const NB: &str = "notebook";
+    // Load the template promise set by the preloader.
+    let notebook: Object = window()?.get(NB).ok_or_else(not_defined(NB))?;
+    let tpl: Promise = Reflect::get(&notebook, &"tpl".into())?.dyn_into()?;
+    JsFuture::from(tpl)
+        .await?
+        .as_string()
+        .ok_or_else(throw("`tpl` did not resolve with a string"))
 }
 
 fn parse_markdown(content: &str) -> String {

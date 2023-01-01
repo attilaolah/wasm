@@ -1,5 +1,5 @@
 {
-  "checksum": "20b30f422cbd46e5350a8e0e15bb5762a04b2022dbc002d8b2190207a9127bc4",
+  "checksum": "a7d54e3a0880043148cbff51b4a002dea0313eb750503c45f549ab11a240ef53",
   "crates": {
     "addr2line 0.19.0": {
       "name": "addr2line",
@@ -14982,6 +14982,10 @@
             {
               "id": "js-sys 0.3.60",
               "target": "js_sys"
+            },
+            {
+              "id": "lazy_static 1.4.0",
+              "target": "lazy_static"
             },
             {
               "id": "pulldown-cmark 0.9.2",
