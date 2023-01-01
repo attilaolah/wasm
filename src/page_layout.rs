@@ -7,7 +7,8 @@ use web_sys::{console, HtmlElement, HtmlMetaElement, HtmlTemplateElement, MouseE
 
 use crate::code_blocks::run_all;
 use crate::dom_helpers::{
-    body, clear_children, create_element, not_defined, on_click, throw, window, wrong_type, H1TO6,
+    body, clear_children, create_element, document, not_defined, on_click, throw, window,
+    wrong_type, H1TO6,
 };
 use crate::notebook::Notebook;
 
@@ -19,7 +20,7 @@ const LIGHT: &str = "light";
 
 impl Notebook {
     pub fn set_meta_charset(&self) -> Result<(), Error> {
-        if self.doc.query_selector("meta[charset]")?.is_none() {
+        if document()?.query_selector("meta[charset]")?.is_none() {
             let meta: HtmlMetaElement = create_element("meta")?;
             meta.set_attribute("charset", "utf-8")?;
             self.head
@@ -51,14 +52,13 @@ impl Notebook {
         }
 
         // Set the page title.
-        self.doc
-            .set_title(&match tpl.content().query_selector("h1")? {
-                Some(node) => {
-                    let el: HtmlElement = node.dyn_into().or_else(wrong_type("query_selector"))?;
-                    el.text_content().unwrap_or(DEFAULT_TITLE.to_string())
-                }
-                None => DEFAULT_TITLE.to_string(),
-            });
+        document()?.set_title(&match tpl.content().query_selector("h1")? {
+            Some(node) => {
+                let el: HtmlElement = node.dyn_into().or_else(wrong_type("query_selector"))?;
+                el.text_content().unwrap_or(DEFAULT_TITLE.to_string())
+            }
+            None => DEFAULT_TITLE.to_string(),
+        });
 
         // Set the page content.
         clear_children(&self.body)?;
