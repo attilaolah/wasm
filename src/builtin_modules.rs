@@ -3,7 +3,7 @@ use wasm_bindgen::{JsCast, JsValue};
 use web_sys::{console, HtmlDivElement, HtmlElement, HtmlPreElement, HtmlStyleElement, Node};
 
 use crate::code_blocks::{get_out, get_src, get_text, set_res};
-use crate::dom_helpers::{clear_children, create_element, document};
+use crate::dom::{clear_children, create_element, document};
 use crate::prism;
 
 pub fn mod_js(cell: &HtmlDivElement) -> Result<(), Error> {

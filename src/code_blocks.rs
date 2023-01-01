@@ -4,7 +4,7 @@ use web_sys::{
     Event, EventInit, HtmlButtonElement, HtmlDivElement, HtmlElement, HtmlPreElement, MouseEvent,
 };
 
-use crate::dom_helpers::{
+use crate::dom::{
     create_element, document, not_defined, on_el_evt, throw, window, wrong_type, EVT_CLICK,
 };
 use crate::modules::{mod_has, mod_run};

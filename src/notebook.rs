@@ -4,7 +4,7 @@ use std::marker::Copy;
 use web_sys::{console, HtmlElement};
 use yaml_front_matter::{Document, YamlFrontMatter};
 
-use crate::dom_helpers::body;
+use crate::dom::body;
 
 lazy_static! {
     pub static ref NB: Notebook = Notebook {

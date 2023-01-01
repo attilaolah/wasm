@@ -6,7 +6,7 @@ use wasm_bindgen_futures::JsFuture;
 use web_sys::{console, HtmlElement, HtmlMetaElement, HtmlTemplateElement, MouseEvent};
 
 use crate::code_blocks::run_all;
-use crate::dom_helpers::{
+use crate::dom::{
     body, clear_children, create_element, document, head, not_defined, on_click, throw, window,
     wrong_type, H1TO6,
 };

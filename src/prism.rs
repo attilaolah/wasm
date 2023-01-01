@@ -2,7 +2,7 @@ use js_sys::{Array, Error, Function, Object, Reflect};
 use wasm_bindgen::JsCast;
 use web_sys::HtmlElement;
 
-use crate::dom_helpers::{not_defined, window};
+use crate::dom::{not_defined, window};
 
 const PRISM: &str = "Prism";
 

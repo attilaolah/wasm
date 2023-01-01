@@ -5,7 +5,7 @@ use web_sys::HtmlDivElement;
 
 use crate::builtin_modules::{mod_css, mod_csv, mod_fetch, mod_html, mod_js, mod_json, mod_yaml};
 use crate::code_blocks::{get_lang, get_src};
-use crate::dom_helpers::{not_defined, window};
+use crate::dom::{not_defined, window};
 
 pub fn register_all() -> Result<(), Error> {
     register(&mod_js, &["javascript", "js"])?;
