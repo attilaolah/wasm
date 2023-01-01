@@ -19,8 +19,6 @@ const RES_VAR: &str = "_";
 const EVT_RUN: &str = "run";
 
 pub fn prepare_all() -> Result<(), Error> {
-    // TODO: Ideally we'd use an iterator, but that requires
-    // https://github.com/rustwasm/wasm-bindgen/issues/1036 to be implemented.
     let codes = document()?.query_selector_all(&format!("pre>code[class^={}]", PREFIX))?;
     for i in 0..codes.length() {
         if let Some(node) = codes.get(i) {
@@ -33,8 +31,6 @@ pub fn prepare_all() -> Result<(), Error> {
 }
 
 pub fn run_all() -> Result<(), Error> {
-    // TODO: Ideally we'd use an iterator, but that requires
-    // https://github.com/rustwasm/wasm-bindgen/issues/1036 to be implemented.
     let cells = document()?.get_elements_by_class_name(CELL);
     for i in 0..cells.length() {
         if let Some(el) = cells.get_with_index(i) {

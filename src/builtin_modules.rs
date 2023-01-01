@@ -97,8 +97,6 @@ pub fn mod_css(cell: &HtmlDivElement) -> Result<(), Error> {
     out.set_inner_html(&style.outer_html());
     out.class_list().add_1("hidden")?;
 
-    // TODO: Ideally we'd use an iterator, but that requires
-    // https://github.com/rustwasm/wasm-bindgen/issues/1036 to be implemented.
     let style_sheets = document()?.style_sheets();
     for i in 0..style_sheets.length() {
         if let Some(style_sheet) = style_sheets.get(i) {

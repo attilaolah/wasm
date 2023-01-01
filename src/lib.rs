@@ -5,9 +5,9 @@ use wee_alloc::WeeAlloc;
 mod builtin_modules;
 mod code_blocks;
 mod dom;
+mod layout;
 mod modules;
 mod notebook;
-mod layout;
 mod prism;
 
 #[macro_use]
