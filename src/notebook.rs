@@ -2,13 +2,12 @@ use js_sys::Error;
 use serde::Deserialize;
 use std::clone::Clone;
 use std::marker::Copy;
-use web_sys::{console, HtmlElement, HtmlHeadElement};
+use web_sys::{console, HtmlElement};
 use yaml_front_matter::{Document as SrcDoc, YamlFrontMatter};
 
-use crate::dom_helpers::{body, head};
+use crate::dom_helpers::body;
 
 pub struct Notebook {
-    pub head: HtmlHeadElement,
     pub body: HtmlElement,
 
     // MD source & metadata.
@@ -25,7 +24,6 @@ const DEFAULT: NotebookConfig = NotebookConfig { autorun: None };
 impl Notebook {
     pub fn parse() -> Result<Self, Error> {
         Ok(Self {
-            head: head()?,
             body: body()?,
             src: parse_src()?,
         })

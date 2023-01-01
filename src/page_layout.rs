@@ -7,7 +7,7 @@ use web_sys::{console, HtmlElement, HtmlMetaElement, HtmlTemplateElement, MouseE
 
 use crate::code_blocks::run_all;
 use crate::dom_helpers::{
-    body, clear_children, create_element, document, not_defined, on_click, throw, window,
+    body, clear_children, create_element, document, head, not_defined, on_click, throw, window,
     wrong_type, H1TO6,
 };
 use crate::notebook::Notebook;
@@ -21,10 +21,10 @@ const LIGHT: &str = "light";
 impl Notebook {
     pub fn set_meta_charset(&self) -> Result<(), Error> {
         if document()?.query_selector("meta[charset]")?.is_none() {
+            let h = head()?;
             let meta: HtmlMetaElement = create_element("meta")?;
             meta.set_attribute("charset", "utf-8")?;
-            self.head
-                .insert_before(&meta, self.head.first_child().as_ref())?;
+            h.insert_before(&meta, h.first_child().as_ref())?;
         }
 
         Ok(())
