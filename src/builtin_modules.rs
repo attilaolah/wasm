@@ -117,8 +117,8 @@ pub fn mod_css(cell: &HtmlDivElement) -> Result<(), Error> {
     let style: HtmlStyleElement = create_element("style")?;
 
     style.set_inner_html(&get_text(&get_src(&cell)?)?);
-    out.set_inner_html(&style.outer_html());
     out.class_list().add_1("hidden")?;
+    out.append_child(&style)?;
 
     let style_sheets = document()?.style_sheets();
     for i in 0..style_sheets.length() {
