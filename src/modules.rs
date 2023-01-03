@@ -36,7 +36,6 @@ fn register(
     mod_fn: &'static dyn Fn(&HtmlDivElement) -> Result<(), Error>,
     langs: &[&str],
 ) -> Result<(), Error> {
-    // TODO: Register an object holding two functions: "build" and "run".
     let run = Closure::wrap(Box::new(move |cell: &HtmlDivElement| mod_fn(cell))
         as Box<dyn Fn(&HtmlDivElement) -> Result<(), Error>>);
     for lang in langs {

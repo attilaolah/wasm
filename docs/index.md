@@ -13,7 +13,7 @@ The entire page is written in Markdown, with a single script tag and a
 
 The runtime supports several types of code blocks out of the bock, like
 [JavaScript](#code-blocks), [HTML](#html-blocks) and [CSS](#css-blocks). See
-[the full list here](/code-blocks).
+[the full list here](code-blocks).
 
 ## Code Blocks
 

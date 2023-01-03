@@ -1,10 +1,13 @@
 use js_sys::Error;
 use wasm_bindgen::JsCast;
 use web_sys::{
-    Event, EventInit, HtmlButtonElement, HtmlDivElement, HtmlElement, HtmlPreElement, MouseEvent,
+    console, Event, EventInit, HtmlButtonElement, HtmlDivElement, HtmlElement, HtmlPreElement,
+    MouseEvent,
 };
 
-use crate::dom::{create_element, document, not_defined, on_el_evt, throw, wrong_type, EVT_CLICK};
+use crate::dom::{
+    clear_children, create_element, document, not_defined, on_el_evt, throw, wrong_type, EVT_CLICK,
+};
 use crate::modules::{mod_has, mod_run};
 
 const SRC: &str = "src";
@@ -127,13 +130,38 @@ fn on_cell_run(evt: MouseEvent) -> Result<(), Error> {
         .ok_or_else(not_defined("current_target"))?
         .dyn_into()
         .or_else(wrong_type("current_target"))?;
-    let res = mod_run(&cell);
     let class_list = cell.class_list();
+    let out = get_out(&cell)?;
 
     class_list.add_1("run")?;
+    clear_children(&out)?;
+
+    let res = mod_run(&cell);
     class_list.toggle_with_force("ok", res.is_ok())?;
     class_list.toggle_with_force("err", res.is_err())?;
     evt.stop_propagation();
+
+    if let Err(err) = res {
+        let pre: HtmlPreElement = create_element("pre")?;
+
+        let mut has_content = false;
+        if let Some(text) = err.name().as_string() {
+            let strong: HtmlElement = create_element("strong")?;
+            strong.append_with_str_2(&text, ":")?;
+            pre.append_child(&strong)?;
+            has_content = true;
+        }
+        if let Some(text) = err.message().as_string() {
+            pre.append_with_str_2(" ", &text)?;
+            has_content = true;
+        }
+        if has_content {
+            out.append_child(&pre)?;
+        }
+
+        // Log stack trace information to the console.
+        console::error_1(&err);
+    }
 
     Ok(())
 }

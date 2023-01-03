@@ -9,10 +9,17 @@ page(
     loader_js = "../dist/pkg/webnb.js",
 )
 
+page(
+    name = "code-blocks",
+    srcs = ["code-blocks.md"],
+    loader_js = "../dist/pkg/webnb.js",
+)
+
 http_server(
     name = "server",
     data = [
         ":index",
+        ":code-blocks",
         "//dist",
     ],
 )

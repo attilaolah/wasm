@@ -1,9 +1,12 @@
 use js_sys::{eval, Error, Object, Reflect, JSON};
+use serde_json;
+use serde_yaml;
+use serde_yaml::value::Value;
 use wasm_bindgen::{JsCast, JsValue};
 use web_sys::{console, HtmlDivElement, HtmlElement, HtmlPreElement, HtmlStyleElement, Node};
 
 use crate::code_blocks::{get_out, get_src, get_text};
-use crate::dom::{clear_children, create_element, document, throw};
+use crate::dom::{create_element, document, throw};
 use crate::prism;
 
 const RES_PROP: &str = "nbres";
@@ -15,68 +18,23 @@ pub fn mod_js(cell: &HtmlDivElement) -> Result<(), Error> {
         &mod_js_prefix(&cell)?,
         &get_text(&get_src(&cell)?)?
     ));
-    let result_val: &JsValue = match result {
-        Err(ref val) => val,
-        Ok(ref val) => val,
-    };
 
-    clear_children(&out)?;
-    set_res(&cell, result_val)?;
+    set_res(
+        &cell,
+        match result {
+            Err(ref val) => val,
+            Ok(ref val) => val,
+        },
+    )?;
 
-    if result_val.is_undefined() {
-        result?; // Just extract the error, no output.
-        return Ok(()); // Success but no return value.
+    if let Err(val) = result {
+        return Err(ensure_error(val));
     }
 
-    match result {
-        Err(val) => Err(mod_js_err(&out, val)?),
-        Ok(val) => Ok(mod_js_ok(&out, val)?),
+    let val = result?;
+    if val.is_undefined() {
+        return Ok(()); // No return value.
     }
-}
-
-fn mod_js_prefix(cell: &HtmlDivElement) -> Result<String, Error> {
-    let id: i32 = cell
-        .dataset()
-        .get("id")
-        .ok_or_else(throw("missing cell id"))?
-        .parse()
-        .or_else(|err| Err(Error::new(&format!("malformed cell id: {}", err))))?;
-    match id {
-        0 => Ok("".to_string()),
-        _ => Ok(format!(
-            "const _ = document?.getElementById('cell-{}')?.{};\n",
-            id - 1,
-            RES_PROP
-        )),
-    }
-}
-
-fn mod_js_err(out: &HtmlDivElement, val: JsValue) -> Result<Error, Error> {
-    let err = ensure_error(val);
-    let pre: HtmlPreElement = create_element("pre")?;
-
-    let mut has_content = false;
-    if let Some(text) = err.name().as_string() {
-        let strong: HtmlElement = create_element("strong")?;
-        strong.append_with_str_2(&text, ":")?;
-        pre.append_child(&strong)?;
-        has_content = true;
-    }
-    if let Some(text) = err.message().as_string() {
-        pre.append_with_str_2(" ", &text)?;
-        has_content = true;
-    }
-    if has_content {
-        out.append_child(&pre)?;
-    }
-
-    // Log stack trace information to the console.
-    console::error_1(&err);
-
-    Ok(err)
-}
-
-fn mod_js_ok(out: &HtmlDivElement, val: JsValue) -> Result<(), Error> {
     if val.has_type::<Node>() {
         let node: Node = val.dyn_into()?;
         out.append_child(&node)?;
@@ -99,6 +57,23 @@ fn mod_js_ok(out: &HtmlDivElement, val: JsValue) -> Result<(), Error> {
     prism::highlight_all_under(&out)?;
 
     Ok(())
+}
+
+fn mod_js_prefix(cell: &HtmlDivElement) -> Result<String, Error> {
+    let id: i32 = cell
+        .dataset()
+        .get("id")
+        .ok_or_else(throw("missing cell id"))?
+        .parse()
+        .or_else(|err| Err(Error::new(&format!("malformed cell id: {}", err))))?;
+    match id {
+        0 => Ok("".to_string()),
+        _ => Ok(format!(
+            "const _ = document?.getElementById('cell-{}')?.{};\n",
+            id - 1,
+            RES_PROP
+        )),
+    }
 }
 
 pub fn mod_html(cell: &HtmlDivElement) -> Result<(), Error> {
@@ -133,14 +108,19 @@ pub fn mod_css(cell: &HtmlDivElement) -> Result<(), Error> {
     Ok(())
 }
 
-pub fn mod_json(_cell: &HtmlDivElement) -> Result<(), Error> {
-    console::log_1(&"todo: run json".into());
+pub fn mod_json(cell: &HtmlDivElement) -> Result<(), Error> {
+    set_res(&cell, &JSON::parse(&get_text(&get_src(&cell)?)?)?)?;
 
     Ok(())
 }
 
-pub fn mod_yaml(_cell: &HtmlDivElement) -> Result<(), Error> {
-    console::log_1(&"todo: run yaml".into());
+pub fn mod_yaml(cell: &HtmlDivElement) -> Result<(), Error> {
+    let yaml: Value = serde_yaml::from_str(&get_text(&get_src(&cell)?)?)
+        .or_else(|err| Err(Error::new(&format!("failed to parse yaml: {}", err))))?;
+    let json: String = serde_json::to_string(&yaml)
+        .or_else(|err| Err(Error::new(&format!("failed tore-encode to json: {}", err))))?;
+
+    set_res(&cell, &JSON::parse(&json)?)?;
 
     Ok(())
 }
