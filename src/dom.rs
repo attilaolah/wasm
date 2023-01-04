@@ -1,7 +1,7 @@
 use js_sys::Error;
 use wasm_bindgen::closure::Closure;
 use wasm_bindgen::JsCast;
-use web_sys::{console, Document, HtmlElement, HtmlHeadElement, MouseEvent, Window};
+use web_sys::{console, Document, Event, HtmlElement, HtmlHeadElement, Window};
 
 // Events.
 
@@ -27,6 +27,17 @@ pub fn head() -> Result<HtmlHeadElement, Error> {
 
 pub fn body() -> Result<HtmlElement, Error> {
     document()?.body().ok_or_else(not_defined("body"))
+}
+
+pub fn get_element<T>(el_id: &str) -> Result<T, Error>
+where
+    T: 'static + wasm_bindgen::JsCast,
+{
+    document()?
+        .get_element_by_id(el_id.into())
+        .ok_or_else(throw(&format!("#{} not found", el_id)))?
+        .dyn_into()
+        .or_else(wrong_type("get_element_by_id"))
 }
 
 // Create & remove elements.
@@ -58,26 +69,22 @@ pub fn clear_children(el: &HtmlElement) -> Result<(), Error> {
 pub fn on_evt(
     evt: &str,
     el_id: &str,
-    callback: &'static dyn Fn(MouseEvent) -> Result<(), Error>,
+    callback: &'static dyn Fn(Event) -> Result<(), Error>,
 ) -> Result<(), Error> {
-    let el: HtmlElement = document()?
-        .get_element_by_id(el_id.into())
-        .ok_or_else(throw(&format!("#{} not found", el_id)))?
-        .dyn_into()
-        .or_else(wrong_type("get_element_by_id"))?;
+    let el: HtmlElement = get_element(el_id)?;
     on_el_evt(evt, &el, callback)
 }
 
 pub fn on_el_evt(
     evt: &str,
     el: &HtmlElement,
-    callback: &'static dyn Fn(MouseEvent) -> Result<(), Error>,
+    callback: &'static dyn Fn(Event) -> Result<(), Error>,
 ) -> Result<(), Error> {
     let closure = Closure::wrap(Box::new(move |evt| {
         if let Err(err) = callback(evt) {
             console::log_2(&"event failed:".into(), &err);
         }
-    }) as Box<dyn Fn(MouseEvent)>);
+    }) as Box<dyn Fn(Event)>);
     el.add_event_listener_with_callback(evt, closure.as_ref().unchecked_ref())?;
 
     // Prevent JS from garbage-collecting the callback.
@@ -88,7 +95,7 @@ pub fn on_el_evt(
 
 pub fn on_click(
     el_id: &str,
-    callback: &'static dyn Fn(MouseEvent) -> Result<(), Error>,
+    callback: &'static dyn Fn(Event) -> Result<(), Error>,
 ) -> Result<(), Error> {
     on_evt(EVT_CLICK, el_id, callback)
 }

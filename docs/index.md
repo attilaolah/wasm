@@ -22,12 +22,11 @@ supported, but other languages may be added in the future. Here is an simple
 example:
 
 ```js
-const now = new Date();
-now; // return value
+return new Date();
 ```
 
-The entire block is executed with an indirect `eval(…)`, and the last
-expression acts as a _return value_. This returned value is then
+The entire block is wrapped in an `async` function and executed in the global
+scope, by the browser's JavaScript engine. The returned value is then
 JSON-formatted, unless it is `undefined`. As a special-case, if the return
 value is a DOM `Node` instance, it is added directly to the output.
 

@@ -3,7 +3,7 @@ use pulldown_cmark::{html, Options, Parser};
 use slug::slugify;
 use wasm_bindgen::JsCast;
 use wasm_bindgen_futures::JsFuture;
-use web_sys::{console, HtmlElement, HtmlMetaElement, HtmlTemplateElement, MouseEvent};
+use web_sys::{console, Event, HtmlElement, HtmlMetaElement, HtmlTemplateElement};
 
 use crate::code_blocks::run_all;
 use crate::dom::{
@@ -102,11 +102,11 @@ fn parse_markdown(content: &str) -> String {
     buf.into()
 }
 
-fn on_run_all(_: MouseEvent) -> Result<(), Error> {
+fn on_run_all(_: Event) -> Result<(), Error> {
     run_all()
 }
 
-fn on_toggle_theme(_: MouseEvent) -> Result<(), Error> {
+fn on_toggle_theme(_: Event) -> Result<(), Error> {
     let win = window()?;
     let class_list = body()?.class_list();
 
@@ -141,7 +141,7 @@ fn on_toggle_theme(_: MouseEvent) -> Result<(), Error> {
     Ok(())
 }
 
-fn on_toggle_theme_default(_: MouseEvent) -> Result<(), Error> {
+fn on_toggle_theme_default(_: Event) -> Result<(), Error> {
     body()?.class_list().remove_2(LIGHT, DARK)?;
 
     if let Some(ls) = window()?.local_storage()? {

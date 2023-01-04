@@ -2,23 +2,23 @@ use js_sys::Error;
 use wasm_bindgen::JsCast;
 use web_sys::{
     console, Event, EventInit, HtmlButtonElement, HtmlDivElement, HtmlElement, HtmlPreElement,
-    MouseEvent,
 };
 
 use crate::dom::{
-    clear_children, create_element, document, not_defined, on_el_evt, throw, wrong_type, EVT_CLICK,
+    clear_children, create_element, document, get_element, not_defined, on_el_evt, throw,
+    wrong_type, EVT_CLICK,
 };
 use crate::modules::{mod_has, mod_run};
 
 const SRC: &str = "src";
 const OUT: &str = "out";
 const CELL: &str = "cell";
-const PREFIX: &str = "language-";
-
+const CELL_ID_PREFIX: &str = "cell-";
+const LANGUAGE_PREFIX: &str = "language-";
 const EVT_RUN: &str = "run";
 
 pub fn prepare_all() -> Result<(), Error> {
-    let codes = document()?.query_selector_all(&format!("pre>code[class^={}]", PREFIX))?;
+    let codes = document()?.query_selector_all(&format!("pre>code[class^={}]", LANGUAGE_PREFIX))?;
     for i in 0..codes.length() {
         if let Some(node) = codes.get(i) {
             let el: HtmlElement = node.dyn_into().or_else(wrong_type("query_selector_all"))?;
@@ -47,6 +47,10 @@ pub fn get_src(cell: &HtmlDivElement) -> Result<HtmlElement, Error> {
         .or_else(wrong_type("query_selector"))
 }
 
+pub fn get_cell(id: u32) -> Result<HtmlDivElement, Error> {
+    get_element(&format!("{}{}", CELL_ID_PREFIX, id))
+}
+
 pub fn get_out(cell: &HtmlDivElement) -> Result<HtmlDivElement, Error> {
     cell.query_selector("div.out")?
         .ok_or_else(throw("output div not found"))?
@@ -55,8 +59,11 @@ pub fn get_out(cell: &HtmlDivElement) -> Result<HtmlDivElement, Error> {
 }
 
 pub fn get_text(src: &HtmlElement) -> Result<String, Error> {
-    src.text_content()
-        .ok_or_else(throw("code block contains no text"))
+    Ok(src
+        .text_content()
+        .ok_or_else(throw("code block contains no text"))?
+        .trim()
+        .to_string())
 }
 
 pub fn get_lang(src: &HtmlElement) -> Result<String, Error> {
@@ -74,7 +81,7 @@ fn prepare_block(code: &HtmlElement, id: u32) -> Result<(), Error> {
     let cell: HtmlDivElement = create_element("div")?;
     cell.set_class_name(CELL);
     cell.dataset().set("id", &id.to_string())?;
-    cell.set_id(&format!("cell-{}", id));
+    cell.set_id(&format!("{}{}", CELL_ID_PREFIX, id));
     on_el_evt(EVT_RUN, &cell, &on_cell_run)?;
 
     pre.parent_element()
@@ -113,7 +120,7 @@ fn prepare_block(code: &HtmlElement, id: u32) -> Result<(), Error> {
     Ok(())
 }
 
-fn on_run_click(evt: MouseEvent) -> Result<(), Error> {
+fn on_run_click(evt: Event) -> Result<(), Error> {
     evt.current_target()
         .ok_or_else(not_defined("current_target"))?
         .dispatch_event(&Event::new_with_event_init_dict(
@@ -124,7 +131,7 @@ fn on_run_click(evt: MouseEvent) -> Result<(), Error> {
     Ok(())
 }
 
-fn on_cell_run(evt: MouseEvent) -> Result<(), Error> {
+fn on_cell_run(evt: Event) -> Result<(), Error> {
     let cell: HtmlDivElement = evt
         .current_target()
         .ok_or_else(not_defined("current_target"))?
@@ -134,40 +141,52 @@ fn on_cell_run(evt: MouseEvent) -> Result<(), Error> {
     let out = get_out(&cell)?;
 
     class_list.add_1("run")?;
+    class_list.remove_3("ok", "pending", "err")?;
     clear_children(&out)?;
 
-    let res = mod_run(&cell);
-    class_list.toggle_with_force("ok", res.is_ok())?;
-    class_list.toggle_with_force("err", res.is_err())?;
+    match mod_run(&cell) {
+        Ok(None) => class_list.add_1("ok")?,
+        Ok(Some(_)) => class_list.add_1("pending")?,
+        Err(err) => cell_err(&cell, err.into())?,
+    };
+
     evt.stop_propagation();
+    Ok(())
+}
 
-    if let Err(err) = res {
-        let pre: HtmlPreElement = create_element("pre")?;
+pub fn cell_err(cell: &HtmlDivElement, err: Error) -> Result<(), Error> {
+    cell.class_list().add_1("err")?;
+    let pre: HtmlPreElement = create_element("pre")?;
 
-        let mut has_content = false;
-        if let Some(text) = err.name().as_string() {
-            let strong: HtmlElement = create_element("strong")?;
-            strong.append_with_str_2(&text, ":")?;
-            pre.append_child(&strong)?;
-            has_content = true;
-        }
-        if let Some(text) = err.message().as_string() {
-            pre.append_with_str_2(" ", &text)?;
-            has_content = true;
-        }
-        if has_content {
-            out.append_child(&pre)?;
-        }
-
-        // Log stack trace information to the console.
-        console::error_1(&err);
+    let mut has_content = false;
+    if let Some(text) = err.name().as_string() {
+        let strong: HtmlElement = create_element("strong")?;
+        strong.append_with_str_2(&text, ":")?;
+        pre.append_child(&strong)?;
+        has_content = true;
     }
+    if let Some(text) = err.message().as_string() {
+        pre.append_with_str_2(" ", &text)?;
+        has_content = true;
+    }
+    if has_content {
+        get_out(&cell)?.append_child(&pre)?;
+    }
+
+    // Log stack trace information to the console.
+    console::error_1(&err);
 
     Ok(())
 }
 
 fn language_class(el: &HtmlElement) -> Option<String> {
     let class_list = el.class_list();
-    (0..class_list.length())
-        .find_map(|i| Some(class_list.get(i)?.strip_prefix(PREFIX)?.to_string()))
+    (0..class_list.length()).find_map(|i| {
+        Some(
+            class_list
+                .get(i)?
+                .strip_prefix(LANGUAGE_PREFIX)?
+                .to_string(),
+        )
+    })
 }

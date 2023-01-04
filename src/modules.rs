@@ -1,9 +1,9 @@
-use js_sys::{Array, Error, Function, Object, Reflect};
+use js_sys::{Array, Error, Function, Object, Promise, Reflect};
 use wasm_bindgen::closure::Closure;
 use wasm_bindgen::{JsCast, JsValue};
 use web_sys::HtmlDivElement;
 
-use crate::builtin_modules::{mod_css, mod_csv, mod_fetch, mod_html, mod_js, mod_json, mod_yaml};
+use crate::builtin_modules::{mod_css, mod_html, mod_js, mod_json, mod_yaml};
 use crate::code_blocks::{get_lang, get_src};
 use crate::dom::{not_defined, window};
 
@@ -13,8 +13,6 @@ pub fn register_all() -> Result<(), Error> {
     register(&mod_css, &["css"])?;
     register(&mod_json, &["json"])?;
     register(&mod_yaml, &["yaml", "yml"])?;
-    register(&mod_csv, &["csv"])?;
-    register(&mod_fetch, &["fetch"])?;
 
     Ok(())
 }
@@ -24,20 +22,24 @@ pub fn mod_has(lang: &str) -> Result<bool, Error> {
     Ok(mods.has_own_property(&lang.into()))
 }
 
-pub fn mod_run(cell: &HtmlDivElement) -> Result<(), Error> {
+pub fn mod_run(cell: &HtmlDivElement) -> Result<Option<Promise>, Error> {
     let code_src = get_src(&cell)?;
     let module: Function = Reflect::get(&mod_obj()?, &get_lang(&code_src)?.into())?.dyn_into()?;
-    module.apply(&window()?.into(), &Array::of1(&cell.into()))?;
 
-    Ok(())
+    let res = module.apply(&window()?.into(), &Array::of1(&cell.into()))?;
+
+    Ok(match res.dyn_into::<Promise>() {
+        Ok(promise) => Some(promise),
+        Err(_) => None,
+    })
 }
 
 fn register(
-    mod_fn: &'static dyn Fn(&HtmlDivElement) -> Result<(), Error>,
+    mod_fn: &'static dyn Fn(&HtmlDivElement) -> Result<Option<Promise>, Error>,
     langs: &[&str],
 ) -> Result<(), Error> {
     let run = Closure::wrap(Box::new(move |cell: &HtmlDivElement| mod_fn(cell))
-        as Box<dyn Fn(&HtmlDivElement) -> Result<(), Error>>);
+        as Box<dyn Fn(&HtmlDivElement) -> Result<Option<Promise>, Error>>);
     for lang in langs {
         Reflect::set(&mod_obj()?, &JsValue::from_str(lang), &run.as_ref())?;
     }

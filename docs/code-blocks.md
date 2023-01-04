@@ -4,28 +4,52 @@ autorun: true
 
 # Code Blocks
 
-The following languages are supported out of the box:
+The built-in runtime supports the following languages:
 
-## JavaScript {#js}
+- [JavaScript](#javascript)
+- [HTML](#html)
+- [CSS](#css)
+- [JSON](#json)
+- [YAML](#yaml)
 
-Tags: `javascript`, `js`. Simple example:
+Additional language support may be added by loading extensions.
 
-```js
-"Hello, JavaScript!";
-```
+## JavaScript
 
-The returned value of the previous block accessible as `_`:
+Tags: `javascript`, `js`. A simple example:
 
 ```js
 self.assert = (test, message) => {
-  if (!test) {
-    throw new Error(`assertion failed: ${message}`);
-  }
-}
+  if (test) return;
+  throw new Error(`assertion failed: ${message}`);
+};
+```
 
+JavaScript code blocks are executed by the browser's JS engine. Each block is
+wrapped in an `async` function to allow the use of the `await` keyword. This
+block will be in _pending_ state for five seconds before it completes, blocking
+the execution of any subsequent JavaScript blocks.
+
+```js
+const delay = 5000;  // five seconds
+await new Promise(resolve => setTimeout(resolve, delay));
+```
+
+The fact that each block is its own function means that we can `return` early
+from a function, but it also means we need an explicit `return` to provide a
+return value for our code block. If no value is `return`ed, the return value is
+`undefined`.
+
+```js
+return new Date();
+```
+
+The returned value of the previous block is accessible as `_`:
+
+```js
 assert(
-  Object(_) instanceof String,
-  `want: ${String.name}, got: ${_?.constructor.name}`,
+  Object(_) instanceof Date,
+  `want: ${Date.name}, got: ${_?.constructor.name}`,
 );
 ```
 
@@ -38,7 +62,7 @@ em.innerText = navigator.userAgent;
 const div = document.createElement("div");
 div.append("User-Agent: ", em);
 
-div;
+return div;
 ```
 
 ```js
@@ -48,9 +72,24 @@ assert(
 );
 ```
 
+Any errors are caught and displayed as a failed block. Syntax errors are caught
+immediately, while runtime errors will only be caught when the block is
+executed.
+
+```js
+assert(false, "false !== true");
+```
+
+This block below will fail immediately, even if the previous block is still
+pending.
+
+```js
+KABOOM!!!
+```
+
 ## HTML
 
-Tag: `html`. Simple example:
+Tag: `html`. A simple example:
 
 ```html
 <strong class="test-html">
@@ -69,7 +108,7 @@ assert(
 
 ## CSS
 
-Tag: `css`. Simple example:
+Tag: `css`. A simple example:
 
 ```css
 strong.test-html {
@@ -95,7 +134,7 @@ assert(
 
 ## JSON
 
-Tag: `json`. Simple example:
+Tag: `json`. A simple example:
 
 ```json
 {
@@ -104,16 +143,23 @@ Tag: `json`. Simple example:
 }
 ```
 
-The returned value is simply the decoded data.
+JSON code blocks are parsed by the browser's `JSON` implementation. The
+returned value is simply the decoded data.
 
 ```js
 const [want, got] = ["Attila spadiceus", `${_?.genus} ${_?.species}`];
 assert(want === got, `${want} !== ${got}`);
 ```
 
+Parser errors will result in a failed block:
+
+```json
+KABOOM!!!
+```
+
 ## YAML
 
-Tags: `yaml`, `yml`. Simple example:
+Tags: `yaml`, `yml`. A simple example:
 
 ```yaml
 genus: Cotinga
@@ -128,22 +174,8 @@ const [want, got] = ["Cotinga amabilis", `${_?.genus} ${_?.species}`];
 assert(want === got, `${want} !== ${got}`);
 ```
 
-TODO: Anchor support doesn't work very well at the moment.
+Parser errors are surfaced as usual:
 
 ```yaml
-- &genus: Cotinga
-  species: amabilis
-- genus: *genus
-  species: cayana
+unknown: *anchor
 ```
-
-The returned value is an array containing the parsed documents.
-
-```js
-assert(_?.length === 2, `want 2, got: ${_?.length}`);
-```
-
-## CSV
-
-## Fetch
-
