@@ -27,6 +27,7 @@
     "acorn": "^8.0.4",
     "copy-webpack-plugin": "^11.0.0",
     "cross-blob": "^3.0.1",
+    "css-minify": "^2.0.0",
     "http-server": "^14.1.0",
     "mocha": "^9.2.2",
     "typescript": "^4.1.3",
