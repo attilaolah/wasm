@@ -15,8 +15,13 @@ $button-size: 48px
   color: rgb(var(--primary))
   background-color: rgb(var(--primary-bg))
 
+  --max-width: 1200px
+  > *
+    width: 100%
+    max-width: var(--max-width)
+    margin: 0 auto
+
   header.head
-    grid-area: head
     display: flex
     flex-direction: row
     justify-content: space-between
@@ -31,7 +36,7 @@ $button-size: 48px
       font-size: 32px
       padding: 8px 12px
 
-      .l
+      .hl
         background: rgb(var(--cyan))
 
     .icons
@@ -59,8 +64,7 @@ $button-size: 48px
         line-height: $button-size
 
   main.main-content
-    grid-area: main
-    margin: $pad-double
+    padding: $pad-double
     line-height: 1.75
     font-size: 16px
 
@@ -69,9 +73,6 @@ $button-size: 48px
 
     a
       color: rgb(var(--link))
-
-  aside.right
-    grid-area: side
 
   button.icon
     color: inherit
