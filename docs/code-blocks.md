@@ -20,8 +20,7 @@ Tags: `javascript`, `js`. A simple example:
 
 ```js
 self.assert = (test, message) => {
-  if (test) return;
-  throw new Error(`assertion failed: ${message}`);
+  if (!test) throw `assertion failed: ${message}`;
 };
 ```
 
