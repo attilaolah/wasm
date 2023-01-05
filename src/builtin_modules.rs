@@ -75,7 +75,6 @@ fn mod_js_done(cell_id: u32, val: JsValue, success: bool) -> Result<(), Error> {
     class_list.remove_1("pending")?;
 
     if !success {
-        console::log_1(&"call cell_err".into());
         return cell_err(&cell, ensure_error(val));
     }
 
