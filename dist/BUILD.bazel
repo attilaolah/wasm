@@ -8,7 +8,6 @@ webpack_bundle(
         "//src:runtime",
         "//src/loader",
         "//src/style",
-        "//src/template",
         "@npm//normalize.css",
         "@npm//prismjs",
     ] + [

@@ -161,6 +161,10 @@ fn set_res(cell: &HtmlDivElement, res: &JsValue) -> Result<bool, Error> {
     Ok(Reflect::set(&cell, &RES_PROP.into(), &res)?)
 }
 
+pub fn del_res(cell: &HtmlDivElement) -> Result<bool, Error> {
+    Ok(Reflect::delete_property(&cell, &RES_PROP.into())?)
+}
+
 fn cell_id(cell: &HtmlDivElement) -> Result<u32, Error> {
     cell.dataset()
         .get("id")

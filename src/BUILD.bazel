@@ -2,8 +2,8 @@ load("@rules_rust//wasm_bindgen:wasm_bindgen.bzl", "rust_wasm_bindgen")
 
 rust_wasm_bindgen(
     name = "runtime",
-    wasm_file = "//:runtime_lib",
     visibility = ["//dist:__pkg__"],
+    wasm_file = "//:runtime_lib",
 )
 
 filegroup(

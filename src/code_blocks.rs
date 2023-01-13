@@ -1,21 +1,25 @@
 use js_sys::Error;
 use wasm_bindgen::JsCast;
 use web_sys::{
-    console, Event, EventInit, HtmlButtonElement, HtmlDivElement, HtmlElement, HtmlPreElement,
+    console, Event, EventInit, HtmlDivElement, HtmlElement, HtmlPreElement, HtmlTemplateElement,
 };
 
+use crate::builtin_modules::del_res;
 use crate::dom::{
     clear_children, create_element, document, get_element, not_defined, on_el_evt, throw,
     wrong_type, EVT_CLICK,
 };
 use crate::modules::{mod_has, mod_run};
 
+const CODE_BLOCK_HTML: &str = include_str!(env!("CODE_BLOCK_HTML"));
+
 const SRC: &str = "src";
-const OUT: &str = "out";
 const CELL: &str = "cell";
 const CELL_ID_PREFIX: &str = "cell-";
 const LANGUAGE_PREFIX: &str = "language-";
+
 const EVT_RUN: &str = "run";
+const EVT_CLEAR: &str = "clear";
 
 pub fn prepare_all() -> Result<(), Error> {
     let codes = document()?.query_selector_all(&format!("pre>code[class^={}]", LANGUAGE_PREFIX))?;
@@ -72,50 +76,63 @@ pub fn get_lang(src: &HtmlElement) -> Result<String, Error> {
 
 // Prepares a single code block for execution.
 fn prepare_block(code: &HtmlElement, id: u32) -> Result<(), Error> {
-    code.class_list().add_1(SRC)?;
+    let tpl: HtmlTemplateElement = create_element("template")?;
+    tpl.set_inner_html(CODE_BLOCK_HTML);
+
+    let cell: HtmlDivElement = tpl
+        .content()
+        .children()
+        .item(0)
+        .ok_or_else(throw("template contains no elements"))?
+        .dyn_into()
+        .or_else(wrong_type("item"))?;
+    cell.dataset().set("id", &id.to_string())?;
+    cell.set_id(&format!("{}{}", CELL_ID_PREFIX, id));
+    on_el_evt(EVT_RUN, &cell, &on_cell_run)?;
+    on_el_evt(EVT_CLEAR, &cell, &on_cell_clear)?;
+
     let pre: HtmlPreElement = code
         .parent_element()
         .ok_or_else(not_defined("parent_element"))?
         .dyn_into()
         .or_else(wrong_type("parent_element"))?;
-    let cell: HtmlDivElement = create_element("div")?;
-    cell.set_class_name(CELL);
-    cell.dataset().set("id", &id.to_string())?;
-    cell.set_id(&format!("{}{}", CELL_ID_PREFIX, id));
-    on_el_evt(EVT_RUN, &cell, &on_cell_run)?;
 
     pre.parent_element()
         .ok_or_else(not_defined("parent_element"))?
-        .insert_before(&cell, Some(&pre))?;
-    cell.append_child(&pre)?;
+        .insert_before(&tpl.content(), Some(&pre))?;
+    cell.query_selector("pre.src")?
+        .ok_or_else(throw("not found: pre.src"))?
+        .replace_with_with_node_1(&pre)?;
+    code.class_list().add_1(SRC)?;
 
     let lang = &language_class(&code).unwrap_or("".to_string());
     if !mod_has(&lang)? {
         return Ok(());
     }
 
-    let controls: HtmlDivElement = create_element("div")?;
-    controls.set_class_name("controls");
-
-    let run: HtmlButtonElement = create_element("button")?;
-    run.set_class_name("run");
-    on_el_evt(EVT_CLICK, &run, &on_run_click)?;
-
-    let icon: HtmlElement = create_element("span")?;
-    icon.class_list()
-        .add_2("material-symbols-outlined", "icon")?;
-    icon.set_inner_text("play_circle");
-
-    let text: HtmlElement = create_element("span")?;
-    text.set_inner_text("Run block");
-
-    controls.append_child(&run)?;
-    run.append_with_node_2(&icon, &text)?;
-
-    let out: HtmlDivElement = create_element("div")?;
-    out.set_class_name(OUT);
-
-    cell.append_with_node_2(&out, &controls)?;
+    let controls: HtmlElement = cell
+        .query_selector(".controls")?
+        .ok_or_else(throw("not found: .controls"))?
+        .dyn_into()
+        .or_else(wrong_type("query_selector"))?;
+    on_el_evt(
+        EVT_CLICK,
+        &controls
+            .query_selector(".run")?
+            .ok_or_else(throw("not found: .run"))?
+            .dyn_into()
+            .or_else(wrong_type("query_selector"))?,
+        &on_run_click,
+    )?;
+    on_el_evt(
+        EVT_CLICK,
+        &controls
+            .query_selector(".clear")?
+            .ok_or_else(throw("not found: .clear"))?
+            .dyn_into()
+            .or_else(wrong_type("query_selector"))?,
+        &on_clear_click,
+    )?;
 
     Ok(())
 }
@@ -125,6 +142,17 @@ fn on_run_click(evt: Event) -> Result<(), Error> {
         .ok_or_else(not_defined("current_target"))?
         .dispatch_event(&Event::new_with_event_init_dict(
             EVT_RUN,
+            EventInit::new().bubbles(true),
+        )?)?;
+
+    Ok(())
+}
+
+fn on_clear_click(evt: Event) -> Result<(), Error> {
+    evt.current_target()
+        .ok_or_else(not_defined("current_target"))?
+        .dispatch_event(&Event::new_with_event_init_dict(
+            EVT_CLEAR,
             EventInit::new().bubbles(true),
         )?)?;
 
@@ -149,6 +177,23 @@ fn on_cell_run(evt: Event) -> Result<(), Error> {
         Ok(Some(_)) => class_list.add_1("pending")?,
         Err(err) => cell_err(&cell, err.into())?,
     };
+
+    evt.stop_propagation();
+    Ok(())
+}
+
+fn on_cell_clear(evt: Event) -> Result<(), Error> {
+    let cell: HtmlDivElement = evt
+        .current_target()
+        .ok_or_else(not_defined("current_target"))?
+        .dyn_into()
+        .or_else(wrong_type("current_target"))?;
+    let class_list = cell.class_list();
+    let out = get_out(&cell)?;
+
+    class_list.remove_4("run", "ok", "pending", "err")?;
+    clear_children(&out)?;
+    del_res(&cell)?;
 
     evt.stop_propagation();
     Ok(())

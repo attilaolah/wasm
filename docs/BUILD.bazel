@@ -18,8 +18,8 @@ page(
 http_server(
     name = "server",
     data = [
-        ":index",
         ":code-blocks",
+        ":index",
         "//dist",
     ],
 )

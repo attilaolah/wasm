@@ -17,12 +17,12 @@ extern crate lazy_static;
 static ALLOC: WeeAlloc = WeeAlloc::INIT;
 
 #[wasm_bindgen(start)]
-pub async fn main() -> Result<(), Error> {
+pub fn main() -> Result<(), Error> {
     let nb = &notebook::NB;
 
     // UI setup.
     layout::set_meta_charset()?;
-    layout::init_ui_content().await?;
+    layout::init_ui_content()?;
     layout::init_ui_theme()?;
     layout::init_ui_callbacks()?;
     prism::highlight_all_under(&dom::body()?)?;

@@ -1,16 +1,16 @@
-use js_sys::{Error, Object, Promise, Reflect};
+use js_sys::Error;
 use pulldown_cmark::{html, Options, Parser};
 use slug::slugify;
 use wasm_bindgen::JsCast;
-use wasm_bindgen_futures::JsFuture;
 use web_sys::{console, Event, HtmlElement, HtmlMetaElement, HtmlTemplateElement};
 
 use crate::code_blocks::run_all;
 use crate::dom::{
-    body, clear_children, create_element, document, head, not_defined, on_click, throw, window,
-    wrong_type, H1TO6,
+    body, clear_children, create_element, document, head, on_click, window, wrong_type, H1TO6,
 };
 use crate::notebook::NB;
+
+const LAYOUT_HTML: &str = include_str!(env!("LAYOUT_HTML"));
 
 const DEFAULT_TITLE: &str = "Web Notebook";
 const CONFIG_THEME: &str = "config:theme";
@@ -29,11 +29,9 @@ pub fn set_meta_charset() -> Result<(), Error> {
     Ok(())
 }
 
-pub async fn init_ui_content() -> Result<(), Error> {
-    let tpl_html = template().await?;
-
+pub fn init_ui_content() -> Result<(), Error> {
     let tpl: HtmlTemplateElement = create_element("template")?;
-    tpl.set_inner_html(&tpl_html);
+    tpl.set_inner_html(LAYOUT_HTML);
 
     match tpl.content().query_selector("#content")? {
         Some(el) => el.set_inner_html(&parse_markdown(&NB.src.content)),
@@ -83,17 +81,6 @@ pub fn init_ui_callbacks() -> Result<(), Error> {
     on_click("toggle-theme-default", &on_toggle_theme_default)?;
 
     Ok(())
-}
-
-async fn template() -> Result<String, Error> {
-    const NB: &str = "notebook";
-    // Load the template promise set by the preloader.
-    let notebook: Object = window()?.get(NB).ok_or_else(not_defined(NB))?;
-    let tpl: Promise = Reflect::get(&notebook, &"tpl".into())?.dyn_into()?;
-    JsFuture::from(tpl)
-        .await?
-        .as_string()
-        .ok_or_else(throw("`tpl` did not resolve with a string"))
 }
 
 fn parse_markdown(content: &str) -> String {
