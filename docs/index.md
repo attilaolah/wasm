@@ -18,7 +18,7 @@ The runtime supports several types of code blocks out of the bock, like
 ## Code Blocks
 
 Code blocks must be tagged with a language tag. Currently only JavaScript is
-supported, but other languages may be added in the future. Here is an simple
+supported, but other languages may be added in the future. Here is a simple
 example:
 
 ```js
