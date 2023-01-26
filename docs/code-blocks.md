@@ -178,3 +178,19 @@ Parser errors are surfaced as usual:
 ```yaml
 unknown: *anchor
 ```
+
+## Unknown Blocks
+
+Blocks with an unsupported tag cannot be executed.
+
+```c
+int main() {
+  printf("This won't work!");
+}
+```
+
+The same applies for blocks without any tag.
+
+```
+This is an untagged block.
+```

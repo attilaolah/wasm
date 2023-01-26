@@ -45,7 +45,7 @@ pub fn run_all() -> Result<(), Error> {
 }
 
 pub fn get_src(cell: &HtmlDivElement) -> Result<HtmlElement, Error> {
-    cell.query_selector("code.src")?
+    cell.query_selector(&format!("code.{}", SRC))?
         .ok_or_else(throw("code block not found"))?
         .dyn_into()
         .or_else(wrong_type("query_selector"))
@@ -100,35 +100,36 @@ fn prepare_block(code: &HtmlElement, id: u32) -> Result<(), Error> {
     pre.parent_element()
         .ok_or_else(not_defined("parent_element"))?
         .insert_before(&tpl.content(), Some(&pre))?;
-    cell.query_selector("pre.src")?
+    cell.query_selector(".src")?
         .ok_or_else(throw("not found: pre.src"))?
-        .replace_with_with_node_1(&pre)?;
+        .append_child(&pre)?;
     code.class_list().add_1(SRC)?;
 
     let lang = &language_class(&code).unwrap_or("".to_string());
+    let tag: HtmlElement = cell.query_selector(".controls .tag")?
+        .ok_or_else(throw("not found: .controls .tag"))?
+        .dyn_into()
+        .or_else(wrong_type("query_selector"))?;
+    tag.set_inner_text(&lang.to_uppercase());
+
     if !mod_has(&lang)? {
         return Ok(());
     }
 
-    let controls: HtmlElement = cell
-        .query_selector(".controls")?
-        .ok_or_else(throw("not found: .controls"))?
-        .dyn_into()
-        .or_else(wrong_type("query_selector"))?;
     on_el_evt(
         EVT_CLICK,
-        &controls
-            .query_selector(".run")?
-            .ok_or_else(throw("not found: .run"))?
+        &cell
+            .query_selector(".controls .run")?
+            .ok_or_else(throw("not found: #cell .controls .run"))?
             .dyn_into()
             .or_else(wrong_type("query_selector"))?,
         &on_run_click,
     )?;
     on_el_evt(
         EVT_CLICK,
-        &controls
-            .query_selector(".clear")?
-            .ok_or_else(throw("not found: .clear"))?
+        &cell
+            .query_selector(".controls .clear")?
+            .ok_or_else(throw("not found: #cell .controls .clear"))?
             .dyn_into()
             .or_else(wrong_type("query_selector"))?,
         &on_clear_click,

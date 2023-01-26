@@ -55,53 +55,79 @@
   pre
     padding: $pad
 
-  pre, code
-    background-color: rgb(var(--code-bg))
+  pre,
+  :not(pre) > code
     font-family: var(--font-code)
+    background-color: rgb(var(--code-bg))
 
   :not(pre) > code
     padding: 2px 4px
 
   .cell
-    display: flex
-    flex-direction: column
+    display: grid
     margin: 16px 0 32px
-    gap: $pad
 
-    > div:empty
-      display: none
+    &.ok
+      .status
+        --color: var(--green)
+        :not(.ok).material-symbols-outlined
+          display: none
+      pre
+        --border: rgb(var(--green))
+
+    &.pending
+      .status
+        --color: var(--yellow)
+        :not(.pending).material-symbols-outlined
+          display: none
+      pre
+        --border: rgb(var(--yellow))
+
+    &.err
+      .status
+        --color: var(--red)
+        :not(.err).material-symbols-outlined
+          display: none
+      pre
+        --border: rgb(var(--red))
+
+    &.undef,
+    &.pending
+      .status
+        padding: 4px !important
+
+        .return-type
+          display: none
+
+    .src
+      grid-row: 2
+      padding: 16px 0 8px
+
+    .out
+      grid-row: 4
+
+      &:empty
+        display: none
 
     pre
       --gutter: 4px
       --border: rgba(var(--primary), 0.2)
       margin: 0 0 0 calc(0px - var(--gutter)) !important
       border-left: var(--gutter) solid var(--border)
-
-    &.run
-      &.ok pre
-        --border: rgb(var(--green))
-      &.pending pre
-        --border: rgb(var(--yellow))
-      &.err pre
-        --border: rgb(var(--red))
+      padding: $pad*2 $pad
 
     .controls
       display: flex
+      margin: -20px 8px
       gap: $pad
+      position: relative
+      height: 0
 
-      button
-        --text: var(--white)
-        --background: var(--blue)
+      &.for-src
+        grid-row: 1
+        margin-top: 0
 
-        color: rgb(var(--text))
-        background-color: rgb(var(--background))
-        border: none
-        border-radius: 24px
-        font-size: 14px
-        cursor: pointer
-        padding: $pad $pad * 3 $pad $pad * 2
-        gap: $pad
-
+      > *
         display: flex
         align-items: center
         justify-content: center
@@ -109,8 +135,51 @@
         position: relative
         overflow: hidden
 
+      .chip,
+      button
+        --size: 32px
+
+        border: none
+        height: var(--size)
+        border-radius: calc(var(--size) / 2)
+        background-color: rgb(var(--color))
+        box-sizing: border-box
+
+      .chip
+        --text: var(--white)
+        padding: 4px 16px 4px 4px
+        gap: 2px
+
+        &.clear
+          padding: 4px
+
+        code
+          padding: 4px
+          line-height: 16px
+
+      button
+        color: rgb(var(--text))
+        font-size: 14px
+        cursor: pointer
+
+        &.run
+          --color: var(--blue)
+
+        &.secondary
+          --color: var(--code-bg)
+          --text: var(--code-token-comment)
+
+          padding: 4px
+
+        &.copy
+          padding: 4px 8px
+          span
+            font-size: 16px
+
         &::before
+          --text: var(--white)
           --alpha: 0
+
           content: ""
           background-color: rgba(var(--text), var(--alpha))
 
@@ -126,5 +195,10 @@
         &:active::before
             --alpha: 0.12
 
-        span
-          z-index: 1
+      .stretch
+        flex: 1
+
+    &:not(.run) .controls
+      .clear,
+      .status
+        display: none

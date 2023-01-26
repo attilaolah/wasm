@@ -80,6 +80,7 @@ fn mod_js_done(cell_id: u32, val: JsValue, success: bool) -> Result<(), Error> {
 
     class_list.add_1("ok")?;
     if val.is_undefined() {
+        class_list.add_1("undef")?;
         return Ok(()); // no return value
     }
 

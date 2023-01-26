@@ -1,10 +1,18 @@
 #cell.cell
-  pre.src
-  #out.out
-  .controls
-    button.run
+  .src
+  .out
+  .controls.for-src
+    button.chip.run
       span.material-symbols-outlined play_circle
-      span Run block
-    button.clear
-      span.material-symbols-outlined backspace
-      span Clear result
+      span.tag TAG
+    .chip.status
+      span.material-symbols-outlined.pending timer
+      span.material-symbols-outlined.ok check_circle
+      span.material-symbols-outlined.err error
+      code.return-type
+        span.token.class-name TYPE
+    button.secondary.clear
+      span.material-symbols-outlined cancel
+    .stretch
+    button.secondary.right.copy
+      span.material-symbols-outlined content_copy

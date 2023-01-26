@@ -42,7 +42,7 @@ const [year, month, day] = [
 ];
 
 // Explicitly set the "today" variable.
-self.today = ({year, month, day});
+self.today = {year, month, day};
 ```
 
 The `self` object points to the global `window` singleton, and it can be used
