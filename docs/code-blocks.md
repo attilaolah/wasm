@@ -96,12 +96,12 @@ Tag: `html`. A simple example:
 </strong>
 ```
 
-The returned value is the injected node.
+The returned value is the `NodeList` holding all injected elements.
 
 ```js
 assert(
-  _ instanceof HTMLElement,
-  `want: ${HTMLElement.name}, got: ${_?.constructor.name}`,
+  _ instanceof NodeList,
+  `want: ${NodeList.name}, got: ${_?.constructor.name}`,
 );
 ```
 

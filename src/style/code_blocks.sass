@@ -91,20 +91,12 @@
       pre
         --border: rgb(var(--red))
 
-    &.undef,
-    &.pending
-      .status
-        padding: 4px !important
-
-        .return-type
-          display: none
-
     .src
       grid-row: 2
-      padding: 16px 0 8px
+      padding: 16px 0 4px
 
     .out
-      grid-row: 4
+      grid-row: 3
 
       &:empty
         display: none
@@ -145,20 +137,26 @@
         background-color: rgb(var(--color))
         box-sizing: border-box
 
+        .material-symbols-outlined
+          --size: 20px
+          color: rgb(var(--text))
+
       .chip
         --text: var(--white)
-        padding: 4px 16px 4px 4px
+        color: rgb(var(--text))
+        padding: 6px
+        padding-right: 16px
         gap: 2px
 
         &.clear
-          padding: 4px
+          padding: 6px
 
         code
-          padding: 4px
+          padding: 2px 4px
           line-height: 16px
+          color: rgb(var(--primary))
 
       button
-        color: rgb(var(--text))
         font-size: 14px
         cursor: pointer
 
@@ -169,12 +167,12 @@
           --color: var(--code-bg)
           --text: var(--code-token-comment)
 
-          padding: 4px
+          padding: 6px
 
         &.copy
           padding: 4px 8px
-          span
-            font-size: 16px
+          .material-symbols-outlined
+            --size: 16px
 
         &::before
           --text: var(--white)

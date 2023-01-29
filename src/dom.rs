@@ -35,9 +35,23 @@ where
 {
     document()?
         .get_element_by_id(el_id.into())
-        .ok_or_else(throw(&format!("#{} not found", el_id)))?
+        .ok_or_else(not_found(&format!("#{}", el_id)))?
         .dyn_into()
         .or_else(wrong_type("get_element_by_id"))
+}
+
+pub fn query_element(root: &HtmlElement, query: &str) -> Result<HtmlElement, Error> {
+    query_selector(root, query)
+}
+
+fn query_selector<T>(root: &HtmlElement, query: &str) -> Result<T, Error>
+where
+    T: 'static + wasm_bindgen::JsCast,
+{
+    root.query_selector(query)?
+        .ok_or_else(not_found(query))?
+        .dyn_into()
+        .or_else(wrong_type("query_selector"))
 }
 
 // Create & remove elements.
@@ -108,6 +122,10 @@ pub fn throw(text: &str) -> impl Fn() -> Error + '_ {
 
 pub fn not_defined(prop: &str) -> impl Fn() -> Error + '_ {
     move || Error::new(&format!("`{}` not defined", prop))
+}
+
+pub fn not_found(query: &str) -> impl Fn() -> Error + '_ {
+    move || Error::new(&format!("`{}` not found", query))
 }
 
 pub fn wrong_type<T, U>(func: &str) -> impl Fn(T) -> Result<U, Error> + '_ {

@@ -74,12 +74,12 @@ The HTML is simply copied to the output, no questions asked.
 Click to increment!
 ```
 
-The `_` variable will refer to the last inserted `Element`, which is handy when
-accessing it from subsequent JavaScript blocks:
+The `_` variable is a `NodeList` containing each inserted note, which is handy
+when accessing it from subsequent JavaScript blocks:
 
 ```js
 let level = 0;
-_.addEventListener("click", (evt) => {
+_[0].addEventListener("click", (evt) => {
   evt.currentTarget.innerText = `LVL: ${++level}`;
 });
 ```
