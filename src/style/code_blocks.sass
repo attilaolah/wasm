@@ -68,7 +68,7 @@
     margin: 16px 0 32px
 
     &.ok
-      .status
+      .controls .status
         --color: var(--green)
         :not(.ok).material-symbols-outlined
           display: none
@@ -76,7 +76,7 @@
         --border: rgb(var(--green))
 
     &.pending
-      .status
+      .controls .status
         --color: var(--yellow)
         :not(.pending).material-symbols-outlined
           display: none
@@ -84,12 +84,20 @@
         --border: rgb(var(--yellow))
 
     &.err
-      .status
+      .controls .status
         --color: var(--red)
         :not(.err).material-symbols-outlined
           display: none
       pre
         --border: rgb(var(--red))
+
+    &.ro .controls .icon-run,
+    &:not(.ro) .controls .icon-ro
+      display: none
+
+    &.no-tag .controls .run
+      padding-right: 6px
+      gap: 0
 
     .src
       grid-row: 2

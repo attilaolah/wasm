@@ -59,6 +59,7 @@ const em = document.createElement("em");
 em.innerText = navigator.userAgent;
 
 const div = document.createElement("div");
+div.classList.add("test-html");
 div.append("User-Agent: ", em);
 
 return div;
@@ -91,9 +92,9 @@ KABOOM!!!
 Tag: `html`. A simple example:
 
 ```html
-<strong class="test-html">
+<div class="test-html">
   Nothing <em>fancy</em> to see here…
-</strong>
+</div>
 ```
 
 The returned value is the `NodeList` holding all injected elements.
@@ -110,13 +111,12 @@ assert(
 Tag: `css`. A simple example:
 
 ```css
-strong.test-html {
-  font-weight: normal;
-  background-color: mediumpurple;
+.test-html {
   color: white;
+  background-color: rgb(var(--magenta));
   padding: 4px 8px;
 }
-strong.test-html em {
+.test-html em {
   text-decoration: underline;
   font-style: initial;
 }
@@ -183,14 +183,14 @@ unknown: *anchor
 
 Blocks with an unsupported tag cannot be executed.
 
-```c
-int main() {
-  printf("This won't work!");
+```cpp
+auto main() -> void {
+  std::cout << "You can't run this code in the browser :(" << std::endl;
 }
 ```
 
 The same applies for blocks without any tag.
 
 ```
-This is an untagged block.
+This block has no language tag.
 ```

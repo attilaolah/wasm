@@ -4,7 +4,7 @@
 try-import %workspace%/.bazelrc.local
 
 # Old C++ CPU/CROSSTOOL toolchain API:
-build --crosstool_top=//toolchains
+build --crosstool_top=//toolchains --@rules_rust//:extra_rustc_flag=--cfg=web_sys_unstable_apis
 
 # Show test failures:
 test --test_output=errors

@@ -102,7 +102,7 @@ pub fn mod_css(cell: &HtmlDivElement) -> Result<Promise, Error> {
     }
 
     // This should never happen.
-    Err(Error::new("style sheet not found"))
+    Err(Error::new("failed to insert style sheet"))
 }
 
 pub fn mod_json(cell: &HtmlDivElement) -> Result<Promise, Error> {

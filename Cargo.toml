@@ -29,6 +29,7 @@ yaml-front-matter = "0.1"
 [dependencies.web-sys]
 version = "0.3.22"
 features = [
+  "Clipboard",
   "Document",
   "DocumentFragment",
   "DomStringMap",
@@ -50,6 +51,7 @@ features = [
   "HtmlTemplateElement",
   "MediaQueryList",
   "MouseEvent",
+  "Navigator",
   "Node",
   "NodeList",
   "Request",

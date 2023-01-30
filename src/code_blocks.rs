@@ -8,14 +8,13 @@ use web_sys::{
 
 use crate::builtin_modules::{cell_id, ensure_error};
 use crate::dom::{
-    clear_children, create_element, document, get_element, not_defined, on_el_evt, query_element,
-    throw, wrong_type, EVT_CLICK,
+    clear_children, create_element, document, get_element, not_defined, not_found, on_el_evt,
+    query_element, throw, window, wrong_type, EVT_CLICK,
 };
 use crate::modules::{mod_has, mod_run};
 
 const CODE_BLOCK_HTML: &str = include_str!(env!("CODE_BLOCK_HTML"));
 
-const CELL: &str = "cell";
 const CELL_ID_PREFIX: &str = "cell-";
 const LANGUAGE_PREFIX: &str = "language-";
 
@@ -25,11 +24,13 @@ const EVT_CLEAR: &str = "clear";
 const RES_PROP: &str = "nbres";
 
 pub fn prepare_all() -> Result<(), Error> {
-    let codes = document()?.query_selector_all(&format!("pre>code[class^={}]", LANGUAGE_PREFIX))?;
+    let codes = document()?.query_selector_all("main>pre>code")?;
     for i in 0..codes.length() {
         if let Some(node) = codes.get(i) {
-            let el: HtmlElement = node.dyn_into().or_else(wrong_type("query_selector_all"))?;
-            prepare_block(&el, i)?;
+            prepare_block(
+                &node.dyn_into().or_else(wrong_type("query_selector_all"))?,
+                i,
+            )?;
         }
     }
 
@@ -37,10 +38,10 @@ pub fn prepare_all() -> Result<(), Error> {
 }
 
 pub fn run_all() -> Result<(), Error> {
-    let cells = document()?.get_elements_by_class_name(CELL);
+    let cells = document()?.query_selector_all(":not(.ro).cell")?;
     for i in 0..cells.length() {
-        if let Some(el) = cells.get_with_index(i) {
-            el.dispatch_event(&Event::new(EVT_RUN)?)?;
+        if let Some(node) = cells.get(i) {
+            node.dispatch_event(&Event::new(EVT_RUN)?)?;
         }
     }
 
@@ -87,6 +88,11 @@ fn prepare_block(code: &HtmlElement, id: u32) -> Result<(), Error> {
     cell.set_id(&format!("{}{}", CELL_ID_PREFIX, id));
     on_el_evt(EVT_RUN, &cell, &on_cell_run)?;
     on_el_evt(EVT_CLEAR, &cell, &on_cell_clear)?;
+    on_el_evt(
+        EVT_CLICK,
+        &query_element(&cell, ".controls .copy")?,
+        &on_copy_click,
+    )?;
 
     let pre: HtmlPreElement = code
         .parent_element()
@@ -100,10 +106,17 @@ fn prepare_block(code: &HtmlElement, id: u32) -> Result<(), Error> {
     query_element(&cell, ".src")?.append_child(&pre)?;
     code.class_list().add_1("src-code")?;
 
-    let lang = &language_class(&code).unwrap_or("".to_string());
-    query_element(&cell, ".controls .tag")?.set_inner_text(&lang.to_uppercase());
+    let tag = language_class(&code);
+    let class_list = cell.class_list();
 
-    if !mod_has(&lang)? {
+    if let Some(lang) = tag {
+        query_element(&cell, ".controls .tag")?.set_inner_text(&lang.to_uppercase());
+        if !mod_has(&lang)? {
+            class_list.add_1("ro")?;
+            return Ok(());
+        }
+    } else {
+        class_list.add_2("ro", "no-tag")?;
         return Ok(());
     }
 
@@ -122,33 +135,25 @@ fn prepare_block(code: &HtmlElement, id: u32) -> Result<(), Error> {
 }
 
 fn on_run_click(evt: Event) -> Result<(), Error> {
-    evt.current_target()
-        .ok_or_else(not_defined("current_target"))?
-        .dispatch_event(&Event::new_with_event_init_dict(
-            EVT_RUN,
-            EventInit::new().bubbles(true),
-        )?)?;
-
-    Ok(())
+    bubble_up(evt, EVT_RUN)
 }
 
 fn on_clear_click(evt: Event) -> Result<(), Error> {
-    evt.current_target()
-        .ok_or_else(not_defined("current_target"))?
-        .dispatch_event(&Event::new_with_event_init_dict(
-            EVT_CLEAR,
-            EventInit::new().bubbles(true),
-        )?)?;
+    bubble_up(evt, EVT_CLEAR)
+}
+
+fn on_copy_click(evt: Event) -> Result<(), Error> {
+    if let Some(cb) = window()?.navigator().clipboard() {
+        // Fire & forget promise.
+        // TODO: Add a 'Copied!' tooltip whin resolving!
+        _ = cb.write_text(&get_text(&get_src(&current_cell(&evt)?)?)?);
+    }
 
     Ok(())
 }
 
 fn on_cell_run(evt: Event) -> Result<(), Error> {
-    let cell: HtmlDivElement = evt
-        .current_target()
-        .ok_or_else(not_defined("current_target"))?
-        .dyn_into()
-        .or_else(wrong_type("current_target"))?;
+    let cell: HtmlDivElement = current_cell(&evt)?;
     let class_list = cell.class_list();
     let out = get_out(&cell)?;
 
@@ -166,11 +171,7 @@ fn on_cell_run(evt: Event) -> Result<(), Error> {
 }
 
 fn on_cell_clear(evt: Event) -> Result<(), Error> {
-    let cell: HtmlDivElement = evt
-        .current_target()
-        .ok_or_else(not_defined("current_target"))?
-        .dyn_into()
-        .or_else(wrong_type("current_target"))?;
+    let cell: HtmlDivElement = current_cell(&evt)?;
     let class_list = cell.class_list();
     let out = get_out(&cell)?;
 
@@ -270,6 +271,31 @@ fn cell_set_type(cell: &HtmlDivElement, typ: &str) -> Result<(), Error> {
     query_element(&cell, ".return-type")?.set_inner_text(typ);
 
     Ok(())
+}
+
+fn bubble_up(evt: Event, new: &str) -> Result<(), Error> {
+    current_target(&evt)?.dispatch_event(&Event::new_with_event_init_dict(
+        new,
+        EventInit::new().bubbles(true),
+    )?)?;
+
+    Ok(())
+}
+
+fn current_cell(evt: &Event) -> Result<HtmlDivElement, Error> {
+    Ok(current_target(&evt)?
+        .closest(".cell")?
+        .ok_or_else(not_found(".cell"))?
+        .dyn_into()
+        .or_else(wrong_type("closest"))?)
+}
+
+fn current_target(evt: &Event) -> Result<HtmlElement, Error> {
+    Ok(evt
+        .current_target()
+        .ok_or_else(not_defined("current_target"))?
+        .dyn_into()
+        .or_else(wrong_type("current_target"))?)
 }
 
 fn type_name(obj: &Object) -> String {
