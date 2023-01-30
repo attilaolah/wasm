@@ -157,9 +157,7 @@ fn on_cell_run(evt: Event) -> Result<(), Error> {
     clear_children(&out)?;
 
     match mod_run(&cell) {
-        // TODO: Remove this (make non-optional!)
-        Ok(None) => cell_ok(&cell, JsValue::UNDEFINED)?,
-        Ok(Some(val)) => cell_pending(&cell, val)?,
+        Ok(val) => cell_pending(&cell, val)?,
         Err(err) => cell_err(&cell, err.into())?,
     };
 
