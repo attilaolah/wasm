@@ -3,12 +3,6 @@ load("@rules_pkg//pkg:mappings.bzl", "filter_directory", "pkg_attributes", "pkg_
 load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
 load("//tools/package_json:package_json.bzl", "package_json")
 
-package_json(
-    name = "package_json",
-    src = "//:package.json",
-    module = "webnb.js",
-)
-
 webpack_bundle(
     name = "webnb",
     srcs = [
@@ -27,11 +21,10 @@ webpack_bundle(
     webpack_config = "webpack.config.js",
 )
 
-genrule(
-    name = "loader__todo_remove",
-    srcs = ["//:loader_ts"],
-    outs = ["loader.js"],
-    cmd = "cp $$(ls -1 $(execpaths //:loader_ts) | grep --extended-regexp /loader.js$$) $@",
+package_json(
+    name = "package_json",
+    src = "//:package.json",
+    module = "webnb.js",
 )
 
 filter_directory(
@@ -43,6 +36,12 @@ filter_directory(
 
 pkg_tar(
     name = "pkg_tar",
-    srcs = [":dist"],
+    srcs = [
+        ":dist",
+        ":package_json",
+    ],
+    remap_paths = {
+        "dist/package.json": "package.json",
+    },
     strip_prefix = "pkg",
 )
