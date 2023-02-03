@@ -36,6 +36,7 @@ exports_files(
     [
         ".github/workflows/main.yml",
         "docker/Dockerfile",
+        "package.json",
         "tsconfig.json",
     ],
     visibility = ["//visibility:public"],

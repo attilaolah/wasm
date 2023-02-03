@@ -1,0 +1,24 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
+bzl_library(
+    name = "package_json_bzl",
+    srcs = ["package_json.bzl"],
+)
+
+go_library(
+    name = "package_json_lib",
+    srcs = ["package_json.go"],
+    importpath = "github.com/attilaolah/wasm/tools/package_json",
+    visibility = ["//visibility:private"],
+    deps = [
+        "@com_github_rican7_conjson//:conjson",
+        "@com_github_rican7_conjson//transform",
+    ],
+)
+
+go_binary(
+    name = "package_json",
+    embed = [":package_json_lib"],
+    visibility = ["//visibility:public"],
+)
