@@ -5,8 +5,6 @@ def _package_json_impl(ctx):
     args = ctx.actions.args()
     args.add("-input", ctx.files.src[0])
     args.add("-output", output)
-    if ctx.attr.module:
-        args.add("-module", ctx.attr.module)
 
     ctx.actions.run(
         executable = ctx.executable._package_json,
@@ -25,9 +23,6 @@ package_json = rule(
             mandatory = True,
             allow_single_file = [".json"],
             doc = "Input package.json file.",
-        ),
-        "module": attr.string(
-            doc = "Overrife for the 'module' field.",
         ),
         "_package_json": attr.label(
             default = "//tools/package_json",

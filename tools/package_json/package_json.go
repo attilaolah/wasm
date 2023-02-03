@@ -23,7 +23,6 @@ import (
 var (
 	input  = flag.String("input", "-", "Where to read the input file from (- means stdin).")
 	output = flag.String("output", "-", "Where to write the output file (- means stdout).")
-	module = flag.String("module", "", "Optional string to rewrite the module field to.")
 )
 
 type Package struct {
@@ -54,9 +53,6 @@ func main() {
 
 	if err := conjson.NewDecoder(json.NewDecoder(src), tr).Decode(&pkg); err != nil {
 		log.Fatalf("error parsing input file: %v", err)
-	}
-	if *module != "" {
-		pkg.Module = *module
 	}
 
 	var dst *os.File = os.Stdout

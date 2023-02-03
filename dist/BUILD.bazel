@@ -24,7 +24,6 @@ webpack_bundle(
 package_json(
     name = "package_json",
     src = "//:package.json",
-    module = "webnb.js",
 )
 
 filter_directory(
