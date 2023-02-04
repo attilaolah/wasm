@@ -5,11 +5,14 @@
  */
 
 const CDN = "https://cdnjs.cloudflare.com/ajax/libs";
+
+// TODO: Load from package-lock.json!
 const PRISM_VERSION = "1.29.0";
 
 // Loader comes first.
+import { COMPILATION_MODE } from "../src/loader/compilation_mode_${CMODE}.js";
 import { preload } from "../src/loader/loader.js";
-preload();
+preload(COMPILATION_MODE);
 
 // Prevent Prism from firing automatically.
 window["Prism"]["manual"] = true;

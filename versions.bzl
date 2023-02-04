@@ -4,7 +4,7 @@ Instead of having to parse the WORKSPACE file, the version consistency tests
 (e.g. //tests/consistency:consistency_test) only need to parse this file.
 """
 
-GO_VERSION = "1.19.1"
+GO_VERSION = "1.20"
 
 OS_VERSION = "ubuntu-20.04"
 

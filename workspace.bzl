@@ -26,12 +26,12 @@ def workspace_dependencies():
 
     http_archive(
         name = "io_bazel_rules_go",
-        version = "0.35.0",
+        version = "0.38.1",
         urls = [
             "https://github.com/bazelbuild/rules_go/releases/download/v{version}/rules_go-v{version}.zip",
             "https://mirror.bazel.build/github.com/bazelbuild/rules_go/releases/download/v{version}/rules_go-v{version}.zip",
         ],
-        sha256 = "099a9fb96a376ccbbb7d291ed4ecbdfd42f6bc822ab77ae6f1b5cb9e914e94fa",
+        sha256 = "dd926a88a564a9246713a9c00b35315f54cbd46b31a26d5d8fb264c07045f05d",
         build_file_content = None,
     )
 
@@ -59,12 +59,12 @@ def workspace_dependencies():
 
     http_archive(
         name = "bazel-skylib",
-        version = "1.2.1",
+        version = "1.4.0",
         urls = [
             "https://github.com/bazelbuild/{name}/releases/download/{version}/{name}-{version}.tar.gz",
             "https://mirror.bazel.build/github.com/bazelbuild/{name}/releases/download/{version}/{name}-{version}.tar.gz",
         ],
-        sha256 = "f7be3474d42aae265405a592bb7da8e171919d74c16f082a5457840f06054728",
+        sha256 = "f24ab666394232f834f74d19e2ff142b0af17466ea0c69a3f4c276ee75f6efce",
         build_file_content = None,
     )
 

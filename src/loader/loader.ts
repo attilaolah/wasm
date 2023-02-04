@@ -7,21 +7,20 @@ const ownerDocument = currentScript.ownerDocument;
 const ownerHead = ownerDocument.head;
 
 const DIR = currentScript.src.replace(/\/*[^/]*$/, '')
-const STYLE_CSS = `${DIR}/style.css`;
 
 class Notebook {
   mod: { [key: string]: (src: string) => any } = {};
 }
 
-export function preload(): void {
-  loadStyle();
+export function preload(cmode: string): void {
+  loadStyle(cmode);
   loadFonts();
 
   window["notebook"] = new Notebook();
 }
 
-function loadStyle(): void {
-  addLink(mkLink(STYLE_CSS));
+function loadStyle(cmode: string): void {
+  addLink(mkLink(`${DIR}/webnb${cmode == "opt" ? ".min" : ''}.css`));
 }
 
 function loadFonts(): void {

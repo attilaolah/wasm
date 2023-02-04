@@ -1,2 +1,2 @@
 // Bazel --compilation_mode (-c) flag.
-const COMPILATION_MODE: string = "dbg";
+export const COMPILATION_MODE: string = "dbg";
