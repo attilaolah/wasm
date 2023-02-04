@@ -7,7 +7,7 @@
   "collaborators": [
     "Attila Oláh <attilaolah@gmail.com>"
   ],
-  "module": "webnb.js",
+  "module": "webnb.min.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/attilaolah/wasm.git"
