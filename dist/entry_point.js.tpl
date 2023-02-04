@@ -4,13 +4,15 @@
  * This file simply lists the other files and the order in which they need to be bundled.
  */
 
+// Bazel --compilation_mode (-c) flag.
+const COMPILATION_MODE = "${COMPILATION_MODE}";
+
 const CDN = "https://cdnjs.cloudflare.com/ajax/libs";
 
 // TODO: Load from package-lock.json!
 const PRISM_VERSION = "1.29.0";
 
 // Loader comes first.
-import { COMPILATION_MODE } from "../src/loader/compilation_mode_${CMODE}.js";
 import { preload } from "../src/loader/loader.js";
 preload(COMPILATION_MODE);
 

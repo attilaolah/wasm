@@ -3,10 +3,7 @@ load("//tools:javascript_target.bzl", "TS_TARGET")
 
 ts_project(
     name = "loader",
-    # Compilation mode must come first.
-    srcs = [":compilation_mode_ts"] + [
-        "loader.ts",
-    ],
+    srcs = ["loader.ts"],
     tsconfig = {"compilerOptions": {
         "target": TS_TARGET,
         "esModuleInterop": True,

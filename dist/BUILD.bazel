@@ -52,9 +52,12 @@ expand_template(
     template = "entry_point.js.tpl",
     out = "entry_point.js",
     substitutions = select({
-        "//config:dbg": {"${CMODE}": "dbg"},
-        "//config:fastbuild": {"${CMODE}": "fastbuild"},
-        "//config:opt": {"${CMODE}": "opt"},
+        "//config:" + mode: {"${COMPILATION_MODE}": mode}
+        for mode in [
+            "opt",
+            "fastbuild",
+            "dbg",
+        ]
     }),
 )
 
