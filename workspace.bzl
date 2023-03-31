@@ -1,7 +1,6 @@
 """Repository rules for downloading all dependencies."""
 
 load(":http_archive.bzl", "http_archive")
-load("//legacy/style:themes/mdn_yari.bzl", download_mdn_yari = "download")
 load("//tools:javascript_target.bzl", "JS_TARGET")
 load("//toolchains:utils.bzl", "patch_files")
 
@@ -140,5 +139,3 @@ def workspace_dependencies():
         sha256 = "eea0f59c28a9241156a47d7a8e32db9122f3d50b505fae0f33de6ce4d9b61834",
         build_file_content = None,
     )
-
-    download_mdn_yari()
