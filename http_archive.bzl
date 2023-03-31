@@ -3,8 +3,8 @@
 Adds a few convenience methods, most notably templeted URLs and strip_prefix
 params, so that the version would need to be passed only once.
 
-The goal is that the version would be stored in only one place, making it
-easier to update external dependencies.
+The goal is for the version to be stored in only one place to make updating
+external dependencies quicker.
 """
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", _http_archive = "http_archive")
