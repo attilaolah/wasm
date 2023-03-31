@@ -1,6 +1,6 @@
 module github.com/attilaolah/wasm
 
-go 1.19
+go 1.20
 
 require (
 	github.com/moby/buildkit v0.10.4

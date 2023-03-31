@@ -38,7 +38,7 @@ jobs:
             ${{ Runner.os }}-Go-
       - uses: actions/setup-go@v3
         with:
-          go-version: 1.19.1
+          go-version: 1.20.2
       - run: go version
       - run: go build ./...
 
