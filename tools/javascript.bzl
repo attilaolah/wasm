@@ -14,26 +14,46 @@ WASM_LD_UNSUPPORTED_FLAGS = [
     "-Wl,-z,relro,-z,now",
 ]
 
-def _find_file(files, name):
-    for f in files:
-        if f.basename == name:
-            return f
-    fail("Failed to find {}!".format(name))
+def _minified_js_impl(ctx):
+    file_js = ctx.attr.src[0].files.to_list()[0]
+    file_min_js = ctx.actions.declare_file(
+        file_js.basename.rpartition(".js")[0] + ".min.js",
+    )
+    ctx.actions.symlink(
+        output = file_min_js,
+        target_file = file_js,
+    )
+    return DefaultInfo(files = depset([file_min_js]))
 
-def _wasm32_transition_impl(settings, attr):
+def _opt_transition_impl(settings, attr):
     return {
         # Old C++ CPU/CROSSTOOL toolchain API:
-        "//command_line_option:cpu": "wasm32",
+        "//command_line_option:compilation_mode": "opt",
     }
+
+opt_transition = transition(
+    implementation = _opt_transition_impl,
+    inputs = [],
+    outputs = ["//command_line_option:compilation_mode"],
+)
+
+minified_js = rule(
+    implementation = _minified_js_impl,
+    attrs = {
+        "src": attr.label(
+            allow_single_file = [".js"],
+            doc = "JavaScript source file (can be generated), using --compilation_mode=opt.",
+            mandatory = True,
+            cfg = opt_transition,
+        ),
+        "_allowlist_function_transition": attr.label(
+            default = "@bazel_tools//tools/allowlists/function_transition_allowlist",
+        ),
+    },
+)
 
 def _wasm_library_impl(ctx):
     emcc = _find_file(ctx.files._emscripten, "emcc")
-
-    # TODO:
-    # Find the "node_modules" diectory provided by @npm.
-    # This is where @npm//acorn (and other npm packages) live.
-    #acorn = _find_file(ctx.files._acorn, "package.json")
-    #node_modules = paths.dirname(acorn.dirname)
 
     static_libs = []
     for f in ctx.files.deps:
@@ -59,10 +79,16 @@ def _wasm_library_impl(ctx):
 
     # Default settings:
     settings.setdefault("STRICT", "1")
+
+    # Target web environments only.
+    # Also, use ES6 "export" syntax to export the module.
     settings.setdefault("MODULARIZE", "1")
+    settings.setdefault("EXPORT_ES6", "1")
+    settings.setdefault("USE_ES6_IMPORT_META", "1")
+    settings.setdefault("ENVIRONMENT", "web,worker")
+
     settings.setdefault("WASM_BIGINT", "1")
     settings.setdefault("INCOMING_MODULE_JS_API", "[onRuntimeInitialized]")
-    settings.setdefault("EXPORT_NAME", short_name.upper())
 
     # Override settings:
     if ctx.attr.exported_functions:
@@ -83,9 +109,22 @@ def _wasm_library_impl(ctx):
         if val != "1":
             flag += "={}".format(val)
         args.add("-s", flag)
+
+    excludes = {}
+    for target in ctx.attr.exclude:
+        for f in target.files.to_list():
+            path = f.path
+            if path.endswith(".ts"):
+                # Exclude the generated .js file instead.
+                path = path.rpartition(".")[0] + ".js"
+            excludes[path] = True
+    excludes = excludes.keys()
+
     for src in ctx.attr.srcs:
         for js in src[JSModuleInfo].direct_sources.to_list():
-            args.add("--pre-js", js)
+            # This is not perfect, but good enough for this case.
+            if not any([js.path.endswith(excl) for excl in excludes]):
+                args.add("--pre-js", js)
     args.add_all(static_libs)
 
     # Append C/C++ compiler flags:
@@ -127,9 +166,6 @@ def _wasm_library_impl(ctx):
             "EM_BIN_PATH": paths.dirname(ctx.files._emscripten[0].path),
             # Emscripten config file:
             "EM_CONFIG": ctx.file._emscripten_config.path,
-            # TODO:
-            # Required by acorn-optimizer to load @npm//acorn.
-            #"NODE_PATH": node_modules,
             # Python executable & runtime:
             "PYTHON": "{}/bin/python3".format(ctx.files._python_runtime[0].path),
             "PYTHONHOME": ctx.files._python_runtime[0].path,
@@ -141,6 +177,12 @@ def _wasm_library_impl(ctx):
         DefaultInfo(files = depset([lib_js, lib_wasm])),
         OutputGroupInfo(js = [lib_js], wasm = [lib_wasm]),
     ]
+
+def _wasm32_transition_impl(settings, attr):
+    return {
+        # Old C++ CPU/CROSSTOOL toolchain API:
+        "//command_line_option:cpu": "wasm32",
+    }
 
 wasm32_transition = transition(
     implementation = _wasm32_transition_impl,
@@ -176,6 +218,11 @@ wasm_library = rule(
             doc = "Sources to pass to emcc using --pre-js.",
             providers = [JSModuleInfo],
         ),
+        "exclude": attr.label_list(
+            allow_files = [".js", ".ts"],
+            doc = "Sources to exclude from passing to emcc using --pre-js (e.g. type declarations).",
+            default = [],
+        ),
         "_acorn": attr.label(
             default = "@npm//acorn",
         ),
@@ -209,3 +256,29 @@ wasm_library = rule(
     },
     fragments = ["cpp"],
 )
+
+def _find_file(files, name):
+    for f in files:
+        if f.basename == name:
+            return f
+    fail("Failed to find {}!".format(name))
+
+IIFE_WRAP_ALL = """
+echo "(() => {{" > $@
+sed {replacements} $(SRCS) >> $@
+echo "}})();" >> $@
+"""
+
+def iife(name, srcs, replace = None):
+    """Wraps all inputs in an IIFE."""
+    native.genrule(
+        name = name,
+        srcs = srcs,
+        outs = ["{}.js".format(name)],
+        cmd = IIFE_WRAP_ALL.format(
+            replacements = " ".join([
+                '-e "s/{}/{}/g"'.format(src, dst)
+                for src, dst in (replace or {}).items()
+            ]),
+        ),
+    )

@@ -1,0 +1,55 @@
+load("@io_bazel_rules_sass//:defs.bzl", "sass_binary", "sass_library")
+
+package(default_visibility = ["//visibility:public"])
+
+filegroup(
+    name = "themes",
+    srcs = [":mdn_yari"],
+)
+
+genrule(
+    name = "mdn_yari",
+    srcs = [":mdn_yari_theme"],
+    outs = [
+        "mdn-yari.css",
+        "mdn-yari.css.map",
+    ],
+    cmd = r"""
+for src in $(locations :mdn_yari_theme); do
+  dst="$$(basename "$${src}")"
+  dst="$${dst/_theme.css/.css}"
+  dst="$$(dirname "$${src}")/$${dst/_/-}"
+  sed --regexp-extended '
+      1h;2,$$H;$$!d;g;
+      s/@font-face\s*\{[^}]*\}//g;
+      s:(\.\./)+:/:g;
+      s/_theme\.css\.map/.css.map/g;
+      s/mdn_yari/mdn-yari/g
+    ' <"$${src}" >"$${dst}"
+done
+""",
+)
+
+sass_binary(
+    name = "mdn_yari_theme",
+    src = "mdn_yari_theme.sass",
+    output_style = select({
+        "//config:opt": "compressed",
+        "//conditions:default": "expanded",
+    }),
+    deps = [
+        ":code_blocks",
+        ":mdn_yari_footer",
+        "@mdn_yari//:scss",
+    ],
+)
+
+sass_library(
+    name = "code_blocks",
+    srcs = ["code_blocks.sass"],
+)
+
+sass_library(
+    name = "mdn_yari_footer",
+    srcs = ["mdn_yari_footer.sass"],
+)

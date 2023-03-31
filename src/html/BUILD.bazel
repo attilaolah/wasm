@@ -1,0 +1,13 @@
+load("//tools:slim.bzl", "slim_library")
+
+package(default_visibility = ["//:__pkg__"])
+
+slim_library(
+    name = "layout",
+    srcs = ["layout.slim"],
+)
+
+slim_library(
+    name = "code_block",
+    srcs = ["code_block.slim"],
+)

@@ -12,10 +12,10 @@ BUILD_WORKSPACE_DIRECTORY="$(dirname $(dirname $(readlink -f "${0}")))" \
 
 diff --unified --color README.md README.md.golden && (
     echo -e "${GREEN}PASS${NC}"
-	exit 0
+    exit 0
 ) || (
     echo -e "${RED}FAIL${NC}"
-	echo "README.md is out of date! To regenerate it, run:"
-	echo "bazel run //cmd/write_me"
-	exit 1
+    echo "README.md is out of date! To regenerate it, run:"
+    echo "bazel run //cmd/write_me"
+    exit 1
 )

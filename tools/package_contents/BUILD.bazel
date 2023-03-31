@@ -1,0 +1,14 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "package_contents_lib",
+    srcs = ["package_contents.go"],
+    importpath = "github.com/attilaolah/wasm/tools/package_contents",
+    visibility = ["//visibility:private"],
+)
+
+go_binary(
+    name = "package_contents",
+    embed = [":package_contents_lib"],
+    visibility = ["//visibility:public"],
+)

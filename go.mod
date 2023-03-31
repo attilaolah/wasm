@@ -1,6 +1,6 @@
 module github.com/attilaolah/wasm
 
-go 1.19
+go 1.20
 
 require (
 	github.com/moby/buildkit v0.10.4
@@ -10,6 +10,7 @@ require (
 )
 
 require (
+	github.com/Rican7/conjson v0.1.0 // indirect
 	github.com/containerd/typeurl v1.0.2 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect

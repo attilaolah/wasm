@@ -1,0 +1,129 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("@npm//http-server:index.bzl", "http_server")
+load("@io_bazel_rules_closure//closure:defs.bzl", "closure_js_binary", "closure_js_library")
+load("@npm//@bazel/typescript:index.bzl", "ts_project")
+load("//tools:javascript_target.bzl", "JS_TARGET", "TS_TARGET")
+load("//tools:javascript.bzl", "iife")
+load("//tools:slim.bzl", "slim_library")
+
+package(default_visibility = ["//visibility:public"])
+
+closure_js_binary(
+    name = "notebook",
+    language = JS_TARGET,
+    deps = [":notebook_lib"],
+)
+
+closure_js_library(
+    name = "notebook_lib",
+    srcs = [":notebook_iife"],
+    no_closure_library = True,
+    suppress = [
+        # Closure Compiler currently does not consume TypeScript .d.ts inputs.
+        # Therefore it has no clue about the types, so we disable some optimisations.
+        "JSC_UNKNOWN_EXPR_TYPE",
+    ],
+)
+
+iife(
+    name = "notebook_iife",
+    srcs = [":notebook_ts"],
+    replace = {
+        "let importJS;": "",
+        "importJS": "import",
+    },
+)
+
+ts_project(
+    name = "notebook_ts",
+    # Compilation mode must come first.
+    srcs = [":compilation_mode_ts"] + [
+        "main.ts",
+    ],
+    tsconfig = {"compilerOptions": {
+        "target": TS_TARGET,
+        "esModuleInterop": True,
+        "module": "commonjs",
+    }},
+    deps = ["@npm//@types/emscripten"],
+)
+
+slim_library(
+    name = "template",
+    srcs = ["template.slim"],
+)
+
+filegroup(
+    name = "notebook_html",
+    srcs = [
+        ":index",
+        ":template",
+    ],
+)
+
+http_server(
+    name = "server",
+    args = ["notebook/server_root"],
+    data = [":server_root_files"],
+)
+
+genrule(
+    name = "server_root_files",
+    srcs = [
+        ":notebook_html",
+        "//notebook/runtime",
+        "//notebook/style:themes",
+    ] + select({
+        "//config:opt": [
+            ":notebook",
+        ],
+        "//conditions:default": [
+            ":notebook_iife",
+        ],
+    }),
+    outs = [
+        "server_root/index.html",
+        "server_root/notebook.mjs",
+        "server_root/template.html",
+        "server_root/modules/runtime.mjs",
+        "server_root/modules/runtime.wasm",
+        "server_root/themes/mdn-yari.css",
+        "server_root/themes/mdn-yari.css.map",
+    ],
+    cmd = r"""
+mkdir -p "$(RULEDIR)/server_root/modules"
+cp $(locations :notebook_html) "$(RULEDIR)/server_root"
+cp "$(RULEDIR)/runtime/runtime.wasm" "$(RULEDIR)/server_root/modules"
+
+mkdir -p "$(RULEDIR)/themes"
+cp $(locations //notebook/style:themes) "$(RULEDIR)/server_root/themes"
+""" + select({
+        "//config:opt": """
+cp "$(RULEDIR)/notebook.js" "$(RULEDIR)/server_root/notebook.mjs"
+cp "$(RULEDIR)/runtime/runtime_wasm_js_3.js" "$(RULEDIR)/server_root/modules/runtime.mjs"
+""",
+        "//conditions:default": """
+cp "$(location :notebook_iife)" "$(RULEDIR)/server_root/notebook.mjs"
+cp "$(RULEDIR)/runtime/runtime.js" "$(RULEDIR)/server_root/modules/runtime.mjs"
+""",
+    }),
+    local = True,
+)
+
+filegroup(
+    name = "compilation_mode_ts",
+    srcs = select({
+        "//config:" + mode: ["compilation_mode_{}.ts".format(mode)]
+        for mode in [
+            "opt",
+            "fastbuild",
+            "dbg",
+        ]
+    }),
+)
+
+bzl_library(
+    name = "notebook_page_bzl",
+    srcs = ["notebook_page.bzl"],
+    deps = ["@bazel_skylib//lib:shell"],
+)

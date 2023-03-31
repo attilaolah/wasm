@@ -2,3 +2,4 @@
 .bazelrc.local
 bazel-*
 node_modules
+target

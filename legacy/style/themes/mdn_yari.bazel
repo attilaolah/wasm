@@ -1,0 +1,11 @@
+load("@io_bazel_rules_sass//:defs.bzl", "sass_library")
+
+package(default_visibility = ["//visibility:public"])
+
+sass_library(
+    name = "scss",
+    srcs = glob([
+        "client/src/*.scss",
+        "client/src/**/*.scss",
+    ]),
+)

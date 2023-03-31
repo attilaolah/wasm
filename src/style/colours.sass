@@ -1,0 +1,80 @@
+:root
+  --white: 255, 255, 255
+
+  // MDN Yari theme light/dark base values
+  --primary-light: 27, 27, 27
+  --primary-bg-light: 255, 255, 255
+  --link-light: 0, 105, 194
+
+  --code-bg-light: 241, 241, 241
+  --code-token-comment-light: var(--code-token-punctuation-light)
+  --code-token-punctuation-light: 133, 133, 133
+  --code-token-attribute-name-light: 211, 0, 56
+  --code-token-attribute-value-light: 0, 121, 54
+  --code-token-tag-light: 0, 105, 194
+  --code-token-selector-light: 135, 43, 255
+
+  --primary-dark: var(--primary-bg-light)
+  --primary-bg-dark: var(--primary-light)
+  --link-dark: 140, 180, 255
+
+  --code-bg-dark: 52, 52, 52
+  --code-token-comment-dark: var(--code-token-punctuation-dark)
+  --code-token-punctuation-dark: 179, 179, 179
+  --code-token-attribute-name-dark: 255, 151, 160
+  --code-token-attribute-value-dark: 0, 208, 97
+  --code-token-tag-dark: 193, 207, 241
+  --code-token-selector-dark: 190, 165, 255
+
+  // SOLARIZED values
+  --base03: 0, 43, 54
+  --base02: 7, 54, 66
+  --base01: 88, 110, 117
+  --base00: 101, 123, 131
+  --base0: 131, 148, 150
+  --base1: 147, 161, 161
+  --base2: 238, 232, 213
+  --base3: 253, 246, 227
+  --yellow: 181, 137, 0
+  --orange: 203, 75, 22
+  --red: 220, 50, 47
+  --magenta: 211, 54, 130
+  --violet: 108, 113, 196
+  --blue: 38, 139, 210
+  --cyan: 42, 161, 152
+  --green: 133, 153, 0
+
+@mixin theme($which)
+  @include theme-var($which, primary)
+  @include theme-var($which, primary-bg)
+  @include theme-var($which, link)
+
+  @include theme-var($which, code-bg)
+  @include theme-var($which, code-token-comment)
+  @include theme-var($which, code-token-punctuation)
+  @include theme-var($which, code-token-attribute-name)
+  @include theme-var($which, code-token-attribute-value)
+  @include theme-var($which, code-token-tag)
+  @include theme-var($which, code-token-selector)
+
+@mixin theme-var($theme, $name)
+  --#{$name}: var(--#{$name}-#{$theme})
+
+@mixin light()
+  @include theme(light)
+
+@mixin dark()
+  @include theme(dark)
+
+.light
+  @include light()
+
+.dark
+  @include dark()
+
+:root:not(.light):not(.dark)
+  @media (prefers-color-scheme: light)
+    @include light()
+
+  @media (prefers-color-scheme: dark)
+    @include dark()

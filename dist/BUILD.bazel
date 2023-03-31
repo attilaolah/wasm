@@ -1,0 +1,75 @@
+load("@aspect_rules_webpack//webpack:defs.bzl", "webpack_bundle")
+load("@bazel_skylib//rules:expand_template.bzl", "expand_template")
+load("@rules_pkg//pkg:mappings.bzl", "filter_directory", "pkg_attributes", "pkg_filegroup", "pkg_files", "pkg_mkdirs", "pkg_mklink", "strip_prefix")
+load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
+load("//tools:npm.bzl", "package_contents", "package_json")
+
+package_contents(
+    name = "dist",
+    srcs = [":webnb"],
+    outdir_name = "pkg",
+    outputs = select({
+        "//config:opt": {
+            "LICENSE.txt": "*.LICENSE.txt",
+            "webnb.min.css": "style.css",
+            "webnb.min.js": "webnb.js",
+            "webnb.module.wasm": "*.module.wasm",
+        },
+        "//conditions:default": {
+            "webnb.css": "style.css",
+            "webnb.js": "webnb.js",
+            "webnb.module.wasm": "*.module.wasm",
+        }
+    }),
+    visibility = ["//docs:__pkg__"],
+)
+
+package_json(
+    name = "package_json",
+    src = "//:package.json",
+)
+
+webpack_bundle(
+    name = "webnb",
+    srcs = [
+        "//src:runtime",
+        "//src/loader",
+        "//src/style",
+        "@npm//normalize.css",
+        "@npm//prismjs",
+    ],
+    entry_point = ":entry_point",
+    env = {
+        # Required for loading the @npm//... dependencies from srcs.
+        "NODE_PATH": "external/npm/node_modules",
+    },
+    output_dir = True,
+    webpack_config = "webpack.config.js",
+)
+
+expand_template(
+    name = "entry_point",
+    template = "entry_point.js.tpl",
+    out = "entry_point.js",
+    substitutions = select({
+        "//config:" + mode: {"${COMPILATION_MODE}": mode}
+        for mode in [
+            "opt",
+            "fastbuild",
+            "dbg",
+        ]
+    }),
+)
+
+
+pkg_tar(
+    name = "pkg_tar",
+    srcs = [
+        ":dist",
+        ":package_json",
+    ],
+    remap_paths = {
+        "dist/package.json": "package.json",
+    },
+    strip_prefix = "pkg",
+)

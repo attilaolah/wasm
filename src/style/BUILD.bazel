@@ -1,0 +1,46 @@
+load("@io_bazel_rules_sass//:defs.bzl", "sass_binary", "sass_library")
+
+sass_binary(
+    name = "style",
+    src = "style.sass",
+    output_style = select({
+        "//config:opt": "compressed",
+        "//conditions:default": "expanded",
+    }),
+    visibility = [
+        "//dist:__pkg__",
+        "//docs:__pkg__",
+    ],
+    deps = [
+        ":code_blocks",
+        ":colours",
+        ":common",
+        ":page_layout",
+        ":typography",
+    ],
+)
+
+sass_library(
+    name = "colours",
+    srcs = ["colours.sass"],
+)
+
+sass_library(
+    name = "common",
+    srcs = ["common.sass"],
+)
+
+sass_library(
+    name = "page_layout",
+    srcs = ["page_layout.sass"],
+)
+
+sass_library(
+    name = "code_blocks",
+    srcs = ["code_blocks.sass"],
+)
+
+sass_library(
+    name = "typography",
+    srcs = ["typography.sass"],
+)

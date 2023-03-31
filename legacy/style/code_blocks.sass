@@ -1,0 +1,65 @@
+pre,
+code
+  --elem-radius: 0
+
+  border-width: 0
+
+#content
+  .cell
+    display: flex
+    flex-direction: column
+
+    // Propagate up the murgin from the pre block.
+    margin: 16px 0 32px
+
+    > pre,
+    > .out > pre
+      margin: 0
+
+    &:has(.out.ok) > pre
+      border-bottom: 4px solid green
+
+    &:has(.out.fail) > pre
+      border-bottom: 4px solid red
+
+    > .out
+      &.ok > pre
+        background-color: var(--background-success)
+
+      &.fail > pre
+        color: var(--text-primary-red)
+        background-color: var(--background-warning)
+
+    > .controls,
+    > .controls button
+      display: flex
+      flex-direction: row
+      align-items: center
+
+    > .controls
+      margin: 16px 0
+
+    > .controls button
+      border-radius: 40px
+      padding: 8px 24px 8px 16px
+
+      color: var(--run-button-text)
+      background: var(--run-button-background)
+
+      .icon
+        margin-right: 8px
+
+:root
+  --run-button-text: #ffffff
+  --run-button-text-dark: #3f008d
+  --run-button-background: #1a237e
+  --run-button-background-dark: #d3bbff
+
+body.dark
+  --run-button-text: var(--run-button-text-dark)
+  --run-button-background: var(--run-button-background-dark)
+
+@media (prefers-color-scheme: dark)
+  :root
+    --run-button-text: var(--run-button-text-dark)
+    --run-button-background: var(--run-button-background-dark)

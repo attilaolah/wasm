@@ -3,8 +3,8 @@
 Adds a few convenience methods, most notably templeted URLs and strip_prefix
 params, so that the version would need to be passed only once.
 
-The goal is that the version would be stored in only one place, making it
-easier to update external dependencies.
+The goal is for the version to be stored in only one place to make updating
+external dependencies quicker.
 """
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", _http_archive = "http_archive")
@@ -64,10 +64,12 @@ def http_archive(
     if strip_prefix != None:
         strip_prefix = strip_prefix.format(**args)
 
+    if build_file_content != None and "build_file" not in kwargs:
+        kwargs["build_file_content"] = build_file_content
+
     _http_archive(
         name = name.lower().replace("-", "_"),
         urls = [url.format(**args) for url in urls],
         strip_prefix = strip_prefix,
-        build_file_content = build_file_content,
         **kwargs
     )

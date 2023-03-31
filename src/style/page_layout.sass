@@ -1,0 +1,101 @@
+$header-height: 64px
+$left-sidebar-width: 256px
+
+$pad-half: 4px
+$pad: $pad-half * 2
+$pad-double: $pad * 2
+$pad-content: $pad-double + $pad
+
+$button-size: 48px
+
+.notebook-ui
+  display: flex
+  flex-direction: column
+
+  color: rgb(var(--primary))
+  background-color: rgb(var(--primary-bg))
+
+  --max-width: 1200px
+  > *
+    width: 100%
+    max-width: var(--max-width)
+    box-sizing: border-box
+    margin: 0 auto
+
+  header.head
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+    padding: $pad
+
+    .logo
+      color: rgb(var(--white))
+      background: rgb(var(--magenta))
+      font-family: rgb(var(--font-logo))
+      display: flex
+      align-items: center
+      font-size: 32px
+      padding: 8px 12px
+
+      .hl
+        background: rgb(var(--cyan))
+
+    .icons
+      display: flex
+      flex-direction: row
+      padding-left: 8px
+
+
+    .right
+      flex: 1
+      justify-content: flex-end
+
+    button.icon
+      width: $button-size
+      height: $button-size
+      border: none
+      border-radius: 100%
+      margin: $pad-half
+
+      display: flex
+      align-items: center
+      justify-content: center
+
+  main.main-content
+    padding: $pad-double
+    line-height: 1.75
+    font-size: 16px
+
+    p, pre
+      margin: 16px 0 32px
+
+    a
+      color: rgb(var(--link))
+
+  button.icon
+    color: inherit
+    background-color: transparent
+    cursor: pointer
+
+    --alpha: 0
+    background-color: rgba(var(--primary), var(--alpha))
+
+    &:hover
+      --alpha: 0.08
+
+    &:active
+      --alpha: 0.12
+
+body
+  &.dark button.toggle-theme .toggle-dark,
+  &.light button.toggle-theme .toggle-light,
+  &:not(.dark):not(.light) .toggle-theme-default
+    display: none !important
+
+@media (prefers-color-scheme: dark)
+  body:not(.light) .toggle-theme .toggle-dark
+    display: none !important
+
+@media (prefers-color-scheme: light)
+  body:not(.dark) .toggle-theme .toggle-light
+    display: none !important

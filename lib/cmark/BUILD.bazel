@@ -5,8 +5,8 @@ load(":package.bzl", "NAME")
 package(default_visibility = ["//:__subpackages__"])
 
 package_lib(
-    github_release = ('commonmark', '{name}'),
-    github_version_prefix = '',
+    github_release = ("commonmark", "{name}"),
+    github_version_prefix = "",
 )
 
 cmake_lib(

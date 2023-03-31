@@ -1,0 +1,210 @@
+// Values from https://developer.mozilla.org.
+.token
+  &.comment,
+  &.prolog,
+  &.doctype,
+  &.cdata
+    color: rgb(var(--code-token-comment))
+
+  &.punctuation
+    color: rgb(var(--code-token-punctuation))
+
+  &.attr-name,
+  &.builtin,
+  &.inserted,
+  &.selector,
+  &.property,
+  &.class-name,
+  &.function
+    color: rgb(var(--code-token-attribute-name))
+
+  &.atrule,
+  &.attr-value
+    color: rgb(var(--code-token-attribute-value))
+
+  &.keyword
+    color: rgb(var(--code-token-tag))
+
+  &.tag,
+  &.char,
+  &.string,
+  &.boolean,
+  &.number,
+  &.constant,
+  &.symbol,
+  &.deleted
+    color: rgb(var(--code-token-attribute-value))
+
+  &.selector,
+  &.builtin,
+  &.template-string > .token.string,
+  &.inserted
+    color: rgb(var(--code-token-selector))
+
+  &.important,
+  &.bold
+    font-weight: bold
+
+  &.italic
+    font-style: italic
+
+  &.entity
+    cursor: help
+
+.notebook-ui
+  pre
+    padding: $pad
+
+  pre,
+  :not(pre) > code
+    font-family: var(--font-code)
+    background-color: rgb(var(--code-bg))
+
+  :not(pre) > code
+    padding: 2px 4px
+
+  .cell
+    display: grid
+    margin: 16px 0 32px
+
+    &.ok
+      .controls .status
+        --color: var(--green)
+        :not(.ok).material-symbols-outlined
+          display: none
+      pre
+        --border: rgb(var(--green))
+
+    &.pending
+      .controls .status
+        --color: var(--yellow)
+        :not(.pending).material-symbols-outlined
+          display: none
+      pre
+        --border: rgb(var(--yellow))
+
+    &.err
+      .controls .status
+        --color: var(--red)
+        :not(.err).material-symbols-outlined
+          display: none
+      pre
+        --border: rgb(var(--red))
+
+    &.ro .controls .icon-run,
+    &:not(.ro) .controls .icon-ro
+      display: none
+
+    &.no-tag .controls .run
+      padding-right: 6px
+      gap: 0
+
+    .src
+      grid-row: 2
+      padding: 16px 0 4px
+
+    .out
+      grid-row: 3
+
+      &:empty
+        display: none
+
+    pre
+      --gutter: 4px
+      --border: rgba(var(--primary), 0.2)
+      margin: 0 0 0 calc(0px - var(--gutter)) !important
+      border-left: var(--gutter) solid var(--border)
+      padding: $pad*2 $pad
+
+    .controls
+      display: flex
+      margin: -20px 8px
+      gap: $pad
+      position: relative
+      height: 0
+
+      &.for-src
+        grid-row: 1
+        margin-top: 0
+
+      > *
+        display: flex
+        align-items: center
+        justify-content: center
+
+        position: relative
+        overflow: hidden
+
+      .chip,
+      button
+        --size: 32px
+
+        border: none
+        height: var(--size)
+        border-radius: calc(var(--size) / 2)
+        background-color: rgb(var(--color))
+        box-sizing: border-box
+
+        .material-symbols-outlined
+          --size: 20px
+          color: rgb(var(--text))
+
+      .chip
+        --text: var(--white)
+        color: rgb(var(--text))
+        padding: 6px
+        padding-right: 16px
+        gap: 2px
+
+        &.clear
+          padding: 6px
+
+        code
+          padding: 2px 4px
+          line-height: 16px
+          color: rgb(var(--primary))
+
+      button
+        font-size: 14px
+        cursor: pointer
+
+        &.run
+          --color: var(--blue)
+
+        &.secondary
+          --color: var(--code-bg)
+          --text: var(--code-token-comment)
+
+          padding: 6px
+
+        &.copy
+          padding: 4px 8px
+          .material-symbols-outlined
+            --size: 16px
+
+        &::before
+          --text: var(--white)
+          --alpha: 0
+
+          content: ""
+          background-color: rgba(var(--text), var(--alpha))
+
+          position: absolute
+          top: 0
+          right: 0
+          bottom: 0
+          left: 0
+
+        &:hover::before
+            --alpha: 0.08
+
+        &:active::before
+            --alpha: 0.12
+
+      .stretch
+        flex: 1
+
+    &:not(.run) .controls
+      .clear,
+      .status
+        display: none

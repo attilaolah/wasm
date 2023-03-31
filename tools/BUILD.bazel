@@ -16,8 +16,18 @@ filegroup(
 )
 
 bzl_library(
-    name = "wasm_library",
-    srcs = ["wasm_library.bzl"],
+    name = "javascript",
+    srcs = ["javascript.bzl"],
+)
+
+bzl_library(
+    name = "npm",
+    srcs = ["npm.bzl"],
+)
+
+bzl_library(
+    name = "slim",
+    srcs = ["slim.bzl"],
 )
 
 bzl_library(

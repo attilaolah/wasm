@@ -1,0 +1,31 @@
+load("@npm//http-server:index.bzl", "http_server")
+load(":page.bzl", "page")
+
+package(default_visibility = ["//visibility:public"])
+
+page(
+    name = "index",
+    srcs = ["index.md"],
+    loader_js = select({
+        "//config:opt": "../dist/pkg/webnb.min.js",
+        "//conditions:default": "../dist/pkg/webnb.js",
+    }),
+)
+
+page(
+    name = "code-blocks",
+    srcs = ["code-blocks.md"],
+    loader_js = select({
+        "//config:opt": "../dist/pkg/webnb.min.js",
+        "//conditions:default": "../dist/pkg/webnb.js",
+    }),
+)
+
+http_server(
+    name = "server",
+    data = [
+        ":code-blocks",
+        ":index",
+        "//dist",
+    ],
+)
