@@ -100,6 +100,11 @@ toolchain, pass `--cpu=wasm32`. Pass `-c opt` for an optimised build.
 [`//tools/emscripten`](https://github.com/attilaolah/wasm/blob/main/tools/emscripten/BUILD.bazel) | 3.1.47 [🔗](https://github.com/emscripten-core/emscripten/archive/refs/tags/3.1.47.tar.gz)
 [`//tools/llvm`](https://github.com/attilaolah/wasm/blob/main/tools/llvm/BUILD.bazel) | 17.0.2 [🔗](https://github.com/llvm/llvm-project/releases/download/llvmorg-17.0.2/clang+llvm-17.0.2-x86_64-linux-gnu-ubuntu-22.04.tar.xz)
 
+## Nix Shell
+
+To get a Clang toolchain in a Nix environment, run `nix-shell`, it will pick up
+the `shell.nix` file in the repo. This will set `$CC` to `clang`, along with
+any necessary standard library paths.
 
 [Bazel]: https://bazel.build
 [WebAssembly]: https://webassembly.org
