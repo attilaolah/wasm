@@ -9,13 +9,13 @@ package_lib()
 
 cmake_lib(
     name = NAME,
-    build_data = ["//tools/llvm:flang_runtime"],
+    build_data = ["@llvm//:flang"],
     cache_entries = cache_entries(
         build_testing = False,
     ),
     env = {
         "FC": root_path(
-            "$(execpaths //tools/llvm:flang_runtime)/bin/flang",
+            "$(execpaths @llvm//:flang)",
             double_escape = True,
         ),
     },
