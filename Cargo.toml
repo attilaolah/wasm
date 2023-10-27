@@ -1,11 +1,11 @@
 [package]
 name = "webnb"
 description = "Interactive Markdown-based notebooks."
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Attila Oláh <attilaolah@gmail.com>"]
 categories = ["wasm"]
 readme = "README.md"
-edition = "2018"
+edition = "2021"
 
 [lib]
 crate-type = ["cdylib"]
@@ -27,7 +27,7 @@ wee_alloc = "0.4"
 yaml-front-matter = "0.1"
 
 [dependencies.web-sys]
-version = "0.3.22"
+version = "0.3"
 features = [
   "Clipboard",
   "Document",
@@ -65,11 +65,8 @@ features = [
   "console",
 ]
 
-#[target."cfg(debug_assertions)".dependencies]
-#console_error_panic_hook = "0.1.5"
-
 [dev-dependencies]
-futures = "0.3.25"
-wasm-bindgen-futures = "0.4.33"
-wasm-bindgen-test = "0.3.33"
-wasm-pack = "0.10.3"
+console_error_panic_hook = "0.1"
+futures = "0.3"
+wasm-bindgen-test = "0.3"
+wasm-pack = "0.12"
