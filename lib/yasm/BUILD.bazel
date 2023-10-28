@@ -1,0 +1,19 @@
+load("//lib:lib.bzl", "package_lib")
+load("//toolchains:utils.bzl", "no_error")
+load("//toolchains/cmake:cmake.bzl", "cache_entries", "cmake_lib")
+load(":package.bzl", "BINARIES", "NAME", "STATIC_LIBS")
+
+package(default_visibility = ["//:__subpackages__"])
+
+package_lib(
+    runtime_for = [NAME],
+)
+
+cmake_lib(
+    name = NAME,
+    cache_entries = cache_entries(
+        build_shared_libs = False,
+    ),
+    out_binaries = BINARIES,
+    out_static_libs = STATIC_LIBS,
+)

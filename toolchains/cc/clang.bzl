@@ -59,7 +59,7 @@ def clang_toolchain(name):
     # LLVM tools prefixed with "llvm-":
     tool_paths = {
         tool: "{}/llvm-{}".format(llvm_bin, tool)
-        for tool in ["ar", "dwp", "nm", "objcopy", "objdump", "strip"]
+        for tool in ["ar", "as", "dwp", "nm", "objcopy", "objdump", "strip"]
     }
 
     # Special-case these tools that don't match the above pattern:
