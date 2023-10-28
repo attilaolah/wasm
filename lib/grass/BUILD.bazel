@@ -73,7 +73,11 @@ FLAGS = [
     blas = "cblas",
     bzlib = "bz2",
 ) + [
-    '--with-proj-share="{}"'.format(dep_path("proj", "/share/proj")),
+    '--with-proj-share="{}"'.format(dep_path(
+        "proj",
+        "/share/proj",
+        double_escape = True,
+    )),
 ] + without_features(
     "cairo",
     "freetype",
@@ -90,14 +94,16 @@ FLAGS = [
 )
 
 CONFIGURE_OPTIONS = FLAGS + [
-    configure_sed(TRANSITIVE_DEPS),
+    # TODO:
+    #configure_sed(TRANSITIVE_DEPS),
 ]
 
 CONFIGURE_OPTIONS_WASM = CONFIGURE_OPTIONS + [
-    configure_sed(
-        TRANSITIVE_DEPS,
-        cross_compiling = True,
-    ),
+    # TODO:
+    #configure_sed(
+    #    TRANSITIVE_DEPS,
+    #    cross_compiling = True,
+    #),
 ]
 
 POSTFIX_CP = " ".join((

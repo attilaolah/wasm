@@ -17,7 +17,10 @@ package_lib(
 CONFIGURE_OPTIONS = [
     # keep sorted
     "--disable-shared",
-    '--with-openssl="{}"'.format(dep_path("openssl")),
+    '--with-openssl="{}"'.format(dep_path(
+        "openssl",
+        double_escape = True,
+    )),
     "--with-system-libmpdec",
 ]
 

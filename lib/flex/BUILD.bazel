@@ -26,7 +26,10 @@ configure_make_lib(
     configure_options = [
         "--enable-static",
         "--disable-shared",
-        '--with-libiconv-prefix="{}"'.format(dep_path("iconv")),
+        '--with-libiconv-prefix="{}"'.format(dep_path(
+            "iconv",
+            double_escape = True,
+        )),
     ],
     env = {"PATH": runtime_path(BUILD_DEPS)},
     out_binaries = [

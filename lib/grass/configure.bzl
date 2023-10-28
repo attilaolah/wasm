@@ -43,6 +43,6 @@ def with_libraries(*features, **libraries):
 
 def _with_library(feature, library = None):
     return with_features(feature) + [
-        '--with-{}-includes="{}"'.format(feature, include_dir(library or feature)),
-        '--with-{}-libs="{}"'.format(feature, library_dir(library or feature)),
+        '--with-{}-includes="{}"'.format(feature, include_dir(library or feature, double_escape = True)),
+        '--with-{}-libs="{}"'.format(feature, library_dir(library or feature, double_escape = True)),
     ]

@@ -34,14 +34,14 @@ def runtime_path(deps, double_escape = True):
         "$${PATH}" if double_escape else "${PATH}",
     ])
 
-def include_dir(library, subdir = ""):
+def include_dir(library, subdir = "", double_escape = False):
     subpath = "/include"
     if subdir:
         subpath += "/" + subdir
-    return dep_path(library, subpath)
+    return dep_path(library, subpath, double_escape = double_escape)
 
-def library_dir(library):
-    return dep_path(library, "/lib")
+def library_dir(library, double_escape = False):
+    return dep_path(library, "/lib", double_escape = double_escape)
 
 def library_path(library, static_lib = None):
     return "/".join([

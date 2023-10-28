@@ -14,8 +14,14 @@ CONFIGURE_OPTIONS = [
     # Disable cross-compile prefix.
     # Blaze will use absolute paths for the compiler anyway.
     "--cross-compile-prefix=",
-    '--with-zlib-include="{}"'.format(include_dir("z")),
-    '--with-zlib-lib="{}"'.format(library_dir("z")),
+    '--with-zlib-include="{}"'.format(include_dir(
+        "z",
+        double_escape = True,
+    )),
+    '--with-zlib-lib="{}"'.format(library_dir(
+        "z",
+        double_escape = True,
+    )),
     "--libdir=lib",  # NOT "lib32" or "lib64"
     "--release",
     "zlib",

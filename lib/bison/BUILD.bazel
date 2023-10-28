@@ -24,7 +24,10 @@ configure_make_lib(
     name = NAME,
     build_data = BUILD_DEPS,
     configure_options = [
-        '--with-libiconv-prefix="{}"'.format(dep_path("iconv")),
+        '--with-libiconv-prefix="{}"'.format(dep_path(
+            "iconv",
+            double_escape = True,
+        )),
     ],
     env = {"PATH": runtime_path(BUILD_DEPS)},
     out_binaries = [

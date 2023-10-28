@@ -3,6 +3,9 @@
 # Allow local workspace config to select a different default:
 try-import %workspace%/.bazelrc.local
 
+# Use modules.
+common --enable_bzlmod
+
 # Old C++ CPU/CROSSTOOL toolchain API:
 build --crosstool_top=//toolchains --@rules_rust//:extra_rustc_flag=--cfg=web_sys_unstable_apis
 
