@@ -5,10 +5,9 @@ load("//lib:http_archive.bzl", "http_archive")
 
 NAME = "opencv"
 VERSION = "4.6.0"
+SHA256 = "158db5813a891c7eda8644259fc1dbd76b21bd1ffb9854a8b4b8115a4ceec359"
 
 URL = "https://github.com/{name}/{name}/archive/{version}.zip"
-
-SHA256 = "158db5813a891c7eda8644259fc1dbd76b21bd1ffb9854a8b4b8115a4ceec359"
 
 STATIC_LIBS = [
     static_lib("_".join((NAME, lib)))

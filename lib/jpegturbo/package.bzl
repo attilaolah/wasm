@@ -5,10 +5,9 @@ load("//lib:http_archive.bzl", "http_archive")
 
 NAME = "jpegturbo"
 VERSION = "2.1.0"
+SHA256 = "d6b7790927d658108dfd3bee2f0c66a2924c51ee7f9dc930f62c452f4a638c52"
 
 URL = "https://github.com/libjpeg-turbo/libjpeg-turbo/archive/{version}.tar.gz"
-
-SHA256 = "d6b7790927d658108dfd3bee2f0c66a2924c51ee7f9dc930f62c452f4a638c52"
 
 INAME = "jpeg"
 LNAME = "turbojpeg"

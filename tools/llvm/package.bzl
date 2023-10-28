@@ -4,15 +4,12 @@ load("//:http_archive.bzl", "http_archive")
 load("//:versions.bzl", "OS_VERSION")
 load("//toolchains:utils.bzl", "patch_files")
 
-VERSION = "12.0.0"
-VERSION_MMP = VERSION.split("-")[0]
+VERSION = "17.0.2"
 VERSION_ND = VERSION.replace("-", "")
+VERSION_MMP = VERSION.split("-")[0]
+SHA256 = "df297df804766f8fb18f10a188af78e55d82bb8881751408c2fa694ca19163a8"
 
 URL = "https://github.com/llvm/llvm-project/releases/download/llvmorg-{version}/clang+llvm-{version}-x86_64-linux-gnu-" + OS_VERSION + ".tar.xz"
-URL_FLANG = "https://github.com/llvm/llvm-project/releases/download/llvmorg-{version}/flang-{version}.src.tar.xz"
-
-SHA256 = "a9ff205eb0b73ca7c86afc6432eed1c2d49133bd0d49e47b15be59bbf0dd292e"
-SHA256_FLANG = "dc9420c9f55c6dde633f0f46fe3f682995069cc5247dfdef225cbdfdca79123a"
 
 BUILD = """
 package(default_visibility = ["//visibility:public"])
@@ -20,6 +17,11 @@ package(default_visibility = ["//visibility:public"])
 filegroup(
     name = "all",
     srcs = glob(["**"]),
+)
+
+filegroup(
+    name = "flang",
+    srcs = ["bin/flang-new"],
 )
 
 filegroup(
@@ -41,14 +43,4 @@ def download_llvm():
             # It breaks the Flang build. Instead, we'll supply a static libtinfo.so.
             "lib/cmake/llvm/LLVMExports.cmake": r"s:;/usr/lib/x86_64-linux-gnu/libtinfo.so;:;:g",
         }),
-    )
-
-def download_flang():
-    http_archive(
-        name = "flang",
-        version = VERSION,
-        urls = [URL_FLANG],
-        sha256 = SHA256_FLANG,
-        strip_prefix = "flang-{version}.src",
-        patches = ["//tools/llvm:flang.patch"],
     )

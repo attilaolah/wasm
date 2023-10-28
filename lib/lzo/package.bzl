@@ -5,10 +5,9 @@ load("//lib:http_archive.bzl", "http_archive")
 
 NAME = "lzo"
 VERSION = "2.10"
+SHA256 = "c0f892943208266f9b6543b3ae308fab6284c5c90e627931446fb49b4221a072"
 
 URL = "https://www.oberhumer.com/opensource/{name}/download/{name}-{version}.tar.gz"
-
-SHA256 = "c0f892943208266f9b6543b3ae308fab6284c5c90e627931446fb49b4221a072"
 
 STATIC_LIBS = [static_lib(NAME + major(VERSION))]
 

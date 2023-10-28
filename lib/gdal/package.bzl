@@ -4,13 +4,12 @@ load("//lib:http_archive.bzl", "http_archive")
 
 NAME = "gdal"
 VERSION = "3.5.2"
+SHA256 = "fbd696e1b2a858fbd2eb3718db16b14ed9ba82521d3578770d480c74fe1146d2"
 
 URLS = [
     "http://download.osgeo.org/{name}/{version}/{name}-{version}.tar.gz",
     "https://github.com/OSGeo/{name}/releases/download/v{version}/{name}-{version}.tar.gz",
 ]
-
-SHA256 = "fbd696e1b2a858fbd2eb3718db16b14ed9ba82521d3578770d480c74fe1146d2"
 
 def download():
     http_archive(

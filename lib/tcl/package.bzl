@@ -5,10 +5,9 @@ load("//lib:http_archive.bzl", "http_archive")
 
 NAME = "tcl"
 VERSION = "8.6.11"
+SHA256 = "8c0486668586672c5693d7d95817cb05a18c5ecca2f40e2836b9578064088258"
 
 URL = "https://downloads.sourceforge.net/{name}/{name}{version}-src.tar.gz"
-
-SHA256 = "8c0486668586672c5693d7d95817cb05a18c5ecca2f40e2836b9578064088258"
 
 STATIC_LIBS = [
     static_lib(NAME + major_minor(VERSION)),

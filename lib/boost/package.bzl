@@ -5,10 +5,9 @@ load("//lib:http_archive.bzl", "http_archive")
 
 NAME = "boost"
 VERSION = "1.80.0"
+SHA256 = "1e19565d82e43bc59209a168f5ac899d3ba471d55c7610c677d4ccf2c9c500c0"
 
 URL = "https://boostorg.jfrog.io/artifactory/main/release/{version}/source/{name}_{version_}.tar.bz2"
-
-SHA256 = "1e19565d82e43bc59209a168f5ac899d3ba471d55c7610c677d4ccf2c9c500c0"
 
 STATIC_LIBS = [static_lib("_".join([NAME, lib])) for lib in [
     # keep sorted

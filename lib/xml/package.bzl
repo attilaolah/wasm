@@ -5,10 +5,9 @@ load("//lib:http_archive.bzl", "http_archive")
 
 NAME = "xml"
 VERSION = "2.9.10"
+SHA256 = "aafee193ffb8fe0c82d4afef6ef91972cbaf5feea100edc2f262750611b4be1f"
 
 URL = "http://{name}soft.org/sources/lib{name}{versionm}-{version}.tar.gz"
-
-SHA256 = "aafee193ffb8fe0c82d4afef6ef91972cbaf5feea100edc2f262750611b4be1f"
 
 STATIC_LIBS = [static_lib(NAME + major(VERSION))]
 

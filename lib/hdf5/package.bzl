@@ -4,13 +4,12 @@ load("//lib:http_archive.bzl", "http_archive")
 
 NAME = "hdf5"
 VERSION = "1.12.0"
+SHA256 = "a62dcb276658cb78e6795dd29bf926ed7a9bc4edf6e77025cd2c689a8f97c17a"
 
 URLS = [
     "https://support.hdfgroup.org/ftp/{uname}/releases/{name}-{versionmm}/{name}-{version}/src/{name}-{version}.tar.gz",
     "https://hdf-wordpress-1.s3.amazonaws.com/wp-content/uploads/manual/{uname}/{uname}_{version_}/source/{name}-{version}.tar.gz",
 ]
-
-SHA256 = "a62dcb276658cb78e6795dd29bf926ed7a9bc4edf6e77025cd2c689a8f97c17a"
 
 def download():
     http_archive(

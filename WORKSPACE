@@ -72,7 +72,7 @@ load("@rules_rust//wasm_bindgen:repositories.bzl", "rust_wasm_bindgen_repositori
 
 rules_rust_dependencies()
 
-rust_register_toolchains(edition = "2018")
+rust_register_toolchains(edition = "2021")
 
 crate_universe_dependencies(bootstrap = True)
 

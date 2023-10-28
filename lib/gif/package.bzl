@@ -4,10 +4,9 @@ load("//lib:http_archive.bzl", "http_archive")
 
 NAME = "gif"
 VERSION = "5.2.1"
+SHA256 = "31da5562f44c5f15d63340a09a4fd62b48c45620cd302f77a6d9acf0077879bd"
 
 URL = "https://downloads.sourceforge.net/project/{name}lib/{name}lib-{version}.tar.gz"
-
-SHA256 = "31da5562f44c5f15d63340a09a4fd62b48c45620cd302f77a6d9acf0077879bd"
 
 def download():
     http_archive(

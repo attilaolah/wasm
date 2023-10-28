@@ -5,10 +5,9 @@ load("//lib:http_archive.bzl", "http_archive")
 
 NAME = "python"
 VERSION = "3.10.7"
+SHA256 = "6eed8415b7516fb2f260906db5d48dd4c06acc0cb24a7d6cc15296a604dcdc48"
 
 URL = "https://www.{name}.org/ftp/{name}/{version}/{tname}-{version}.tar.xz"
-
-SHA256 = "6eed8415b7516fb2f260906db5d48dd4c06acc0cb24a7d6cc15296a604dcdc48"
 
 STATIC_LIBS = [static_lib(NAME + major_minor(VERSION))]
 

@@ -5,10 +5,9 @@ load("//lib:http_archive.bzl", "http_archive")
 
 NAME = "ncurses"
 VERSION = "6.2"
+SHA256 = "30306e0c76e0f9f1f0de987cf1c82a5c21e1ce6568b9227f7da5b71cbea86c9d"
 
 URL = "https://ftp.gnu.org/pub/gnu/{name}/{name}-{version}.tar.gz"
-
-SHA256 = "30306e0c76e0f9f1f0de987cf1c82a5c21e1ce6568b9227f7da5b71cbea86c9d"
 
 LIBS = [
     NAME,
