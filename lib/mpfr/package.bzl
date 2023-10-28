@@ -3,14 +3,14 @@
 load("//lib:http_archive.bzl", "http_archive")
 
 NAME = "mpfr"
-VERSION = "4.1.0"
+VERSION = "4.2.1"
 
 URLS = [
     "https://www.{name}.org/{name}-current/{name}-{version}.tar.xz",
     "https://ftp.gnu.org/gnu/{name}/{name}-{version}.tar.xz",
 ]
 
-SHA256 = "0c98a3f1732ff6ca4ea690552079da9c597872d30e96ec28414ee23c95558a7f"
+SHA256 = "277807353a6726978996945af13e52829e3abd7a9a5b7fb2793894e18f1fcbb2"
 
 def download():
     http_archive(
