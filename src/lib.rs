@@ -1,6 +1,5 @@
 use js_sys::Error;
 use wasm_bindgen::prelude::wasm_bindgen;
-use wee_alloc::WeeAlloc;
 
 mod builtin_modules;
 mod code_blocks;
@@ -12,9 +11,6 @@ mod prism;
 
 #[macro_use]
 extern crate lazy_static;
-
-#[global_allocator]
-static ALLOC: WeeAlloc = WeeAlloc::INIT;
 
 #[wasm_bindgen(start)]
 pub fn main() -> Result<(), Error> {

@@ -1,5 +1,5 @@
 {
-  "checksum": "64b2db019397ac033b0256c83143023aff13a256399843e69944cb2c6af1612f",
+  "checksum": "c65d8edbafc77d34185dbe6d43769702c312c9975704d94f5105a378fa80ca51",
   "crates": {
     "addr2line 0.21.0": {
       "name": "addr2line",
@@ -1329,36 +1329,6 @@
         "version": "1.0.83"
       },
       "license": "MIT OR Apache-2.0"
-    },
-    "cfg-if 0.1.10": {
-      "name": "cfg-if",
-      "version": "0.1.10",
-      "repository": {
-        "Http": {
-          "url": "https://crates.io/api/v1/crates/cfg-if/0.1.10/download",
-          "sha256": "4785bdd1c96b2a846b2bd7cc02e86b6b3dbf14e7e53446c4f54c92a361040822"
-        }
-      },
-      "targets": [
-        {
-          "Library": {
-            "crate_name": "cfg_if",
-            "crate_root": "src/lib.rs",
-            "srcs": [
-              "**/*.rs"
-            ]
-          }
-        }
-      ],
-      "library_target_name": "cfg_if",
-      "common_attrs": {
-        "compile_data_glob": [
-          "**"
-        ],
-        "edition": "2018",
-        "version": "0.1.10"
-      },
-      "license": "MIT/Apache-2.0"
     },
     "cfg-if 1.0.0": {
       "name": "cfg-if",
@@ -4898,36 +4868,6 @@
         "version": "2.6.4"
       },
       "license": "Unlicense OR MIT"
-    },
-    "memory_units 0.4.0": {
-      "name": "memory_units",
-      "version": "0.4.0",
-      "repository": {
-        "Http": {
-          "url": "https://crates.io/api/v1/crates/memory_units/0.4.0/download",
-          "sha256": "8452105ba047068f40ff7093dd1d9da90898e63dd61736462e9cdda6a90ad3c3"
-        }
-      },
-      "targets": [
-        {
-          "Library": {
-            "crate_name": "memory_units",
-            "crate_root": "src/lib.rs",
-            "srcs": [
-              "**/*.rs"
-            ]
-          }
-        }
-      ],
-      "library_target_name": "memory_units",
-      "common_attrs": {
-        "compile_data_glob": [
-          "**"
-        ],
-        "edition": "2015",
-        "version": "0.4.0"
-      },
-      "license": "MPL-2.0"
     },
     "miniz_oxide 0.7.1": {
       "name": "miniz_oxide",
@@ -9392,10 +9332,6 @@
               "target": "web_sys"
             },
             {
-              "id": "wee_alloc 0.4.5",
-              "target": "wee_alloc"
-            },
-            {
               "id": "yaml-front-matter 0.1.0",
               "target": "yaml_front_matter"
             }
@@ -9455,87 +9391,6 @@
         ],
         "edition": "2018",
         "version": "0.25.2"
-      },
-      "license": "MPL-2.0"
-    },
-    "wee_alloc 0.4.5": {
-      "name": "wee_alloc",
-      "version": "0.4.5",
-      "repository": {
-        "Http": {
-          "url": "https://crates.io/api/v1/crates/wee_alloc/0.4.5/download",
-          "sha256": "dbb3b5a6b2bb17cb6ad44a2e68a43e8d2722c997da10e928665c72ec6c0a0b8e"
-        }
-      },
-      "targets": [
-        {
-          "Library": {
-            "crate_name": "wee_alloc",
-            "crate_root": "src/lib.rs",
-            "srcs": [
-              "**/*.rs"
-            ]
-          }
-        },
-        {
-          "BuildScript": {
-            "crate_name": "build_script_build",
-            "crate_root": "build.rs",
-            "srcs": [
-              "**/*.rs"
-            ]
-          }
-        }
-      ],
-      "library_target_name": "wee_alloc",
-      "common_attrs": {
-        "compile_data_glob": [
-          "**"
-        ],
-        "crate_features": {
-          "common": [
-            "default",
-            "size_classes"
-          ],
-          "selects": {}
-        },
-        "deps": {
-          "common": [
-            {
-              "id": "cfg-if 0.1.10",
-              "target": "cfg_if"
-            },
-            {
-              "id": "memory_units 0.4.0",
-              "target": "memory_units"
-            },
-            {
-              "id": "wee_alloc 0.4.5",
-              "target": "build_script_build"
-            }
-          ],
-          "selects": {
-            "cfg(all(unix, not(target_arch = \"wasm32\")))": [
-              {
-                "id": "libc 0.2.149",
-                "target": "libc"
-              }
-            ],
-            "cfg(target_os = \"windows\")": [
-              {
-                "id": "winapi 0.3.9",
-                "target": "winapi"
-              }
-            ]
-          }
-        },
-        "edition": "2015",
-        "version": "0.4.5"
-      },
-      "build_script_attrs": {
-        "data_glob": [
-          "**"
-        ]
       },
       "license": "MPL-2.0"
     },
@@ -9637,7 +9492,6 @@
             "handleapi",
             "knownfolders",
             "libloaderapi",
-            "memoryapi",
             "minwinbase",
             "minwindef",
             "ntdef",
@@ -9647,7 +9501,6 @@
             "processthreadsapi",
             "shlobj",
             "std",
-            "synchapi",
             "sysinfoapi",
             "winbase",
             "wincon",
@@ -11533,29 +11386,6 @@
     ],
     "cfg(all(target_arch = \"x86_64\", target_env = \"msvc\", not(windows_raw_dylib)))": [
       "x86_64-pc-windows-msvc"
-    ],
-    "cfg(all(unix, not(target_arch = \"wasm32\")))": [
-      "aarch64-apple-darwin",
-      "aarch64-apple-ios",
-      "aarch64-apple-ios-sim",
-      "aarch64-fuchsia",
-      "aarch64-linux-android",
-      "aarch64-unknown-linux-gnu",
-      "arm-unknown-linux-gnueabi",
-      "armv7-linux-androideabi",
-      "armv7-unknown-linux-gnueabi",
-      "i686-apple-darwin",
-      "i686-linux-android",
-      "i686-unknown-freebsd",
-      "i686-unknown-linux-gnu",
-      "powerpc-unknown-linux-gnu",
-      "s390x-unknown-linux-gnu",
-      "x86_64-apple-darwin",
-      "x86_64-apple-ios",
-      "x86_64-fuchsia",
-      "x86_64-linux-android",
-      "x86_64-unknown-freebsd",
-      "x86_64-unknown-linux-gnu"
     ],
     "cfg(any(all(target_arch = \"arm\", target_pointer_width = \"32\"), target_arch = \"mips\", target_arch = \"powerpc\"))": [
       "arm-unknown-linux-gnueabi",
