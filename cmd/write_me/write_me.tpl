@@ -33,6 +33,11 @@ toolchain, pass `--cpu=wasm32`. Pass `-c opt` for an optimised build.
 | Build Label | Version |
 |-------------|---------|
 {{.Tools}}
+## Nix Shell
+
+To get a Clang toolchain in a Nix environment, run `nix-shell`, it will pick up
+the `shell.nix` file in the repo. This will set `$CC` to `clang`, along with
+any necessary standard library paths.
 
 [Bazel]: https://bazel.build
 [WebAssembly]: https://webassembly.org
