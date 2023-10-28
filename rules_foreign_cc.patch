@@ -1,0 +1,12 @@
+diff --git foreign_cc/boost_build.bzl foreign_cc/boost_build.bzl
+index d8e489f..2462117 100644
+--- foreign_cc/boost_build.bzl
++++ foreign_cc/boost_build.bzl
+@@ -15,6 +15,7 @@ def _boost_build_impl(ctx):
+         ctx.attr,
+         configure_name = "BoostBuild",
+         create_configure_script = _create_configure_script,
++        tools_data = [],
+     )
+     return cc_external_rule_impl(ctx, attrs)
+ 

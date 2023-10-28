@@ -19,7 +19,7 @@ package_contents(
             "webnb.css": "style.css",
             "webnb.js": "webnb.js",
             "webnb.module.wasm": "*.module.wasm",
-        }
+        },
     }),
     visibility = ["//docs:__pkg__"],
 )
@@ -49,7 +49,6 @@ webpack_bundle(
 
 expand_template(
     name = "entry_point",
-    template = "entry_point.js.tpl",
     out = "entry_point.js",
     substitutions = select({
         "//config:" + mode: {"${COMPILATION_MODE}": mode}
@@ -59,8 +58,8 @@ expand_template(
             "dbg",
         ]
     }),
+    template = "entry_point.js.tpl",
 )
-
 
 pkg_tar(
     name = "pkg_tar",

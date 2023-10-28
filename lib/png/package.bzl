@@ -9,7 +9,6 @@ SHA256 = "daeb2620d829575513e35fecc83f0d3791a620b9b93d800b763542ece9390fb4"
 
 URL = "https://downloads.sourceforge.net/lib{name}/lib{name}-{version}.tar.gz"
 
-
 STATIC_LIBS = [
     static_lib(NAME),
     static_lib(NAME + major_minor(VERSION, join = "")),

@@ -13,7 +13,10 @@ configure_make_lib(
         # keep sorted
         "--enable-shared=no",
         "--enable-static=yes",
-        '--with-oniguruma="{}"'.format(dep_path("oniguruma")),
+        '--with-oniguruma="{}"'.format(dep_path(
+            "oniguruma",
+            double_escape = True,
+        )),
     ],
     out_binaries = select({
         "//config:wasm": [],

@@ -1,29 +1,11 @@
 diff --git emscripten_toolchain/BUILD.bazel emscripten_toolchain/BUILD.bazel
-index eb36959..2704339 100644
+index fb8a6c1..f5e0eed 100644
 --- emscripten_toolchain/BUILD.bazel
 +++ emscripten_toolchain/BUILD.bazel
-@@ -14,7 +14,7 @@ filegroup(
+@@ -8,7 +8,7 @@ filegroup(
+         "emscripten_config",
+         "env.sh",
          "env.bat",
-         "@emsdk//:binaries",
-         "@emsdk//:node_modules",
--        "@nodejs//:node_files",
-+        "@nodejs_host//:node_files",
-     ],
- )
- 
-@@ -31,7 +31,7 @@ filegroup(
-         "link_wrapper.py",
-         ":common-script-includes",
-         "@emsdk//:binaries",
--        "@nodejs//:node_files",
-+        "@nodejs_host//:node_files",
-     ],
- )
- 
-@@ -41,7 +41,7 @@ filegroup(
-         ":compile-emscripten",
-         ":link-emscripten",
-         "@emsdk//:binaries",
 -        "@nodejs//:node_files",
 +        "@nodejs_host//:node_files",
      ],

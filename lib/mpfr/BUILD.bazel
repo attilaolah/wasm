@@ -12,7 +12,10 @@ configure_make_lib(
     configure_options = [
         "--disable-shared",
         "--enable-static",
-        '--with-gmp="{}"'.format(dep_path("gmp")),
+        '--with-gmp="{}"'.format(dep_path(
+            "gmp",
+            double_escape = True,
+        )),
     ],
     deps = ["//lib/gmp"],
 )

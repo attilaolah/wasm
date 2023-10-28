@@ -13,7 +13,10 @@ configure_make_lib(
         # keep sorted
         "--disable-shared",
         "--enable-static",
-        '--with-libxml-prefix="{}"'.format(dep_path("xml")),
+        '--with-libxml-prefix="{}"'.format(dep_path(
+            "xml",
+            double_escape = True,
+        )),
         "--without-python",
     ],
     deps = ["//lib/xml"],
