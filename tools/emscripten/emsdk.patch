@@ -1,3 +1,17 @@
+diff --git emscripten_deps.bzl emscripten_deps.bzl
+index a42238c..673457b 100644
+--- emscripten_deps.bzl
++++ emscripten_deps.bzl
+@@ -22,6 +22,9 @@ filegroup(
+     name = "emcc_common",
+     srcs = [
+         "emscripten/emcc.py",
++        "emscripten/emcmake{bin_extension}",
++        "emscripten/emconfigure{bin_extension}",
++        "emscripten/emmake{bin_extension}",
+         "emscripten/emscripten.py",
+         "emscripten/emscripten-version.txt",
+         "emscripten/cache/sysroot_install.stamp",
 diff --git emscripten_toolchain/BUILD.bazel emscripten_toolchain/BUILD.bazel
 index fb8a6c1..f5e0eed 100644
 --- emscripten_toolchain/BUILD.bazel

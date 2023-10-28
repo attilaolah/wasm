@@ -40,7 +40,7 @@ EM_TOOLS = [
     # keep sorted
     "//lib/python:runtime",
     "//tools:nodejs",
-    "@emscripten_bin_linux//:all",
+    "@emscripten_bin_linux//:emcc_common",
     "@emscripten_bin_linux//:emscripten/emcmake",
     "@emscripten_bin_linux//:emscripten/emconfigure",
     "@emscripten_bin_linux//:emscripten/emmake",
