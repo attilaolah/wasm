@@ -1,6 +1,6 @@
 load("//lib:lib.bzl", "package_lib")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
-load(":package.bzl", "NAME")
+load(":package.bzl", "NAME", "STATIC_LIBS")
 
 package(default_visibility = ["//:__subpackages__"])
 
@@ -9,6 +9,10 @@ package_lib()
 configure_make_lib(
     name = NAME,
     configure_options = [
+	# TODO: Use toolchain config.
+	"--cc=$${EXT_BUILD_ROOT}/$(CC)",
     	"--disable-all",
+	"--disable-x86asm",
     ],
+    out_static_libs = STATIC_LIBS,
 )
