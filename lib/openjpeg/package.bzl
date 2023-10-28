@@ -5,10 +5,9 @@ load("//lib:http_archive.bzl", "http_archive")
 
 NAME = "openjpeg"
 VERSION = "2.4.0"
+SHA256 = "8702ba68b442657f11aaeb2b338443ca8d5fb95b0d845757968a7be31ef7f16d"
 
 URL = "https://github.com/uclouvain/{name}/archive/v{version}.tar.gz"
-
-SHA256 = "8702ba68b442657f11aaeb2b338443ca8d5fb95b0d845757968a7be31ef7f16d"
 
 LNAME = NAME[:-2] + major(VERSION)
 

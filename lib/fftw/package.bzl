@@ -5,10 +5,9 @@ load("//lib:http_archive.bzl", "http_archive")
 
 NAME = "fftw"
 VERSION = "3.3.10"
+SHA256 = "56c932549852cddcfafdab3820b0200c7742675be92179e59e6215b340e26467"
 
 URL = "http://www.{name}.org/{name}-{version}.tar.gz"
-
-SHA256 = "56c932549852cddcfafdab3820b0200c7742675be92179e59e6215b340e26467"
 
 LNAMES = {
     suffix: NAME + major(VERSION) + suffix

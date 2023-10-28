@@ -5,10 +5,9 @@ load("//lib:http_archive.bzl", "http_archive")
 
 NAME = "openexr"
 VERSION = "3.1.5"
+SHA256 = "93925805c1fc4f8162b35f0ae109c4a75344e6decae5a240afdfce25f8a433ec"
 
 URL = "https://github.com/AcademySoftwareFoundation/{name}/archive/refs/tags/v{version}.tar.gz"
-
-SHA256 = "93925805c1fc4f8162b35f0ae109c4a75344e6decae5a240afdfce25f8a433ec"
 
 LNAME = "OpenEXR"
 

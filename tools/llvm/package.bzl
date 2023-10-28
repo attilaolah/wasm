@@ -5,14 +5,11 @@ load("//:versions.bzl", "OS_VERSION")
 load("//toolchains:utils.bzl", "patch_files")
 
 VERSION = "17.0.2"
-VERSION_MMP = VERSION.split("-")[0]
 VERSION_ND = VERSION.replace("-", "")
-
-PREFIX = "https://github.com/llvm/llvm-project/releases/download/llvmorg-{version}"
-
-URL = PREFIX + "/clang+llvm-{version}-x86_64-linux-gnu-" + OS_VERSION + ".tar.xz"
-
+VERSION_MMP = VERSION.split("-")[0]
 SHA256 = "df297df804766f8fb18f10a188af78e55d82bb8881751408c2fa694ca19163a8"
+
+URL = "https://github.com/llvm/llvm-project/releases/download/llvmorg-{version}/clang+llvm-{version}-x86_64-linux-gnu-" + OS_VERSION + ".tar.xz"
 
 BUILD = """
 package(default_visibility = ["//visibility:public"])

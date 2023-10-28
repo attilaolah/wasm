@@ -5,10 +5,9 @@ load("//lib:http_archive.bzl", "http_archive")
 
 NAME = "bison"
 VERSION = "3.8.2"
+SHA256 = "9bba0214ccf7f1079c5d59210045227bcf619519840ebfa80cd3849cff5a5bf2"
 
 URL = "https://ftp.gnu.org/gnu/{name}/{name}-{version}.tar.xz"
-
-SHA256 = "9bba0214ccf7f1079c5d59210045227bcf619519840ebfa80cd3849cff5a5bf2"
 
 STATIC_LIBS = [static_lib("y")]
 

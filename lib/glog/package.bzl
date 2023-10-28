@@ -4,10 +4,9 @@ load("//lib:http_archive.bzl", "http_archive")
 
 NAME = "glog"
 VERSION = "0.4.0"
+SHA256 = "f28359aeba12f30d73d9e4711ef356dc842886968112162bc73002645139c39c"
 
 URL = "https://github.com/google/{name}/archive/v{version}.tar.gz"
-
-SHA256 = "f28359aeba12f30d73d9e4711ef356dc842886968112162bc73002645139c39c"
 
 def download():
     http_archive(

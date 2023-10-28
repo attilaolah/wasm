@@ -5,10 +5,9 @@ load("//lib:http_archive.bzl", "http_archive")
 
 NAME = "hdf"
 VERSION = "4.2.15"
+SHA256 = "dbeeef525af7c2d01539906c28953f0fdab7dba603d1bc1ec4a5af60d002c459"
 
 URL = "https://support.{name}group.org/ftp/{uname}/releases/{uname}{version}/src/{name}-{version}.tar.gz"
-
-SHA256 = "dbeeef525af7c2d01539906c28953f0fdab7dba603d1bc1ec4a5af60d002c459"
 
 STATIC_LIBS = {lib: static_lib(lib) for lib in [
     # keep sorted
