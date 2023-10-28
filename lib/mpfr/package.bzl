@@ -6,7 +6,7 @@ NAME = "mpfr"
 VERSION = "4.2.1"
 
 URLS = [
-    "https://www.{name}.org/{name}-current/{name}-{version}.tar.xz",
+    "https://www.{name}.org/{name}-{version}/{name}-{version}.tar.xz",
     "https://ftp.gnu.org/gnu/{name}/{name}-{version}.tar.xz",
 ]
 
