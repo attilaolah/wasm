@@ -97,7 +97,7 @@ def clang_toolchain(name):
             # TODO: Implement a sandboxed builtin_sysroot!
             "/usr/include",
         ],
-        cxx_flags = ["-std=c++17"],
+        cxx_flags = ["-std=c++20"],
         dbg_compile_flags = ["-g"],
         host_system_name = "local",
         link_flags = [
