@@ -13,6 +13,7 @@ BUILD_DEPS_K8 = [
 
 CONFIGURE_OPTIONS = [
     "--disable-all",
+    "--disable-doc",  # do not build the documentation
 ]
 
 CONFIGURE_OPTIONS_K8 = CONFIGURE_OPTIONS + [
@@ -25,8 +26,20 @@ CONFIGURE_OPTIONS_WASM = CONFIGURE_OPTIONS + [
     # The configure script doesn't seem to pick up $CC,
     # so we pass this explicit --cc flag to set the right compiler.
     "--cc=$(execpath @emscripten_bin_linux//:emscripten/emcc)",
+
+    # Some of these are copied from:
+    # github.com/ffmpegwasm/ffmpeg.wasm @ build/ffmpeg.sh
+    "--arch=x86_32",
+    "--target-os=none",
     "--enable-cross-compile",
-    "--disable-x86asm",
+    "--disable-asm",
+    "--disable-stripping",  # disable stripping as it won't work
+    "--disable-programs",  # do not build ffmpeg, ffprobe and ffplay
+    "--disable-runtime-cpudetect",  # no cpu detection at runtime
+    "--disable-autodetect",  # disable env auto detect
+
+    # TODO: Make this conditional on the build config:
+    # "--disable-debug",
 ]
 
 configure_make_lib(
