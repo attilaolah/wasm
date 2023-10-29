@@ -7,18 +7,41 @@ package(default_visibility = ["//:__subpackages__"])
 
 package_lib()
 
-BUILD_DEPS = [
+BUILD_DEPS_K8 = [
     "//lib/yasm:runtime",
+]
+
+CONFIGURE_OPTIONS = [
+    "--disable-all",
+]
+
+CONFIGURE_OPTIONS_K8 = CONFIGURE_OPTIONS + [
+    # The configure script doesn't seem to pick up $CC,
+    # so we pass this explicit --cc flag to set the right compiler.
+    "--cc=$${EXT_BUILD_ROOT}/$(CC)",
+]
+
+CONFIGURE_OPTIONS_WASM = CONFIGURE_OPTIONS + [
+    # The configure script doesn't seem to pick up $CC,
+    # so we pass this explicit --cc flag to set the right compiler.
+    "--cc=$(execpath @emscripten_bin_linux//:emscripten/emcc)",
+    "--enable-cross-compile",
+    "--disable-x86asm",
 ]
 
 configure_make_lib(
     name = NAME,
-    build_data = BUILD_DEPS,
-    configure_options = [
-        # TODO: Use toolchain config.
-        "--cc=$${EXT_BUILD_ROOT}/$(CC)",
-        "--disable-all",
-    ],
-    env = {"PATH": runtime_path(BUILD_DEPS)},
+    build_data = {
+        "//config:wasm": [],
+        "//conditions:default": BUILD_DEPS_K8,
+    },
+    configure_options = select({
+        "//config:wasm": CONFIGURE_OPTIONS_WASM,
+        "//conditions:default": CONFIGURE_OPTIONS_K8,
+    }),
+    env = {
+        "//config:wasm": {},
+        "//conditions:default": {"PATH": runtime_path(BUILD_DEPS_K8)},
+    },
     out_static_libs = STATIC_LIBS,
 )
