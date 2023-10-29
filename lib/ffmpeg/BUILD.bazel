@@ -1,5 +1,6 @@
 load("//lib:defs.bzl", "runtime_path")
 load("//lib:lib.bzl", "package_lib")
+load("//toolchains:utils.bzl", "no_error")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
 load(":package.bzl", "NAME", "STATIC_LIBS")
 
@@ -37,10 +38,14 @@ CONFIGURE_OPTIONS_WASM = CONFIGURE_OPTIONS + [
     "--disable-programs",  # do not build ffmpeg, ffprobe and ffplay
     "--disable-runtime-cpudetect",  # no cpu detection at runtime
     "--disable-autodetect",  # disable env auto detect
-
-    # TODO: Make this conditional on the build config:
-    # "--disable-debug",
+    '--extra-cflags="{}"'.format(no_error([
+        "implicit-const-int-float-conversion",
+    ])),
 ]
+
+OPT_ON = ["--enable-lto"]
+
+DBG_OFF = ["--disable-debug"]
 
 configure_make_lib(
     name = NAME,
@@ -49,8 +54,12 @@ configure_make_lib(
         "//conditions:default": BUILD_DEPS_K8,
     },
     configure_options = select({
-        "//config:wasm": CONFIGURE_OPTIONS_WASM,
-        "//conditions:default": CONFIGURE_OPTIONS_K8,
+        "//config:wasm_dbg": CONFIGURE_OPTIONS_WASM,
+        "//config:wasm_fastbuild": CONFIGURE_OPTIONS_WASM + DBG_OFF,
+        "//config:wasm_opt": CONFIGURE_OPTIONS_WASM + DBG_OFF + OPT_ON,
+        "//config:dbg": CONFIGURE_OPTIONS_K8,
+        "//config:fastbuild": CONFIGURE_OPTIONS_K8 + DBG_OFF,
+        "//config:opt": CONFIGURE_OPTIONS_K8 + DBG_OFF + OPT_ON,
     }),
     env = {
         "//config:wasm": {},
