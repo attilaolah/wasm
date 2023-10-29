@@ -14,7 +14,7 @@ BUILD_DEPS_K8 = [
 
 CONFIGURE_OPTIONS = [
     "--disable-all",
-    "--disable-doc",  # do not build the documentation
+    "--disable-doc",
 ]
 
 CONFIGURE_OPTIONS_K8 = CONFIGURE_OPTIONS + [
@@ -36,8 +36,8 @@ CONFIGURE_OPTIONS_WASM = CONFIGURE_OPTIONS + [
     "--disable-asm",
     "--disable-stripping",  # disable stripping as it won't work
     "--disable-programs",  # do not build ffmpeg, ffprobe and ffplay
-    "--disable-runtime-cpudetect",  # no cpu detection at runtime
-    "--disable-autodetect",  # disable env auto detect
+    "--disable-runtime-cpudetect",  # no CPU detection at runtime
+    "--disable-autodetect",  # disable env auto detection
     '--extra-cflags="{}"'.format(no_error([
         "implicit-const-int-float-conversion",
     ])),
