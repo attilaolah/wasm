@@ -1,4 +1,5 @@
 load("//lib:lib.bzl", "package_lib")
+load("//toolchains:utils.bzl", "no_error")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
 load(":package.bzl", "NAME")
 
@@ -10,7 +11,10 @@ configure_make_lib(
     name = NAME,
     configure_options = ["--static"],
     env = {
-        # Needed by //lib/python:runtime?
-        "CFLAGS": "-fPIC",
+        "CFLAGS": " ".join([
+            no_error(["deprecated-non-prototype"]),
+            # TODO: Needed by //lib/python:runtime?
+            "-fPIC",
+        ]),
     },
 )
