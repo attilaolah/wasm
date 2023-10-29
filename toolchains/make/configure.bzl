@@ -16,11 +16,11 @@ EM_ENV = {
     # NodeJS cross-compiling emulator:
     "CROSSCOMPILING_EMULATOR": root_path("$(execpath @nodejs_host//:node)", double_escape = True),
 
-    # Required by the Emscripten config:
-    "EMSCRIPTEN": root_path("external/emscripten_bin_linux/emscripten", double_escape = True),
-
-    # Emscripten config from @emsdk//emscripten_toolchain:emscripten_config:
+    # Emscripten config from @emsdk:
     "EM_CONFIG": "$(execpath @emsdk//emscripten_toolchain:emscripten_config)",
+
+    # Required (?) by the Emscripten config above:
+    "EMSCRIPTEN": root_path("external/emscripten_bin_linux/emscripten", double_escape = True),
 
     # Directory containing node_modules:
     "NODE_PATH": "$${EXT_BUILD_DEPS}/bin",
@@ -40,7 +40,8 @@ EM_TOOLS = [
     # keep sorted
     "//lib/python:runtime",
     "//tools:nodejs",
-    "@emscripten_bin_linux//:all",
+    "@emscripten_bin_linux//:emcc_common",
+    "@emscripten_bin_linux//:emscripten/emcc",
     "@emscripten_bin_linux//:emscripten/emcmake",
     "@emscripten_bin_linux//:emscripten/emconfigure",
     "@emscripten_bin_linux//:emscripten/emmake",
@@ -127,10 +128,15 @@ def build_data(extras = None):
     if extras == None:
         extras = []
 
-    return select({
-        "//config:wasm": collections.uniq(EM_TOOLS + extras),
-        "//conditions:default": extras,
-    })
+    if type(extras) != type({}):
+        extras = {
+            "//conditions:default": extras,
+            "//config:wasm": extras,
+        }
+    extras.setdefault("//config:wasm", [])
+    extras["//config:wasm"] = collections.uniq(EM_TOOLS + extras["//config:wasm"])
+
+    return select(extras)
 
 _build_data = build_data
 

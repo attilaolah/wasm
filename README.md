@@ -40,6 +40,7 @@ toolchain, pass `--cpu=wasm32`. Pass `-c opt` for an optimised build.
 [`//lib/exiv2`](https://github.com/attilaolah/wasm/blob/main/lib/exiv2/BUILD.bazel) | 0.27.5 [🔗](https://github.com/Exiv2/exiv2/releases/download/v0.27.5/exiv2-0.27.5-Source.tar.gz)
 [`//lib/expat`](https://github.com/attilaolah/wasm/blob/main/lib/expat/BUILD.bazel) | 2.2.10 [🔗](https://github.com/libexpat/libexpat/releases/download/R_2_2_10/expat-2.2.10.tar.xz)
 [`//lib/ffi`](https://github.com/attilaolah/wasm/blob/main/lib/ffi/BUILD.bazel) | 3.3 [🔗](https://github.com/libffi/libffi/releases/download/v3.3/libffi-3.3.tar.gz)
+[`//lib/ffmpeg`](https://github.com/attilaolah/wasm/blob/main/lib/ffmpeg/BUILD.bazel) | 6.0 [🔗](https://ffmpeg.org/releases/ffmpeg-6.0.tar.xz)
 [`//lib/fftw`](https://github.com/attilaolah/wasm/blob/main/lib/fftw/BUILD.bazel) | 3.3.10 [🔗](http://www.fftw.org/fftw-3.3.10.tar.gz)
 [`//lib/flex`](https://github.com/attilaolah/wasm/blob/main/lib/flex/BUILD.bazel) | 2.6.4 [🔗](https://github.com/westes/flex/releases/download/v2.6.4/flex-2.6.4.tar.gz)
 [`//lib/gcc`](https://github.com/attilaolah/wasm/blob/main/lib/gcc/BUILD.bazel) | 10.2.0 [🔗](https://ftp.gnu.org/gnu/gcc/gcc-10.2.0/gcc-10.2.0.tar.xz) [🔗](https://mirror.kumi.systems/gnu/gcc/gcc-10.2.0/gcc-10.2.0.tar.xz)
@@ -89,6 +90,7 @@ toolchain, pass `--cpu=wasm32`. Pass `-c opt` for an optimised build.
 [`//lib/webp`](https://github.com/attilaolah/wasm/blob/main/lib/webp/BUILD.bazel) | 1.1.0 [🔗](https://storage.googleapis.com/downloads.webmproject.org/releases/webp/libwebp-1.1.0.tar.gz)
 [`//lib/xml`](https://github.com/attilaolah/wasm/blob/main/lib/xml/BUILD.bazel) | 2.9.10 [🔗](http://xmlsoft.org/sources/libxml2-2.9.10.tar.gz)
 [`//lib/xslt`](https://github.com/attilaolah/wasm/blob/main/lib/xslt/BUILD.bazel) | 1.1.34 [🔗](http://xmlsoft.org/sources/libxslt-1.1.34.tar.gz)
+[`//lib/yasm`](https://github.com/attilaolah/wasm/blob/main/lib/yasm/BUILD.bazel) | 1.3.0 [🔗](http://www.tortall.net/projects/yasm/releases/yasm-1.3.0.tar.gz)
 [`//lib/z`](https://github.com/attilaolah/wasm/blob/main/lib/z/BUILD.bazel) | 1.2.11 [🔗](https://downloads.sourceforge.net/libpng/zlib-1.2.11.tar.gz)
 [`//lib/zstd`](https://github.com/attilaolah/wasm/blob/main/lib/zstd/BUILD.bazel) | 1.5.0 [🔗](https://github.com/facebook/zstd/releases/download/v1.5.0/zstd-1.5.0.tar.gz)
 

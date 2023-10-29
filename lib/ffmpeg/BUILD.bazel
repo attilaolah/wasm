@@ -1,0 +1,69 @@
+load("//lib:defs.bzl", "runtime_path")
+load("//lib:lib.bzl", "package_lib")
+load("//toolchains:utils.bzl", "no_error")
+load("//toolchains/make:configure.bzl", "configure_make_lib")
+load(":package.bzl", "NAME", "STATIC_LIBS")
+
+package(default_visibility = ["//:__subpackages__"])
+
+package_lib()
+
+BUILD_DEPS_K8 = [
+    "//lib/yasm:runtime",
+]
+
+CONFIGURE_OPTIONS = [
+    "--disable-all",
+    "--disable-doc",
+]
+
+CONFIGURE_OPTIONS_K8 = CONFIGURE_OPTIONS + [
+    # The configure script doesn't seem to pick up $CC,
+    # so we pass this explicit --cc flag to set the right compiler.
+    "--cc=$${EXT_BUILD_ROOT}/$(CC)",
+]
+
+CONFIGURE_OPTIONS_WASM = CONFIGURE_OPTIONS + [
+    # The configure script doesn't seem to pick up $CC,
+    # so we pass this explicit --cc flag to set the right compiler.
+    "--cc=$(execpath @emscripten_bin_linux//:emscripten/emcc)",
+
+    # Some of these are copied from:
+    # github.com/ffmpegwasm/ffmpeg.wasm @ build/ffmpeg.sh
+    "--arch=x86_32",
+    "--target-os=none",
+    "--enable-cross-compile",
+    "--disable-asm",
+    "--disable-stripping",  # Disable stripping as it won't work.
+    "--disable-programs",  # Do not build ffmpeg, ffprobe and ffplay.
+    "--disable-runtime-cpudetect",  # No CPU detection at runtime.
+    "--disable-autodetect",  # Disable env auto detection.
+    '--extra-cflags="{}"'.format(no_error([
+        "implicit-const-int-float-conversion",
+    ])),
+]
+
+OPT_ON = ["--enable-lto"]
+
+DBG_OFF = ["--disable-debug"]
+
+configure_make_lib(
+    name = NAME,
+    build_data = {
+        "//config:wasm": [],
+        "//conditions:default": BUILD_DEPS_K8,
+    },
+    configure_options = select({
+        "//config:k8_dbg": CONFIGURE_OPTIONS_K8,
+        "//config:k8_fastbuild": CONFIGURE_OPTIONS_K8 + DBG_OFF,
+        "//config:k8_opt": CONFIGURE_OPTIONS_K8 + DBG_OFF + OPT_ON,
+        "//config:wasm_dbg": CONFIGURE_OPTIONS_WASM,
+        "//config:wasm_fastbuild": CONFIGURE_OPTIONS_WASM + DBG_OFF,
+        "//config:wasm_opt": CONFIGURE_OPTIONS_WASM + DBG_OFF + OPT_ON,
+    }),
+    env = {
+        "//config:wasm": {},
+        "//conditions:default": {"PATH": runtime_path(BUILD_DEPS_K8)},
+    },
+    out_static_libs = STATIC_LIBS,
+)

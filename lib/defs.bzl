@@ -10,9 +10,13 @@ def repo_name(library):
     """Generate a consintent repository name."""
     return "lib_{library}".format(library = library)
 
-def static_lib(library):
+def static_lib(library, prefix = "lib", suffix = ""):
     """Generate the static library name."""
-    return "lib{library}.a".format(library = library)
+    return "{prefix}{library}{suffix}.a".format(
+        prefix = prefix,
+        library = library,
+        suffix = suffix,
+    )
 
 def root_path(path, double_escape = False):
     return "/".join([
