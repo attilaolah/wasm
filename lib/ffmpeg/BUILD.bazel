@@ -34,10 +34,10 @@ CONFIGURE_OPTIONS_WASM = CONFIGURE_OPTIONS + [
     "--target-os=none",
     "--enable-cross-compile",
     "--disable-asm",
-    "--disable-stripping",  # disable stripping as it won't work
-    "--disable-programs",  # do not build ffmpeg, ffprobe and ffplay
-    "--disable-runtime-cpudetect",  # no CPU detection at runtime
-    "--disable-autodetect",  # disable env auto detection
+    "--disable-stripping",  # Disable stripping as it won't work.
+    "--disable-programs",  # Do not build ffmpeg, ffprobe and ffplay.
+    "--disable-runtime-cpudetect",  # No CPU detection at runtime.
+    "--disable-autodetect",  # Disable env auto detection.
     '--extra-cflags="{}"'.format(no_error([
         "implicit-const-int-float-conversion",
     ])),
@@ -54,12 +54,12 @@ configure_make_lib(
         "//conditions:default": BUILD_DEPS_K8,
     },
     configure_options = select({
+        "//config:k8_dbg": CONFIGURE_OPTIONS_K8,
+        "//config:k8_fastbuild": CONFIGURE_OPTIONS_K8 + DBG_OFF,
+        "//config:k8_opt": CONFIGURE_OPTIONS_K8 + DBG_OFF + OPT_ON,
         "//config:wasm_dbg": CONFIGURE_OPTIONS_WASM,
         "//config:wasm_fastbuild": CONFIGURE_OPTIONS_WASM + DBG_OFF,
         "//config:wasm_opt": CONFIGURE_OPTIONS_WASM + DBG_OFF + OPT_ON,
-        "//config:dbg": CONFIGURE_OPTIONS_K8,
-        "//config:fastbuild": CONFIGURE_OPTIONS_K8 + DBG_OFF,
-        "//config:opt": CONFIGURE_OPTIONS_K8 + DBG_OFF + OPT_ON,
     }),
     env = {
         "//config:wasm": {},

@@ -18,6 +18,11 @@ config_setting(
     values = {"cpu": "wasm64"},
 )
 
+config_setting(
+    name = "k8",
+    values = {"cpu": "k8"},
+)
+
 MODES = [
     "dbg",
     "fastbuild",
@@ -27,6 +32,14 @@ MODES = [
 [config_setting(
     name = mode,
     values = {"compilation_mode": mode},
+) for mode in MODES]
+
+[selects.config_setting_group(
+    name = "k8_{}".format(mode),
+    match_all = [
+        ":k8",
+        ":{}".format(mode),
+    ],
 ) for mode in MODES]
 
 [selects.config_setting_group(
