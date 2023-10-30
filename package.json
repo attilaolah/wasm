@@ -25,10 +25,8 @@
     "@types/prismjs": "^1.26.2",
     "@wasm-tool/wasm-pack-plugin": "^1.7.0",
     "acorn": "^8.11.2",
-    "cross-blob": "^3.0.2",
-    "css-minify": "^2.0.0",
+    "csso-cli": "^4.0.2",
     "http-server": "^14.1.1",
-    "mocha": "^10.2.0",
     "typescript": "^5.2.2",
     "typescript-formatter": "^7.2.2"
   },
