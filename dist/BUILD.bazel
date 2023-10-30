@@ -7,15 +7,16 @@ load("//tools:npm.bzl", "package_contents", "package_json")
 package_contents(
     name = "dist",
     srcs = [
-        ":license",
+        ":licenses",
         ":webnb",
+        ":webnb_wasm_opt",
     ],
     outdir_name = "pkg",
     outputs = {
-        "LICENSE.txt": "LICENSE,*.LICENSE.txt",
+        "LICENSE.txt": "LICENSES.txt",
         "webnb.css": "style.css",
         "webnb.js": "webnb.js",
-        "webnb.module.wasm": "*.module.wasm",
+        "webnb.module.wasm": "webnb.oz.wasm",
     },
     visibility = ["//docs:__pkg__"],
 )
@@ -23,11 +24,6 @@ package_contents(
 package_json(
     name = "package_json",
     src = "//:package.json",
-)
-
-filegroup(
-    name = "license",
-    srcs = ["LICENSE"],
 )
 
 webpack_bundle(
@@ -49,11 +45,10 @@ webpack_bundle(
 )
 
 genrule(
-    name = "webnb_wasm_z",
+    name = "webnb_wasm_opt",
 	srcs = [":webnb"],
 	outs = ["webnb.oz.wasm"],
 	exec_tools = [
-		#"@emscripten_bin_linux//:all",
 		"@emscripten_bin_linux//:bin/wasm-opt",
 	],
 	cmd = r"""
@@ -69,6 +64,28 @@ $(execpath @emscripten_bin_linux//:bin/wasm-opt) \
   -Oz \
   -o $@ \
   $$(find $< -name '*.wasm');
+""",
+)
+
+filegroup(
+	name = "license",
+	srcs = ["LICENSE.js"],
+)
+
+genrule(
+	name = "licenses",
+	srcs = [
+		":webnb",
+		":license",
+	],
+	outs = ["LICENSES.txt"],
+	cmd = r"""
+cat $(location :license) > $@;
+cat $$(find $(execpath :webnb) -name webnb.js.LICENSE.txt) >> $@;
+grep \
+  --extended-regexp '^/\*!.*\*/$$' \
+  $$(find $(execpath :webnb) -name '*.css') \
+  >> $@;
 """,
 )
 
