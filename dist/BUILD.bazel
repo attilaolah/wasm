@@ -6,11 +6,14 @@ load("//tools:npm.bzl", "package_contents", "package_json")
 
 package_contents(
     name = "dist",
-    srcs = [":webnb"],
+    srcs = [
+        ":license",
+        ":webnb",
+    ],
     outdir_name = "pkg",
     outputs = select({
         "//config:opt": {
-            "LICENSE.txt": "*.LICENSE.txt",
+            "LICENSE.txt": "LICENSE,*.LICENSE.txt",
             "webnb.min.css": "style.css",
             "webnb.min.js": "webnb.js",
             "webnb.module.wasm": "*.module.wasm",
@@ -27,6 +30,11 @@ package_contents(
 package_json(
     name = "package_json",
     src = "//:package.json",
+)
+
+filegroup(
+    name = "license",
+    srcs = ["LICENSE"],
 )
 
 webpack_bundle(
