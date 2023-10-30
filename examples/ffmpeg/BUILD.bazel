@@ -133,6 +133,6 @@ sed --in-place --regexp-extended '
 )
 
 minified_js(
-    name = "ffmpeg_min_js",
+    name = "ffmpeg",
     src = ":ffmpeg_js_4",
 )
