@@ -1,7 +1,7 @@
 {
   "name": "webnb",
-  "description": "Interactive Markdown-based notebooks.",
-  "version": "1.0.4",
+  "description": "Interactive Markdown notebooks.",
+  "version": "1.0.5",
   "homepage": "https://webnb.dev",
   "license": "MIT",
   "collaborators": [
