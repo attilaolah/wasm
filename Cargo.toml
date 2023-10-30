@@ -1,7 +1,7 @@
 [package]
 name = "webnb"
 description = "Interactive Markdown-based notebooks."
-version = "0.1.5"
+version = "1.0.4"
 authors = ["Attila Oláh <attilaolah@gmail.com>"]
 categories = ["wasm"]
 readme = "README.md"
