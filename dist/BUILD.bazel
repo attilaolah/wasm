@@ -8,16 +8,16 @@ package_contents(
     name = "dist",
     srcs = [
         ":licenses",
-        ":webnb_js_l",
-        ":webnb_css_l",
-        ":webnb_wasm_opt",
+        ":webnb_css",
+        ":webnb_js",
+        ":webnb_wasm",
     ],
     outdir_name = "pkg",
     outputs = {
         "LICENSE.txt": "LICENSES.txt",
-        "webnb.css": "*.css",
-        "webnb.js": "*.js",
-        "webnb.module.wasm": "webnb.oz.wasm",
+        "webnb.css": "webnb.css",
+        "webnb.js": "webnb.js",
+        "webnb.module.wasm": "*.wasm",
     },
     visibility = ["//docs:__pkg__"],
 )
@@ -45,26 +45,77 @@ webpack_bundle(
     webpack_config = "webpack.config.js",
 )
 
+filegroup(
+    name = "license",
+    srcs = ["LICENSE.js"],
+)
+
 genrule(
-	name = "webnb_js_l",
-	srcs = [":webnb"],
-	outs = ["webnb.l.js"],
-	cmd = r"""
-echo '/*! See LICENSE.txt for license information. */' > $@
-grep --no-filename --invert-match --regexp '/\*!' \
-  $$(find $(execpath :webnb) -name '*.js') \
+    name = "licenses",
+    srcs = [
+        ":webnb",
+        ":license",
+    ],
+    outs = ["LICENSES.txt"],
+    cmd = r"""
+cat $(location :license) > $@
+cat $$(find $(execpath :webnb) -name webnb.js.LICENSE.txt) >> $@
+grep \
+  --extended-regexp '^/\*!.*\*/$$' \
+  $$(find $(execpath :webnb) -name '*.css') \
   >> $@
 """,
 )
 
 genrule(
-    name = "webnb_wasm_opt",
-	srcs = [":webnb"],
-	outs = ["webnb.oz.wasm"],
-	exec_tools = [
-		"@emscripten_bin_linux//:bin/wasm-opt",
-	],
-	cmd = r"""
+    name = "webnb_js",
+    srcs = [":webnb"],
+    outs = ["webnb.js"],
+    cmd = r"""
+echo '/*! See LICENSE.txt for license information. */' > $@
+grep --no-filename --invert-match --regexp '/\*!.*\*/$$' \
+  $$(find $(execpath :webnb) -name webnb.js) | \
+  sed s/$$(basename $$(find $(execpath :webnb) -name "*.module.wasm") .module.wasm)/webnb/g \
+  >> $@
+""",
+)
+
+COPY_CSS = r"""
+echo '/*! See LICENSE.txt for license information. */' > $@
+grep --no-filename --invert-match --regexp '/\*!' \
+  $$(find $(execpath :webnb) -name '*.css') \
+  >> $@
+"""
+
+genrule(
+    name = "webnb_css",
+    srcs = [":webnb"],
+    outs = ["webnb.css"],
+    cmd = select({
+        "//conditions:default": COPY_CSS,
+        "//config:opt": COPY_CSS + r"""
+INTERM=$$(mktemp)
+mv $@ $${INTERM}
+$(execpath @npm//csso-cli/bin:csso) $${INTERM} \
+  --output $@
+rm $${INTERM}
+		""",
+    }),
+    exec_tools = select({
+        "//conditions:default": [],
+        "//config:opt": ["@npm//csso-cli/bin:csso"],
+    }),
+)
+
+genrule(
+    name = "webnb_wasm",
+    srcs = [":webnb"],
+    outs = ["webnb.module.wasm"],
+    cmd = select({
+        "//conditions:default": r"""
+find $< -name '*.wasm' -exec cp {} $@ \;
+""",
+        "//config:opt": r"""
 $(execpath @emscripten_bin_linux//:bin/wasm-opt) \
   --dce \
   --directize \
@@ -78,52 +129,11 @@ $(execpath @emscripten_bin_linux//:bin/wasm-opt) \
   -o $@ \
   $$(find $< -name '*.wasm')
 """,
-)
-
-genrule(
-	name = "webnb_css_opt",
-	srcs = [":webnb"],
-	outs = ["webnb.min.css"],
-    exec_tools = ["@npm//csso-cli/bin:csso"],
-	cmd = r"""
-$(execpath @npm//csso-cli/bin:csso) \
-  $$(find $(execpath :webnb) -name '*.css') \
-  --output $@
-""",
-)
-
-genrule(
-	name = "webnb_css_l",
-	srcs = [":webnb_css_opt"],
-	outs = ["webnb.l.css"],
-	cmd = r"""
-echo '/*! See LICENSE.txt for license information. */' > $@
-grep --no-filename --invert-match --regexp '/\*!' \
-  $$(find $(execpath :webnb_css_opt) -name '*.css') \
-  >> $@
-""",
-)
-
-filegroup(
-	name = "license",
-	srcs = ["LICENSE.js"],
-)
-
-genrule(
-	name = "licenses",
-	srcs = [
-		":webnb",
-		":license",
-	],
-	outs = ["LICENSES.txt"],
-	cmd = r"""
-cat $(location :license) > $@
-cat $$(find $(execpath :webnb) -name webnb.js.LICENSE.txt) >> $@
-grep \
-  --extended-regexp '^/\*!.*\*/$$' \
-  $$(find $(execpath :webnb) -name '*.css') \
-  >> $@
-""",
+    }),
+    exec_tools = select({
+        "//conditions:default": [],
+        "//config:opt": ["@emscripten_bin_linux//:bin/wasm-opt"],
+    }),
 )
 
 expand_template(

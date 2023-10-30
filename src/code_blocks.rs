@@ -300,10 +300,10 @@ fn current_target(evt: &Event) -> Result<HtmlElement, Error> {
 
 fn type_name(obj: &Object) -> String {
     if obj.is_null() {
-        return "(null)".to_string();
+        return "N/A (null)".to_string();
     }
     if obj.is_undefined() {
-        return "(undefined)".to_string();
+        return "N/A (undefined)".to_string();
     }
     let no_ctor = obj.constructor().is_undefined();
     let type_name = if no_ctor {

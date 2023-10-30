@@ -20,7 +20,7 @@ export function preload(cmode: string): void {
 }
 
 function loadStyle(cmode: string): void {
-  addLink(mkLink(`${DIR}/webnb${cmode == "opt" ? ".min" : ''}.css`));
+  addLink(mkLink(`${DIR}/webnb.css`));
 }
 
 function loadFonts(): void {
