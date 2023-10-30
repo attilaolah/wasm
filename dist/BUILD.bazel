@@ -11,19 +11,12 @@ package_contents(
         ":webnb",
     ],
     outdir_name = "pkg",
-    outputs = select({
-        "//config:opt": {
-            "LICENSE.txt": "LICENSE,*.LICENSE.txt",
-            "webnb.min.css": "style.css",
-            "webnb.min.js": "webnb.js",
-            "webnb.module.wasm": "*.module.wasm",
-        },
-        "//conditions:default": {
-            "webnb.css": "style.css",
-            "webnb.js": "webnb.js",
-            "webnb.module.wasm": "*.module.wasm",
-        },
-    }),
+    outputs = {
+        "LICENSE.txt": "LICENSE,*.LICENSE.txt",
+        "webnb.css": "style.css",
+        "webnb.js": "webnb.js",
+        "webnb.module.wasm": "*.module.wasm",
+    },
     visibility = ["//docs:__pkg__"],
 )
 
@@ -53,6 +46,30 @@ webpack_bundle(
     },
     output_dir = True,
     webpack_config = "webpack.config.js",
+)
+
+genrule(
+    name = "webnb_wasm_z",
+	srcs = [":webnb"],
+	outs = ["webnb.oz.wasm"],
+	exec_tools = [
+		#"@emscripten_bin_linux//:all",
+		"@emscripten_bin_linux//:bin/wasm-opt",
+	],
+	cmd = r"""
+$(execpath @emscripten_bin_linux//:bin/wasm-opt) \
+  --dce \
+  --directize \
+  --duplicate-function-elimination \
+  --duplicate-import-elimination \
+  --gufa-optimizing \
+  --inline-main \
+  --inlining-optimizing \
+  --precompute-propagate \
+  -Oz \
+  -o $@ \
+  $$(find $< -name '*.wasm');
+""",
 )
 
 expand_template(
