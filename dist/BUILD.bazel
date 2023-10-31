@@ -6,21 +6,19 @@ load("//tools:npm.bzl", "package_contents", "package_json")
 
 package_contents(
     name = "dist",
-    srcs = [":webnb"],
+    srcs = [
+        ":licenses",
+        ":webnb_css",
+        ":webnb_js",
+        ":webnb_wasm",
+    ],
     outdir_name = "pkg",
-    outputs = select({
-        "//config:opt": {
-            "LICENSE.txt": "*.LICENSE.txt",
-            "webnb.min.css": "style.css",
-            "webnb.min.js": "webnb.js",
-            "webnb.module.wasm": "*.module.wasm",
-        },
-        "//conditions:default": {
-            "webnb.css": "style.css",
-            "webnb.js": "webnb.js",
-            "webnb.module.wasm": "*.module.wasm",
-        },
-    }),
+    outputs = {
+        "LICENSE.txt": "LICENSES.txt",
+        "webnb.css": "webnb.css",
+        "webnb.js": "webnb.js",
+        "webnb.module.wasm": "*.wasm",
+    },
     visibility = ["//docs:__pkg__"],
 )
 
@@ -47,6 +45,97 @@ webpack_bundle(
     webpack_config = "webpack.config.js",
 )
 
+filegroup(
+    name = "license",
+    srcs = ["LICENSE.js"],
+)
+
+genrule(
+    name = "licenses",
+    srcs = [
+        ":webnb",
+        ":license",
+    ],
+    outs = ["LICENSES.txt"],
+    cmd = r"""
+cat $(location :license) > $@
+cat $$(find $(execpath :webnb) -name webnb.js.LICENSE.txt) >> $@
+grep \
+  --extended-regexp '^/\*!.*\*/$$' \
+  $$(find $(execpath :webnb) -name '*.css') \
+  >> $@
+""",
+)
+
+genrule(
+    name = "webnb_js",
+    srcs = [":webnb"],
+    outs = ["webnb.js"],
+    cmd = r"""
+echo '/*! See LICENSE.txt for license information. */' > $@
+grep --no-filename --invert-match --regexp '/\*!.*\*/$$' \
+  $$(find $(execpath :webnb) -name webnb.js) | \
+  sed s/$$(basename $$(find $(execpath :webnb) -name "*.module.wasm") .module.wasm)/webnb/g \
+  >> $@
+""",
+)
+
+COPY_CSS = r"""
+echo '/*! See LICENSE.txt for license information. */' > $@
+grep --no-filename --invert-match --regexp '/\*!' \
+  $$(find $(execpath :webnb) -name '*.css') \
+  >> $@
+"""
+
+genrule(
+    name = "webnb_css",
+    srcs = [":webnb"],
+    outs = ["webnb.css"],
+    cmd = select({
+        "//conditions:default": COPY_CSS,
+        "//config:opt": COPY_CSS + r"""
+INTERM=$$(mktemp)
+mv $@ $${INTERM}
+$(execpath @npm//csso-cli/bin:csso) $${INTERM} \
+  --output $@
+rm $${INTERM}
+		""",
+    }),
+    exec_tools = select({
+        "//conditions:default": [],
+        "//config:opt": ["@npm//csso-cli/bin:csso"],
+    }),
+)
+
+genrule(
+    name = "webnb_wasm",
+    srcs = [":webnb"],
+    outs = ["webnb.module.wasm"],
+    cmd = select({
+        "//conditions:default": r"""
+find $< -name '*.wasm' -exec cp {} $@ \;
+""",
+        "//config:opt": r"""
+$(execpath @emscripten_bin_linux//:bin/wasm-opt) \
+  --dce \
+  --directize \
+  --duplicate-function-elimination \
+  --duplicate-import-elimination \
+  --gufa-optimizing \
+  --inline-main \
+  --inlining-optimizing \
+  --precompute-propagate \
+  -Oz \
+  -o $@ \
+  $$(find $< -name '*.wasm')
+""",
+    }),
+    exec_tools = select({
+        "//conditions:default": [],
+        "//config:opt": ["@emscripten_bin_linux//:bin/wasm-opt"],
+    }),
+)
+
 expand_template(
     name = "entry_point",
     out = "entry_point.js",
@@ -61,14 +150,37 @@ expand_template(
     template = "entry_point.js.tpl",
 )
 
+PKG_FILES = [
+    "webnb.{}".format(ext)
+    for ext in [
+        "css",
+        "js",
+        "module.wasm",
+    ]
+]
+
 pkg_tar(
     name = "pkg_tar",
     srcs = [
         ":dist",
         ":package_json",
     ],
-    remap_paths = {
+    remap_paths = dict({
         "dist/package.json": "package.json",
-    },
-    strip_prefix = "pkg",
+    }.items() + {
+        "dist/pkg/{}".format(file): file
+        for file in PKG_FILES
+    }.items()),
+    package_dir_file = "pkg_version",
+)
+
+genrule(
+    name = "pkg_version",
+    exec_tools = ["//tools:jq"],
+    srcs = ["//:package.json"],
+    outs = ["pkg_version.txt"],
+    cmd = r"""
+echo -n webnb- > $@
+$(execpath //tools:jq) -r .version $(execpath //:package.json) >> $@
+""",
 )

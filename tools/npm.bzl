@@ -27,7 +27,7 @@ package_contents = rule(
     attrs = {
         "srcs": attr.label_list(
             mandatory = True,
-            allow_files = ["LICENSE", ".js", "css"],
+            allow_files = ["LICENSE", ".txt", ".js", ".css", ".wasm"],
             doc = "Source files.",
         ),
         "outputs": attr.string_dict(

@@ -67,15 +67,17 @@ func main() {
 func remaps() (map[string][]string, error) {
 	paths := inpaths()
 	result := map[string][]string{}
-	for out, glob := range outglobs() {
+	for out, globs := range outglobs() {
 		for _, path := range paths {
-			_, fp := filepath.Split(path)
-			m, err := filepath.Match(glob, fp)
-			if err != nil {
-				return nil, fmt.Errorf("bad pattern for %q: %q", out, glob)
-			}
-			if m {
-				result[out] = append(result[out], path)
+			for _, glob := range globs {
+				_, fp := filepath.Split(path)
+				m, err := filepath.Match(glob, fp)
+				if err != nil {
+					return nil, fmt.Errorf("bad pattern for %q: %q", out, glob)
+				}
+				if m {
+					result[out] = append(result[out], path)
+				}
 			}
 		}
 	}
@@ -96,14 +98,14 @@ func inpaths() []string {
 	return paths
 }
 
-func outglobs() map[string]string {
-	m := map[string]string{}
+func outglobs() map[string][]string {
+	m := map[string][]string{}
 	for _, output := range outputs {
 		out, glob, ok := strings.Cut(output, "=")
 		if !ok { // No glob provided, match filenames directly.
 			glob = out
 		}
-		m[out] = glob
+		m[out] = strings.Split(glob, ",")
 	}
 	return m
 }

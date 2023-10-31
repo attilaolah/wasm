@@ -299,14 +299,48 @@ fn current_target(evt: &Event) -> Result<HtmlElement, Error> {
 }
 
 fn type_name(obj: &Object) -> String {
-    if obj.is_undefined() || obj.is_null() {
-        "N/A".to_string()
+    if obj.is_null() {
+        return "N/A (null)".to_string();
+    }
+    if obj.is_undefined() {
+        return "N/A (undefined)".to_string();
+    }
+    let no_ctor = obj.constructor().is_undefined();
+    let type_name = if no_ctor {
+        "Object".to_string()
     } else {
         obj.constructor()
             .name()
             .as_string()
             .unwrap_or("?".to_string())
+    };
+    let suffixes: Vec<String> = vec![
+        if no_ctor {
+            Some("no constructor")
+        } else {
+            None
+        },
+        if Object::is_sealed(&obj) {
+            Some("sealed")
+        } else {
+            None
+        },
+        if Object::is_frozen(&obj) {
+            Some("frozen")
+        } else {
+            None
+        },
+    ]
+    .into_iter()
+    .filter_map(|s| s)
+    .map(|s| s.to_string())
+    .collect();
+    if suffixes.is_empty() {
+        type_name
+    } else {
+        format!("{} ({})", type_name, suffixes.join(", "))
     }
+    .to_string()
 }
 
 fn language_class(el: &HtmlElement) -> Option<String> {

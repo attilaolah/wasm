@@ -87,6 +87,12 @@ pending.
 KABOOM!!!
 ```
 
+Sealed and/or frozen objects are annotated as such.
+
+```js
+return Object.seal({});
+```
+
 ## HTML
 
 Tag: `html`. A simple example:
