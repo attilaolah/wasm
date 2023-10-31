@@ -6,13 +6,11 @@ package(default_visibility = ["//visibility:public"])
 page(
     name = "index",
     srcs = ["index.md"],
-    loader_js = "../dist/pkg/webnb.js",
 )
 
 page(
     name = "code-blocks",
     srcs = ["code-blocks.md"],
-    loader_js = "../dist/pkg/webnb.js",
 )
 
 http_server(
@@ -21,5 +19,8 @@ http_server(
         ":code-blocks",
         ":index",
         "//dist",
+        "//examples/ffmpeg:index",
+        "//examples/ffmpeg:ffmpeg_js",
+        "//examples/ffmpeg:ffmpeg_wasm",
     ],
 )

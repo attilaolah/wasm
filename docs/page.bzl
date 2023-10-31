@@ -27,7 +27,7 @@ page = rule(
     attrs = {
         "loader_js": attr.string(
             doc = "URL to load the notebook.js file from.",
-            default = "/webnb.js",
+            default = "/dist/pkg/webnb.js",
         ),
         "srcs": attr.label_list(
             doc = "Markdown files to include in the output.",

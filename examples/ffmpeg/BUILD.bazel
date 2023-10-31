@@ -4,8 +4,9 @@ load("//lib:defs.bzl", "runtime_path")
 load("//lib:lib.bzl", "package_lib")
 load("//toolchains:utils.bzl", "no_error")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
-load("//tools:javascript.bzl", "minified_js", "wasm_library")
+load("//tools:javascript.bzl", "wasm_library")
 load("//tools:javascript_target.bzl", "JS_TARGET", "TS_TARGET")
+load("//docs:page.bzl", "page")
 
 package(default_visibility = ["//:__subpackages__"])
 
@@ -30,7 +31,7 @@ ts_project(
 )
 
 wasm_library(
-    name = "ffmpeg_wasm",
+    name = "ffmpeg_wasm_lib",
     srcs = [":ffmpeg_ts"],
     build_settings = {
         # Single-threaded builds start with less memory, so allow memory to grow.
@@ -45,10 +46,10 @@ wasm_library(
         "malloc",
 
         # libavutil:
+        "av_pix_fmt_desc_next",
         "av_version_info",
         "avutil_configuration",
         "avutil_license",
-        "avutil_version",
     ],
     exported_runtime_methods = [
         "cwrap",
@@ -58,13 +59,13 @@ wasm_library(
 
 filegroup(
     name = "ffmpeg_js_0",
-    srcs = [":ffmpeg_wasm"],
+    srcs = [":ffmpeg_wasm_lib"],
     output_group = "js",
 )
 
 filegroup(
-    name = "ffmpeg_wasm_0",
-    srcs = [":ffmpeg_wasm"],
+    name = "ffmpeg_wasm",
+    srcs = [":ffmpeg_wasm_lib"],
     output_group = "wasm",
 )
 
@@ -117,10 +118,15 @@ closure_js_binary(
 )
 
 genrule(
-    name = "ffmpeg_js_4",
-    srcs = [":ffmpeg_js_3"],
-    outs = ["ffmpeg_js_4.js"],
-    cmd = r"""
+    name = "ffmpeg_js",
+    srcs = select({
+        "//conditions:default": [":ffmpeg_js_0"],
+        "//config:opt": [":ffmpeg_js_3"],
+    }),
+    outs = ["ffmpeg.js"],
+    cmd = select({
+        "//conditions:default": "cp $< $@",
+        "//config:opt": r"""
 sed --expression '
     s/\"import\.meta\.url\"/import.meta.url/g
   ' <$(RULEDIR)/ffmpeg_js_3.js >$@
@@ -130,9 +136,11 @@ sed --in-place --regexp-extended '
     s/[;\n,]*\$$jscompDefaultExport\$$.*/;export default Module;/g
   ' $@
 """,
+    }),
 )
 
-minified_js(
-    name = "ffmpeg",
-    src = ":ffmpeg_js_4",
+page(
+    name = "index",
+    srcs = ["index.md"],
+    visibility = ["//docs:__pkg__"],
 )
