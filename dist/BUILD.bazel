@@ -150,14 +150,37 @@ expand_template(
     template = "entry_point.js.tpl",
 )
 
+PKG_FILES = [
+    "webnb.{}".format(ext)
+    for ext in [
+        "css",
+        "js",
+        "module.wasm",
+    ]
+]
+
 pkg_tar(
     name = "pkg_tar",
     srcs = [
         ":dist",
         ":package_json",
     ],
-    remap_paths = {
+    remap_paths = dict({
         "dist/package.json": "package.json",
-    },
-    strip_prefix = "pkg",
+    }.items() + {
+        "dist/pkg/{}".format(file): file
+        for file in PKG_FILES
+    }.items()),
+    package_dir_file = "pkg_version",
+)
+
+genrule(
+    name = "pkg_version",
+    exec_tools = ["//tools:jq"],
+    srcs = ["//:package.json"],
+    outs = ["pkg_version.txt"],
+    cmd = r"""
+echo -n webnb- > $@
+$(execpath //tools:jq) -r .version $(execpath //:package.json) >> $@
+""",
 )
