@@ -10,6 +10,7 @@ and CMake macros.
 load("@bazel_skylib//lib:collections.bzl", "collections")
 load("@rules_foreign_cc//foreign_cc:configure.bzl", "configure_make")
 load("//lib:defs.bzl", "dep_path", "repo_name", "root_path")
+load("//tools:parsed_headers.bzl", "parsed_headers")
 load("//tools/archive_symbols:archive_symbols.bzl", "archive_symbols")
 
 EM_ENV = {
@@ -54,6 +55,7 @@ def configure_make_lib(
         name,
         lib_source = None,
         build_data = None,
+        hdrs = None,
         out_static_libs = None,
         env = None,
         ignore_undefined_symbols = True,
@@ -66,6 +68,7 @@ def configure_make_lib(
       lib_source: Passed on to configure_make(). Guessed from name.
       build_data: Additional build-time dependencies, compiled with cfg =
         "exec".
+      hdrs: List of headers to parse and generate symbols for.
       out_static_libs: Passed on to configure_make(). Guessed from name.
       env: Passed on to configure_make(). Form Emscripten builds, it is
         pre-populated with environment variables required by the toolchain.
@@ -106,6 +109,13 @@ def configure_make_lib(
         out_static_libs = out_static_libs,
         **kwargs
     )
+
+    if hdrs != None:
+        parsed_headers(
+            name = "{}_h".format(name),
+            deps = [":{}".format(name)],
+            hdrs = hdrs,
+        )
 
     archive_symbols(
         archive = name,

@@ -20,5 +20,10 @@ cmake_lib(
         zstd_build_shared = False,
         zstd_build_static = True,
     ),
+    hdrs = [
+        "zdict.h",
+        "zstd.h",
+        "zstd_errors.h",
+    ],
     working_directory = "build/cmake",
 )

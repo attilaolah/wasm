@@ -10,6 +10,10 @@ package_lib()
 configure_make_lib(
     name = NAME,
     configure_options = ["--static"],
+    hdrs = [
+        "zconf.h",
+        "zlib.h",
+    ],
     env = {
         "CFLAGS": " ".join([
             no_error(["deprecated-non-prototype"]),

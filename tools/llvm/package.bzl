@@ -20,6 +20,21 @@ filegroup(
 )
 
 filegroup(
+    name = "clang",
+    srcs = ["bin/clang"],
+)
+
+filegroup(
+    name = "clang-cpp",
+    srcs = ["bin/clang-cpp"],
+)
+
+filegroup(
+    name = "clang-format",
+    srcs = ["bin/clang-format"],
+)
+
+filegroup(
     name = "flang",
     srcs = ["bin/flang-new"],
 )
