@@ -9,7 +9,10 @@ SHA256 = "57be87c22d9b49c112b6d24bc67d42508660e6b718b3db89c44e47e289137082"
 
 URL = "https://{name}.org/releases/{name}-{version}.tar.xz"
 
-STATIC_LIBS = [static_lib("avutil")]
+STATIC_LIBS = [
+    static_lib("avutil"),
+    static_lib("swscale"),
+]
 
 def download():
     http_archive(

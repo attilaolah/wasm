@@ -82,7 +82,8 @@ class PixelFormat {
   flags() {
     const val = ffmpeg.HEAPU64[this.#desc/8+1];
     return [
-      "..",  // no libswscale
+      ffmpeg.ccall("sws_isSupportedInput", "number", ["number"], [this.#id]) ? "I" : ".",
+      ffmpeg.ccall("sws_isSupportedOutput", "number", ["number"], [this.#id]) ? "O" : ".",
       (val & (1n << 3n)) ? "H" : ".",
       (val & (1n << 1n)) ? "P" : ".",
       (val & (1n << 2n)) ? "B" : ".",

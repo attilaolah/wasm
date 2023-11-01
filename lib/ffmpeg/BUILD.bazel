@@ -19,6 +19,7 @@ BUILD_DEPS_K8 = [
 CONFIGURE_OPTIONS = [
     "--disable-all",
     "--disable-doc",
+    "--enable-swscale",
 ]
 
 CONFIGURE_OPTIONS_K8 = CONFIGURE_OPTIONS + [

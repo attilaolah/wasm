@@ -29,6 +29,10 @@ wasm_library(
         "av_pix_fmt_desc_get_id",
         "av_pix_fmt_desc_next",
         "av_version_info",
+
+        # libswscale:
+        "sws_isSupportedInput",
+        "sws_isSupportedOutput",
     ],
     exported_runtime_methods = [
         "UTF8ToString",
