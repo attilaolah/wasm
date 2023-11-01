@@ -31,7 +31,6 @@ wasm_library(
         "av_version_info",
     ],
     exported_runtime_methods = [
-        "STACK_ALIGN",
         "UTF8ToString",
         "ccall",
         "getNativeTypeSize",

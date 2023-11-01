@@ -92,11 +92,7 @@ class PixelFormat {
   bit_depths() {
     return Array
       .from(Array(this.nb_components()).keys())
-      .map((i) => {
-        return HEAP[this.#desc/plen + 2 + (
-          plen === 4 ? 2 : 1  // uint64_t size in int
-        ) + (5*i) + 4];
-      })
+      .map((i) => HEAP[this.#desc/plen + 2 + 8/plen + 5*i + 4])
       .join("-");
   }
 }
@@ -115,7 +111,7 @@ function alignr(text, width) {
   return (Array(width+1).join(" ") + text)
     .split("")
     .reverse()
-    .slice(0, 14)
+    .slice(0, width)
     .reverse()
     .join("");
 }
@@ -127,19 +123,22 @@ document
       .map((desc) => new PixelFormat(desc))
       .map((fmt) => [
         fmt.flags(),
-        align(fmt.name(), 27),
+        align(fmt.name(), 22),
         fmt.nb_components(),
         alignr(fmt.bits_per_pixel(), 14),
+        "    ",
         fmt.bit_depths(),
       ].join(" "))
       .join("\n")
   );
 ```
 
+Here is the output of the above code:
+
 <pre id="pix-fmts">
 Pixel formats:
-I.... = Supported input format for conversion
-.O... = Supported output format for conversion
+I.... = Supported Input  format for conversion
+.O... = Supported Output format for conversion
 ..H.. = Hardware accelerated format
 ...P. = Paletted format
 ....B = Bitstream format
