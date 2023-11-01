@@ -19,8 +19,8 @@ http_server(
         ":code-blocks",
         ":index",
         "//dist",
-        "//examples/ffmpeg:index",
         "//examples/ffmpeg:ffmpeg_js",
         "//examples/ffmpeg:ffmpeg_wasm",
+        "//examples/ffmpeg:index",
     ],
 )

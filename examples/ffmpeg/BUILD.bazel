@@ -10,49 +10,32 @@ load("//docs:page.bzl", "page")
 
 package(default_visibility = ["//:__subpackages__"])
 
-ts_project(
-    name = "ffmpeg_ts",
-    srcs = [
-        # Must be first:
-        "types.ts",
-    ] + [
-        # keep sorted
-        "api.ts",
-    ],
-    tsconfig = {"compilerOptions": {
-        "target": TS_TARGET,
-        "esModuleInterop": True,
-        "module": "commonjs",
-    }},
-    deps = [
-        "@npm//@types/emscripten",
-        "@npm//@types/node",
-    ],
-)
-
 wasm_library(
     name = "ffmpeg_wasm_lib",
-    srcs = [":ffmpeg_ts"],
+    srcs = [],
     build_settings = {
         # Single-threaded builds start with less memory, so allow memory to grow.
         "ALLOW_MEMORY_GROWTH": "1",
         # No need for the virtual filesystem support.
         "FILESYSTEM": "0",
     },
-    exclude = ["types.ts"],
     exported_functions = [
         # Emscripten:
         "free",
         "malloc",
 
         # libavutil:
+        "av_get_bits_per_pixel",
+        "av_pix_fmt_desc_get_id",
         "av_pix_fmt_desc_next",
         "av_version_info",
-        "avutil_configuration",
-        "avutil_license",
     ],
     exported_runtime_methods = [
-        "cwrap",
+        "STACK_ALIGN",
+        "UTF8ToString",
+        "ccall",
+        "getNativeTypeSize",
+        "getValue",
     ],
     deps = ["//lib/ffmpeg"],
 )
