@@ -22,23 +22,23 @@ CONFIGURE_OPTIONS = [
     "--enable-swscale",
 ]
 
-CONFIGURE_OPTIONS_K8 = CONFIGURE_OPTIONS + [
+CONFIGURE_OPTIONS_K8 = [
     # The configure script doesn't seem to pick up $CC,
     # so we pass this explicit --cc flag to set the right compiler.
     "--cc=$${EXT_BUILD_ROOT}/$(CC)",
     "--ar=$${EXT_BUILD_ROOT}/external/llvm/bin/llvm-ar",
     "--nm=$${EXT_BUILD_ROOT}/external/llvm/bin/llvm-nm",
     "--ranlib=$${EXT_BUILD_ROOT}/external/llvm/bin/llvm-ranlib",
-]
+] + CONFIGURE_OPTIONS
 
-CONFIGURE_OPTIONS_WASM = CONFIGURE_OPTIONS + [
+CONFIGURE_OPTIONS_WASM = [
     # The configure script doesn't seem to pick up $CC,
     # so we pass this explicit --cc flag to set the right compiler.
     "--cc=$(execpath @emscripten_bin_linux//:emscripten/emcc)",
     "--ar=$(execpath @emscripten_bin_linux//:emscripten/emar)",
     "--nm=$(execpath @emscripten_bin_linux//:emscripten/emnm)",
     "--ranlib=$(execpath @emscripten_bin_linux//:emscripten/emranlib)",
-
+] + CONFIGURE_OPTIONS + [
     # Some of these are copied from:
     # github.com/ffmpegwasm/ffmpeg.wasm @ build/ffmpeg.sh
     "--arch=x86_32",

@@ -21,4 +21,5 @@ def download():
         urls = [URL],
         sha256 = SHA256,
         strip_prefix = "{name}-{version}",
+	patches = ["//lib/ffmpeg:ffmpeg.patch"],
     )
