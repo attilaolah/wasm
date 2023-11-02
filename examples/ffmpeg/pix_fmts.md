@@ -33,19 +33,20 @@ return descriptors.length;
 ```
 
 The contents of the `descriptors` array are numbers, representing pointers to C
-`AVPixFmtDescriptor` structs. These could be parsed using a package like
+[`AVPixFmtDescriptor`] structs. These could be parsed using a package like
 [ref-struct], but here we will just parse the values manually.
 
+[`AVPixFmtDescriptor`]: https://ffmpeg.org/doxygen/4.0/structAVPixFmtDescriptor.html
 [ref-struct]: https://www.npmjs.com/package/ref-struct
 
 ```js
 class PixelFormat {
   #id;
-  #desc;
+  #ptr;
 
-  constructor(desc) {
-    this.#id = ffmpeg.ccall("av_pix_fmt_desc_get_id", "number", ["number"], [desc]);
-    this.#desc = desc;
+  constructor(ptr) {
+    this.#id = ffmpeg.ccall("av_pix_fmt_desc_get_id", "number", ["number"], [ptr]);
+    this.#ptr = ptr;
   }
 
   // Format as a single line of the output text.
@@ -61,21 +62,21 @@ class PixelFormat {
   }
 
   #name() {
-    return ffmpeg.UTF8ToString(HEAP[this.#desc/usize]);
+    return ffmpeg.UTF8ToString(HEAP[this.#ptr/usize]);
   }
 
   #nb_components() {
-    return ffmpeg.HEAPU8[this.#desc+usize];
+    return ffmpeg.HEAPU8[this.#ptr+usize];
   }
 
   #bits_per_pixel() {
     return ffmpeg.ccall(
-      "av_get_bits_per_pixel", "number", ["number"], [this.#desc]
+      "av_get_bits_per_pixel", "number", ["number"], [this.#ptr]
     ) || "N/A";
   }
 
   #flags() {
-    const val = ffmpeg.HEAPU64[this.#desc/8+1];
+    const val = ffmpeg.HEAPU64[this.#ptr/8+1];
     return [
       ffmpeg.ccall("sws_isSupportedInput", "number", ["number"], [this.#id]) ? "I" : ".",
       ffmpeg.ccall("sws_isSupportedOutput", "number", ["number"], [this.#id]) ? "O" : ".",
@@ -88,7 +89,7 @@ class PixelFormat {
   #bit_depths() {
     return Array
       .from(Array(this.#nb_components()).keys())
-      .map((i) => HEAP[this.#desc/usize + 2 + 8/usize + 5*i + 4])
+      .map((i) => HEAP[this.#ptr/usize + 2 + 8/usize + 5*i + 4])
       .join("-");
   }
 }
@@ -131,7 +132,7 @@ I.... = Supported Input  format for conversion
 FLAGS NAME            NB_COMPONENTS BITS_PER_PIXEL BIT_DEPTHS
 -----
 ` + descriptors
-      .map((desc) => new PixelFormat(desc))
+      .map(desc => new PixelFormat(desc))
       .join("\n")
   );
 ```
