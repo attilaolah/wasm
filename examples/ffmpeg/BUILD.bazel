@@ -29,6 +29,7 @@ wasm_library(
         "av_pix_fmt_desc_get_id",
         "av_pix_fmt_desc_next",
         "av_version_info",
+        "avutil_configuration",
 
         # libswscale:
         "sws_isSupportedInput",
@@ -37,6 +38,7 @@ wasm_library(
     exported_runtime_methods = [
         "UTF8ToString",
         "ccall",
+        "cwrap",
         "getNativeTypeSize",
         "getValue",
     ],
@@ -125,8 +127,21 @@ sed --in-place --regexp-extended '
     }),
 )
 
+filegroup(
+    name = "docs",
+    srcs = [
+        "pix-fmts",
+        ":index",
+    ],
+    visibility = ["//docs:__pkg__"],
+)
+
 page(
     name = "index",
     srcs = ["index.md"],
-    visibility = ["//docs:__pkg__"],
+)
+
+page(
+    name = "pix-fmts",
+    srcs = ["pix_fmts.md"],
 )
