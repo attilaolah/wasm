@@ -1,23 +1,25 @@
 --- Makefile	2023-11-02 11:03:29.756289853 +0100
-+++ Makefile	2023-11-02 11:49:43.758264138 +0100
++++ Makefile	2023-11-02 14:08:34.644153155 +0100
 @@ -37,7 +37,7 @@
  SKIPHEADERS = compat/w32pthreads.h
  
  # first so "all" becomes default target
 -all: all-yes
-+all: redact all-yes
++all: patch all-yes
  
  include $(SRC_PATH)/tools/Makefile
  include $(SRC_PATH)/ffbuild/common.mak
-@@ -194,5 +194,9 @@
+@@ -194,5 +194,11 @@
  # so this saves some time on slow systems.
  .SUFFIXES:
  
 -.PHONY: all all-yes alltools build check config testprogs
 -.PHONY: *clean install* uninstall*
-+.PHONY: all all-yes alltools build check config testprogs redact
++.PHONY: all all-yes alltools build check config testprogs patch
 +.PHONY: *cl
 +
-+redact::
-+	sed --regexp-extended 's:(--[^=]+=)(/[^/ ]+)*/:\1/redacted/:g' \
-+		-i config.h
++patch::
++	sed --in-place --regexp-extended 's/^#define HAVE_SOCKLEN_T 0/#define HAVE_SOCKLEN_T 1/' config.h
++	sed --in-place --regexp-extended 's/^#define HAVE_STRUCT_ADDRINFO 0/#define HAVE_STRUCT_ADDRINFO 1/' config.h
++	sed --in-place --regexp-extended 's/^#define HAVE_STRUCT_SOCKADDR_STORAGE 0/#define HAVE_STRUCT_SOCKADDR_STORAGE 1/' config.h
++	sed --in-place --regexp-extended 's:(--[^=]+=)(/[^/]+)*/:\1/redacted/:g' config.h

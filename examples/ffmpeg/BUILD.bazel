@@ -16,6 +16,8 @@ wasm_library(
     build_settings = {
         # Single-threaded builds start with less memory, so allow memory to grow.
         "ALLOW_MEMORY_GROWTH": "1",
+        # Allow defining callback functions at runtime.
+        "ALLOW_TABLE_GROWTH": "1",
         # No need for the virtual filesystem support.
         "FILESYSTEM": "0",
     },
@@ -24,7 +26,15 @@ wasm_library(
         "free",
         "malloc",
 
+        # libavformat:
+        "avformat_alloc_context",
+        "avformat_find_stream_info",
+        "avformat_open_input",
+        "avio_alloc_context",
+
         # libavutil:
+        "av_free",
+        "av_malloc",
         "av_get_bits_per_pixel",
         "av_pix_fmt_desc_get_id",
         "av_pix_fmt_desc_next",
@@ -36,11 +46,14 @@ wasm_library(
         "sws_isSupportedOutput",
     ],
     exported_runtime_methods = [
+        # keep sorted
         "UTF8ToString",
+        "addFunction",
         "ccall",
         "cwrap",
         "getNativeTypeSize",
         "getValue",
+        "writeArrayToMemory",
     ],
     deps = ["//lib/ffmpeg"],
 )
@@ -59,7 +72,7 @@ genrule(
 sed --expression '
     s/ffmpeg_wasm_lib.wasm/ffmpeg.wasm/g
   ' <$< >$@
-"""
+""",
 )
 
 # Step to remove the "import.meta.url" global.
@@ -170,8 +183,9 @@ $(execpath @emscripten_bin_linux//:bin/wasm-opt) \
 filegroup(
     name = "docs",
     srcs = [
-        "pix-fmts",
+        ":ffprobe",
         ":index",
+        ":pix-fmts",
     ],
     visibility = ["//docs:__pkg__"],
 )
@@ -179,6 +193,11 @@ filegroup(
 page(
     name = "index",
     srcs = ["index.md"],
+)
+
+page(
+    name = "ffprobe",
+    srcs = ["ffprobe.md"],
 )
 
 page(

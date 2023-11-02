@@ -6,7 +6,7 @@ load("//toolchains:utils.bzl", "no_error")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
 load("//tools:javascript.bzl", "minified_js", "wasm_library")
 load("//tools:javascript_target.bzl", "JS_TARGET", "TS_TARGET")
-load(":package.bzl", "NAME", "STATIC_LIBS")
+load(":package.bzl", "LIBS", "NAME", "STATIC_LIBS")
 
 package(default_visibility = ["//:__subpackages__"])
 
@@ -19,7 +19,10 @@ BUILD_DEPS_K8 = [
 CONFIGURE_OPTIONS = [
     "--disable-all",
     "--disable-doc",
-    "--enable-swscale",
+] + [
+    "--enable-{}".format(lib)
+    for lib in LIBS
+    if lib != "avutil"
 ]
 
 CONFIGURE_OPTIONS_K8 = [
@@ -49,9 +52,13 @@ CONFIGURE_OPTIONS_WASM = [
     "--disable-programs",  # Do not build ffmpeg, ffprobe and ffplay.
     "--disable-runtime-cpudetect",  # No CPU detection at runtime.
     "--disable-autodetect",  # Disable env auto detection.
-    '--extra-cflags="{}"'.format(no_error([
-        "implicit-const-int-float-conversion",
-    ])),
+    '--extra-cflags="{}"'.format(
+        # Emscripten defaults to -Werror, downgrade these back to warnings.
+        no_error([
+            # keep sorted
+            "implicit-const-int-float-conversion",
+        ]),
+    ),
 ]
 
 OPT_ON = ["--enable-lto"]

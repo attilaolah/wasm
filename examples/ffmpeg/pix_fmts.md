@@ -36,7 +36,7 @@ The contents of the `descriptors` array are numbers, representing pointers to C
 [`AVPixFmtDescriptor`] structs. These could be parsed using a package like
 [ref-struct], but here we will just parse the values manually.
 
-[`AVPixFmtDescriptor`]: https://ffmpeg.org/doxygen/4.0/structAVPixFmtDescriptor.html
+[`AVPixFmtDescriptor`]: https://ffmpeg.org/doxygen/trunk/structAVPixFmtDescriptor.html
 [ref-struct]: https://www.npmjs.com/package/ref-struct
 
 ```js
