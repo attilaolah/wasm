@@ -51,12 +51,6 @@ filegroup(
     output_group = "js",
 )
 
-filegroup(
-    name = "ffmpeg_wasm",
-    srcs = [":ffmpeg_wasm_lib"],
-    output_group = "wasm",
-)
-
 # Step to remove the "import.meta.url" global.
 # TODO: Use a newer Closure compiler that supports modules.
 genrule(
@@ -124,6 +118,41 @@ sed --in-place --regexp-extended '
     s/[;\n,]*\$$jscompDefaultExport\$$.*/;export default Module;/g
   ' $@
 """,
+    }),
+)
+
+filegroup(
+    name = "ffmpeg_wasm_0",
+    srcs = [":ffmpeg_wasm_lib"],
+    output_group = "wasm",
+)
+
+genrule(
+    name = "ffmpeg_wasm",
+    srcs = [":ffmpeg_wasm_0"],
+    outs = ["ffmpeg.wasm"],
+    cmd = select({
+        "//conditions:default": r"""
+find $< -name '*.wasm' -exec cp {} $@ \;
+""",
+        "//config:opt": r"""
+$(execpath @emscripten_bin_linux//:bin/wasm-opt) \
+  --dce \
+  --directize \
+  --duplicate-function-elimination \
+  --duplicate-import-elimination \
+  --gufa-optimizing \
+  --inline-main \
+  --inlining-optimizing \
+  --precompute-propagate \
+  -Oz \
+  -o $@ \
+  $$(find $< -name '*.wasm')
+""",
+    }),
+    exec_tools = select({
+        "//conditions:default": [],
+        "//config:opt": ["@emscripten_bin_linux//:bin/wasm-opt"],
     }),
 )
 
