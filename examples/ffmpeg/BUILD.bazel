@@ -51,12 +51,23 @@ filegroup(
     output_group = "js",
 )
 
-# Step to remove the "import.meta.url" global.
-# TODO: Use a newer Closure compiler that supports modules.
 genrule(
     name = "ffmpeg_js_1",
     srcs = [":ffmpeg_js_0"],
     outs = ["ffmpeg_js_1.js"],
+    cmd = r"""
+sed --expression '
+    s/ffmpeg_wasm_lib.wasm/ffmpeg.wasm/g
+  ' <$< >$@
+"""
+)
+
+# Step to remove the "import.meta.url" global.
+# TODO: Use a newer Closure compiler that supports modules.
+genrule(
+    name = "ffmpeg_js_2",
+    srcs = [":ffmpeg_js_1"],
+    outs = ["ffmpeg_js_2.js"],
     cmd = r"""
 sed --expression '
     s/import\.meta\.url/"import.meta.url"/g
@@ -65,8 +76,8 @@ sed --expression '
 )
 
 closure_js_library(
-    name = "ffmpeg_js_2",
-    srcs = [":ffmpeg_js_1"],
+    name = "ffmpeg_js_3",
+    srcs = [":ffmpeg_js_2"],
     no_closure_library = True,
     suppress = [
         # Closure Compiler currently does not consume TypeScript .d.ts inputs.
@@ -92,18 +103,18 @@ closure_js_library(
 )
 
 closure_js_binary(
-    name = "ffmpeg_js_3",
+    name = "ffmpeg_js_4",
     compilation_level = "SIMPLE",
     dependency_mode = "SORT_ONLY",
     language = JS_TARGET,
-    deps = [":ffmpeg_js_2"],
+    deps = [":ffmpeg_js_3"],
 )
 
 genrule(
     name = "ffmpeg_js",
     srcs = select({
-        "//conditions:default": [":ffmpeg_js_0"],
-        "//config:opt": [":ffmpeg_js_3"],
+        "//conditions:default": [":ffmpeg_js_1"],
+        "//config:opt": [":ffmpeg_js_4"],
     }),
     outs = ["ffmpeg.js"],
     cmd = select({
@@ -111,7 +122,7 @@ genrule(
         "//config:opt": r"""
 sed --expression '
     s/\"import\.meta\.url\"/import.meta.url/g
-  ' <$(RULEDIR)/ffmpeg_js_3.js >$@
+  ' <$< >$@
 sed --in-place --regexp-extended '
     1h;2,$$H;$$!d;g;
     s/\$$\$$module\$$[^=]+//
