@@ -22,4 +22,4 @@
 +	sed --in-place --regexp-extended 's/^#define HAVE_SOCKLEN_T 0/#define HAVE_SOCKLEN_T 1/' config.h
 +	sed --in-place --regexp-extended 's/^#define HAVE_STRUCT_ADDRINFO 0/#define HAVE_STRUCT_ADDRINFO 1/' config.h
 +	sed --in-place --regexp-extended 's/^#define HAVE_STRUCT_SOCKADDR_STORAGE 0/#define HAVE_STRUCT_SOCKADDR_STORAGE 1/' config.h
-+	sed --in-place --regexp-extended 's:(--[^=]+=)(/[^/]+)*/:\1/redacted/:g' config.h
++	sed --in-place --regexp-extended 's:(--[^=]+=)(/[^/ ]+)*/:\1/redacted/:g' config.h
