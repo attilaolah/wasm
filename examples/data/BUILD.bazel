@@ -1,0 +1,7 @@
+filegroup(
+    name = "videos",
+    srcs = [
+        "kookaburra.360p.mov.h264.mp4",
+    ],
+    visibility = ["//docs:__pkg__"],
+)

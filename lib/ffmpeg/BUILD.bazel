@@ -19,6 +19,11 @@ BUILD_DEPS_K8 = [
 CONFIGURE_OPTIONS = [
     "--disable-all",
     "--disable-doc",
+    "--enable-demuxer={}".format(",".join([d for d in [
+        # demuxers, keep sorted
+        "mov",
+        "mp3",
+    ]])),
 ] + [
     "--enable-{}".format(lib)
     for lib in LIBS
