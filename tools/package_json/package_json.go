@@ -30,7 +30,7 @@ type Package struct {
 
 	Collaborators []string
 
-	Module string
+	Main, Module string
 
 	// Intentionally dropped:
 	// Repository, Bugs, Dependencies, DevDependencies, Types, SideEffects, Private

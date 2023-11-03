@@ -1,5 +1,5 @@
 {
-  "checksum": "23be3211a33ab383783a18071d639c6fb951e408ea763121a5f6e1d112bc862c",
+  "checksum": "f396c923967f88ca69b5012d708715c9570e60b394f53fc4bfe21a22b4a0a63a",
   "crates": {
     "addr2line 0.21.0": {
       "name": "addr2line",
@@ -9279,9 +9279,9 @@
       },
       "license": "MIT/Apache-2.0"
     },
-    "webnb 1.0.5": {
+    "webnb 1.0.8": {
       "name": "webnb",
-      "version": "1.0.5",
+      "version": "1.0.8",
       "repository": null,
       "targets": [],
       "library_target_name": null,
@@ -9360,7 +9360,7 @@
           "selects": {}
         },
         "edition": "2021",
-        "version": "1.0.5"
+        "version": "1.0.8"
       },
       "license": null
     },
@@ -11282,7 +11282,7 @@
   },
   "binary_crates": [],
   "workspace_members": {
-    "webnb 1.0.5": ""
+    "webnb 1.0.8": ""
   },
   "conditions": {
     "aarch64-apple-darwin": [

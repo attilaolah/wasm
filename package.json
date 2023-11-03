@@ -1,12 +1,13 @@
 {
   "name": "webnb",
   "description": "Interactive Markdown notebooks.",
-  "version": "1.0.5",
+  "version": "1.0.8",
   "homepage": "https://webnb.dev",
   "license": "MIT",
   "collaborators": [
     "Attila Oláh <attilaolah@gmail.com>"
   ],
+  "main": "webnb.js",
   "module": "webnb.js",
   "repository": {
     "type": "git",
