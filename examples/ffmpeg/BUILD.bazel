@@ -18,6 +18,8 @@ wasm_library(
         "ALLOW_MEMORY_GROWTH": "1",
         # Allow defining callback functions at runtime.
         "ALLOW_TABLE_GROWTH": "1",
+	# Some muxers/demuxers use syscalls that are not available in the browser.
+	"ALLOW_UNIMPLEMENTED_SYSCALLS": "1",
         # No need for the virtual filesystem support.
         "FILESYSTEM": "0",
     },
@@ -94,12 +96,12 @@ closure_js_library(
 closure_js_binary(
     name = "ffmpeg_js_3",
     compilation_level = "SIMPLE",
+    defs = [
+        "--chunk_output_type=ES_MODULES",
+    ],
     dependency_mode = "SORT_ONLY",
     language = JS_TARGET,
     deps = [":ffmpeg_js_2"],
-    defs = [
-	"--chunk_output_type=ES_MODULES",
-    ],
 )
 
 genrule(

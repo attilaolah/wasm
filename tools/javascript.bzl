@@ -88,7 +88,8 @@ def _wasm_library_impl(ctx):
     settings.setdefault("ENVIRONMENT", "web,worker")
 
     settings.setdefault("WASM_BIGINT", "1")
-    settings.setdefault("INCOMING_MODULE_JS_API", "[onRuntimeInitialized]")
+    if len(ctx.attr.srcs) > 0:
+        settings.setdefault("INCOMING_MODULE_JS_API", "[onRuntimeInitialized]")
 
     # Override settings:
     if ctx.attr.exported_functions:
