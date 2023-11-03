@@ -1,0 +1,47 @@
+load("//lib:lib.bzl", "package_lib")
+load("//toolchains/make:configure.bzl", "configure_make_lib")
+load(":package.bzl", "NAME")
+
+package(default_visibility = ["//:__subpackages__"])
+
+package_lib()
+
+BUILD_DEPS_K8 = [
+    "//lib/nasm:runtime",
+]
+
+CONFIGURE_OPTIONS = [
+    "--disable-cli",
+    "--enable-static",
+]
+
+CONFIGURE_OPTIONS_WASM = CONFIGURE_OPTIONS + [
+    "--disable-asm",
+]
+
+DBG_ON = ["--enable-debug"]
+
+OPT_ON = ["--enable-lto"]
+
+configure_make_lib(
+    name = NAME,
+    build_data = {
+        "//config:wasm": [],
+        "//conditions:default": BUILD_DEPS_K8,
+    },
+    configure_options = select({
+        "//config:k8_dbg": CONFIGURE_OPTIONS + DBG_ON,
+        "//config:k8_fastbuild": CONFIGURE_OPTIONS,
+        "//config:k8_opt": CONFIGURE_OPTIONS + OPT_ON,
+        "//config:wasm_dbg": CONFIGURE_OPTIONS_WASM + DBG_ON,
+        "//config:wasm_fastbuild": CONFIGURE_OPTIONS_WASM,
+        "//config:wasm_opt": CONFIGURE_OPTIONS_WASM + OPT_ON,
+    }),
+    env = {
+        "//config:wasm": {},
+        "//conditions:default": {
+            "AS": "$(execpath //lib/nasm:runtime)/bin/nasm",
+	    # TODO: Reset ASFLAGS via rules_foreign_cc somehow!
+        },
+    },
+)
