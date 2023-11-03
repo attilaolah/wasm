@@ -99,7 +99,7 @@ mv $@ $${INTERM}
 $(execpath @npm//csso-cli/bin:csso) $${INTERM} \
   --output $@
 rm $${INTERM}
-		""",
+""",
     }),
     exec_tools = select({
         "//conditions:default": [],
@@ -165,22 +165,22 @@ pkg_tar(
         ":dist",
         ":package_json",
     ],
+    package_dir_file = "pkg_version",
     remap_paths = dict({
         "dist/package.json": "package.json",
     }.items() + {
         "dist/pkg/{}".format(file): file
         for file in PKG_FILES
     }.items()),
-    package_dir_file = "pkg_version",
 )
 
 genrule(
     name = "pkg_version",
-    exec_tools = ["//tools:jq"],
     srcs = ["//:package.json"],
     outs = ["pkg_version.txt"],
     cmd = r"""
 echo -n webnb- > $@
 $(execpath //tools:jq) -r .version $(execpath //:package.json) >> $@
 """,
+    exec_tools = ["//tools:jq"],
 )

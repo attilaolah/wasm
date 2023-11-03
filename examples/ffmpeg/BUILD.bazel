@@ -1,0 +1,187 @@
+load("@io_bazel_rules_closure//closure:defs.bzl", "closure_js_binary", "closure_js_library")
+load("@npm//@bazel/typescript:index.bzl", "ts_project")
+load("//lib:defs.bzl", "runtime_path")
+load("//lib:lib.bzl", "package_lib")
+load("//toolchains:utils.bzl", "no_error")
+load("//toolchains/make:configure.bzl", "configure_make_lib")
+load("//tools:javascript.bzl", "wasm_library")
+load("//tools:javascript_target.bzl", "JS_TARGET", "TS_TARGET")
+load("//docs:page.bzl", "page")
+
+package(default_visibility = ["//:__subpackages__"])
+
+wasm_library(
+    name = "ffmpeg_wasm_lib",
+    srcs = [],
+    build_settings = {
+        # Single-threaded builds start with less memory, so allow memory to grow.
+        "ALLOW_MEMORY_GROWTH": "1",
+        # Allow defining callback functions at runtime.
+        "ALLOW_TABLE_GROWTH": "1",
+        # No need for the virtual filesystem support.
+        "FILESYSTEM": "0",
+    },
+    exported_functions = [
+        # Emscripten:
+        "free",
+        "malloc",
+
+        # libavformat:
+        "avformat_alloc_context",
+        "avformat_find_stream_info",
+        "avformat_open_input",
+        "avio_alloc_context",
+
+        # libavutil:
+        "av_free",
+        "av_malloc",
+        "av_get_bits_per_pixel",
+        "av_pix_fmt_desc_get_id",
+        "av_pix_fmt_desc_next",
+        "av_version_info",
+        "avutil_configuration",
+
+        # libswscale:
+        "sws_isSupportedInput",
+        "sws_isSupportedOutput",
+    ],
+    exported_runtime_methods = [
+        # keep sorted
+        "UTF8ToString",
+        "addFunction",
+        "ccall",
+        "cwrap",
+        "getNativeTypeSize",
+        "getValue",
+        "writeArrayToMemory",
+    ],
+    deps = ["//lib/ffmpeg"],
+)
+
+filegroup(
+    name = "ffmpeg_js_0",
+    srcs = [":ffmpeg_wasm_lib"],
+    output_group = "js",
+)
+
+genrule(
+    name = "ffmpeg_js_1",
+    srcs = [":ffmpeg_js_0"],
+    outs = ["ffmpeg_js_1.js"],
+    cmd = r"""
+sed --expression '
+    s/ffmpeg_wasm_lib.wasm/ffmpeg.wasm/g
+  ' <$< >$@
+""",
+)
+
+closure_js_library(
+    name = "ffmpeg_js_2",
+    srcs = [":ffmpeg_js_1"],
+    no_closure_library = True,
+    suppress = [
+        # Closure Compiler currently does not consume TypeScript .d.ts inputs.
+        # Therefore it has no clue about the types, so we disable some optimisations.
+        "JSC_UNKNOWN_EXPR_TYPE",
+        # Emscripten's non-optimised code uses assertions.
+        "JSC_DETERMINISTIC_TEST",  # only for -c dbg or fastbuild
+        # These are required for double-optimised code (-c opt, which also enables acorn).
+        "JSC_TYPE_MISMATCH",
+        "JSC_WRONG_ARGUMENT_COUNT",
+    ],
+)
+
+closure_js_binary(
+    name = "ffmpeg_js_3",
+    compilation_level = "SIMPLE",
+    dependency_mode = "SORT_ONLY",
+    language = JS_TARGET,
+    deps = [":ffmpeg_js_2"],
+    defs = [
+	"--chunk_output_type=ES_MODULES",
+    ],
+)
+
+genrule(
+    name = "ffmpeg_js",
+    srcs = select({
+        "//conditions:default": [":ffmpeg_js_1"],
+        "//config:opt": [":ffmpeg_js_3"],
+    }),
+    outs = ["ffmpeg.js"],
+    cmd = select({
+        "//conditions:default": "cp $< $@",
+        "//config:opt": r"""
+echo -n "export default " >$@
+sed --expression '
+    s/\"import\.meta\.url\"/import.meta.url/g
+  ' $$(find $(execpaths :ffmpeg_js_3) -name "*.js") >>$@
+sed --in-place --regexp-extended '
+    1h;2,$$H;$$!d;g;
+    s/;export\{\};/;/
+    s/\$$\$$module\$$[^=]+//
+    s/[;\n,]*\$$jscompDefaultExport\$$.*/;export default Module;/g
+  ' $@
+""",
+    }),
+)
+
+filegroup(
+    name = "ffmpeg_wasm_0",
+    srcs = [":ffmpeg_wasm_lib"],
+    output_group = "wasm",
+)
+
+genrule(
+    name = "ffmpeg_wasm",
+    srcs = [":ffmpeg_wasm_0"],
+    outs = ["ffmpeg.wasm"],
+    cmd = select({
+        "//conditions:default": r"""
+find $< -name '*.wasm' -exec cp {} $@ \;
+""",
+        "//config:opt": r"""
+$(execpath @emscripten_bin_linux//:bin/wasm-opt) \
+  --dce \
+  --directize \
+  --duplicate-function-elimination \
+  --duplicate-import-elimination \
+  --gufa-optimizing \
+  --inline-main \
+  --inlining-optimizing \
+  --precompute-propagate \
+  -Oz \
+  -o $@ \
+  $$(find $< -name '*.wasm')
+""",
+    }),
+    exec_tools = select({
+        "//conditions:default": [],
+        "//config:opt": ["@emscripten_bin_linux//:bin/wasm-opt"],
+    }),
+)
+
+filegroup(
+    name = "docs",
+    srcs = [
+        ":demuxing",
+        ":index",
+        ":pix-fmts",
+    ],
+    visibility = ["//docs:__pkg__"],
+)
+
+page(
+    name = "index",
+    srcs = ["index.md"],
+)
+
+page(
+    name = "demuxing",
+    srcs = ["demuxing.md"],
+)
+
+page(
+    name = "pix-fmts",
+    srcs = ["pix_fmts.md"],
+)

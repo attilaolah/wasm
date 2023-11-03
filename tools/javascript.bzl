@@ -247,7 +247,7 @@ wasm_library = rule(
         ),
         "_node": attr.label(
             allow_single_file = True,
-            default = "@nodejs_host//:node",
+            default = "@nodejs_linux_amd64//:node",
         ),
         "_python_runtime": attr.label(
             default = "//lib/python:runtime",

@@ -87,8 +87,8 @@ def workspace_dependencies():
 
     http_archive(
         name = "io_bazel_rules_closure",
-        version = "1d8c08055488d15c4eaa7e70f9bdfba1b2c83b5b",  # master @ 2022-03-25T23:36:15Z
-        sha256 = "6032db43d2ce09570a0de94b3a2b5e24654a9232c45e0d418b5314867adf4173",
+        version = "f19dc96c1dad6990b67dc3a35818cde5b7042bbb",  # master @ 2023-10-18T23:57:51Z
+        sha256 = "1ca3e1014e85077ccf0b1399b69b0a741560660dc47638f38bd4dcb0c8e2122d",
         strip_prefix = "rules_closure-{version}",
         urls = ["https://github.com/bazelbuild/rules_closure/archive/{version}.zip"],
         patch_cmds = patch_files({

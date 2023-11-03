@@ -1,8 +1,12 @@
+load("@io_bazel_rules_closure//closure:defs.bzl", "closure_js_binary", "closure_js_library")
+load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("//lib:defs.bzl", "runtime_path")
 load("//lib:lib.bzl", "package_lib")
 load("//toolchains:utils.bzl", "no_error")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
-load(":package.bzl", "NAME", "STATIC_LIBS")
+load("//tools:javascript.bzl", "minified_js", "wasm_library")
+load("//tools:javascript_target.bzl", "JS_TARGET", "TS_TARGET")
+load(":package.bzl", "LIBS", "NAME", "STATIC_LIBS")
 
 package(default_visibility = ["//:__subpackages__"])
 
@@ -15,19 +19,33 @@ BUILD_DEPS_K8 = [
 CONFIGURE_OPTIONS = [
     "--disable-all",
     "--disable-doc",
+    "--enable-demuxer={}".format(",".join([d for d in [
+        # demuxers, keep sorted
+        "mov",
+    ]])),
+] + [
+    "--enable-{}".format(lib)
+    for lib in LIBS
+    if lib != "avutil"
 ]
 
-CONFIGURE_OPTIONS_K8 = CONFIGURE_OPTIONS + [
+CONFIGURE_OPTIONS_K8 = [
     # The configure script doesn't seem to pick up $CC,
     # so we pass this explicit --cc flag to set the right compiler.
     "--cc=$${EXT_BUILD_ROOT}/$(CC)",
-]
+    "--ar=$${EXT_BUILD_ROOT}/external/llvm/bin/llvm-ar",
+    "--nm=$${EXT_BUILD_ROOT}/external/llvm/bin/llvm-nm",
+    "--ranlib=$${EXT_BUILD_ROOT}/external/llvm/bin/llvm-ranlib",
+] + CONFIGURE_OPTIONS
 
-CONFIGURE_OPTIONS_WASM = CONFIGURE_OPTIONS + [
+CONFIGURE_OPTIONS_WASM = [
     # The configure script doesn't seem to pick up $CC,
     # so we pass this explicit --cc flag to set the right compiler.
     "--cc=$(execpath @emscripten_bin_linux//:emscripten/emcc)",
-
+    "--ar=$(execpath @emscripten_bin_linux//:emscripten/emar)",
+    "--nm=$(execpath @emscripten_bin_linux//:emscripten/emnm)",
+    "--ranlib=$(execpath @emscripten_bin_linux//:emscripten/emranlib)",
+] + CONFIGURE_OPTIONS + [
     # Some of these are copied from:
     # github.com/ffmpegwasm/ffmpeg.wasm @ build/ffmpeg.sh
     "--arch=x86_32",
@@ -38,12 +56,19 @@ CONFIGURE_OPTIONS_WASM = CONFIGURE_OPTIONS + [
     "--disable-programs",  # Do not build ffmpeg, ffprobe and ffplay.
     "--disable-runtime-cpudetect",  # No CPU detection at runtime.
     "--disable-autodetect",  # Disable env auto detection.
-    '--extra-cflags="{}"'.format(no_error([
-        "implicit-const-int-float-conversion",
-    ])),
+    '--extra-cflags="{}"'.format(
+        # Emscripten defaults to -Werror, downgrade these back to warnings.
+        no_error([
+            # keep sorted
+            "implicit-const-int-float-conversion",
+        ]),
+    ),
 ]
 
-OPT_ON = ["--enable-lto"]
+OPT_ON = [
+    "--enable-lto",
+    "--enable-small",
+]
 
 DBG_OFF = ["--disable-debug"]
 
