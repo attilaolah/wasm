@@ -50,7 +50,8 @@ exporting the underlying runtime functions from the Emscripten module.
 
 The following pages show more complex examples of using the library:
 
-- [List known pixel formats](pix-fmts)
+- [List known pixel formats](/examples/ffmpeg/pix-fmts)
+- [Demux a MOV/H264 video file](/examples/ffmpeg/demuxing)
 
 For more features, a custom version of the library could be compiled. To list
 available features, we could check the configuration flags used when compiling

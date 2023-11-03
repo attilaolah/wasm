@@ -22,7 +22,6 @@ CONFIGURE_OPTIONS = [
     "--enable-demuxer={}".format(",".join([d for d in [
         # demuxers, keep sorted
         "mov",
-        "mp3",
     ]])),
 ] + [
     "--enable-{}".format(lib)
@@ -66,7 +65,10 @@ CONFIGURE_OPTIONS_WASM = [
     ),
 ]
 
-OPT_ON = ["--enable-lto"]
+OPT_ON = [
+    "--enable-lto",
+    "--enable-small",
+]
 
 DBG_OFF = ["--disable-debug"]
 

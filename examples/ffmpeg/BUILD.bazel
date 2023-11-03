@@ -135,7 +135,7 @@ genrule(
         "//config:opt": r"""
 sed --expression '
     s/\"import\.meta\.url\"/import.meta.url/g
-  ' <$< >$@
+  ' $$(find $(execpaths :ffmpeg_js_4) -name "*.js") >$@
 sed --in-place --regexp-extended '
     1h;2,$$H;$$!d;g;
     s/\$$\$$module\$$[^=]+//
@@ -183,7 +183,7 @@ $(execpath @emscripten_bin_linux//:bin/wasm-opt) \
 filegroup(
     name = "docs",
     srcs = [
-        ":ffprobe",
+        ":demuxing",
         ":index",
         ":pix-fmts",
     ],
@@ -196,8 +196,8 @@ page(
 )
 
 page(
-    name = "ffprobe",
-    srcs = ["ffprobe.md"],
+    name = "demuxing",
+    srcs = ["demuxing.md"],
 )
 
 page(
