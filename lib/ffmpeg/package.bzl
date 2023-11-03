@@ -19,6 +19,21 @@ LIBS = [
 
 STATIC_LIBS = [static_lib(lib) for lib in LIBS]
 
+BUILD_FILE_CONTENT = """
+package(
+  default_visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "all",
+    srcs = glob(["**"]),
+)
+
+exports_files(
+    srcs = ["configure"],
+)
+"""
+
 def download():
     http_archive(
         name = NAME,
@@ -27,4 +42,5 @@ def download():
         sha256 = SHA256,
         strip_prefix = "{name}-{version}",
         patches = ["//lib/ffmpeg:ffmpeg.patch"],
+        build_file_content = BUILD_FILE_CONTENT,
     )
