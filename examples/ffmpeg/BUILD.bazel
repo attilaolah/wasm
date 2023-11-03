@@ -75,69 +75,50 @@ sed --expression '
 """,
 )
 
-# Step to remove the "import.meta.url" global.
-# TODO: Use a newer Closure compiler that supports modules.
-genrule(
+closure_js_library(
     name = "ffmpeg_js_2",
     srcs = [":ffmpeg_js_1"],
-    outs = ["ffmpeg_js_2.js"],
-    cmd = r"""
-sed --expression '
-    s/import\.meta\.url/"import.meta.url"/g
-  ' <$< >$@
-""",
-)
-
-closure_js_library(
-    name = "ffmpeg_js_3",
-    srcs = [":ffmpeg_js_2"],
     no_closure_library = True,
     suppress = [
         # Closure Compiler currently does not consume TypeScript .d.ts inputs.
         # Therefore it has no clue about the types, so we disable some optimisations.
         "JSC_UNKNOWN_EXPR_TYPE",
-        # When building with MODULARIZE=0, the Module object gets redeclared.
-        "JSC_REFERENCE_BEFORE_DECLARE",
-        # When building with MODULARIZE=0, the Module object gets assigned on the global "this" object.
-        "JSC_USED_GLOBAL_THIS",
         # Emscripten's non-optimised code uses assertions.
-        "JSC_DETERMINISTIC_TEST",
-        # Emscripten's non-optimised code uses a lot of "environment detection" magic.
-        "JSC_UNDEFINED_VARIABLE",
-        # Emscripten re-declares the Module object, unless EXPORT_NAME is provided.
-        "JSC_REDECLARED_VARIABLE",
-        # Suppress use of "use_strict";
-        "JSC_USELESS_CODE",
+        "JSC_DETERMINISTIC_TEST",  # only for -c dbg or fastbuild
         # These are required for double-optimised code (-c opt, which also enables acorn).
-        "JSC_NOT_A_CONSTRUCTOR",
         "JSC_TYPE_MISMATCH",
         "JSC_WRONG_ARGUMENT_COUNT",
     ],
 )
 
 closure_js_binary(
-    name = "ffmpeg_js_4",
+    name = "ffmpeg_js_3",
     compilation_level = "SIMPLE",
     dependency_mode = "SORT_ONLY",
     language = JS_TARGET,
-    deps = [":ffmpeg_js_3"],
+    deps = [":ffmpeg_js_2"],
+    defs = [
+	"--chunk_output_type=ES_MODULES",
+    ],
 )
 
 genrule(
     name = "ffmpeg_js",
     srcs = select({
         "//conditions:default": [":ffmpeg_js_1"],
-        "//config:opt": [":ffmpeg_js_4"],
+        "//config:opt": [":ffmpeg_js_3"],
     }),
     outs = ["ffmpeg.js"],
     cmd = select({
         "//conditions:default": "cp $< $@",
         "//config:opt": r"""
+echo -n "export default " >$@
 sed --expression '
     s/\"import\.meta\.url\"/import.meta.url/g
-  ' $$(find $(execpaths :ffmpeg_js_4) -name "*.js") >$@
+  ' $$(find $(execpaths :ffmpeg_js_3) -name "*.js") >>$@
 sed --in-place --regexp-extended '
     1h;2,$$H;$$!d;g;
+    s/;export\{\};/;/
     s/\$$\$$module\$$[^=]+//
     s/[;\n,]*\$$jscompDefaultExport\$$.*/;export default Module;/g
   ' $@
