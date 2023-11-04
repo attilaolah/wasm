@@ -97,8 +97,8 @@ bazel_skylib_workspace()
 
 ## Node dependencies & toolchain.
 
-load("@build_bazel_rules_nodejs//:repositories.bzl", "build_bazel_rules_nodejs_dependencies")
 load("@build_bazel_rules_nodejs//:index.bzl", "node_repositories", "npm_install")
+load("@build_bazel_rules_nodejs//:repositories.bzl", "build_bazel_rules_nodejs_dependencies")
 load("@rules_nodejs//nodejs:repositories.bzl", "DEFAULT_NODE_VERSION", "nodejs_register_toolchains")
 
 build_bazel_rules_nodejs_dependencies()

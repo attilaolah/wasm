@@ -1,4 +1,4 @@
-load("//lib:defs.bzl", "dep_path", "include_dir", "include_flags", "library_dir", "link_flags")
+load("//lib:defs.bzl", "dep_path", "include_flags", "library_dir", "link_flags")
 load("//lib:lib.bzl", "package_lib")
 
 # Library deps:

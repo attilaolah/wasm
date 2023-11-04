@@ -1,12 +1,8 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
-load("@io_bazel_rules_closure//closure:defs.bzl", "closure_js_binary", "closure_js_library")
-load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("//lib:defs.bzl", "runtime_path")
 load("//lib:lib.bzl", "package_lib")
 load("//toolchains:utils.bzl", "no_error")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
-load("//tools:javascript.bzl", "minified_js", "wasm_library")
-load("//tools:javascript_target.bzl", "JS_TARGET", "TS_TARGET")
 load(":package.bzl", "LIBS", "NAME", "STATIC_LIBS")
 
 package(default_visibility = ["//:__subpackages__"])

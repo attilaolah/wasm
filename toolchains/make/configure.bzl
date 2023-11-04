@@ -9,7 +9,7 @@ and CMake macros.
 
 load("@bazel_skylib//lib:collections.bzl", "collections")
 load("@rules_foreign_cc//foreign_cc:configure.bzl", "configure_make")
-load("//lib:defs.bzl", "dep_path", "repo_name", "root_path")
+load("//lib:defs.bzl", "repo_name", "root_path")
 load("//tools/archive_symbols:archive_symbols.bzl", "archive_symbols")
 
 EM_ENV = {

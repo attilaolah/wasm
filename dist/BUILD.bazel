@@ -1,6 +1,5 @@
 load("@aspect_rules_webpack//webpack:defs.bzl", "webpack_bundle")
 load("@bazel_skylib//rules:expand_template.bzl", "expand_template")
-load("@rules_pkg//pkg:mappings.bzl", "filter_directory", "pkg_attributes", "pkg_filegroup", "pkg_files", "pkg_mkdirs", "pkg_mklink", "strip_prefix")
 load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
 load("//tools:npm.bzl", "package_contents", "package_json")
 

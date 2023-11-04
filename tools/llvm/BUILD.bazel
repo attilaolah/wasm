@@ -1,5 +1,4 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
-load("@rules_foreign_cc//foreign_cc:cmake.bzl", "cmake")
 
 bzl_library(
     name = "package",
