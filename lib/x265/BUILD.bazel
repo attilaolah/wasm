@@ -1,5 +1,6 @@
 load("//lib:lib.bzl", "package_lib")
 load("//lib:defs.bzl", "dep_path")
+load("//toolchains:utils.bzl", "no_error")
 load("//toolchains/cmake:cmake.bzl", "cache_entries", "cmake_lib")
 load(":package.bzl", "NAME")
 
@@ -26,6 +27,15 @@ cmake_lib(
         "//config:wasm": CACHE_ENTRIES,
         "//conditions:default": CACHE_ENTRIES_K8,
     },
+    copts = no_error(
+        [
+            # keep sorted
+            "bitwise-instead-of-logical",
+            "shadow",
+            "unused-but-set-variable",
+        ],
+        join = False,
+    ),
     env = {
         "//config:wasm": {},
         "//conditions:default": {"NASM": "$(execpath //lib/nasm:runtime)"},

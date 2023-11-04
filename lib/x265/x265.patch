@@ -1,0 +1,13 @@
+--- source/CMakeLists.txt	2023-11-04 23:54:26.650039859 +0100
++++ source/CMakeLists.txt	2023-11-04 23:54:20.917046943 +0100
+@@ -231,7 +231,9 @@
+     elseif(X86 AND NOT X64)
+         string(FIND "${CMAKE_CXX_FLAGS}" "-march" marchPos)
+         if(marchPos LESS "0")
+-            add_definitions(-march=i686)
++            if(NOT DEFINED EMSCRIPTEN)
++                add_definitions(-march=i686)
++            endif()
+             if(WIN32 AND NOT INTEL_CXX AND NOT CLANG AND
+                CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 6.0 AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 7.0)
+                 add_definitions(-mpreferred-stack-boundary=2)
