@@ -12,8 +12,4 @@ configure_make_lib(
         "--enable-shared=no",
         "--enable-static=yes",
     ],
-    env = {
-        # Needed by //lib/python:runtime?
-        "CFLAGS": "-fPIC",
-    },
 )

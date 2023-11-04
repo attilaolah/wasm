@@ -101,17 +101,17 @@ def clang_toolchain(name):
         dbg_compile_flags = ["-g"],
         host_system_name = "local",
         link_flags = [
+            # Make GCC and Clang do what we want when called through symlinks.
+            "-no-canonical-prefixes",
             "-B{}/bin".format(LLVM_PATH),
             "--ld-path={}/bin/ld.lld".format(LLVM_PATH),
             "-Wl,-no-as-needed",
             "-Wl,-z,relro,-z,now",
+        ],
+        link_libs = [
             "-lstdc++",
             "-lm",
-
-            # Make GCC and Clang do what we want when called through symlinks.
-            "-no-canonical-prefixes",
         ],
-        link_libs = [],
         opt_compile_flags = [
             "-g0",
             "-O2",
@@ -132,11 +132,14 @@ def clang_toolchain(name):
 
             # Make C++ compilation deterministic.
             # Use linkstamping instead of these compiler symbols.
+            "-Wno-builtin-macro-redefined",
             # TODO: These lead to various escaping issues, breaking Python, HDF5 and Exiv2.
             # See: https://github.com/bazelbuild/rules_foreign_cc/issues/239
             #r"-D__DATE__=\"redacted\"",
             #r"-D__TIME__=\"redacted\"",
             #r"-D__TIMESTAMP__=\"redacted\"",
-            #"-Wno-builtin-macro-redefined",
+
+            # Always build position-independent code.
+            "-fPIC",
         ],
     )
