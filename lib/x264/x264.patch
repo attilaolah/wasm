@@ -1,0 +1,27 @@
+diff --git config.sub config.sub
+index 3093784c..e782dadc 100755
+--- config.sub
++++ config.sub
+@@ -1516,6 +1516,8 @@ case $os in
+ 		;;
+ 	-nacl*)
+ 		;;
++	-emscripten)
++		;;
+ 	-none)
+ 		;;
+ 	*)
+diff --git configure configure
+index c1fb599f..ce41becd 100755
+--- configure
++++ configure
+@@ -730,6 +730,9 @@ case $host_os in
+     *haiku*)
+         SYS="HAIKU"
+         ;;
++    *emscripten*)
++        SYS="EMSCRIPTEN"
++        ;;
+     *)
+         die "Unknown system $host, edit the configure"
+         ;;

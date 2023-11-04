@@ -16,4 +16,5 @@ def download():
         urls = [URL],
         sha256 = SHA256,
         strip_prefix = "{name}-" + COMMIT,
+        patches = ["//lib/x264:x264.patch"],
     )
