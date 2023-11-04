@@ -1,4 +1,5 @@
 load("//lib:lib.bzl", "package_lib")
+load("//toolchains:utils.bzl", "no_error")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
 load(":package.bzl", "NAME")
 
@@ -12,10 +13,23 @@ BUILD_DEPS_K8 = [
 
 CONFIGURE_OPTIONS = [
     "--disable-cli",
+    "--enable-pic",
     "--enable-static",
 ]
 
+CONFIGURE_OPTIONS_K8 = CONFIGURE_OPTIONS + [
+    "--host=x86_64-pc-linux-gnu",
+]
+
 CONFIGURE_OPTIONS_WASM = CONFIGURE_OPTIONS + [
+    "--host=wasm32-unknown-emscripten",
+    '--extra-cflags="{}"'.format(
+        no_error([
+            # keep sorted
+            "empty-body",
+            "unused-but-set-variable",
+        ]),
+    ),
     "--disable-asm",
 ]
 
@@ -30,9 +44,9 @@ configure_make_lib(
         "//conditions:default": BUILD_DEPS_K8,
     },
     configure_options = select({
-        "//config:k8_dbg": CONFIGURE_OPTIONS + DBG_ON,
-        "//config:k8_fastbuild": CONFIGURE_OPTIONS,
-        "//config:k8_opt": CONFIGURE_OPTIONS + OPT_ON,
+        "//config:k8_dbg": CONFIGURE_OPTIONS_K8 + DBG_ON,
+        "//config:k8_fastbuild": CONFIGURE_OPTIONS_K8,
+        "//config:k8_opt": CONFIGURE_OPTIONS_K8 + OPT_ON,
         "//config:wasm_dbg": CONFIGURE_OPTIONS_WASM + DBG_ON,
         "//config:wasm_fastbuild": CONFIGURE_OPTIONS_WASM,
         "//config:wasm_opt": CONFIGURE_OPTIONS_WASM + OPT_ON,
