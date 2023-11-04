@@ -21,10 +21,13 @@ CONFIGURE_OPTIONS = [
     "--disable-doc",
     "--enable-demuxers",
     "--enable-muxers",
+    "--enable-gpl",
 ] + [
     # dependencies, keep sorted
     "--enable-bzlib",
     "--enable-iconv",
+    "--enable-libx264",
+    "--enable-libx265",
     "--enable-lzma",
     "--enable-zlib",
 ] + [
@@ -102,6 +105,8 @@ configure_make_lib(
         "//lib/bz2",
         "//lib/iconv",
         "//lib/lzma",
+        "//lib/x264",
+        "//lib/x265",
         "//lib/z",
     ],
 )

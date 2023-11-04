@@ -9,7 +9,9 @@ package_lib()
 
 CACHE_ENTRIES = cache_entries(
     enable_cli = False,
+    enable_pic = True,
     enable_shared = False,
+    enable_libnuma = False,
 )
 
 CACHE_ENTRIES_K8 = dict(CACHE_ENTRIES.items() + cache_entries(
