@@ -1,0 +1,34 @@
+load("//lib:lib.bzl", "package_lib")
+load("//lib:defs.bzl", "dep_path")
+load("//toolchains/cmake:cmake.bzl", "cache_entries", "cmake_lib")
+load(":package.bzl", "NAME")
+
+package(default_visibility = ["//:__subpackages__"])
+
+package_lib()
+
+CACHE_ENTRIES = cache_entries(
+    enable_cli = False,
+    enable_shared = False,
+)
+
+CACHE_ENTRIES_K8 = dict(CACHE_ENTRIES.items() + cache_entries(
+    nasm_executable = "${NASM}/bin/nasm",
+).items())
+
+cmake_lib(
+    name = NAME,
+    build_data = {
+        "//config:wasm": [],
+        "//conditions:default": ["//lib/nasm:runtime"],
+    },
+    cache_entries = {
+        "//config:wasm": CACHE_ENTRIES,
+        "//conditions:default": CACHE_ENTRIES_K8,
+    },
+    env = {
+        "//config:wasm": {},
+        "//conditions:default": {"NASM": "$(execpath //lib/nasm:runtime)"},
+    },
+    working_directory = "source",
+)

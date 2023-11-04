@@ -90,6 +90,7 @@ toolchain, pass `--cpu=wasm32`. Pass `-c opt` for an optimised build.
 [`//lib/vigra`](https://github.com/attilaolah/wasm/blob/main/lib/vigra/BUILD.bazel) | 1.11.1 [🔗](https://github.com/ukoethe/vigra/releases/download/Version-1-11-1/vigra-1.11.1-src.tar.gz)
 [`//lib/webp`](https://github.com/attilaolah/wasm/blob/main/lib/webp/BUILD.bazel) | 1.1.0 [🔗](https://storage.googleapis.com/downloads.webmproject.org/releases/webp/libwebp-1.1.0.tar.gz)
 [`//lib/x264`](https://github.com/attilaolah/wasm/blob/main/lib/x264/BUILD.bazel) | 0.164.3161 [🔗](https://code.videolan.org/videolan/x264/-/archive/a354f11f8f019a2a34ae7ef554ff07b31f0818f3/x264-a354f11f8f019a2a34ae7ef554ff07b31f0818f3.tar.bz2)
+[`//lib/x265`](https://github.com/attilaolah/wasm/blob/main/lib/x265/BUILD.bazel) | 3.5 [🔗](https://bitbucket.org/multicoreware/x265_git/downloads/x265_3.5.tar.gz)
 [`//lib/xml`](https://github.com/attilaolah/wasm/blob/main/lib/xml/BUILD.bazel) | 2.9.10 [🔗](http://xmlsoft.org/sources/libxml2-2.9.10.tar.gz)
 [`//lib/xslt`](https://github.com/attilaolah/wasm/blob/main/lib/xslt/BUILD.bazel) | 1.1.34 [🔗](http://xmlsoft.org/sources/libxslt-1.1.34.tar.gz)
 [`//lib/yasm`](https://github.com/attilaolah/wasm/blob/main/lib/yasm/BUILD.bazel) | 1.3.0 [🔗](http://www.tortall.net/projects/yasm/releases/yasm-1.3.0.tar.gz)
