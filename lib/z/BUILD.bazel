@@ -10,11 +10,5 @@ package_lib()
 configure_make_lib(
     name = NAME,
     configure_options = ["--static"],
-    env = {
-        "CFLAGS": " ".join([
-            no_error(["deprecated-non-prototype"]),
-            # TODO: Needed by //lib/python:runtime?
-            "-fPIC",
-        ]),
-    },
+    env = {"CFLAGS": no_error(["deprecated-non-prototype"])},
 )
