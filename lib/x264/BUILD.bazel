@@ -41,7 +41,8 @@ configure_make_lib(
         "//config:wasm": {},
         "//conditions:default": {
             "AS": "$(execpath //lib/nasm:runtime)/bin/nasm",
-	    # TODO: Reset ASFLAGS via rules_foreign_cc somehow!
+            "ASFLAGS": "",  # override toolchain flags
         },
     },
+    env_override = ["ASFLAGS"],
 )
