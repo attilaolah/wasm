@@ -106,7 +106,7 @@ index b5177c7..e70c974 100644
 +            if user_var in user_vars_override:
 +                vars[user_var] = [user_env_vars[user_var]]
 +            else:
-+                vars[user_var] = toolchain_val
++                vars[user_var] = toolchain_val + [user_env_vars[user_var]]
  
      tools_dict = {}
      for tool in _MAKE_TOOLS:
