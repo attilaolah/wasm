@@ -94,7 +94,7 @@ toolchain, pass `--cpu=wasm32`. Pass `-c opt` for an optimised build.
 [`//lib/xml`](https://github.com/attilaolah/wasm/blob/main/lib/xml/BUILD.bazel) | 2.9.10 [🔗](http://xmlsoft.org/sources/libxml2-2.9.10.tar.gz)
 [`//lib/xslt`](https://github.com/attilaolah/wasm/blob/main/lib/xslt/BUILD.bazel) | 1.1.34 [🔗](http://xmlsoft.org/sources/libxslt-1.1.34.tar.gz)
 [`//lib/yasm`](https://github.com/attilaolah/wasm/blob/main/lib/yasm/BUILD.bazel) | 1.3.0 [🔗](http://www.tortall.net/projects/yasm/releases/yasm-1.3.0.tar.gz)
-[`//lib/z`](https://github.com/attilaolah/wasm/blob/main/lib/z/BUILD.bazel) | 1.2.11 [🔗](https://downloads.sourceforge.net/libpng/zlib-1.2.11.tar.gz)
+[`//lib/z`](https://github.com/attilaolah/wasm/blob/main/lib/z/BUILD.bazel) | 1.3 [🔗](https://www.zlib.net/zlib-1.3.tar.xz)
 [`//lib/zstd`](https://github.com/attilaolah/wasm/blob/main/lib/zstd/BUILD.bazel) | 1.5.0 [🔗](https://github.com/facebook/zstd/releases/download/v1.5.0/zstd-1.5.0.tar.gz)
 
 

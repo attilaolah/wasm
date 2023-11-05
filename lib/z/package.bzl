@@ -3,10 +3,10 @@
 load("//lib:http_archive.bzl", "http_archive")
 
 NAME = "z"
-VERSION = "1.2.11"
-SHA256 = "c3e5e9fdd5004dcb542feda5ee4f0ff0744628baf8ed2dd5d66f8ca1197cb1a1"
+VERSION = "1.3"
+SHA256 = "8a9ba2898e1d0d774eca6ba5b4627a11e5588ba85c8851336eb38de4683050a7"
 
-URL = "https://downloads.sourceforge.net/libpng/{name}lib-{version}.tar.gz"
+URL = "https://www.zlib.net/{name}lib-{version}.tar.xz"
 
 def download():
     http_archive(
