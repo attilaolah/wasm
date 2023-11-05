@@ -60,7 +60,7 @@ toolchain, pass `--cpu=wasm32`. Pass `-c opt` for an optimised build.
 [`//lib/jq`](https://github.com/attilaolah/wasm/blob/main/lib/jq/BUILD.bazel) | 1.6 [🔗](https://github.com/stedolan/jq/releases/download/jq-1.6/jq-1.6.tar.gz)
 [`//lib/lcms`](https://github.com/attilaolah/wasm/blob/main/lib/lcms/BUILD.bazel) | 2.12 [🔗](https://downloads.sourceforge.net/project/lcms/lcms/2.12/lcms2-2.12.tar.gz)
 [`//lib/lz4`](https://github.com/attilaolah/wasm/blob/main/lib/lz4/BUILD.bazel) | 1.9.3 [🔗](https://github.com/lz4/lz4/archive/v1.9.3.tar.gz)
-[`//lib/lzma`](https://github.com/attilaolah/wasm/blob/main/lib/lzma/BUILD.bazel) | 5.2.5 [🔗](https://tukaani.org/xz/xz-5.2.5.tar.xz)
+[`//lib/lzma`](https://github.com/attilaolah/wasm/blob/main/lib/lzma/BUILD.bazel) | 5.4.5 [🔗](https://tukaani.org/xz/xz-5.4.5.tar.xz)
 [`//lib/lzo`](https://github.com/attilaolah/wasm/blob/main/lib/lzo/BUILD.bazel) | 2.10 [🔗](https://www.oberhumer.com/opensource/lzo/download/lzo-2.10.tar.gz)
 [`//lib/m4`](https://github.com/attilaolah/wasm/blob/main/lib/m4/BUILD.bazel) | 1.4.19 [🔗](https://ftp.gnu.org/gnu/m4/m4-1.4.19.tar.xz)
 [`//lib/mpdecimal`](https://github.com/attilaolah/wasm/blob/main/lib/mpdecimal/BUILD.bazel) | 2.5.1 [🔗](https://www.bytereef.org/software/mpdecimal/releases/mpdecimal-2.5.1.tar.gz)
