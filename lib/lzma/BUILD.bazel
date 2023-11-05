@@ -19,5 +19,8 @@ configure_make_lib(
         "--disable-xz",
         "--disable-xzdec",
     ],
-    copts = no_error(["deprecated-non-prototype"], join = False),
+    copts = no_error(
+        ["deprecated-non-prototype"],
+        join = False,
+    ),
 )

@@ -14,13 +14,14 @@ configure_make_lib(
         "--disable-shared",
         "--enable-static",
     ],
-    env = {
-        "CFLAGS": no_error([
+    copts = no_error(
+        [
             # keep sorted
             "deprecated-non-prototype",
             "parentheses-equality",
             "unused-const-variable",
-        ]),
-    },
+        ],
+        join = False,
+    ),
     out_static_libs = STATIC_LIBS,
 )
