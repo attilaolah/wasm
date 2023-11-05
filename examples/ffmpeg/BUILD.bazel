@@ -52,7 +52,12 @@ wasm_library(
         "getValue",
         "writeArrayToMemory",
     ],
-    deps = ["//lib/ffmpeg"],
+    deps = ["//lib/ffmpeg"] + [
+        # transitive deps, keep sorted
+        "//lib/bz2",
+        "//lib/iconv",
+        "//lib/z",
+    ],
 )
 
 filegroup(
