@@ -90,6 +90,7 @@ closure_js_library(
         # These are required for double-optimised code (-c opt, which also enables acorn).
         "JSC_TYPE_MISMATCH",
         "JSC_WRONG_ARGUMENT_COUNT",
+        "JSC_NOT_A_CONSTRUCTOR",
     ],
 )
 
