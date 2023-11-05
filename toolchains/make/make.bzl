@@ -52,7 +52,10 @@ def make_lib(
         lib_source = lib_source,
         build_data = _build_data(build_data),
         tool_prefix = select({
-            "//config:wasm": "$(execpath @emscripten_bin_linux//:emscripten/emmake)",
+            "//config:wasm": " ".join([
+                "EM_PKG_CONFIG_PATH=$${PKG_CONFIG_PATH:-}",
+                "$(execpath @emscripten_bin_linux//:emscripten/emmake)",
+            ]),
             "//conditions:default": None,
         }),
         out_static_libs = out_static_libs,

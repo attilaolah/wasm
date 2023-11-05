@@ -99,7 +99,10 @@ def configure_make_lib(
         lib_source = lib_source,
         build_data = _build_data(build_data),
         configure_prefix = select({
-            "//config:wasm": "$(execpath @emscripten_bin_linux//:emscripten/emconfigure)",
+            "//config:wasm": " ".join([
+                "EM_PKG_CONFIG_PATH=$${PKG_CONFIG_PATH:-}",
+                "$(execpath @emscripten_bin_linux//:emscripten/emconfigure)",
+            ]),
             "//conditions:default": None,
         }),
         tool_prefix = select({
