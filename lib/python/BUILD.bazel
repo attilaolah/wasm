@@ -1,4 +1,4 @@
-load("//lib:defs.bzl", "dep_path", "static_lib")
+load("//lib:defs.bzl", "dep_path")
 load("//lib:lib.bzl", "package_lib")
 load("//toolchains/make:configure.bzl", "configure_make_lib")
 load(":package.bzl", "NAME", "STATIC_LIBS")

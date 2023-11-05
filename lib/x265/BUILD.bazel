@@ -1,5 +1,4 @@
 load("//lib:lib.bzl", "package_lib")
-load("//lib:defs.bzl", "dep_path")
 load("//toolchains:utils.bzl", "no_error")
 load("//toolchains/cmake:cmake.bzl", "cache_entries", "cmake_lib")
 load(":package.bzl", "NAME")

@@ -1,4 +1,4 @@
-load("//lib:defs.bzl", "repo_name", "static_lib")
+load("//lib:defs.bzl", "static_lib")
 load("//lib:lib.bzl", "package_lib")
 load("//toolchains/make:make.bzl", "make_lib")
 load(":package.bzl", "NAME")

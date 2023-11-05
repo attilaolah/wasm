@@ -1,8 +1,8 @@
 """Repository rules for downloading all dependencies."""
 
-load(":http_archive.bzl", "http_archive")
-load("//tools:javascript_target.bzl", "JS_TARGET")
 load("//toolchains:utils.bzl", "patch_files")
+load("//tools:javascript_target.bzl", "JS_TARGET")
+load(":http_archive.bzl", "http_archive")
 
 def workspace_dependencies():
     """Set up dependencies of THIS workspace."""
