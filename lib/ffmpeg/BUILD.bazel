@@ -67,8 +67,10 @@ CONFIGURE_OPTIONS_WASM = [
         # Emscripten defaults to -Werror, downgrade these back to warnings.
         no_error([
             # keep sorted
+            "#warnings",  # feature detection during configure
             "implicit-const-int-float-conversion",
             "tautological-constant-out-of-range-compare",  # 32-bit int vs int64_max
+            "unused-command-line-argument",  # -L/.../lib during configure
             "unused-function",  # when enabling some muxers without their codecs
             "unused-variable",  # UDP protocol
         ]),

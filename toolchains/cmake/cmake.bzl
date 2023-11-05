@@ -73,7 +73,7 @@ def cmake_lib(
             "//config:wasm": " ".join([
                 "EM_PKG_CONFIG_PATH=$${PKG_CONFIG_PATH:-}",
                 "$(execpath @emscripten_bin_linux//:emscripten/emcmake)",
-	    ]),
+            ]),
             "//conditions:default": None,
         }),
         out_static_libs = out_static_libs,
