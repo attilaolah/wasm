@@ -59,8 +59,8 @@ the library:
 
 ```js
 return ffmpeg.ccall("avutil_configuration", "string")
-  .replace(/\s--/g, '#--')
-  .split('#');
+  .replace(/\s--/g, '##--')
+  .split('##');
 ```
 
 These can be modified by changing the [`BUILD.bazel`] file under the

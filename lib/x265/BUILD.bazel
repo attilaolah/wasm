@@ -9,6 +9,8 @@ package_lib()
 
 CACHE_ENTRIES = cache_entries(
     enable_cli = False,
+    enable_libnuma = False,
+    enable_pic = True,
     enable_shared = False,
 )
 

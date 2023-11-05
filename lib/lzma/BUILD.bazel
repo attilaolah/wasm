@@ -19,8 +19,8 @@ configure_make_lib(
         "--disable-xz",
         "--disable-xzdec",
     ],
-    env = {"CFLAGS": no_error([
-        # keep sorted
-        "unused-but-set-variable",
-    ])},
+    copts = no_error(
+        ["deprecated-non-prototype"],
+        join = False,
+    ),
 )
