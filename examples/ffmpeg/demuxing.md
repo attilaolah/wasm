@@ -7,7 +7,7 @@ autorun: true
 This example shows how to open a video file and print details about the input
 streams, similar to running `ffprobe`. We will use [this video of a kookaburra]
 as input. The container format requires building FFmpeg with
-`--enable-demuxers=mov`.
+`--enable-demuxer=mov`.
 
 [this video of a kookaburra]: https://www.pexels.com/video/a-kookaburra-bird-in-captive-2461326/
 
