@@ -25,6 +25,9 @@ configure_make_lib(
       "--enable-pic",
       "--target=generic-gnu",
     ],
+    args = [
+      "HAVE_GNU_STRIP=",
+    ],
     copts = no_error(
         [
             # keep sorted

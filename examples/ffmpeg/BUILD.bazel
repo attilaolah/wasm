@@ -56,6 +56,8 @@ wasm_library(
         # necessary transitive deps, keep sorted
         "//lib/bz2",
         "//lib/iconv",
+        "//lib/lzma",
+        "//lib/vpx",
         "//lib/z",
     ],
 )
