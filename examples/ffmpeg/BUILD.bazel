@@ -58,6 +58,9 @@ wasm_library(
         "//lib/iconv",
         "//lib/lzma",
         "//lib/vpx",
+        "//lib/webp",
+        "//lib/x264",
+        "//lib/x265",
         "//lib/z",
     ],
 )

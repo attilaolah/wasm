@@ -21,6 +21,7 @@ CONFIGURE_OPTIONS = [
     "--disable-doc",
     "--enable-decoders",
     "--enable-demuxers",
+    "--enable-encoders",
     "--enable-muxers",
     "--enable-gpl",
 ] + [
