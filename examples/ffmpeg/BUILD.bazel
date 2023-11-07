@@ -53,7 +53,7 @@ wasm_library(
         "writeArrayToMemory",
     ],
     deps = ["//lib/ffmpeg"] + [
-        # transitive deps, keep sorted
+        # necessary transitive deps, keep sorted
         "//lib/bz2",
         "//lib/iconv",
         "//lib/z",

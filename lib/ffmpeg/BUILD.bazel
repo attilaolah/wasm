@@ -26,6 +26,7 @@ CONFIGURE_OPTIONS = [
     # dependencies, keep sorted
     "--enable-bzlib",
     "--enable-iconv",
+    "--enable-libwebp",
     "--enable-libx264",
     "--enable-libx265",
     "--enable-lzma",
@@ -107,6 +108,7 @@ configure_make_lib(
         "//lib/bz2",
         "//lib/iconv",
         "//lib/lzma",
+        "//lib/webp",
         "//lib/x264",
         "//lib/x265",
         "//lib/z",
