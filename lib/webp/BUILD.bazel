@@ -1,6 +1,4 @@
 load("//lib:lib.bzl", "package_lib")
-
-# Library deps:
 load("//lib/jpegturbo:package.bzl", JPEGTURBO_SPEC = "SPEC")
 load("//toolchains/cmake:cmake.bzl", "cache_entries", "cmake_lib")
 load(":package.bzl", "NAME")

@@ -1,0 +1,43 @@
+load("//lib:defs.bzl", "dep_path", "runtime_path")
+load("//lib:lib.bzl", "package_lib")
+load("//toolchains:utils.bzl", "no_error")
+load("//toolchains/make:configure.bzl", "configure_make_lib")
+load(":package.bzl", "NAME")
+
+package(default_visibility = ["//:__subpackages__"])
+
+package_lib()
+
+BUILD_DEPS_K8 = [
+    "//lib/yasm:runtime",
+]
+
+configure_make_lib(
+    name = NAME,
+    build_data = {
+        "//config:wasm": [],
+        "//conditions:default": BUILD_DEPS_K8,
+    },
+    configure_options = [
+      "--disable-docs",
+      "--disable-examples",
+      "--disable-tools",
+      "--enable-pic",
+      "--target=generic-gnu",
+    ],
+    copts = no_error(
+        [
+            # keep sorted
+            "unused-but-set-variable",
+        ],
+        join = False,
+    ),
+    env = {
+        "//config:wasm": {},
+        "//conditions:default": {
+            "PATH": runtime_path(BUILD_DEPS_K8),
+            "ASFLAGS": "",  # override toolchain flags
+        },
+    },
+    env_override = ["ASFLAGS"],
+)

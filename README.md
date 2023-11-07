@@ -88,6 +88,7 @@ toolchain, pass `--cpu=wasm32`. Pass `-c opt` for an optimised build.
 [`//lib/tiff`](https://github.com/attilaolah/wasm/blob/main/lib/tiff/BUILD.bazel) | 4.2.0 [🔗](https://download.osgeo.org/libtiff/tiff-4.2.0.tar.gz)
 [`//lib/tirpc`](https://github.com/attilaolah/wasm/blob/main/lib/tirpc/BUILD.bazel) | 1.3.1 [🔗](https://downloads.sourceforge.net/project/libtirpc/libtirpc/1.3.1/libtirpc-1.3.1.tar.bz2)
 [`//lib/vigra`](https://github.com/attilaolah/wasm/blob/main/lib/vigra/BUILD.bazel) | 1.11.1 [🔗](https://github.com/ukoethe/vigra/releases/download/Version-1-11-1/vigra-1.11.1-src.tar.gz)
+[`//lib/vpx`](https://github.com/attilaolah/wasm/blob/main/lib/vpx/BUILD.bazel) | 1.13.1 [🔗](https://github.com/webmproject/libvpx/archive/refs/tags/v1.13.1.tar.gz)
 [`//lib/webp`](https://github.com/attilaolah/wasm/blob/main/lib/webp/BUILD.bazel) | 1.3.2 [🔗](https://storage.googleapis.com/downloads.webmproject.org/releases/webp/libwebp-1.3.2.tar.gz)
 [`//lib/x264`](https://github.com/attilaolah/wasm/blob/main/lib/x264/BUILD.bazel) | 0.164.3161 [🔗](https://code.videolan.org/videolan/x264/-/archive/a354f11f8f019a2a34ae7ef554ff07b31f0818f3/x264-a354f11f8f019a2a34ae7ef554ff07b31f0818f3.tar.bz2)
 [`//lib/x265`](https://github.com/attilaolah/wasm/blob/main/lib/x265/BUILD.bazel) | 3.5 [🔗](https://bitbucket.org/multicoreware/x265_git/downloads/x265_3.5.tar.gz)
