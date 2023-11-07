@@ -19,6 +19,7 @@ CONFIGURE_OPTIONS = [
     "--disable-all",
     "--disable-autodetect",
     "--disable-doc",
+    "--enable-decoders",
     "--enable-demuxers",
     "--enable-muxers",
     "--enable-gpl",
