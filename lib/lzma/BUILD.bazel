@@ -19,8 +19,21 @@ configure_make_lib(
         "--disable-xz",
         "--disable-xzdec",
     ],
-    copts = no_error(
-        ["deprecated-non-prototype"],
-        join = False,
-    ),
+    copts = select({
+        "//config:wasm": [
+            "-sSHARED_MEMORY",  # for -pthread support
+            # Need to demote some additional errors to warnings.
+            # This is because we re-compile a copy of getopt_long here, since
+            # the one from libc is sot compiled with threading support.
+            no_error([
+                # keep sorted
+                "deprecated-non-prototype",
+                "sign-conversion",
+                "undef",
+                "unused-parameter",
+                "unused-value",
+            ]),
+        ],
+        "//conditions:default": [],
+    }),
 )

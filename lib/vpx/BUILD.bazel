@@ -28,13 +28,13 @@ configure_make_lib(
         "--enable-pic",
         "--target=generic-gnu",
     ],
-    copts = no_error(
-        [
-            # keep sorted
-            "unused-but-set-variable",
+    copts = select({
+        "//config:wasm": [
+            "-sSHARED_MEMORY",  # for -pthread support
+            no_error(["unused-but-set-variable"]),
         ],
-        join = False,
-    ),
+        "//conditions:default": [],
+    }),
     env = {
         "//config:wasm": {},
         "//conditions:default": {
