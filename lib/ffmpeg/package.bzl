@@ -13,6 +13,7 @@ URL = "https://{name}.org/releases/{name}-{version}.tar.xz"
 LIBS = [
     # keep sorted
     "avcodec",
+    "avfilter",
     "avformat",
     "avutil",
     "swscale",
