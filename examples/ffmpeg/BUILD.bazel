@@ -7,7 +7,6 @@ package(default_visibility = ["//:__subpackages__"])
 
 wasm_library(
     name = "ffmpeg_wasm_lib",
-    compiler = "em++",
     srcs = [],
     build_settings = {
         # Single-threaded builds start with less memory, so allow memory to grow.
@@ -19,6 +18,7 @@ wasm_library(
         # No need for the virtual filesystem support.
         "FILESYSTEM": "0",
     },
+    compiler = "em++",
     exported_functions = [
         # Emscripten:
         "free",
