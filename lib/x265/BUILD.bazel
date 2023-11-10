@@ -12,6 +12,7 @@ CACHE_ENTRIES = cache_entries(
     enable_libnuma = False,
     enable_pic = True,
     enable_shared = False,
+    static_link_crt = True,
 )
 
 CACHE_ENTRIES_K8 = dict(CACHE_ENTRIES.items() + cache_entries(
