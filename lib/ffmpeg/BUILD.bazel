@@ -21,10 +21,11 @@ CONFIGURE_OPTIONS = [
     "--disable-all",
     "--disable-autodetect",
     "--disable-doc",
-    "--enable-decoders",
-    "--enable-demuxers",
     "--enable-encoders",
+    "--enable-decoders",
     "--enable-muxers",
+    "--enable-demuxers",
+    "--enable-pthreads",
     "--enable-gpl",
 ] + [
     "--enable-{}".format(lib)
