@@ -125,15 +125,17 @@ configure_make_lib(
 
 CONFIGURE_OPTIONS_WASM_BINDINGS = CONFIGURE_OPTIONS_WASM + ENABLE_FFMPEG + [
     '--extra-cflags="{}"'.format(" ".join([
-        "-sMODULARIZE",
-        "-sWASM_BIGINT",
-        "-sEXPORTED_FUNCTIONS=$$(node $(execpath @ffmpeg_wasm//:export))",
-        "-sEXPORTED_RUNTIME_METHODS=$$(node $(execpath @ffmpeg_wasm//:export_runtime))",
-        "-sEXPORT_NAME=createFFmpegCore",
+        # keep sorted
         "--pre-js=$(execpath @ffmpeg_wasm//:bind)",
     ])),
     '--extra-ldflags="{}"'.format(" ".join([
+        # keep sorted
         "-lworkerfs.js",
+        "-sEXPORTED_FUNCTIONS=$$(node $(execpath @ffmpeg_wasm//:export))",
+        "-sEXPORTED_RUNTIME_METHODS=$$(node $(execpath @ffmpeg_wasm//:export_runtime))",
+        "-sEXPORT_NAME=createFFmpegCore",
+        "-sMODULARIZE",
+        "-sWASM_BIGINT",
     ])),
 ]
 
