@@ -27,6 +27,10 @@ CONFIGURE_OPTIONS = [
     "--enable-muxers",
     "--enable-gpl",
 ] + [
+    "--enable-{}".format(lib)
+    for lib in LIBS
+    if lib != "avutil"
+] + [
     # dependencies, keep sorted
     "--enable-bzlib",
     "--enable-iconv",
@@ -79,8 +83,6 @@ CONFIGURE_OPTIONS_WASM = [
     ),
 ]
 
-ENABLE_LIBS = ["--enable-{}".format(lib) for lib in LIBS if lib != "avutil"]
-
 ENABLE_FFMPEG = ["--enable-ffmpeg"]
 
 DBG_OFF = ["--disable-debug"]
@@ -108,12 +110,12 @@ configure_make_lib(
         "//conditions:default": BUILD_DEPS_K8,
     },
     configure_options = select({
-        "//config:k8_dbg": CONFIGURE_OPTIONS_K8 + ENABLE_LIBS,
-        "//config:k8_fastbuild": CONFIGURE_OPTIONS_K8 + ENABLE_LIBS + DBG_OFF,
-        "//config:k8_opt": CONFIGURE_OPTIONS_K8 + ENABLE_LIBS + DBG_OFF + OPT_ON,
-        "//config:wasm_dbg": CONFIGURE_OPTIONS_WASM + ENABLE_LIBS,
-        "//config:wasm_fastbuild": CONFIGURE_OPTIONS_WASM + ENABLE_LIBS + DBG_OFF,
-        "//config:wasm_opt": CONFIGURE_OPTIONS_WASM + ENABLE_LIBS + DBG_OFF + OPT_ON,
+        "//config:k8_dbg": CONFIGURE_OPTIONS_K8,
+        "//config:k8_fastbuild": CONFIGURE_OPTIONS_K8 + DBG_OFF,
+        "//config:k8_opt": CONFIGURE_OPTIONS_K8 + DBG_OFF + OPT_ON,
+        "//config:wasm_dbg": CONFIGURE_OPTIONS_WASM,
+        "//config:wasm_fastbuild": CONFIGURE_OPTIONS_WASM + DBG_OFF,
+        "//config:wasm_opt": CONFIGURE_OPTIONS_WASM + DBG_OFF + OPT_ON,
     }),
     env = {
         "//config:wasm": {},
