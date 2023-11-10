@@ -81,11 +81,13 @@ def _wasm_library_impl(ctx):
     settings.setdefault("STRICT", "1")
 
     # Target web environments only.
-    # Also, use ES6 "export" syntax to export the module.
     settings.setdefault("MODULARIZE", "1")
-    settings.setdefault("EXPORT_ES6", "1")
-    settings.setdefault("USE_ES6_IMPORT_META", "1")
     settings.setdefault("ENVIRONMENT", "web,worker")
+
+    if ctx.attr.es6:
+        # Also, use ES6 "export" syntax to export the module.
+        settings.setdefault("EXPORT_ES6", "1")
+        settings.setdefault("USE_ES6_IMPORT_META", "1")
 
     settings.setdefault("WASM_BIGINT", "1")
     if len(ctx.attr.srcs) > 0:
@@ -128,7 +130,7 @@ def _wasm_library_impl(ctx):
                 args.add("--pre-js", js)
 
     # Build a set of -L and -l linker flags.
-    # TODO: It would be better to use pkg-config for this, but this still seems to work.
+    # TODO: It would be better to use pkg-config, but this still seems to work.
     all_libs = {}
     for lib in static_libs:
         lname = lib.basename.removeprefix("lib").removesuffix(".a")
@@ -237,6 +239,11 @@ wasm_library = rule(
             allow_files = [".js", ".ts"],
             doc = "Sources to exclude from passing to emcc using --pre-js (e.g. type declarations).",
             default = [],
+        ),
+        "es6": attr.bool(
+            mandatory = False,
+            doc = "Shorthand for setting EXPORT_ES6 and USE_ES6_IMPORT_META via -s.",
+            default = True,
         ),
         "_acorn": attr.label(
             default = "@npm//acorn",
