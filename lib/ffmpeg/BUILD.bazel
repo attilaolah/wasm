@@ -139,6 +139,7 @@ configure_make(
         'LDFLAGS-ffmpeg="{}"'.format(" ".join([
             # keep sorted
             "--pre-js=${PRE_JS}",
+            "-liconv",
             "-lworkerfs.js",
             "-sEXPORTED_FUNCTIONS=${EXPORTED_FUNCTIONS}",
             "-sEXPORTED_RUNTIME_METHODS=${EXPORTED_RUNTIME_METHODS}",
@@ -169,7 +170,16 @@ configure_make(
         "EXPORTED_RUNTIME_METHODS": "$$(node $(execpath @ffmpeg_wasm//:export_runtime))",
     }.items()),
     lib_source = lib_source(NAME),
-    out_binaries = ["ffmpeg"],
+    out_binaries = [
+        "ffmpeg.js",
+        "ffmpeg.wasm",
+        "ffmpeg.worker.js",
+    ],
+    postfix_script = "\n".join([
+        "cp ffmpeg_g ${INSTALLDIR}/bin/ffmpeg.js",
+        "cp ffmpeg_g.wasm ${INSTALLDIR}/bin/ffmpeg.wasm",
+        "cp ffmpeg_g.worker.js ${INSTALLDIR}/bin/ffmpeg.worker.js",
+    ]),
     # Build with --platforms=//config:wasm32_emscripten --cpu=wasm32.
     target_compatible_with = ["@platforms//cpu:wasm32"],
     tool_prefix = "$(execpath @emscripten_bin_linux//:emscripten/emmake)",
