@@ -1,6 +1,8 @@
---- Makefile	2023-11-02 11:03:29.756289853 +0100
-+++ Makefile	2023-11-02 14:08:34.644153155 +0100
-@@ -37,7 +37,7 @@
+diff --git Makefile Makefile
+index 1fb742f390..4baf097a96 100644
+--- Makefile
++++ Makefile
+@@ -37,7 +37,7 @@ DATA_FILES := $(wildcard $(SRC_PATH)/presets/*.ffpreset) $(SRC_PATH)/doc/ffprobe
  SKIPHEADERS = compat/w32pthreads.h
  
  # first so "all" becomes default target
@@ -9,7 +11,7 @@
  
  include $(SRC_PATH)/tools/Makefile
  include $(SRC_PATH)/ffbuild/common.mak
-@@ -194,5 +194,11 @@
+@@ -194,5 +194,11 @@ $(sort $(OUTDIRS)):
  # so this saves some time on slow systems.
  .SUFFIXES:
  
@@ -23,3 +25,216 @@
 +	sed --in-place --regexp-extended 's/^#define HAVE_STRUCT_ADDRINFO 0/#define HAVE_STRUCT_ADDRINFO 1/' config.h
 +	sed --in-place --regexp-extended 's/^#define HAVE_STRUCT_SOCKADDR_STORAGE 0/#define HAVE_STRUCT_SOCKADDR_STORAGE 1/' config.h
 +	sed --in-place --regexp-extended 's:(--[^=]+=)(/[^/ ]+)*/:\1/redacted/:g' config.h
+diff --git fftools/cmdutils.c fftools/cmdutils.c
+index a1de621d1c..05f722a245 100644
+--- fftools/cmdutils.c
++++ fftools/cmdutils.c
+@@ -24,6 +24,7 @@
+ #include <stdlib.h>
+ #include <errno.h>
+ #include <math.h>
++#include <emscripten.h>
+ 
+ /* Include only the enabled headers since some compilers (namely, Sun
+    Studio) will not omit unused inline functions and create undefined
+@@ -101,7 +102,23 @@ void exit_program(int ret)
+     if (program_exit)
+         program_exit(ret);
+ 
+-    exit(ret);
++    /*
++     * abort() is used instead of exit() because exit() not only
++     * terminates ffmpeg but also the whole node.js program, which 
++     * is not ideal.
++     *
++     * abort() terminiates the ffmpeg with an JS exception
++     *
++     *   RuntimeError: Aborted...
++     *
++     * This excpetion is catch and not visible to users.
++     *
++     */
++    EM_ASM({
++        Module.ret = $0;
++    }, ret);
++    abort();
++    // exit(ret);
+ }
+ 
+ double parse_number_or_die(const char *context, const char *numstr, int type,
+diff --git fftools/ffmpeg.c fftools/ffmpeg.c
+index c819d30ca5..516a6a57f5 100644
+--- fftools/ffmpeg.c
++++ fftools/ffmpeg.c
+@@ -32,6 +32,7 @@
+ #include <limits.h>
+ #include <stdatomic.h>
+ #include <stdint.h>
++#include <emscripten.h>
+ 
+ #if HAVE_IO_H
+ #include <io.h>
+@@ -1569,6 +1570,10 @@ static void print_final_stats(int64_t total_size)
+     }
+ }
+ 
++EM_JS(void, send_progress, (double progress, double time), {
++    Module.receiveProgress(progress, time);
++});
++
+ static void print_report(int is_last_report, int64_t timer_start, int64_t cur_time)
+ {
+     AVBPrint buf, buf_script;
+@@ -1681,6 +1686,24 @@ static void print_report(int is_last_report, int64_t timer_start, int64_t cur_ti
+             nb_frames_drop += ost->last_dropped;
+     }
+ 
++    /* send_progress here only works when the duration of
++     * input and output file are the same, other cases (ex. trim)
++     * still WIP.
++     *
++     * TODO: support cases like trim.
++     */
++    int64_t duration = -1;
++    int64_t pts_abs = FFABS(pts);
++    /* Use the longest duration among all input files.
++     */
++    for (int i = 0; i < nb_input_files; i++) {
++      int64_t file_duration = input_files[i]->ctx->duration;
++      if (file_duration > duration) {
++        duration = file_duration;
++      }
++    }
++    send_progress((double)pts_abs / (double)duration, (double)pts_abs);
++
+     secs = FFABS(pts) / AV_TIME_BASE;
+     us = FFABS(pts) % AV_TIME_BASE;
+     mins = secs / 60;
+@@ -1736,7 +1759,8 @@ static void print_report(int is_last_report, int64_t timer_start, int64_t cur_ti
+     }
+ 
+     if (print_stats || is_last_report) {
+-        const char end = is_last_report ? '\n' : '\r';
++        // Always print a new line of message.
++        const char end = '\n'; //is_last_report ? '\n' : '\r';
+         if (print_stats==1 && AV_LOG_INFO > av_log_get_level()) {
+             fprintf(stderr, "%s    %c", buf.str, end);
+         } else
+@@ -1762,8 +1786,11 @@ static void print_report(int is_last_report, int64_t timer_start, int64_t cur_ti
+ 
+     first_report = 0;
+ 
+-    if (is_last_report)
+-        print_final_stats(total_size);
++    if (is_last_report) {
++      // Make sure the progress is ended with 1.
++      if (pts_abs != duration) send_progress(1, (double)pts_abs);
++      print_final_stats(total_size);
++    }
+ }
+ 
+ static int ifilter_parameters_from_codecpar(InputFilter *ifilter, AVCodecParameters *par)
+@@ -4005,6 +4032,16 @@ static int transcode_step(void)
+     return reap_filters(0);
+ }
+ 
++/* is_timeout checks if transcode() is running longer
++ * than a timeout value, return 1 when timeout.
++ */
++EM_JS(int, is_timeout, (int64_t diff), {
++    if (Module.timeout === -1) return 0;
++    else {
++      return Module.timeout <= diff;
++    }
++});
++
+ /*
+  * The following code is the main loop of the file converter
+  */
+@@ -4028,6 +4065,8 @@ static int transcode(void)
+     while (!received_sigterm) {
+         int64_t cur_time= av_gettime_relative();
+ 
++        if (is_timeout((cur_time - timer_start) / 1000) == 1) exit_program(1);
++
+         /* if 'q' pressed, exits */
+         if (stdin_interaction)
+             if (check_keyboard_interaction(cur_time) < 0)
+@@ -4138,8 +4177,50 @@ static int64_t getmaxrss(void)
+ #endif
+ }
+ 
+-int main(int argc, char **argv)
++/* init_globals initializes global variables to enable multiple
++ * calls of ffmpeg().
++ *
++ * This is not required in the original command line version as
++ * the global varialbes are always re-initialized when calling
++ * main() function.
++ */
++void init_globals() {
++  nb_frames_dup = 0;
++  dup_warning = 1000;
++  nb_frames_drop = 0;
++  nb_output_dumped = 0;
++
++  progress_avio = NULL;
++
++  input_files = NULL;
++  nb_input_files = 0;
++
++  output_files = NULL;
++  nb_output_files = 0;
++
++  filtergraphs = NULL;
++  nb_filtergraphs = 0;
++
++  received_sigterm = 0;
++  received_nb_signals = 0;
++  transcode_init_done = ATOMIC_VAR_INIT(0);
++  ffmpeg_exited = 0;
++  main_return_code = 0;
++  copy_ts_first_pts = AV_NOPTS_VALUE;
++}
++
++/* ffmpeg() is simply a rename of main(), but it makes things easier to
++ * control as main() is a special function name that might trigger
++ * some hidden mechanisms.
++ *
++ * One example is that when using multi-threading, a proxy_main() function
++ * might be used instead of main().
++ */
++int ffmpeg(int argc, char **argv)
++// int main(int argc, char **argv)
+ {
++    init_globals();
++
+     int ret;
+     BenchmarkTimeStamps ti;
+ 
+diff --git fftools/ffplay.c fftools/ffplay.c
+index d6479aef5f..b39fae2791 100644
+--- fftools/ffplay.c
++++ fftools/ffplay.c
+@@ -3661,7 +3661,7 @@ void show_help_default(const char *opt, const char *arg)
+ }
+ 
+ /* Called from the main */
+-int main(int argc, char **argv)
++int ffplay(int argc, char **argv)
+ {
+     int flags;
+     VideoState *is;
+diff --git fftools/ffprobe.c fftools/ffprobe.c
+index af927cb084..8135ed96cf 100644
+--- fftools/ffprobe.c
++++ fftools/ffprobe.c
+@@ -4050,7 +4050,7 @@ static inline int check_section_show_entries(int section_id)
+             do_show_##varname = 1;                                      \
+     } while (0)
+ 
+-int main(int argc, char **argv)
++int ffprobe(int argc, char **argv)
+ {
+     const Writer *w;
+     WriterContext *wctx;

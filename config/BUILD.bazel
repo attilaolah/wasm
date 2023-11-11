@@ -23,6 +23,11 @@ config_setting(
     values = {"cpu": "k8"},
 )
 
+platform(
+    name = "wasm32_emscripten",
+    constraint_values = ["@platforms//cpu:wasm32"],
+)
+
 MODES = [
     "dbg",
     "fastbuild",

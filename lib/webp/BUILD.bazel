@@ -1,9 +1,7 @@
 load("//lib:lib.bzl", "package_lib")
-
-# Library deps:
 load("//lib/jpegturbo:package.bzl", JPEGTURBO_SPEC = "SPEC")
 load("//toolchains/cmake:cmake.bzl", "cache_entries", "cmake_lib")
-load(":package.bzl", "NAME")
+load(":package.bzl", "NAME", "STATIC_LIBS")
 
 package(default_visibility = ["//:__subpackages__"])
 
@@ -30,6 +28,7 @@ cmake_lib(
             "z": {},
         },
     ),
+    out_static_libs = STATIC_LIBS,
     # NOTE: //lib/tiff would be a dependency for some tools,
     # but that would introduce a cyclic dependency, so we don't list it here.
     deps = [

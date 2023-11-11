@@ -1,6 +1,8 @@
---- source/CMakeLists.txt	2023-11-04 23:54:26.650039859 +0100
-+++ source/CMakeLists.txt	2023-11-04 23:54:20.917046943 +0100
-@@ -231,7 +231,9 @@
+diff --git source/CMakeLists.txt source/CMakeLists.txt
+index 95218f5dc..e145a21fc 100755
+--- source/CMakeLists.txt
++++ source/CMakeLists.txt
+@@ -231,7 +231,9 @@ if(GCC)
      elseif(X86 AND NOT X64)
          string(FIND "${CMAKE_CXX_FLAGS}" "-march" marchPos)
          if(marchPos LESS "0")
@@ -11,3 +13,16 @@
              if(WIN32 AND NOT INTEL_CXX AND NOT CLANG AND
                 CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 6.0 AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 7.0)
                  add_definitions(-mpreferred-stack-boundary=2)
+diff --git source/common/primitives.cpp source/common/primitives.cpp
+index 10e418884..3ba9ba33e 100644
+--- source/common/primitives.cpp
++++ source/common/primitives.cpp
+@@ -293,7 +293,7 @@ extern "C" {
+ int PFX(cpu_cpuid_test)(void) { return 0; }
+ void PFX(cpu_emms)(void) {}
+ void PFX(cpu_cpuid)(uint32_t, uint32_t *eax, uint32_t *, uint32_t *, uint32_t *) { *eax = 0; }
+-void PFX(cpu_xgetbv)(uint32_t, uint32_t *, uint32_t *) {}
++int64_t PFX(cpu_xgetbv)(uint32_t) { return 0; }
+ 
+ #if X265_ARCH_ARM == 0
+ void PFX(cpu_neon_test)(void) {}

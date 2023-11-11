@@ -4,10 +4,10 @@ load("//lib:defs.bzl", "major_minor", "static_lib")
 load("//lib:http_archive.bzl", "http_archive")
 
 NAME = "png"
-VERSION = "1.6.37"
-SHA256 = "daeb2620d829575513e35fecc83f0d3791a620b9b93d800b763542ece9390fb4"
+VERSION = "1.6.40"
+SHA256 = "535b479b2467ff231a3ec6d92a525906fb8ef27978be4f66dbe05d3f3a01b3a1"
 
-URL = "https://downloads.sourceforge.net/lib{name}/lib{name}-{version}.tar.gz"
+URL = "https://downloads.sourceforge.net/lib{name}/lib{name}-{version}.tar.xz"
 
 STATIC_LIBS = [
     static_lib(NAME),

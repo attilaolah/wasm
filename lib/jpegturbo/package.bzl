@@ -4,8 +4,8 @@ load("//lib:defs.bzl", "dep_spec", "library_path", "static_lib")
 load("//lib:http_archive.bzl", "http_archive")
 
 NAME = "jpegturbo"
-VERSION = "2.1.0"
-SHA256 = "d6b7790927d658108dfd3bee2f0c66a2924c51ee7f9dc930f62c452f4a638c52"
+VERSION = "3.0.1"
+SHA256 = "5b9bbca2b2a87c6632c821799438d358e27004ab528abf798533c15d50b39f82"
 
 URL = "https://github.com/libjpeg-turbo/libjpeg-turbo/archive/{version}.tar.gz"
 

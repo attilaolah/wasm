@@ -53,7 +53,7 @@ minified_js = rule(
 )
 
 def _wasm_library_impl(ctx):
-    emcc = _find_file(ctx.files._emscripten, "emcc")
+    compiler = _find_file(ctx.files._emscripten, ctx.attr.compiler)
 
     static_libs = []
     for f in ctx.files.deps:
@@ -81,11 +81,13 @@ def _wasm_library_impl(ctx):
     settings.setdefault("STRICT", "1")
 
     # Target web environments only.
-    # Also, use ES6 "export" syntax to export the module.
     settings.setdefault("MODULARIZE", "1")
-    settings.setdefault("EXPORT_ES6", "1")
-    settings.setdefault("USE_ES6_IMPORT_META", "1")
     settings.setdefault("ENVIRONMENT", "web,worker")
+
+    if ctx.attr.es6:
+        # Also, use ES6 "export" syntax to export the module.
+        settings.setdefault("EXPORT_ES6", "1")
+        settings.setdefault("USE_ES6_IMPORT_META", "1")
 
     settings.setdefault("WASM_BIGINT", "1")
     if len(ctx.attr.srcs) > 0:
@@ -126,7 +128,16 @@ def _wasm_library_impl(ctx):
             # This is not perfect, but good enough for this case.
             if not any([js.path.endswith(excl) for excl in excludes]):
                 args.add("--pre-js", js)
-    args.add_all(static_libs)
+
+    # Build a set of -L and -l linker flags.
+    # TODO: It would be better to use pkg-config, but this still seems to work.
+    all_libs = {}
+    for lib in static_libs:
+        lname = lib.basename.removeprefix("lib").removesuffix(".a")
+        all_libs.setdefault(lib.dirname, []).append(lname)
+    for dirname, libs in all_libs.items():
+        args.add("-L{}".format(dirname))
+        args.add_all(["-l{}".format(lib) for lib in libs])
 
     # Append C/C++ compiler flags:
     flags = get_flags_info(ctx)
@@ -160,9 +171,9 @@ def _wasm_library_impl(ctx):
         ],
         env = {
             # Emscripten binary:
-            "EMCC": emcc.path,
+            "EMCC": compiler.path,
             # Required by the Emscripten config:
-            "EMSCRIPTEN": emcc.dirname,
+            "EMSCRIPTEN": compiler.dirname,
             # Required by the Emscripten config:
             "EM_BIN_PATH": paths.dirname(ctx.files._emscripten[0].path),
             # Emscripten config file:
@@ -171,7 +182,7 @@ def _wasm_library_impl(ctx):
             "PYTHON": "{}/bin/python3".format(ctx.files._python_runtime[0].path),
             "PYTHONHOME": ctx.files._python_runtime[0].path,
         },
-        mnemonic = "EMCC",
+        mnemonic = "WASM",
     )
 
     return [
@@ -194,6 +205,11 @@ wasm32_transition = transition(
 wasm_library = rule(
     implementation = _wasm_library_impl,
     attrs = {
+        "compiler": attr.string(
+            mandatory = False,
+            doc = "Compiler binary, should be either emcc or em++.",
+            default = "emcc",
+        ),
         "build_settings": attr.string_dict(
             mandatory = False,
             doc = "Additional settings to pass to emcc via -s key=value.",
@@ -223,6 +239,11 @@ wasm_library = rule(
             allow_files = [".js", ".ts"],
             doc = "Sources to exclude from passing to emcc using --pre-js (e.g. type declarations).",
             default = [],
+        ),
+        "es6": attr.bool(
+            mandatory = False,
+            doc = "Shorthand for setting EXPORT_ES6 and USE_ES6_IMPORT_META via -s.",
+            default = True,
         ),
         "_acorn": attr.label(
             default = "@npm//acorn",
