@@ -63,7 +63,7 @@ index a1de621d1c..05f722a245 100644
  
  double parse_number_or_die(const char *context, const char *numstr, int type,
 diff --git fftools/ffmpeg.c fftools/ffmpeg.c
-index c819d30ca5..6e7be80dd4 100644
+index c819d30ca5..516a6a57f5 100644
 --- fftools/ffmpeg.c
 +++ fftools/ffmpeg.c
 @@ -32,6 +32,7 @@
@@ -160,7 +160,7 @@ index c819d30ca5..6e7be80dd4 100644
          /* if 'q' pressed, exits */
          if (stdin_interaction)
              if (check_keyboard_interaction(cur_time) < 0)
-@@ -4138,8 +4177,55 @@ static int64_t getmaxrss(void)
+@@ -4138,8 +4177,50 @@ static int64_t getmaxrss(void)
  #endif
  }
  
@@ -177,17 +177,12 @@ index c819d30ca5..6e7be80dd4 100644
 +  dup_warning = 1000;
 +  nb_frames_drop = 0;
 +  nb_output_dumped = 0;
-+  want_sdp = 1;
 +
 +  progress_avio = NULL;
 +
-+  input_streams = NULL;
-+  nb_input_streams = 0;
 +  input_files = NULL;
 +  nb_input_files = 0;
 +
-+  output_streams = NULL;
-+  nb_output_streams = 0;
 +  output_files = NULL;
 +  nb_output_files = 0;
 +
