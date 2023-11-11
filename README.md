@@ -40,7 +40,7 @@ toolchain, pass `--cpu=wasm32`. Pass `-c opt` for an optimised build.
 [`//lib/exiv2`](https://github.com/attilaolah/wasm/blob/main/lib/exiv2/BUILD.bazel) | 0.27.5 [🔗](https://github.com/Exiv2/exiv2/releases/download/v0.27.5/exiv2-0.27.5-Source.tar.gz)
 [`//lib/expat`](https://github.com/attilaolah/wasm/blob/main/lib/expat/BUILD.bazel) | 2.2.10 [🔗](https://github.com/libexpat/libexpat/releases/download/R_2_2_10/expat-2.2.10.tar.xz)
 [`//lib/ffi`](https://github.com/attilaolah/wasm/blob/main/lib/ffi/BUILD.bazel) | 3.3 [🔗](https://github.com/libffi/libffi/releases/download/v3.3/libffi-3.3.tar.gz)
-[`//lib/ffmpeg`](https://github.com/attilaolah/wasm/blob/main/lib/ffmpeg/BUILD.bazel) | 6.0 [🔗](https://ffmpeg.org/releases/ffmpeg-6.0.tar.xz)
+[`//lib/ffmpeg`](https://github.com/attilaolah/wasm/blob/main/lib/ffmpeg/BUILD.bazel) | 6.0.1 [🔗](https://ffmpeg.org/releases/ffmpeg-6.0.1.tar.xz)
 [`//lib/fftw`](https://github.com/attilaolah/wasm/blob/main/lib/fftw/BUILD.bazel) | 3.3.10 [🔗](http://www.fftw.org/fftw-3.3.10.tar.gz)
 [`//lib/flex`](https://github.com/attilaolah/wasm/blob/main/lib/flex/BUILD.bazel) | 2.6.4 [🔗](https://github.com/westes/flex/releases/download/v2.6.4/flex-2.6.4.tar.gz)
 [`//lib/gcc`](https://github.com/attilaolah/wasm/blob/main/lib/gcc/BUILD.bazel) | 10.2.0 [🔗](https://ftp.gnu.org/gnu/gcc/gcc-10.2.0/gcc-10.2.0.tar.xz) [🔗](https://mirror.kumi.systems/gnu/gcc/gcc-10.2.0/gcc-10.2.0.tar.xz)

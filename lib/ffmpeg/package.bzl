@@ -5,8 +5,8 @@ load("//lib:defs.bzl", "static_lib")
 load("//lib:http_archive.bzl", lib_http_archive = "http_archive")
 
 NAME = "ffmpeg"
-VERSION = "6.0"
-SHA256 = "57be87c22d9b49c112b6d24bc67d42508660e6b718b3db89c44e47e289137082"
+VERSION = "6.0.1"
+SHA256 = "9b16b8731d78e596b4be0d720428ca42df642bb2d78342881ff7f5bc29fc9623"
 
 URL = "https://{name}.org/releases/{name}-{version}.tar.xz"
 
