@@ -179,6 +179,7 @@ configure_make(
         "cp ffmpeg_g ${INSTALLDIR}/bin/ffmpeg.js",
         "cp ffmpeg_g.wasm ${INSTALLDIR}/bin/ffmpeg.wasm",
         "cp ffmpeg_g.worker.js ${INSTALLDIR}/bin/ffmpeg.worker.js",
+        "rm -f ${INSTALLDIR}/bin/ffmpeg",
     ]),
     # Build with --platforms=//config:wasm32_emscripten --cpu=wasm32.
     target_compatible_with = ["@platforms//cpu:wasm32"],
