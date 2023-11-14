@@ -1,5 +1,8 @@
 with import <nixpkgs> {};
-clangStdenv.mkDerivation {
-  name = "clang-nix-shell";
-  buildInputs = [];
+(mkShell.override { stdenv = llvmPackages_16.stdenv; }) {
+  buildInputs = [
+    pkg-config
+    openssl
+    zlib
+  ];
 }
