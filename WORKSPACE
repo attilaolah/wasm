@@ -7,8 +7,6 @@ load("//:workspace.bzl", "workspace_dependencies")
 
 workspace_dependencies()
 
-register_toolchains("//toolchains/cc:all")
-
 ## Go dependencies & toolchain.
 
 load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")

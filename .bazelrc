@@ -6,8 +6,8 @@ try-import %workspace%/.bazelrc.local
 # Use modules.
 common --enable_bzlmod
 
-# Old C++ CPU/CROSSTOOL toolchain API:
-build --crosstool_top=//toolchains --@rules_rust//:extra_rustc_flag=--cfg=web_sys_unstable_apis
+build --host_platform=@rules_nixpkgs_core//platforms:host
+build --@rules_rust//:extra_rustc_flag=--cfg=web_sys_unstable_apis
 
 # Show test failures:
 test --test_output=errors
