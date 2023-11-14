@@ -21,6 +21,9 @@ configure_make_lib(
         # Currently that causes $AR to disappear from the Makefile.
         "//config:opt": [],
     }),
+    copts = [
+        r"""-D__DATE__='\"redacted\"'""",  # force quotes
+    ],
     out_binaries = [
         NAME,
         "ndisasm",
