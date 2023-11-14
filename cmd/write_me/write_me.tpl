@@ -20,7 +20,7 @@ $ docker run -it -v "${{`{PWD}`}}:/build" wasm
 ```
 
 Then build targets as usual. To compile WebAssembly using the Emscripten
-toolchain, pass `--cpu=wasm32`. Pass `-c opt` for an optimised build.
+toolchain, pass `--config=wasm`. Pass `-c opt` for an optimised build.
 
 ## Libraries
 

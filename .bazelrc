@@ -7,6 +7,8 @@ try-import %workspace%/.bazelrc.local
 common --enable_bzlmod
 
 build --host_platform=@rules_nixpkgs_core//platforms:host
+build:wasm --platforms=//config:wasm32_emscripten
+
 build --@rules_rust//:extra_rustc_flag=--cfg=web_sys_unstable_apis
 
 # Show test failures:

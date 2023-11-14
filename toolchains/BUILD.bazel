@@ -1,15 +1,6 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
-load("@rules_cc//cc:defs.bzl", "cc_toolchain_suite")
 
 WASM = "@emsdk//emscripten_toolchain:cc-compiler-wasm"
-
-cc_toolchain_suite(
-    name = "toolchains",
-    toolchains = {
-        "wasm32": WASM,
-        "wasm32|emscripten": WASM,
-    },
-)
 
 bzl_library(
     name = "utils_bzl",
