@@ -5,9 +5,7 @@ load("package.bzl", "BINARIES", "NAME", "STATIC_LIBS")
 
 package(default_visibility = ["//:__subpackages__"])
 
-package_lib(
-    runtime_for = [NAME],
-)
+package_lib()
 
 C_FLAGS = no_error([
     # keep sorted

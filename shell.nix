@@ -1,6 +1,6 @@
 { pkgs ? import ./nixpkgs.nix { } }:
 
-pkgs.clang16Stdenv.mkDerivation {
+pkgs.clangStdenv.mkDerivation {
   name = "clang-nix-shell";
   buildInputs = [
     pkgs.pkg-config

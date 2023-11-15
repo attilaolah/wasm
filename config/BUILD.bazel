@@ -26,6 +26,7 @@ selects.config_setting_group(
 platform(
     name = "wasm32_emscripten",
     constraint_values = ["@platforms//cpu:wasm32"],
+    parents = ["@rules_nixpkgs_core//platforms:host"],
 )
 
 MODES = [

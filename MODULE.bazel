@@ -1,8 +1,48 @@
 bazel_dep(name = "rules_foreign_cc", version = "0.10.1")
 bazel_dep(name = "rules_nixpkgs_core", version = "0.10.0")
+bazel_dep(name = "rules_nixpkgs_cc", version = "0.10.0")
 
 single_version_override(
     module_name = "rules_foreign_cc",
     patches = ["//:rules_foreign_cc.patch"],
     version = "0.10.1",
 )
+
+archive_override(
+    module_name = "rules_nixpkgs_cc",
+    integrity = "sha256-mA7fzu8uWeESLZvmxSQTvCmENfCj1FJTK4pI11Yv/Wc=",
+    strip_prefix = "rules_nixpkgs-0.10.0/toolchains/cc",
+    urls = ["https://github.com/tweag/rules_nixpkgs/releases/download/v0.10.0/rules_nixpkgs-0.10.0.tar.gz"],
+)
+
+nix_repo = use_extension("@rules_nixpkgs_core//extensions:repository.bzl", "nix_repo")
+nix_repo.github(
+    name = "nixpkgs",
+    sha256 = "f2b96094f6dfbb53b082fe8709da94137475fcfead16c960f2395c98fc014b68",
+    tag = "23.05",
+)
+use_repo(nix_repo, "nixpkgs")
+
+nix_pkg = use_extension("@rules_nixpkgs_core//extensions:package.bzl", "nix_pkg")
+
+NIX_PKGS = [
+    # keep sorted
+    "bison",
+    "emscripten",
+    "m4",
+    "nasm",
+    "nodejs",
+    "python3",
+    "sqlite",
+    "yasm",
+]
+
+[
+    nix_pkg.attr(
+        attr = pkg_name,
+        build_file = "//nix:{}.build".format(pkg_name),
+    )
+    for pkg_name in NIX_PKGS
+]
+
+use_repo(nix_pkg, *NIX_PKGS)

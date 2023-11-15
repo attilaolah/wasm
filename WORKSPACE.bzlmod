@@ -7,6 +7,21 @@ load("//:workspace.bzl", "workspace_dependencies")
 
 workspace_dependencies()
 
+## CC rules.
+load("@rules_nixpkgs_cc//:cc.bzl", "nixpkgs_cc_configure")
+
+nixpkgs_cc_configure(
+  repository = "@nixpkgs",
+)
+
+## Foreign CC rules.
+
+load("@rules_nixpkgs_cc//:foreign_cc.bzl", "nixpkgs_foreign_cc_configure")
+
+nixpkgs_foreign_cc_configure(
+  repository = "@nixpkgs",
+)
+
 ## Go dependencies & toolchain.
 
 load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
