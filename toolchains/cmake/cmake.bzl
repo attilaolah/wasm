@@ -62,7 +62,10 @@ def cmake_lib(
         }
     for val in cache_entries.values():
         _prepare_cache_entries(val)
-    _emscripten_cache_entries(cache_entries["//cond:emscripten"])
+    cache_entries["//cond:emscripten"].update({
+      "CMAKE_CROSSCOMPILING_EMULATOR": "${CROSSCOMPILING_EMULATOR}",
+      "CMAKE_TOOLCHAIN_FILE": "${EM_CMAKE}/Modules/Platform/Emscripten.cmake",
+    })
 
     cmake(
         name = name,
@@ -119,12 +122,3 @@ def _prepare_cache_entries(cache_entries):
     for key, val in cache_entries.items():
         if val in (True, False):
             cache_entries[key] = "ON" if val else "OFF"
-
-def _emscripten_cache_entries(cache_entries):
-    """Set Emscripten-specific CMake cache entries."""
-
-    # TODO: Check whether these are still necessary.
-    cache_entries["CMAKE_SYSTEM_NAME"] = "Emscripten"
-    cache_entries["CMAKE_MODULE_PATH"] = "${EM_CMAKE}/Modules"
-    cache_entries["CMAKE_TOOLCHAIN_FILE"] = "${EM_CMAKE}/Modules/Platform/Emscripten.cmake"
-    cache_entries["CMAKE_CROSSCOMPILING_EMULATOR"] = "${CROSSCOMPILING_EMULATOR}"

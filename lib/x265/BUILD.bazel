@@ -22,7 +22,7 @@ CACHE_ENTRIES_K8 = dict(CACHE_ENTRIES.items() + cache_entries(
 cmake_lib(
     name = NAME,
     build_data = {
-        "//cond:emscripten": [],
+        "//cond:emscripten": ["@emscripten//:emranlib"],
         "//conditions:default": ["@nasm//:nasm"],
     },
     cache_entries = {
@@ -41,8 +41,10 @@ cmake_lib(
         ],
         "//conditions:default": [],
     }),
+    # TODO: Figure out why emar/emranlib is not run!
+    postfix_script = "${EMRANLIB} ${INSTALLDIR}/lib/libx265.a",
     env = {
-        "//cond:emscripten": {},
+        "//cond:emscripten": {"EMRANLIB": "$(execpath @emscripten//:emranlib)"},
         "//conditions:default": {"NASM": "$(execpath @nasm//:nasm)"},
     },
     working_directory = "source",
