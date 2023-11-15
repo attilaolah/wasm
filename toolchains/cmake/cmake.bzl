@@ -64,6 +64,8 @@ def cmake_lib(
         _prepare_cache_entries(val)
     cache_entries["//cond:emscripten"].update({
       "CMAKE_CROSSCOMPILING_EMULATOR": "${CROSSCOMPILING_EMULATOR}",
+      "CMAKE_MODULE_PATH": "${EM_CMAKE}/Modules",
+      "CMAKE_SYSTEM_NAME": "Emscripten",
       "CMAKE_TOOLCHAIN_FILE": "${EM_CMAKE}/Modules/Platform/Emscripten.cmake",
     })
 
