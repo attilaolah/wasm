@@ -57,7 +57,10 @@ def configure_make_lib(
         lib_source = lib_source,
         build_data = _build_data(build_data, em_tools = ["@emscripten//:emconfigure"]),
         configure_prefix = select({
-            "//cond:emscripten": "$(execpath @emscripten//:emconfigure)",
+            "//cond:emscripten": " ".join([
+                "EM_PKG_CONFIG_PATH=$${PKG_CONFIG_PATH:-}",
+                "$(execpath @emscripten//:emconfigure)",
+            ]),
             "//conditions:default": None,
         }),
         tool_prefix = select({

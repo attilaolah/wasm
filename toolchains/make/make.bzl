@@ -14,9 +14,6 @@ EM_ENV = {
 
     # Emscripten: Use local cache.
     "EM_CACHE": "$${EXT_BUILD_ROOT}/.em_cache",
-
-    # Emscripten: Make pkg-config work.
-    "EM_PKG_CONFIG_PATH": "$${PKG_CONFIG_PATH:-}",
 }
 
 EM_TOOLS = [
@@ -71,7 +68,10 @@ def make_lib(
         lib_source = lib_source,
         build_data = _build_data(build_data),
         tool_prefix = select({
-            "//cond:emscripten": "$(execpath @emscripten//:emmake)",
+            "//cond:emscripten": " ".join([
+                "EM_PKG_CONFIG_PATH=$${PKG_CONFIG_PATH:-}",
+                "$(execpath @emscripten//:emmake)",
+            ]),
             "//conditions:default": None,
         }),
         out_static_libs = out_static_libs,

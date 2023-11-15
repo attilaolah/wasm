@@ -163,7 +163,10 @@ configure_make(
         "//cond:em_fastbuild": CONFIGURE_OPTIONS_WASM_BINDINGS + DBG_OFF,
         "//cond:em_opt": CONFIGURE_OPTIONS_WASM_BINDINGS + DBG_OFF + OPT_ON,
     }),
-    configure_prefix = "$(execpath @emscripten//:emconfigure)",
+    configure_prefix = " ".join([
+        "EM_PKG_CONFIG_PATH=$${PKG_CONFIG_PATH}",
+        "$(execpath @emscripten//:emconfigure)",
+    ]),
     env = dict(EM_ENV.items() + {
         "PRE_JS": "$(execpath @ffmpeg_wasm//:bind)",
         "EXPORTED_FUNCTIONS": "$$(node $(execpath @ffmpeg_wasm//:export))",

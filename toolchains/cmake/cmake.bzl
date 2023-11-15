@@ -75,7 +75,10 @@ def cmake_lib(
             "@emscripten//:cmake_dir",
         ]),
         tool_prefix = select({
-            "//cond:emscripten": "$(execpath @emscripten//:emcmake)",
+            "//cond:emscripten": " ".join([
+                "EM_PKG_CONFIG_PATH=$${PKG_CONFIG_PATH:-}",
+                "$(execpath @emscripten//:emcmake)",
+            ]),
             "//conditions:default": None,
         }),
         out_static_libs = out_static_libs,
