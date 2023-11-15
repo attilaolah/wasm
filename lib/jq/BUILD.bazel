@@ -19,7 +19,7 @@ configure_make_lib(
         )),
     ],
     out_binaries = select({
-        "//config:wasm": [],
+        "//cond:emscripten": [],
         "//conditions:default": ["jq"],
     }),
     deps = ["//lib/oniguruma"],

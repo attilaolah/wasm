@@ -12,7 +12,6 @@ common --incompatible_enable_cc_toolchain_resolution
 common --action_env=BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1
 
 build --host_platform=@rules_nixpkgs_core//platforms:host
-build:clang --platforms=@rules_nixpkgs_core//platforms:host
 build:clang --platforms=//platforms:clang
 build:emscripten --platforms=//platforms:emscripten
 

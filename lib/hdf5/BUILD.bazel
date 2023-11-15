@@ -32,7 +32,7 @@ CACHE_ENTRIES = cache_entries(
 cmake_lib(
     name = NAME,
     cache_entries = {
-        "//config:wasm": cache_entries(
+        "//cond:emscripten": cache_entries(
             CACHE_ENTRIES,
             # Emscripten doesn't implement getpwuid yet:
             # https://github.com/emscripten-core/emscripten/issues/13219

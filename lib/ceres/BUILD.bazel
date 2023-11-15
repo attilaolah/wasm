@@ -48,7 +48,7 @@ CACHE_ENTRIES = cache_entries(
 cmake_lib(
     name = "ceres",
     cache_entries = {
-        "//config:wasm": CACHE_ENTRIES,
+        "//cond:emscripten": CACHE_ENTRIES,
         "//conditions:default": cache_entries(
             CACHE_ENTRIES,
             # Add -pthread and -lsupc++ to try_compile() commands.

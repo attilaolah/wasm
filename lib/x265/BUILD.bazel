@@ -16,21 +16,21 @@ CACHE_ENTRIES = cache_entries(
 )
 
 CACHE_ENTRIES_K8 = dict(CACHE_ENTRIES.items() + cache_entries(
-    nasm_executable = "${NASM}/bin/nasm",
+    nasm_executable = "${NASM}",
 ).items())
 
 cmake_lib(
     name = NAME,
     build_data = {
-        "//config:wasm": [],
-        "//conditions:default": ["//lib/nasm:runtime"],
+        "//cond:emscripten": [],
+        "//conditions:default": ["@nasm//:nasm"],
     },
     cache_entries = {
-        "//config:wasm": CACHE_ENTRIES,
+        "//cond:emscripten": CACHE_ENTRIES,
         "//conditions:default": CACHE_ENTRIES_K8,
     },
     copts = select({
-        "//config:wasm": [
+        "//cond:emscripten": [
             "-sSHARED_MEMORY",  # for -pthread support
             no_error([
                 # keep sorted
@@ -42,8 +42,8 @@ cmake_lib(
         "//conditions:default": [],
     }),
     env = {
-        "//config:wasm": {},
-        "//conditions:default": {"NASM": "$(execpath //lib/nasm:runtime)"},
+        "//cond:emscripten": {},
+        "//conditions:default": {"NASM": "$(execpath @nasm//:nasm)"},
     },
     working_directory = "source",
 )

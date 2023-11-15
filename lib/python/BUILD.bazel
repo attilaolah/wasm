@@ -33,7 +33,7 @@ configure_make_lib(
         "//conditions:default": CONFIGURE_OPTIONS,
     }),
     out_binaries = select({
-        "//config:wasm": [],
+        "//cond:emscripten": [],
         "//conditions:default": ["python3"],
     }),
     out_static_libs = STATIC_LIBS,

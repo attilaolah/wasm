@@ -12,7 +12,7 @@ package(default_visibility = ["//:__subpackages__"])
 package_lib()
 
 BUILD_DEPS_K8 = [
-    "//lib/yasm:runtime",
+    "@yasm//:yasm",
 ]
 
 CONFIGURE_OPTIONS = [
@@ -114,14 +114,14 @@ configure_make_lib(
         "//cond:clang_dbg": CONFIGURE_OPTIONS_K8,
         "//cond:clang_fastbuild": CONFIGURE_OPTIONS_K8 + DBG_OFF,
         "//cond:clang_opt": CONFIGURE_OPTIONS_K8 + DBG_OFF + OPT_ON,
-        "//cond:emscripten_dbg": CONFIGURE_OPTIONS_WASM,
-        "//conditions:is_emscripten_fastbuild": CONFIGURE_OPTIONS_WASM + DBG_OFF,
-        "//conditions:is_emscripten_opt": CONFIGURE_OPTIONS_WASM + DBG_OFF + OPT_ON,
+        "//cond:em_dbg": CONFIGURE_OPTIONS_WASM,
+        "//cond:em_fastbuild": CONFIGURE_OPTIONS_WASM + DBG_OFF,
+        "//cond:em_opt": CONFIGURE_OPTIONS_WASM + DBG_OFF + OPT_ON,
     }),
-    env = {
-        "//cond:emscripten": {},
-        "//conditions:default": {"PATH": runtime_path(BUILD_DEPS_K8)},
-    },
+    #env = {
+    #    "//cond:emscripten": {},
+    #    "//conditions:default": {"PATH": runtime_path(BUILD_DEPS_K8)},
+    #},
     out_static_libs = STATIC_LIBS,
     deps = DEPS,
 )
@@ -157,9 +157,9 @@ configure_make(
         "@ffmpeg_wasm//:export_runtime",
     ],
     configure_options = select({
-        "//cond:emscripten_dbg": CONFIGURE_OPTIONS_WASM_BINDINGS,
-        "//cond:emscripten_fastbuild": CONFIGURE_OPTIONS_WASM_BINDINGS + DBG_OFF,
-        "//cond:emscripten_opt": CONFIGURE_OPTIONS_WASM_BINDINGS + DBG_OFF + OPT_ON,
+        "//cond:em_dbg": CONFIGURE_OPTIONS_WASM_BINDINGS,
+        "//cond:em_fastbuild": CONFIGURE_OPTIONS_WASM_BINDINGS + DBG_OFF,
+        "//cond:em_opt": CONFIGURE_OPTIONS_WASM_BINDINGS + DBG_OFF + OPT_ON,
     }),
     configure_prefix = "$(execpath @emscripten//:emconfigure)",
     env = dict(EM_ENV.items() + {

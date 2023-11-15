@@ -18,7 +18,7 @@ configure_make_lib(
         "HAVE_GNU_STRIP=",
     ],
     build_data = {
-        "//config:wasm": [],
+        "//cond:emscripten": [],
         "//conditions:default": BUILD_DEPS_K8,
     },
     configure_options = [
@@ -29,14 +29,14 @@ configure_make_lib(
         "--target=generic-gnu",
     ],
     copts = select({
-        "//config:wasm": [
+        "//cond:emscripten": [
             "-sSHARED_MEMORY",  # for -pthread support
             no_error(["unused-but-set-variable"]),
         ],
         "//conditions:default": [],
     }),
     env = {
-        "//config:wasm": {},
+        "//cond:emscripten": {},
         "//conditions:default": {
             "PATH": runtime_path(BUILD_DEPS_K8),
             "ASFLAGS": "",  # override toolchain flags
