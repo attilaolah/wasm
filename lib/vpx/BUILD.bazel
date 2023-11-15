@@ -8,19 +8,11 @@ package(default_visibility = ["//:__subpackages__"])
 
 package_lib()
 
-BUILD_DEPS_K8 = [
-    "//lib/yasm:runtime",
-]
-
 configure_make_lib(
     name = NAME,
     args = [
         "HAVE_GNU_STRIP=",
     ],
-    build_data = {
-        "//cond:emscripten": [],
-        "//conditions:default": BUILD_DEPS_K8,
-    },
     configure_options = [
         "--disable-docs",
         "--disable-examples",
@@ -35,12 +27,5 @@ configure_make_lib(
         ],
         "//conditions:default": [],
     }),
-    env = {
-        "//cond:emscripten": {},
-        "//conditions:default": {
-            "PATH": runtime_path(BUILD_DEPS_K8),
-            "ASFLAGS": "",  # override toolchain flags
-        },
-    },
     env_override = ["ASFLAGS"],
 )
