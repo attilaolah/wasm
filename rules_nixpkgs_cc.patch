@@ -1,0 +1,13 @@
+diff --git toolchains/cc/cc.nix toolchains/cc/cc.nix
+index da7f21a..107150d 100644
+--- cc.nix
++++ cc.nix
+@@ -194,8 +194,6 @@ pkgs.runCommand "bazel-${cc.orignalName or cc.name}-toolchain"
+     LINK_FLAGS=(
+       $(
+         if [[ -x ${cc}/bin/ld.gold ]]; then echo -fuse-ld=gold; fi
+-        add_linker_option_if_supported -Wl,-no-as-needed -no-as-needed
+-        add_linker_option_if_supported -Wl,-z,relro,-z,now -z
+       )
+       ${
+         if stdenv.isDarwin
