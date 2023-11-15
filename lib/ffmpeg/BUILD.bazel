@@ -3,7 +3,8 @@ load("@rules_foreign_cc//foreign_cc:configure.bzl", "configure_make")
 load("//lib:defs.bzl", "runtime_path")
 load("//lib:lib.bzl", "package_lib")
 load("//toolchains:utils.bzl", "no_error")
-load("//toolchains/make:configure.bzl", "EM_ENV", "EM_TOOLS", "configure_make_lib", "lib_source")
+load("//toolchains/make:configure.bzl", "configure_make_lib")
+load("//toolchains/make:make.bzl", "EM_ENV", "EM_TOOLS", "lib_source")
 load(":package.bzl", "LIBS", "NAME", "STATIC_LIBS")
 
 package(default_visibility = ["//:__subpackages__"])
@@ -55,10 +56,10 @@ CONFIGURE_OPTIONS_K8 = [
 CONFIGURE_OPTIONS_WASM = [
     # The configure script doesn't seem to pick up $CC,
     # so we pass this explicit --cc flag to set the right compiler.
-    "--cc=$(execpath @emscripten_bin_linux//:emscripten/emcc)",
-    "--ar=$(execpath @emscripten_bin_linux//:emscripten/emar)",
-    "--nm=$(execpath @emscripten_bin_linux//:emscripten/emnm)",
-    "--ranlib=$(execpath @emscripten_bin_linux//:emscripten/emranlib)",
+    "--cc=$(execpath @emscripten//:emcc)",
+    "--ar=$(execpath @emscripten//:emar)",
+    "--nm=$(execpath @emscripten//:emnm)",
+    "--ranlib=$(execpath @emscripten//:emranlib)",
 ] + CONFIGURE_OPTIONS + [
     # Some of these are copied from:
     # github.com/ffmpegwasm/ffmpeg.wasm @ build/ffmpeg.sh
@@ -106,19 +107,19 @@ DEPS = [
 configure_make_lib(
     name = NAME,
     build_data = {
-        "//config:wasm": [],
+        "//cond:emscripten": [],
         "//conditions:default": BUILD_DEPS_K8,
     },
     configure_options = select({
-        "//config:k8_dbg": CONFIGURE_OPTIONS_K8,
-        "//config:k8_fastbuild": CONFIGURE_OPTIONS_K8 + DBG_OFF,
-        "//config:k8_opt": CONFIGURE_OPTIONS_K8 + DBG_OFF + OPT_ON,
-        "//config:wasm_dbg": CONFIGURE_OPTIONS_WASM,
-        "//config:wasm_fastbuild": CONFIGURE_OPTIONS_WASM + DBG_OFF,
-        "//config:wasm_opt": CONFIGURE_OPTIONS_WASM + DBG_OFF + OPT_ON,
+        "//cond:clang_dbg": CONFIGURE_OPTIONS_K8,
+        "//cond:clang_fastbuild": CONFIGURE_OPTIONS_K8 + DBG_OFF,
+        "//cond:clang_opt": CONFIGURE_OPTIONS_K8 + DBG_OFF + OPT_ON,
+        "//cond:emscripten_dbg": CONFIGURE_OPTIONS_WASM,
+        "//conditions:is_emscripten_fastbuild": CONFIGURE_OPTIONS_WASM + DBG_OFF,
+        "//conditions:is_emscripten_opt": CONFIGURE_OPTIONS_WASM + DBG_OFF + OPT_ON,
     }),
     env = {
-        "//config:wasm": {},
+        "//cond:emscripten": {},
         "//conditions:default": {"PATH": runtime_path(BUILD_DEPS_K8)},
     },
     out_static_libs = STATIC_LIBS,
@@ -156,14 +157,11 @@ configure_make(
         "@ffmpeg_wasm//:export_runtime",
     ],
     configure_options = select({
-        "//config:wasm_dbg": CONFIGURE_OPTIONS_WASM_BINDINGS,
-        "//config:wasm_fastbuild": CONFIGURE_OPTIONS_WASM_BINDINGS + DBG_OFF,
-        "//config:wasm_opt": CONFIGURE_OPTIONS_WASM_BINDINGS + DBG_OFF + OPT_ON,
+        "//cond:emscripten_dbg": CONFIGURE_OPTIONS_WASM_BINDINGS,
+        "//cond:emscripten_fastbuild": CONFIGURE_OPTIONS_WASM_BINDINGS + DBG_OFF,
+        "//cond:emscripten_opt": CONFIGURE_OPTIONS_WASM_BINDINGS + DBG_OFF + OPT_ON,
     }),
-    configure_prefix = " ".join([
-        "EM_PKG_CONFIG_PATH=$${PKG_CONFIG_PATH:-}",
-        "$(execpath @emscripten_bin_linux//:emscripten/emconfigure)",
-    ]),
+    configure_prefix = "$(execpath @emscripten//:emconfigure)",
     env = dict(EM_ENV.items() + {
         "PRE_JS": "$(execpath @ffmpeg_wasm//:bind)",
         "EXPORTED_FUNCTIONS": "$$(node $(execpath @ffmpeg_wasm//:export))",
@@ -181,9 +179,9 @@ configure_make(
         "cp ffmpeg_g.worker.js ${INSTALLDIR}/bin/ffmpeg.worker.js",
         "rm -f ${INSTALLDIR}/bin/ffmpeg",
     ]),
-    # Build with --platforms=//config:wasm32_emscripten --cpu=wasm32.
-    target_compatible_with = ["@platforms//cpu:wasm32"],
-    tool_prefix = "$(execpath @emscripten_bin_linux//:emscripten/emmake)",
+    # Build with --platforms=//platforms:emscripten
+    target_compatible_with = ["//compiler:emscripten"],
+    tool_prefix = "$(execpath @emscripten//:emmake)",
     deps = DEPS,
 )
 

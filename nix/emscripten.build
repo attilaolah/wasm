@@ -1,24 +1,25 @@
-package(default_visibility = [ "//visibility:public" ])
+package(default_visibility = ["//visibility:public"])
 
 filegroup(
     name = "bin",
     srcs = glob(["bin/*"]),
 )
 
-filegroup(
-    name = "emcmake",
-    srcs = ["bin/emcmake"],
-)
-
-filegroup(
-    name = "emconfigure",
-    srcs = ["bin/emconfigure"],
-)
-
-filegroup(
-    name = "emmake",
-    srcs = ["bin/emmake"],
-)
+[
+    filegroup(
+        name = name,
+        srcs = ["bin/{}".format(name)],
+    )
+    for name in [
+        "emconfigure",
+        "emmake",
+        "emcmake",
+        "emcc",
+        "em++",
+        "emar",
+        "emranlib",
+    ]
+]
 
 filegroup(
     name = "cmake_dir",

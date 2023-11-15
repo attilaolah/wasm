@@ -45,10 +45,10 @@ def configure_make_lib(
         env = {}
     if "//conditions:default" not in env:
         env = {
-            "//config:wasm": dict(env),
+            "//cond:emscripten": dict(env),
             "//conditions:default": dict(env),
         }
-    emscripten_env(env["//config:wasm"])
+    emscripten_env(env["//cond:emscripten"])
 
     configure_make(
         name = name,
@@ -57,14 +57,11 @@ def configure_make_lib(
         lib_source = lib_source,
         build_data = _build_data(build_data, em_tools = ["@emscripten//:emconfigure"]),
         configure_prefix = select({
-            "//config:wasm": " ".join([
-                "EM_PKG_CONFIG_PATH=$${PKG_CONFIG_PATH:-}",
-                "$(execpath @emscripten//:emconfigure)",
-            ]),
+            "//cond:emscripten": "$(execpath @emscripten//:emconfigure)",
             "//conditions:default": None,
         }),
         tool_prefix = select({
-            "//config:wasm": "$(execpath @emscripten//:emmake)",
+            "//cond:emscripten": "$(execpath @emscripten//:emmake)",
             "//conditions:default": None,
         }),
         out_static_libs = out_static_libs,

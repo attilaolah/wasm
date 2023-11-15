@@ -59,10 +59,10 @@ def make_lib(
         env = {}
     if "//conditions:default" not in env:
         env = {
-            "//config:wasm": dict(env),
+            "//cond:emscripten": dict(env),
             "//conditions:default": dict(env),
         }
-    emscripten_env(env["//config:wasm"])
+    emscripten_env(env["//cond:emscripten"])
 
     make(
         name = name,
@@ -71,7 +71,7 @@ def make_lib(
         lib_source = lib_source,
         build_data = _build_data(build_data),
         tool_prefix = select({
-            "//config:wasm": "$(execpath @emscripten//:emmake)",
+            "//cond:emscripten": "$(execpath @emscripten//:emmake)",
             "//conditions:default": None,
         }),
         out_static_libs = out_static_libs,
@@ -110,10 +110,10 @@ def build_data(extras = None, em_tools = None):
     if type(extras) != type({}):
         extras = {
             "//conditions:default": extras,
-            "//config:wasm": extras,
+            "//cond:emscripten": extras,
         }
-    extras.setdefault("//config:wasm", [])
-    extras["//config:wasm"] = collections.uniq(EM_TOOLS + extras["//config:wasm"] + em_tools)
+    extras.setdefault("//cond:emscripten", [])
+    extras["//cond:emscripten"] = collections.uniq(EM_TOOLS + extras["//cond:emscripten"] + em_tools)
 
     return select(extras)
 

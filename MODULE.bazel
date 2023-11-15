@@ -11,9 +11,9 @@ single_version_override(
 archive_override(
     module_name = "rules_nixpkgs_cc",
     integrity = "sha256-mA7fzu8uWeESLZvmxSQTvCmENfCj1FJTK4pI11Yv/Wc=",
+    patches = ["//:rules_nixpkgs_cc.patch"],
     strip_prefix = "rules_nixpkgs-0.10.0/toolchains/cc",
     urls = ["https://github.com/tweag/rules_nixpkgs/releases/download/v0.10.0/rules_nixpkgs-0.10.0.tar.gz"],
-    patches = ["//:rules_nixpkgs_cc.patch"],
 )
 
 nix_repo = use_extension("@rules_nixpkgs_core//extensions:repository.bzl", "nix_repo")

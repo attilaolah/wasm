@@ -46,23 +46,23 @@ def cmake_lib(
         env = {}
     if "//conditions:default" not in env:
         env = {
-            "//config:wasm": dict(env),
+            "//cond:emscripten": dict(env),
             "//conditions:default": dict(env),
         }
-    emscripten_env(env["//config:wasm"])
-    env["//config:wasm"]["EM_CMAKE"] = "$(execpath @emscripten//:cmake_dir)"
-    env["//config:wasm"]["EMSCRIPTEN"] = "$$(dirname $(execpath @emscripten//:emcmake))"
+    emscripten_env(env["//cond:emscripten"])
+    env["//cond:emscripten"]["EM_CMAKE"] = "$(execpath @emscripten//:cmake_dir)"
+    env["//cond:emscripten"]["EMSCRIPTEN"] = "$$(dirname $(execpath @emscripten//:emcmake))"
 
     if cache_entries == None:
         cache_entries = {}
     if "//conditions:default" not in cache_entries:
         cache_entries = {
-            "//config:wasm": dict(cache_entries),
+            "//cond:emscripten": dict(cache_entries),
             "//conditions:default": dict(cache_entries),
         }
     for val in cache_entries.values():
         _prepare_cache_entries(val)
-    _emscripten_cache_entries(cache_entries["//config:wasm"])
+    _emscripten_cache_entries(cache_entries["//cond:emscripten"])
 
     cmake(
         name = name,
@@ -75,7 +75,7 @@ def cmake_lib(
             "@emscripten//:cmake_dir",
         ]),
         tool_prefix = select({
-            "//config:wasm": "$(execpath @emscripten//:emcmake)",
+            "//cond:emscripten": "$(execpath @emscripten//:emcmake)",
             "//conditions:default": None,
         }),
         out_static_libs = out_static_libs,
