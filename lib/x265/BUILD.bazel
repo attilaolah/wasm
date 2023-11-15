@@ -41,11 +41,11 @@ cmake_lib(
         ],
         "//conditions:default": [],
     }),
-    # TODO: Figure out why emar/emranlib is not run!
-    postfix_script = "${EMRANLIB} ${INSTALLDIR}/lib/libx265.a",
     env = {
         "//cond:emscripten": {"EMRANLIB": "$(execpath @emscripten//:emranlib)"},
         "//conditions:default": {"NASM": "$(execpath @nasm//:nasm)"},
     },
+    # TODO: Figure out why emar/emranlib is not run!
+    postfix_script = "${EMRANLIB} ${INSTALLDIR}/lib/libx265.a",
     working_directory = "source",
 )
