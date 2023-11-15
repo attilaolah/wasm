@@ -123,10 +123,6 @@ configure_make_lib(
         "//cond:em_fastbuild": CONFIGURE_OPTIONS_WASM + DBG_OFF,
         "//cond:em_opt": CONFIGURE_OPTIONS_WASM + DBG_OFF + OPT_ON,
     }),
-    #env = {
-    #    "//cond:emscripten": {},
-    #    "//conditions:default": {"PATH": runtime_path(BUILD_DEPS_K8)},
-    #},
     out_static_libs = STATIC_LIBS,
     deps = DEPS,
 )
