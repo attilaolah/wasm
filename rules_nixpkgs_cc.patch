@@ -1,8 +1,16 @@
-diff --git toolchains/cc/cc.nix toolchains/cc/cc.nix
-index da7f21a..107150d 100644
+diff --git cc.nix cc.nix
+index da7f21a..f0dfba5 100644
 --- cc.nix
 +++ cc.nix
-@@ -194,8 +194,6 @@ pkgs.runCommand "bazel-${cc.orignalName or cc.name}-toolchain"
+@@ -169,7 +169,6 @@ pkgs.runCommand "bazel-${cc.orignalName or cc.name}-toolchain"
+       # Security hardening requires optimization.
+       # We need to undef it as some distributions now have it enabled by default.
+       -U_FORTIFY_SOURCE
+-      -fstack-protector
+       # All warnings are enabled. Maybe enable -Werror as well?
+       -Wall
+       $(
+@@ -194,8 +193,6 @@ pkgs.runCommand "bazel-${cc.orignalName or cc.name}-toolchain"
      LINK_FLAGS=(
        $(
          if [[ -x ${cc}/bin/ld.gold ]]; then echo -fuse-ld=gold; fi
@@ -11,3 +19,20 @@ index da7f21a..107150d 100644
        )
        ${
          if stdenv.isDarwin
+@@ -224,14 +221,8 @@ pkgs.runCommand "bazel-${cc.orignalName or cc.name}-toolchain"
+       # handling in Bazel.
+       -g0
+ 
+-      # Conservative choice for -O
+-      # -O3 can increase binary size and even slow down the resulting binaries.
+-      # Profile first and / or use FDO if you need better performance than this.
+-      -O2
+-
+-      # Security hardening on by default.
+-      # Conservative choice; -D_FORTIFY_SOURCE=2 may be unsafe in some cases.
+-      -D_FORTIFY_SOURCE=1
++      # Opinionated choice for -O.
++      -Oz
+ 
+       # Disable assertions
+       -DNDEBUG
