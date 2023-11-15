@@ -11,12 +11,13 @@ filegroup(
         srcs = ["bin/{}".format(name)],
     )
     for name in [
-        "emconfigure",
-        "emmake",
-        "emcmake",
-        "emcc",
         "em++",
         "emar",
+        "emcc",
+        "emcmake",
+        "emconfigure",
+        "emmake",
+        "emnm",
         "emranlib",
     ]
 ]

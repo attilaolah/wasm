@@ -107,7 +107,12 @@ DEPS = [
 configure_make_lib(
     name = NAME,
     build_data = {
-        "//cond:emscripten": [],
+        "//cond:emscripten": [
+            "@emscripten//:emar",
+            "@emscripten//:emcc",
+            "@emscripten//:emnm",
+            "@emscripten//:emranlib",
+        ],
         "//conditions:default": BUILD_DEPS_K8,
     },
     configure_options = select({
@@ -152,6 +157,10 @@ configure_make(
         ])),
     ],
     build_data = EM_TOOLS + [
+        "@emscripten//:emar",
+        "@emscripten//:emcc",
+        "@emscripten//:emnm",
+        "@emscripten//:emranlib",
         "@ffmpeg_wasm//:bind",
         "@ffmpeg_wasm//:export",
         "@ffmpeg_wasm//:export_runtime",
