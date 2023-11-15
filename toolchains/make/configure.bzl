@@ -55,7 +55,6 @@ def configure_make_lib(
         env = select(env),
         lib_name = "{}_lib".format(name),
         lib_source = lib_source,
-        build_data = build_data,
         build_data = _build_data(build_data, em_tools = ["@emscripten//:emconfigure"]),
         configure_prefix = select({
             "//config:wasm": " ".join([
