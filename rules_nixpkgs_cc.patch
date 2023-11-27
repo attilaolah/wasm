@@ -1,5 +1,5 @@
 diff --git cc.nix cc.nix
-index da7f21a..f0dfba5 100644
+index da7f21a..d3b02cc 100644
 --- cc.nix
 +++ cc.nix
 @@ -169,7 +169,6 @@ pkgs.runCommand "bazel-${cc.orignalName or cc.name}-toolchain"
@@ -10,16 +10,19 @@ index da7f21a..f0dfba5 100644
        # All warnings are enabled. Maybe enable -Werror as well?
        -Wall
        $(
-@@ -194,8 +193,6 @@ pkgs.runCommand "bazel-${cc.orignalName or cc.name}-toolchain"
+@@ -192,11 +191,6 @@ pkgs.runCommand "bazel-${cc.orignalName or cc.name}-toolchain"
+       -std=c++0x
+     )
      LINK_FLAGS=(
-       $(
-         if [[ -x ${cc}/bin/ld.gold ]]; then echo -fuse-ld=gold; fi
+-      $(
+-        if [[ -x ${cc}/bin/ld.gold ]]; then echo -fuse-ld=gold; fi
 -        add_linker_option_if_supported -Wl,-no-as-needed -no-as-needed
 -        add_linker_option_if_supported -Wl,-z,relro,-z,now -z
-       )
+-      )
        ${
          if stdenv.isDarwin
-@@ -224,14 +221,8 @@ pkgs.runCommand "bazel-${cc.orignalName or cc.name}-toolchain"
+         then "-undefined dynamic_lookup -headerpad_max_install_names"
+@@ -224,14 +218,8 @@ pkgs.runCommand "bazel-${cc.orignalName or cc.name}-toolchain"
        # handling in Bazel.
        -g0
  
@@ -36,3 +39,14 @@ index da7f21a..f0dfba5 100644
  
        # Disable assertions
        -DNDEBUG
+@@ -245,7 +233,9 @@ pkgs.runCommand "bazel-${cc.orignalName or cc.name}-toolchain"
+       ${
+         if stdenv.isDarwin
+         then ""
+-        else "$(add_linker_option_if_supported -Wl,--gc-sections -gc-sections)"
++        # Cannot use --relocatable and --gc-sections together.
++        # Maybe add other flags here for wasm-ld?
++        else ""
+       }
+     )
+     UNFILTERED_COMPILE_FLAGS=(

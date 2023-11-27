@@ -26,10 +26,12 @@ CONFIGURE_OPTIONS = [
     "--disable-all",
     "--disable-autodetect",
     "--disable-doc",
-    "--enable-encoders",
-    "--enable-decoders",
     "--enable-muxers",
     "--enable-demuxers",
+    "--enable-encoders",
+    "--enable-decoders",
+    "--enable-filters",
+    "--enable-protocol=file",
     "--enable-pthreads",
     "--enable-gpl",
 ] + [
@@ -43,9 +45,11 @@ CONFIGURE_OPTIONS = [
     "--enable-libvpx",
     "--enable-libwebp",
     "--enable-libx264",
-    "--enable-libx265",
     "--enable-lzma",
     "--enable-zlib",
+
+    # Temporarily disabled, since it uses dlopen().
+    #"--enable-libx265",
 ]
 
 CONFIGURE_OPTIONS_CLANG = [
@@ -103,8 +107,10 @@ DEPS = [
     "//lib/vpx",
     "//lib/webp",
     "//lib/x264",
-    "//lib/x265",
     "//lib/z",
+
+    # Temporarily disabled, since it uses dlopen().
+    #"//lib/x265",
 ]
 
 configure_make_lib(
@@ -129,27 +135,31 @@ CONFIGURE_OPTIONS_WASM_BINDINGS = CONFIGURE_OPTIONS_WASM + [
     "--enable-ffmpeg",
 ]
 
+LDFLAGS = 'LDFLAGS-ffmpeg="{}"'.format(" ".join([
+    # keep sorted
+    "--pre-js=${PRE_JS}",
+    "-liconv",
+    "-lworkerfs.js",
+    "-sEXPORTED_FUNCTIONS=${EXPORTED_FUNCTIONS}",
+    "-sEXPORTED_RUNTIME_METHODS=${EXPORTED_RUNTIME_METHODS}",
+    "-sEXPORT_ES6",
+    "-sEXPORT_NAME=createFFmpegCore",
+    "-sINITIAL_MEMORY=1024MB",
+    "-sMODULARIZE",
+    "-sPTHREAD_POOL_SIZE=32",  # OR: navigator.hardwareConcurrency
+    "-sWASM_BIGINT",
+]))
+
 # Bindings for ffmpeg.wasm.
 # Based on the build script from ffmpeg.wasm:
 # https://github.com/ffmpegwasm/ffmpeg.wasm/blob/main/build/ffmpeg-wasm.sh
 # The main difference is that we rely on the FFmpeg makefile for building the ffmpeg binary.
 configure_make(
     name = "wasm_bindings",
-    args = [
-        'LDFLAGS-ffmpeg="{}"'.format(" ".join([
-            # keep sorted
-            "--pre-js=${PRE_JS}",
-            "-liconv",
-            "-lworkerfs.js",
-            "-sEXPORTED_FUNCTIONS=${EXPORTED_FUNCTIONS}",
-            "-sEXPORTED_RUNTIME_METHODS=${EXPORTED_RUNTIME_METHODS}",
-            "-sEXPORT_NAME=createFFmpegCore",
-            "-sINITIAL_MEMORY=1024MB",
-            "-sMODULARIZE",
-            "-sPTHREAD_POOL_SIZE=32",  # OR: navigator.hardwareConcurrency
-            "-sWASM_BIGINT",
-        ])),
-    ],
+    args = select({
+      "//cond:dbg": [LDFLAGS + " -sASSERTIONS"],
+      "//conditions:default": [LDFLAGS],
+    }),
     build_data = EM_TOOLS + BUILD_DEPS_EMSCRIPTEN + [
         "@emscripten//:emconfigure",
         "@ffmpeg_wasm//:bind",
