@@ -45,11 +45,9 @@ CONFIGURE_OPTIONS = [
     "--enable-libvpx",
     "--enable-libwebp",
     "--enable-libx264",
+    "--enable-libx265",
     "--enable-lzma",
     "--enable-zlib",
-
-    # Temporarily disabled, since it uses dlopen().
-    #"--enable-libx265",
 ]
 
 CONFIGURE_OPTIONS_CLANG = [
@@ -101,16 +99,15 @@ OPT_ON = [
 ]
 
 DEPS = [
+    # keep sorted
     "//lib/bz2",
     "//lib/iconv",
     "//lib/lzma",
     "//lib/vpx",
     "//lib/webp",
     "//lib/x264",
+    "//lib/x265",
     "//lib/z",
-
-    # Temporarily disabled, since it uses dlopen().
-    #"//lib/x265",
 ]
 
 configure_make_lib(
@@ -157,8 +154,8 @@ LDFLAGS = 'LDFLAGS-ffmpeg="{}"'.format(" ".join([
 configure_make(
     name = "wasm_bindings",
     args = select({
-      "//cond:dbg": [LDFLAGS + " -sASSERTIONS"],
-      "//conditions:default": [LDFLAGS],
+        "//cond:dbg": [LDFLAGS + " -sASSERTIONS"],
+        "//conditions:default": [LDFLAGS],
     }),
     build_data = EM_TOOLS + BUILD_DEPS_EMSCRIPTEN + [
         "@emscripten//:emconfigure",
