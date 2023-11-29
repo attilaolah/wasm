@@ -172,6 +172,10 @@ configure_make(
         "EM_PKG_CONFIG_PATH=$${PKG_CONFIG_PATH}",
         "$(execpath @emscripten//:emconfigure)",
     ]),
+    copts = [
+        "-msimd128",
+        "-mssse3",
+    ],
     env = dict(EM_ENV.items() + {
         "PRE_JS": "$(execpath @ffmpeg_wasm//:bind)",
         "EXPORTED_FUNCTIONS": "$$(node $(execpath @ffmpeg_wasm//:export))",

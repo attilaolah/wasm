@@ -32,6 +32,8 @@ cmake_lib(
     copts = select({
         "//cond:emscripten": [
             "-sSHARED_MEMORY",  # for -pthread support
+            "-msimd128",
+            "-msse4.2",
             no_error([
                 # keep sorted
                 "bitwise-instead-of-logical",
