@@ -164,7 +164,7 @@ $(execpath @emscripten_bin_linux//:bin/wasm-opt) \
   $$(find $< -name '*.wasm')
 """,
     }),
-    exec_tools = select({
+    tools = select({
         "//conditions:default": [],
         "//config:opt": ["@emscripten_bin_linux//:bin/wasm-opt"],
     }),
