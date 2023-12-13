@@ -46,4 +46,14 @@ NIX_PKGS = [
     for pkg_name in NIX_PKGS
 ]
 
-use_repo(nix_pkg, *NIX_PKGS)
+use_repo(
+    nix_pkg,
+    "bison",
+    "emscripten",
+    "m4",
+    "nasm",
+    "nodejs",
+    "python3",
+    "sqlite",
+    "yasm",
+)

@@ -100,7 +100,7 @@ $(execpath @npm//csso-cli/bin:csso) $${INTERM} \
 rm $${INTERM}
 """,
     }),
-    exec_tools = select({
+    tools = select({
         "//conditions:default": [],
         "//config:opt": ["@npm//csso-cli/bin:csso"],
     }),
@@ -129,7 +129,7 @@ $(execpath @emscripten_bin_linux//:bin/wasm-opt) \
   $$(find $< -name '*.wasm')
 """,
     }),
-    exec_tools = select({
+    tools = select({
         "//conditions:default": [],
         "//config:opt": ["@emscripten_bin_linux//:bin/wasm-opt"],
     }),
@@ -181,5 +181,5 @@ genrule(
 echo -n webnb- > $@
 $(execpath //tools:jq) -r .version $(execpath //:package.json) >> $@
 """,
-    exec_tools = ["//tools:jq"],
+    tools = ["//tools:jq"],
 )
