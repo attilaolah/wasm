@@ -2,6 +2,7 @@ workspace(name = "wasm")
 
 ## Workspace dependencies & toolchains.
 
+load("//:deps.bzl", "external_dependencies")
 load("//:versions.bzl", "GO_VERSION")
 load("//:workspace.bzl", "workspace_dependencies")
 
@@ -22,18 +23,6 @@ load("@rules_nixpkgs_cc//:foreign_cc.bzl", "nixpkgs_foreign_cc_configure")
 nixpkgs_foreign_cc_configure(
     repository = "@nixpkgs",
 )
-
-## Go dependencies & toolchain.
-
-load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
-load("//:deps.bzl", "external_dependencies", "go_dependencies")
-
-go_rules_dependencies()
-
-go_register_toolchains(version = GO_VERSION)
-
-# gazelle:repository_macro deps.bzl%go_dependencies
-go_dependencies()
 
 ## Protobuf dependencies.
 
