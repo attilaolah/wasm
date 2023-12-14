@@ -97,14 +97,6 @@ def workspace_dependencies():
     )
 
     http_archive(
-        name = "bazelruby_rules_ruby",
-        version = "c93a6814b6193572c7c8b677b560314f52b31962",  # master @ 2022-04-29T20:36:44Z
-        sha256 = "21eb494757d8062eaf699bc85e0aa29bcf851268ff78d23737967099e5bb9417",
-        strip_prefix = "rules_ruby-{version}",
-        urls = ["https://github.com/bazelruby/rules_ruby/archive/{version}.zip"],
-    )
-
-    http_archive(
         name = "aspect_rules_webpack",
         version = "0.6.1",
         sha256 = "c7ccb778a24ec7033ab796e4b480153299b7ff0d75e64a957824055f201fa2af",

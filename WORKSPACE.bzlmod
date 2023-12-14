@@ -2,7 +2,7 @@ workspace(name = "wasm")
 
 ## Workspace dependencies & toolchains.
 
-load("//:versions.bzl", "GO_VERSION", "RUBY_VERSION")
+load("//:versions.bzl", "GO_VERSION")
 load("//:workspace.bzl", "workspace_dependencies")
 
 workspace_dependencies()
@@ -51,22 +51,6 @@ gazelle_dependencies()
 ## C/C++ dependencies (external). Provides @emsdk.
 
 external_dependencies()
-
-## Ruby dependencies.
-
-load("@bazelruby_rules_ruby//ruby:deps.bzl", "rules_ruby_dependencies", "rules_ruby_select_sdk")
-
-rules_ruby_dependencies()
-
-rules_ruby_select_sdk(version = RUBY_VERSION)
-
-load("@bazelruby_rules_ruby//ruby:defs.bzl", "ruby_bundle")
-
-ruby_bundle(
-    name = "bundle",
-    gemfile = "//:Gemfile",
-    gemfile_lock = "//:Gemfile.lock",
-)
 
 # Rust dependencies.
 

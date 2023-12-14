@@ -1,6 +1,7 @@
 bazel_dep(name = "rules_foreign_cc", version = "0.10.1")
 bazel_dep(name = "rules_nixpkgs_core", version = "0.10.0")
 bazel_dep(name = "rules_nixpkgs_cc", version = "0.10.0")
+bazel_dep(name = "rules_ruby", version = "0.4.1")
 
 single_version_override(
     module_name = "rules_foreign_cc",
@@ -15,6 +16,23 @@ archive_override(
     strip_prefix = "rules_nixpkgs-0.10.0/toolchains/cc",
     urls = ["https://github.com/tweag/rules_nixpkgs/releases/download/v0.10.0/rules_nixpkgs-0.10.0.tar.gz"],
 )
+
+ruby = use_extension("@rules_ruby//ruby:extensions.bzl", "ruby")
+ruby.toolchain(
+    name = "ruby",
+    version = "3.1.1",
+    # alternatively, load version from .ruby-version file
+    # version_file = "//:.ruby-version",
+)
+use_repo(ruby, "ruby")
+
+ruby.bundle(
+    name = "bundle",
+    srcs = ["//:Gemfile.lock"],
+    gemfile = "//:Gemfile",
+    toolchain = "@ruby//:BUILD",
+)
+use_repo(ruby, "bundle", "ruby_toolchains")
 
 nix_repo = use_extension("@rules_nixpkgs_core//extensions:repository.bzl", "nix_repo")
 nix_repo.github(
