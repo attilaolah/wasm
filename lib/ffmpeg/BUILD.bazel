@@ -21,17 +21,48 @@ BUILD_DEPS_EMSCRIPTEN = [
     "@emscripten//:emranlib",
 ]
 
+ENABLE_DECODERS = [
+    # keep sorted
+    "aac",
+    "flac",
+    "mp3",
+    "opus",
+]
+
+ENABLE_ENCODERS = ENABLE_DECODERS
+
+ENABLE_DEMUXERS = [
+    # keep sorted
+    "mp4",
+    "rawvideo",
+    "wav",
+]
+
+ENABLE_MUXERS = ENABLE_DEMUXERS + [
+    # keep sorted
+    "image2",
+]
+
+ENABLE_FILTERS = [
+    # keep sorted
+    "format",
+    "scale",
+    "select",
+]
+
+ENABLE_PROTOCOLS = ["file"]
+
 CONFIGURE_OPTIONS = [
     "--pkg-config-flags=--static",
     "--disable-all",
     "--disable-autodetect",
     "--disable-doc",
-    "--enable-muxers",
-    "--enable-demuxers",
-    "--enable-encoders",
-    "--enable-decoders",
-    "--enable-filters",
-    "--enable-protocol=file",
+    "--enable-muxer={}".format(",".join(ENABLE_MUXERS)),
+    "--enable-demuxer={}".format(",".join(ENABLE_DEMUXERS)),
+    "--enable-encoder={}".format(",".join(ENABLE_ENCODERS)),
+    "--enable-decoder={}".format(",".join(ENABLE_DECODERS)),
+    "--enable-filter={}".format(",".join(ENABLE_FILTERS)),
+    "--enable-protocol={}".format(",".join(ENABLE_PROTOCOLS)),
     "--enable-pthreads",
     "--enable-gpl",
 ] + [
