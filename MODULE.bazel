@@ -5,10 +5,11 @@ bazel_dep(name = "rules_nixpkgs_core", version = "0.10.0")
 bazel_dep(name = "rules_nixpkgs_cc", version = "0.10.0")
 bazel_dep(name = "rules_ruby", version = "0.4.1")
 
-single_version_override(
+archive_override(
     module_name = "rules_foreign_cc",
-    patches = ["//:rules_foreign_cc.patch"],
-    version = "0.10.1",
+    integrity = "sha256-ABcJ3E54NQXLnTe9H9kcogDdLQAKc384lRDnBl+aRxc=",
+    strip_prefix = "rules_foreign_cc-a38ae73",
+    urls = ["https://github.com/attilaolah/rules_foreign_cc/archive/refs/tags/a38ae73.tar.gz"],
 )
 
 archive_override(
