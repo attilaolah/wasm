@@ -42,6 +42,7 @@ CONFIGURE_OPTIONS = [
     # dependencies, keep sorted
     "--enable-bzlib",
     "--enable-iconv",
+    "--enable-libaom",
     "--enable-libvpx",
     "--enable-libwebp",
     "--enable-libx264",
@@ -100,6 +101,7 @@ OPT_ON = [
 
 DEPS = [
     # keep sorted
+    "//lib/aom",
     "//lib/bz2",
     "//lib/iconv",
     "//lib/lzma",
