@@ -24,7 +24,7 @@ index 1fb742f390..4baf097a96 100644
 +	sed --in-place --regexp-extended 's/^#define HAVE_SOCKLEN_T 0/#define HAVE_SOCKLEN_T 1/' config.h
 +	sed --in-place --regexp-extended 's/^#define HAVE_STRUCT_ADDRINFO 0/#define HAVE_STRUCT_ADDRINFO 1/' config.h
 +	sed --in-place --regexp-extended 's/^#define HAVE_STRUCT_SOCKADDR_STORAGE 0/#define HAVE_STRUCT_SOCKADDR_STORAGE 1/' config.h
-+	sed --in-place --regexp-extended 's:(--[^=]+=)(/[^/ ]+)*/:\1/redacted/:g' config.h
++	sed --in-place --regexp-extended -e 's:(--prefix=[^ ]+):--prefix=/?:g' -e 's:(--[^=]+=)(["'"'"']?)(/[^/ ]+)*/:\1\2/?/:g' config.h
 diff --git fftools/cmdutils.c fftools/cmdutils.c
 index a1de621d1c..05f722a245 100644
 --- fftools/cmdutils.c

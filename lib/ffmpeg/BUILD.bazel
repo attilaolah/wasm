@@ -23,24 +23,38 @@ BUILD_DEPS_EMSCRIPTEN = [
 
 ENABLE_DECODERS = [
     # keep sorted
-    "aac",
-    "flac",
-    "mp3",
-    "opus",
+    "h264",
+    "hevc",
+    "libaom_av1",
+    "rawvideo",
+    "webp",
 ]
 
-ENABLE_ENCODERS = ENABLE_DECODERS
+ENABLE_ENCODERS = [
+    # keep sorted
+    "libaom_av1",
+    "libvpx_vp8",
+    "libvpx_vp9",
+    "libwebp",
+    "libx264",
+    "libx265",
+    "rawvideo",
+]
 
 ENABLE_DEMUXERS = [
     # keep sorted
+    "image2",
     "mp4",
     "rawvideo",
     "wav",
 ]
 
-ENABLE_MUXERS = ENABLE_DEMUXERS + [
+ENABLE_MUXERS = [
     # keep sorted
     "image2",
+    "mp4",
+    "rawvideo",
+    "wav",
 ]
 
 ENABLE_FILTERS = [
@@ -57,11 +71,18 @@ CONFIGURE_OPTIONS = [
     "--disable-all",
     "--disable-autodetect",
     "--disable-doc",
+    # Use --enable-muxers to enable all.
     "--enable-muxer={}".format(",".join(ENABLE_MUXERS)),
+    # Use --enable-demuxers to enable all.
     "--enable-demuxer={}".format(",".join(ENABLE_DEMUXERS)),
+    # Use --enable-encoders to enable all.
     "--enable-encoder={}".format(",".join(ENABLE_ENCODERS)),
+    # Use --enable-decoders to enable all.
     "--enable-decoder={}".format(",".join(ENABLE_DECODERS)),
+    # Use --enable-filters to enable all.
     "--enable-filter={}".format(",".join(ENABLE_FILTERS)),
+    # Use --enable-protocols to enable all.
+    # Note that WebAssembly builds won't support most protocols.
     "--enable-protocol={}".format(",".join(ENABLE_PROTOCOLS)),
     "--enable-pthreads",
     "--enable-gpl",
