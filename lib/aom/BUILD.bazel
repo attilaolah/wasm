@@ -9,7 +9,7 @@ package_lib()
 cmake_lib(
     name = NAME,
     build_data = {
-        "//cond:emscripten": [],
+        "//cond:emscripten": ["@emscripten//:emranlib"],
         "//conditions:default": ["@yasm//:yasm"],
     },
     cache_entries = cache_entries(
@@ -26,5 +26,14 @@ cmake_lib(
             "-msse4.2",
         ],
         "//conditions:default": [],
+    }),
+    env = {
+        "//cond:emscripten": {"EMRANLIB": "$(execpath @emscripten//:emranlib)"},
+        "//conditions:default": {},
+    },
+    postfix_script = select({
+        # TODO: Figure out why emar/emranlib is not run!
+        "//cond:emscripten": "${EMRANLIB} ${INSTALLDIR}/lib/libaom.a",
+        "//conditions:default": "",
     }),
 )

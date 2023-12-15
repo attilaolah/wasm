@@ -21,8 +21,8 @@ ts_project(
 
 genrule(
     name = "cmake_toolchain",
-    outs = ["emscripten_toolchain.cmake"],
     srcs = ["@emscripten//:cmake_dir"],
+    outs = ["emscripten_toolchain.cmake"],
     cmd = """\
 cat "$(execpath @emscripten//:cmake_dir)/Modules/Platform/Emscripten.cmake" > $@
 echo "add_compile_options($$<$$<COMPILE_LANGUAGE:CXX>:-xc++>)" >> $@
