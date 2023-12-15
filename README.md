@@ -15,8 +15,8 @@ To get (somewhat) reproducible results, run the builds in a Docker container.
 To get a shell within the container, run build the image and run it:
 
 ```sh
-$ docker build -t wasm docker
-$ docker run -it -v "${PWD}:/build" wasm
+$ docker-buildx build docker --tag wasm
+$ docker run -it -v "$PWD:/build" --name wasm wasm
 ```
 
 Then build targets as usual. To compile WebAssembly using the Emscripten
@@ -104,7 +104,7 @@ toolchain, pass `--config=wasm`. Pass `-c opt` for an optimised build.
 
 | Build Label | Version |
 |-------------|---------|
-[`//tools/emscripten`](https://github.com/attilaolah/wasm/blob/main/tools/emscripten/BUILD.bazel) | 3.1.47 [🔗](https://github.com/emscripten-core/emscripten/archive/refs/tags/3.1.47.tar.gz)
+[`//tools/emscripten`](https://github.com/attilaolah/wasm/blob/main/tools/emscripten/BUILD.bazel) | 3.1.51 [🔗](https://github.com/emscripten-core/emscripten/archive/refs/tags/3.1.51.tar.gz)
 [`//tools/llvm`](https://github.com/attilaolah/wasm/blob/main/tools/llvm/BUILD.bazel) | 17.0.2 [🔗](https://github.com/llvm/llvm-project/releases/download/llvmorg-17.0.2/clang+llvm-17.0.2-x86_64-linux-gnu-ubuntu-22.04.tar.xz)
 
 ## Nix Shell

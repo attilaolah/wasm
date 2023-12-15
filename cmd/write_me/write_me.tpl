@@ -15,8 +15,8 @@ To get (somewhat) reproducible results, run the builds in a Docker container.
 To get a shell within the container, run build the image and run it:
 
 ```sh
-$ docker build -t wasm docker
-$ docker run -it -v "${{`{PWD}`}}:/build" wasm
+$ docker-buildx build docker --tag wasm
+$ docker run -it -v "$PWD:/build" --name wasm wasm
 ```
 
 Then build targets as usual. To compile WebAssembly using the Emscripten
