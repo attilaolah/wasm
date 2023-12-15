@@ -25,3 +25,8 @@ filegroup(
     name = "cmake_dir",
     srcs = ["share/emscripten/cmake"],
 )
+
+filegroup(
+    name = "cmake_toolchain",
+    srcs = ["share/emscripten/cmake/Modules/Platform/Emscripten.cmake"],
+)
