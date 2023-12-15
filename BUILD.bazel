@@ -1,4 +1,3 @@
-load("@bazel_gazelle//:def.bzl", "gazelle")
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@com_github_bazelbuild_buildtools//buildifier:def.bzl", "buildifier")
 load("@crate_index//:defs.bzl", "aliases", "all_crate_deps")
@@ -23,9 +22,6 @@ rust_shared_library(
     visibility = ["//src:__pkg__"],
     deps = all_crate_deps(normal = True),
 )
-
-# gazelle:prefix github.com/attilaolah/wasm
-gazelle(name = "gazelle")
 
 buildifier(name = "buildifier")
 

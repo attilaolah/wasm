@@ -15,28 +15,6 @@ def workspace_dependencies():
     )
 
     http_archive(
-        name = "io_bazel_rules_go",
-        version = "0.38.1",
-        urls = [
-            "https://github.com/bazelbuild/rules_go/releases/download/v{version}/rules_go-v{version}.zip",
-            "https://mirror.bazel.build/github.com/bazelbuild/rules_go/releases/download/v{version}/rules_go-v{version}.zip",
-        ],
-        sha256 = "dd926a88a564a9246713a9c00b35315f54cbd46b31a26d5d8fb264c07045f05d",
-        build_file_content = None,
-    )
-
-    http_archive(
-        name = "bazel_gazelle",
-        version = "0.27.0",
-        urls = [
-            "https://github.com/bazelbuild/bazel-gazelle/releases/download/v{version}/bazel-gazelle-v{version}.tar.gz",
-            "https://mirror.bazel.build/github.com/bazelbuild/bazel-gazelle/releases/download/v{version}/bazel-gazelle-v{version}.tar.gz",
-        ],
-        sha256 = "efbbba6ac1a4fd342d5122cbdfdb82aeb2cf2862e35022c752eaddffada7c3f3",
-        build_file_content = None,
-    )
-
-    http_archive(
         name = "platforms",
         version = "0.0.6",
         urls = [

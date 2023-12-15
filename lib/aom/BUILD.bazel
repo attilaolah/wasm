@@ -1,0 +1,30 @@
+load("//lib:lib.bzl", "package_lib")
+load("//toolchains/cmake:cmake.bzl", "cache_entries", "cmake_lib")
+load(":package.bzl", "NAME")
+
+package(default_visibility = ["//:__subpackages__"])
+
+package_lib()
+
+cmake_lib(
+    name = NAME,
+    build_data = {
+        "//cond:emscripten": [],
+        "//conditions:default": ["@yasm//:yasm"],
+    },
+    cache_entries = cache_entries(
+        aom_target_cpu = "generic",  # disable asm
+        enable_docs = False,
+        enable_examples = False,
+        enable_testdata = False,
+        enable_tests = False,
+        enable_tools = False,
+    ),
+    copts = select({
+        "//cond:emscripten": [
+            "-msimd128",
+            "-msse4.2",
+        ],
+        "//conditions:default": [],
+    }),
+)
