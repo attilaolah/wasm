@@ -21,10 +21,7 @@ cmake_lib(
         enable_tools = False,
     ),
     copts = select({
-        "//cond:emscripten": [
-            "-msimd128",
-            "-msse4.2",
-        ],
+        "//cond:emscripten": ["-msse4.2"],
         "//conditions:default": [],
     }),
     env = {

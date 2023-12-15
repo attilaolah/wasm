@@ -15,6 +15,10 @@ build --host_platform=@rules_nixpkgs_core//platforms:host
 build:clang --platforms=//platforms:clang
 build:emscripten --platforms=//platforms:emscripten
 
+# Enable SIMD by default.
+# Individual targets should enable -msse flags only.
+build:emscripten --copt="-msimd128"
+
 build --@rules_rust//:extra_rustc_flag=--cfg=web_sys_unstable_apis
 
 # Show test failures:
