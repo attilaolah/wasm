@@ -1,3 +1,28 @@
+diff --git MODULE.bazel MODULE.bazel
+index da990d8..f6477d8 100644
+--- MODULE.bazel
++++ MODULE.bazel
+@@ -14,20 +14,12 @@ tools = use_extension("@rules_foreign_cc//foreign_cc:extensions.bzl", "tools")
+ use_repo(
+     tools,
+     "cmake_3.23.2_toolchains",
+-    "cmake_src",
+-    "gnumake_src",
+-    "meson_src",
+     "ninja_1.11.1_toolchains",
+-    "ninja_build_src",
+-    "pkgconfig_src",
+     "rules_foreign_cc_framework_toolchains",
+ )
+ 
+ register_toolchains(
+     "@rules_foreign_cc_framework_toolchains//:all",
+-    "@rules_foreign_cc//toolchains:built_make_toolchain",
+-    "@rules_foreign_cc//toolchains:built_meson_toolchain",
+-    "@rules_foreign_cc//toolchains:built_pkgconfig_toolchain",
+     "@rules_foreign_cc//toolchains:preinstalled_autoconf_toolchain",
+     "@rules_foreign_cc//toolchains:preinstalled_automake_toolchain",
+     "@rules_foreign_cc//toolchains:preinstalled_m4_toolchain",
 diff --git examples/third_party/mesa/BUILD.mesa.bazel examples/third_party/mesa/BUILD.mesa.bazel
 index 074f666..0e4ef2a 100644
 --- examples/third_party/mesa/BUILD.mesa.bazel
@@ -47,6 +72,23 @@ index ddfc379..33f0e3d 100644
      implementation = _configure_make,
      toolchains = [
          "@rules_foreign_cc//toolchains:autoconf_toolchain",
+diff --git foreign_cc/extensions.bzl foreign_cc/extensions.bzl
+index 23fd14b..55e2805 100644
+--- foreign_cc/extensions.bzl
++++ foreign_cc/extensions.bzl
+@@ -17,10 +17,10 @@ ninja_toolchain_version = tag_class(attrs = {
+ def _init(module_ctx):
+     rules_foreign_cc_dependencies(
+         register_toolchains = False,
+-        register_built_tools = True,
++        register_built_tools = False,
+         register_default_tools = False,
+         register_preinstalled_tools = False,
+-        register_built_pkgconfig_toolchain = True,
++        register_built_pkgconfig_toolchain = False,
+     )
+ 
+     versions = {
 diff --git foreign_cc/make.bzl foreign_cc/make.bzl
 index fcdd8a5..c7c6862 100644
 --- foreign_cc/make.bzl

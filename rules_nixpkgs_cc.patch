@@ -1,8 +1,8 @@
 diff --git cc.nix cc.nix
-index da7f21a..16b2114 100644
+index da7f21a..fecb0a6 100644
 --- cc.nix
 +++ cc.nix
-@@ -165,38 +165,12 @@ pkgs.runCommand "bazel-${cc.orignalName or cc.name}-toolchain"
+@@ -165,38 +165,11 @@ pkgs.runCommand "bazel-${cc.orignalName or cc.name}-toolchain"
      #
      # This is copied and adapted to bash from
      # `@bazel_tools//tools/cpp:unix_cc_configure.bzl`.
@@ -30,7 +30,7 @@ index da7f21a..16b2114 100644
 -    )
 +    COMPILE_FLAGS=()
      CXX_FLAGS=(
-       -x ${ccLang}
+-      -x ${ccLang}
 -      -std=c++0x
 +      -std=c++17
      )
@@ -43,7 +43,7 @@ index da7f21a..16b2114 100644
        ${
          if stdenv.isDarwin
          then "-undefined dynamic_lookup -headerpad_max_install_names"
-@@ -224,14 +198,8 @@ pkgs.runCommand "bazel-${cc.orignalName or cc.name}-toolchain"
+@@ -224,14 +197,8 @@ pkgs.runCommand "bazel-${cc.orignalName or cc.name}-toolchain"
        # handling in Bazel.
        -g0
  
@@ -60,7 +60,7 @@ index da7f21a..16b2114 100644
  
        # Disable assertions
        -DNDEBUG
-@@ -242,11 +210,7 @@ pkgs.runCommand "bazel-${cc.orignalName or cc.name}-toolchain"
+@@ -242,11 +209,7 @@ pkgs.runCommand "bazel-${cc.orignalName or cc.name}-toolchain"
        -fdata-sections
      )
      OPT_LINK_FLAGS=(

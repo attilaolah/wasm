@@ -51,6 +51,7 @@ def cmake_lib(
         }
     emscripten_env(env["//cond:emscripten"])
     env["//cond:emscripten"]["EM_CMAKE"] = "$(execpath @emscripten//:cmake_dir)"
+    env["//cond:emscripten"]["EM_TOOLCHAIN"] = "$(execpath //tools/emscripten:cmake_toolchain)"
     env["//cond:emscripten"]["EMSCRIPTEN"] = "$$(dirname $(execpath @emscripten//:emcmake))"
 
     if cache_entries == None:
@@ -66,7 +67,7 @@ def cmake_lib(
         "CMAKE_CROSSCOMPILING_EMULATOR": "${CROSSCOMPILING_EMULATOR}",
         "CMAKE_MODULE_PATH": "${EM_CMAKE}/Modules",
         "CMAKE_SYSTEM_NAME": "Emscripten",
-        "CMAKE_TOOLCHAIN_FILE": "${EM_CMAKE}/Modules/Platform/Emscripten.cmake",
+        "CMAKE_TOOLCHAIN_FILE": "${EM_TOOLCHAIN}",
     })
 
     cmake(
@@ -76,6 +77,7 @@ def cmake_lib(
         lib_name = "{}_lib".format(name),
         lib_source = lib_source,
         build_data = _build_data(build_data, em_tools = [
+            "//tools/emscripten:cmake_toolchain",
             "@emscripten//:emcmake",
             "@emscripten//:cmake_dir",
         ]),

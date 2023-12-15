@@ -19,6 +19,16 @@ ts_project(
     ],
 )
 
+genrule(
+    name = "cmake_toolchain",
+    outs = ["emscripten_toolchain.cmake"],
+    srcs = ["@emscripten//:cmake_dir"],
+    cmd = """\
+cat "$(execpath @emscripten//:cmake_dir)/Modules/Platform/Emscripten.cmake" > $@
+echo "add_compile_options($$<$$<COMPILE_LANGUAGE:CXX>:-xc++>)" >> $@
+""",
+)
+
 bzl_library(
     name = "package",
     srcs = ["package.bzl"],
