@@ -26,7 +26,7 @@ index 78652c47bd..ad19eea7d3 100644
 +	sed --in-place --regexp-extended 's/^#define HAVE_STRUCT_SOCKADDR_STORAGE 0/#define HAVE_STRUCT_SOCKADDR_STORAGE 1/' config.h
 +	sed --in-place --regexp-extended 's:(--[^=]+=)(/[^/ ]+)*/:\1/redacted/:g' config.h
 diff --git fftools/cmdutils.c fftools/cmdutils.c
-index 156c13801a..80bb3f2e7a 100644
+index 156c13801a..cc6b175077 100644
 --- fftools/cmdutils.c
 +++ fftools/cmdutils.c
 @@ -24,6 +24,9 @@
@@ -39,8 +39,8 @@ index 156c13801a..80bb3f2e7a 100644
  
  /* Include only the enabled headers since some compilers (namely, Sun
     Studio) will not omit unused inline functions and create undefined
-@@ -106,6 +109,28 @@ int parse_number(const char *context, const char *numstr, int type,
-     return AVERROR(EINVAL);
+@@ -83,6 +86,28 @@ void init_dynload(void)
+ #endif
  }
  
 +#ifdef FFMPEG_WASM
@@ -65,8 +65,8 @@ index 156c13801a..80bb3f2e7a 100644
 +}
 +#endif
 +
- void show_help_options(const OptionDef *options, const char *msg, int req_flags,
-                        int rej_flags, int alt_flags)
+ int parse_number(const char *context, const char *numstr, int type,
+                  double min, double max, double *dst)
  {
 diff --git fftools/ffmpeg.c fftools/ffmpeg.c
 index 46a85b41a8..fa9f0eb675 100644
