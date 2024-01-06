@@ -69,7 +69,7 @@ index 156c13801a..80bb3f2e7a 100644
                         int rej_flags, int alt_flags)
  {
 diff --git fftools/ffmpeg.c fftools/ffmpeg.c
-index 46a85b41a8..10daff6c8f 100644
+index 46a85b41a8..fa9f0eb675 100644
 --- fftools/ffmpeg.c
 +++ fftools/ffmpeg.c
 @@ -32,6 +32,9 @@
@@ -95,9 +95,9 @@ index 46a85b41a8..10daff6c8f 100644
  static void print_report(int is_last_report, int64_t timer_start, int64_t cur_time)
  {
      AVBPrint buf, buf_script;
-@@ -574,6 +583,26 @@ static void print_report(int is_last_report, int64_t timer_start, int64_t cur_ti
-     hours = FFABS64U(pts) / AV_TIME_BASE / 3600;
-     hours_sign = (pts < 0) ? "-" : "";
+@@ -568,6 +577,26 @@ static void print_report(int is_last_report, int64_t timer_start, int64_t cur_ti
+         }
+     }
  
 +#ifdef FFMPEG_WASM
 +    /* send_progress here only works when the duration of
@@ -119,9 +119,9 @@ index 46a85b41a8..10daff6c8f 100644
 +    send_progress((double)pts_abs / (double)duration, (double)pts_abs);
 +#endif
 +
-     bitrate = pts != AV_NOPTS_VALUE && pts && total_size >= 0 ? total_size * 8 / (pts / 1000.0) : -1;
-     speed   = pts != AV_NOPTS_VALUE && t != 0.0 ? (double)pts / AV_TIME_BASE / t : -1;
- 
+     us    = FFABS64U(pts) % AV_TIME_BASE;
+     secs  = FFABS64U(pts) / AV_TIME_BASE % 60;
+     mins  = FFABS64U(pts) / AV_TIME_BASE / 60 % 60;
 @@ -621,7 +650,12 @@ static void print_report(int is_last_report, int64_t timer_start, int64_t cur_ti
      }
  
@@ -135,22 +135,21 @@ index 46a85b41a8..10daff6c8f 100644
          if (print_stats==1 && AV_LOG_INFO > av_log_get_level()) {
              fprintf(stderr, "%s    %c", buf.str, end);
          } else
-@@ -646,6 +680,14 @@ static void print_report(int is_last_report, int64_t timer_start, int64_t cur_ti
+@@ -646,6 +680,13 @@ static void print_report(int is_last_report, int64_t timer_start, int64_t cur_ti
      }
  
      first_report = 0;
 +
-+#if FFMPEG_WASM
++#ifdef FFMPEG_WASM
 +    if (is_last_report) {
 +      // Make sure the progress is ended with 1.
 +      if (pts_abs != duration) send_progress(1, (double)pts_abs);
-+      print_final_stats(total_size);
 +    }
 +#endif
  }
  
  int copy_av_subtitle(AVSubtitle *dst, const AVSubtitle *src)
-@@ -1160,6 +1202,18 @@ static int transcode_step(OutputStream *ost)
+@@ -1160,6 +1201,18 @@ static int transcode_step(OutputStream *ost)
      return 0;
  }
  
@@ -169,7 +168,7 @@ index 46a85b41a8..10daff6c8f 100644
  /*
   * The following code is the main loop of the file converter
   */
-@@ -1184,6 +1238,10 @@ static int transcode(int *err_rate_exceeded)
+@@ -1184,6 +1237,10 @@ static int transcode(int *err_rate_exceeded)
          OutputStream *ost;
          int64_t cur_time= av_gettime_relative();
  
@@ -180,7 +179,7 @@ index 46a85b41a8..10daff6c8f 100644
          /* if 'q' pressed, exits */
          if (stdin_interaction)
              if (check_keyboard_interaction(cur_time) < 0)
-@@ -1289,8 +1347,49 @@ static int64_t getmaxrss(void)
+@@ -1289,8 +1346,49 @@ static int64_t getmaxrss(void)
  #endif
  }
  
