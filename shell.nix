@@ -3,5 +3,6 @@
   buildInputs = [
     bazelisk
     pkg-config
+    git
   ];
 }
