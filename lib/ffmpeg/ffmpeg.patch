@@ -68,6 +68,21 @@ index 156c13801a..cc6b175077 100644
  int parse_number(const char *context, const char *numstr, int type,
                   double min, double max, double *dst)
  {
+diff --git fftools/cmdutils.h fftools/cmdutils.h
+index 8b67d827cc..952856082c 100644
+--- fftools/cmdutils.h
++++ fftools/cmdutils.h
+@@ -77,6 +77,10 @@ int opt_default(void *optctx, const char *opt, const char *arg);
+  */
+ int opt_timelimit(void *optctx, const char *opt, const char *arg);
+ 
++#ifdef FFMPEG_WASM
++void exit_program(int ret) av_noreturn;
++#endif
++
+ /**
+  * Parse a string and return its corresponding value as a double.
+  *
 diff --git fftools/ffmpeg.c fftools/ffmpeg.c
 index 46a85b41a8..fa9f0eb675 100644
 --- fftools/ffmpeg.c
