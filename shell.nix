@@ -3,6 +3,7 @@
   buildInputs = [
     bazelisk
     pkg-config
+    nodejs
     git
   ];
 }
