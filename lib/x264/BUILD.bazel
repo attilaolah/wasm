@@ -8,7 +8,7 @@ package(default_visibility = ["//:__subpackages__"])
 package_lib()
 
 BUILD_DEPS_K8 = [
-    "//lib/nasm:runtime",
+    "@nasm//:nasm",
 ]
 
 CONFIGURE_OPTIONS = [
@@ -40,25 +40,25 @@ OPT_ON = ["--enable-lto"]
 configure_make_lib(
     name = NAME,
     build_data = {
-        "//config:wasm": [],
+        "//cond:emscripten": [],
         "//conditions:default": BUILD_DEPS_K8,
     },
     configure_options = select({
-        "//config:k8_dbg": CONFIGURE_OPTIONS_K8 + DBG_ON,
-        "//config:k8_fastbuild": CONFIGURE_OPTIONS_K8,
-        "//config:k8_opt": CONFIGURE_OPTIONS_K8 + OPT_ON,
-        "//config:wasm_dbg": CONFIGURE_OPTIONS_WASM + DBG_ON,
-        "//config:wasm_fastbuild": CONFIGURE_OPTIONS_WASM,
-        "//config:wasm_opt": CONFIGURE_OPTIONS_WASM + OPT_ON,
+        "//cond:clang_dbg": CONFIGURE_OPTIONS_K8 + DBG_ON,
+        "//cond:clang_fastbuild": CONFIGURE_OPTIONS_K8,
+        "//cond:clang_opt": CONFIGURE_OPTIONS_K8 + OPT_ON,
+        "//cond:em_dbg": CONFIGURE_OPTIONS_WASM + DBG_ON,
+        "//cond:em_fastbuild": CONFIGURE_OPTIONS_WASM,
+        "//cond:em_opt": CONFIGURE_OPTIONS_WASM + OPT_ON,
     }),
     copts = select({
-        "//config:wasm": ["-sSHARED_MEMORY"],  # for -pthread support
+        "//cond:emscripten": ["-sSHARED_MEMORY"],  # for -pthread support
         "//conditions:default": [],
     }),
     env = {
-        "//config:wasm": {},
+        "//cond:emscripten": {},
         "//conditions:default": {
-            "AS": "$(execpath //lib/nasm:runtime)/bin/nasm",
+            "AS": "$(execpath @nasm//:nasm)",
             "ASFLAGS": "",  # override toolchain flags
         },
     },

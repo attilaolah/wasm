@@ -7,7 +7,7 @@ Contains a convenience macro that wraps cmake() from
 load("@rules_foreign_cc//foreign_cc:cmake.bzl", "cmake")
 load("//lib:cache_entries.bzl", "include_dir_key", "library_key")
 load("//lib:defs.bzl", "dep_spec")
-load("//toolchains/make:configure.bzl", "emscripten_env", _build_data = "build_data", _lib_source = "lib_source")
+load("//toolchains/make:make.bzl", "emscripten_env", _build_data = "build_data", _lib_source = "lib_source")
 load("//tools/archive_symbols:archive_symbols.bzl", "archive_symbols")
 
 def cmake_lib(
@@ -46,21 +46,29 @@ def cmake_lib(
         env = {}
     if "//conditions:default" not in env:
         env = {
-            "//config:wasm": dict(env),
+            "//cond:emscripten": dict(env),
             "//conditions:default": dict(env),
         }
-    emscripten_env(env["//config:wasm"])
+    emscripten_env(env["//cond:emscripten"])
+    env["//cond:emscripten"]["EM_CMAKE"] = "$(execpath @emscripten//:cmake_dir)"
+    env["//cond:emscripten"]["EM_TOOLCHAIN"] = "$(execpath //tools/emscripten:cmake_toolchain)"
+    env["//cond:emscripten"]["EMSCRIPTEN"] = "$$(dirname $(execpath @emscripten//:emcmake))"
 
     if cache_entries == None:
         cache_entries = {}
     if "//conditions:default" not in cache_entries:
         cache_entries = {
-            "//config:wasm": dict(cache_entries),
+            "//cond:emscripten": dict(cache_entries),
             "//conditions:default": dict(cache_entries),
         }
     for val in cache_entries.values():
         _prepare_cache_entries(val)
-    _emscripten_cache_entries(cache_entries["//config:wasm"])
+    cache_entries["//cond:emscripten"].update({
+        "CMAKE_CROSSCOMPILING_EMULATOR": "${CROSSCOMPILING_EMULATOR}",
+        "CMAKE_MODULE_PATH": "${EM_CMAKE}/Modules",
+        "CMAKE_SYSTEM_NAME": "Emscripten",
+        "CMAKE_TOOLCHAIN_FILE": "${EM_TOOLCHAIN}",
+    })
 
     cmake(
         name = name,
@@ -68,11 +76,15 @@ def cmake_lib(
         cache_entries = select(cache_entries),
         lib_name = "{}_lib".format(name),
         lib_source = lib_source,
-        build_data = _build_data(build_data),
+        build_data = _build_data(build_data, em_tools = [
+            "//tools/emscripten:cmake_toolchain",
+            "@emscripten//:emcmake",
+            "@emscripten//:cmake_dir",
+        ]),
         tool_prefix = select({
-            "//config:wasm": " ".join([
+            "//cond:emscripten": " ".join([
                 "EM_PKG_CONFIG_PATH=$${PKG_CONFIG_PATH:-}",
-                "$(execpath @emscripten_bin_linux//:emscripten/emcmake)",
+                "$(execpath @emscripten//:emcmake)",
             ]),
             "//conditions:default": None,
         }),
@@ -114,14 +126,3 @@ def _prepare_cache_entries(cache_entries):
     for key, val in cache_entries.items():
         if val in (True, False):
             cache_entries[key] = "ON" if val else "OFF"
-
-def _emscripten_cache_entries(cache_entries):
-    """Set Emscripten-specific CMake cache entries."""
-    external = "${EXT_BUILD_ROOT}/external"
-    cmake_modules = "{}/emscripten_bin_linux/emscripten/cmake/Modules".format(external)
-
-    # As suggested by rules_foreign_cc docs.
-    cache_entries["CMAKE_SYSTEM_NAME"] = "Emscripten"
-    cache_entries["CMAKE_MODULE_PATH"] = cmake_modules
-    cache_entries["CMAKE_TOOLCHAIN_FILE"] = "{}/Platform/Emscripten.cmake".format(cmake_modules)
-    cache_entries["CMAKE_CROSSCOMPILING_EMULATOR"] = "{}/nodejs_host/bin/node".format(external)

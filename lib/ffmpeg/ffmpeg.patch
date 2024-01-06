@@ -1,5 +1,5 @@
 diff --git Makefile Makefile
-index 1fb742f390..4baf097a96 100644
+index 78652c47bd..ad19eea7d3 100644
 --- Makefile
 +++ Makefile
 @@ -37,7 +37,7 @@ DATA_FILES := $(wildcard $(SRC_PATH)/presets/*.ffpreset) $(SRC_PATH)/doc/ffprobe
@@ -11,7 +11,7 @@ index 1fb742f390..4baf097a96 100644
  
  include $(SRC_PATH)/tools/Makefile
  include $(SRC_PATH)/ffbuild/common.mak
-@@ -194,5 +194,11 @@ $(sort $(OUTDIRS)):
+@@ -196,5 +196,11 @@ $(sort $(OUTDIRS)):
  # so this saves some time on slow systems.
  .SUFFIXES:
  
@@ -26,22 +26,26 @@ index 1fb742f390..4baf097a96 100644
 +	sed --in-place --regexp-extended 's/^#define HAVE_STRUCT_SOCKADDR_STORAGE 0/#define HAVE_STRUCT_SOCKADDR_STORAGE 1/' config.h
 +	sed --in-place --regexp-extended 's:(--[^=]+=)(/[^/ ]+)*/:\1/redacted/:g' config.h
 diff --git fftools/cmdutils.c fftools/cmdutils.c
-index a1de621d1c..05f722a245 100644
+index 156c13801a..cc6b175077 100644
 --- fftools/cmdutils.c
 +++ fftools/cmdutils.c
-@@ -24,6 +24,7 @@
+@@ -24,6 +24,9 @@
  #include <stdlib.h>
  #include <errno.h>
  #include <math.h>
++#ifdef FFMPEG_WASM
 +#include <emscripten.h>
++#endif
  
  /* Include only the enabled headers since some compilers (namely, Sun
     Studio) will not omit unused inline functions and create undefined
-@@ -101,7 +102,23 @@ void exit_program(int ret)
-     if (program_exit)
-         program_exit(ret);
+@@ -83,6 +86,28 @@ void init_dynload(void)
+ #endif
+ }
  
--    exit(ret);
++#ifdef FFMPEG_WASM
++void exit_program(int ret)
++{
 +    /*
 +     * abort() is used instead of exit() because exit() not only
 +     * terminates ffmpeg but also the whole node.js program, which 
@@ -58,37 +62,59 @@ index a1de621d1c..05f722a245 100644
 +        Module.ret = $0;
 +    }, ret);
 +    abort();
-+    // exit(ret);
- }
++}
++#endif
++
+ int parse_number(const char *context, const char *numstr, int type,
+                  double min, double max, double *dst)
+ {
+diff --git fftools/cmdutils.h fftools/cmdutils.h
+index 8b67d827cc..952856082c 100644
+--- fftools/cmdutils.h
++++ fftools/cmdutils.h
+@@ -77,6 +77,10 @@ int opt_default(void *optctx, const char *opt, const char *arg);
+  */
+ int opt_timelimit(void *optctx, const char *opt, const char *arg);
  
- double parse_number_or_die(const char *context, const char *numstr, int type,
++#ifdef FFMPEG_WASM
++void exit_program(int ret) av_noreturn;
++#endif
++
+ /**
+  * Parse a string and return its corresponding value as a double.
+  *
 diff --git fftools/ffmpeg.c fftools/ffmpeg.c
-index c819d30ca5..516a6a57f5 100644
+index 46a85b41a8..fa9f0eb675 100644
 --- fftools/ffmpeg.c
 +++ fftools/ffmpeg.c
-@@ -32,6 +32,7 @@
- #include <limits.h>
- #include <stdatomic.h>
- #include <stdint.h>
+@@ -32,6 +32,9 @@
+ #include <stdlib.h>
+ #include <string.h>
+ #include <time.h>
++#ifdef FFMPEG_WASM
 +#include <emscripten.h>
++#endif
  
  #if HAVE_IO_H
  #include <io.h>
-@@ -1569,6 +1570,10 @@ static void print_final_stats(int64_t total_size)
-     }
+@@ -493,6 +496,12 @@ void close_output_stream(OutputStream *ost)
+         sq_send(of->sq_encode, ost->sq_idx_encode, SQFRAME(NULL));
  }
  
++#ifdef FFMPEG_WASM
 +EM_JS(void, send_progress, (double progress, double time), {
 +    Module.receiveProgress(progress, time);
 +});
++#endif
 +
  static void print_report(int is_last_report, int64_t timer_start, int64_t cur_time)
  {
      AVBPrint buf, buf_script;
-@@ -1681,6 +1686,24 @@ static void print_report(int is_last_report, int64_t timer_start, int64_t cur_ti
-             nb_frames_drop += ost->last_dropped;
+@@ -568,6 +577,26 @@ static void print_report(int is_last_report, int64_t timer_start, int64_t cur_ti
+         }
      }
  
++#ifdef FFMPEG_WASM
 +    /* send_progress here only works when the duration of
 +     * input and output file are the same, other cases (ex. trim)
 +     * still WIP.
@@ -106,38 +132,43 @@ index c819d30ca5..516a6a57f5 100644
 +      }
 +    }
 +    send_progress((double)pts_abs / (double)duration, (double)pts_abs);
++#endif
 +
-     secs = FFABS(pts) / AV_TIME_BASE;
-     us = FFABS(pts) % AV_TIME_BASE;
-     mins = secs / 60;
-@@ -1736,7 +1759,8 @@ static void print_report(int is_last_report, int64_t timer_start, int64_t cur_ti
+     us    = FFABS64U(pts) % AV_TIME_BASE;
+     secs  = FFABS64U(pts) / AV_TIME_BASE % 60;
+     mins  = FFABS64U(pts) / AV_TIME_BASE / 60 % 60;
+@@ -621,7 +650,12 @@ static void print_report(int is_last_report, int64_t timer_start, int64_t cur_ti
      }
  
      if (print_stats || is_last_report) {
--        const char end = is_last_report ? '\n' : '\r';
++#ifdef FFMPEG_WASM
 +        // Always print a new line of message.
 +        const char end = '\n'; //is_last_report ? '\n' : '\r';
++#else
+         const char end = is_last_report ? '\n' : '\r';
++#endif
          if (print_stats==1 && AV_LOG_INFO > av_log_get_level()) {
              fprintf(stderr, "%s    %c", buf.str, end);
          } else
-@@ -1762,8 +1786,11 @@ static void print_report(int is_last_report, int64_t timer_start, int64_t cur_ti
+@@ -646,6 +680,13 @@ static void print_report(int is_last_report, int64_t timer_start, int64_t cur_ti
+     }
  
      first_report = 0;
- 
--    if (is_last_report)
--        print_final_stats(total_size);
++
++#ifdef FFMPEG_WASM
 +    if (is_last_report) {
 +      // Make sure the progress is ended with 1.
 +      if (pts_abs != duration) send_progress(1, (double)pts_abs);
-+      print_final_stats(total_size);
 +    }
++#endif
  }
  
- static int ifilter_parameters_from_codecpar(InputFilter *ifilter, AVCodecParameters *par)
-@@ -4005,6 +4032,16 @@ static int transcode_step(void)
-     return reap_filters(0);
+ int copy_av_subtitle(AVSubtitle *dst, const AVSubtitle *src)
+@@ -1160,6 +1201,18 @@ static int transcode_step(OutputStream *ost)
+     return 0;
  }
  
++#ifdef FFMPEG_WASM
 +/* is_timeout checks if transcode() is running longer
 + * than a timeout value, return 1 when timeout.
 + */
@@ -147,24 +178,27 @@ index c819d30ca5..516a6a57f5 100644
 +      return Module.timeout <= diff;
 +    }
 +});
++#endif
 +
  /*
   * The following code is the main loop of the file converter
   */
-@@ -4028,6 +4065,8 @@ static int transcode(void)
-     while (!received_sigterm) {
+@@ -1184,6 +1237,10 @@ static int transcode(int *err_rate_exceeded)
+         OutputStream *ost;
          int64_t cur_time= av_gettime_relative();
  
++#ifdef FFMPEG_WASM
 +        if (is_timeout((cur_time - timer_start) / 1000) == 1) exit_program(1);
++#endif
 +
          /* if 'q' pressed, exits */
          if (stdin_interaction)
              if (check_keyboard_interaction(cur_time) < 0)
-@@ -4138,8 +4177,50 @@ static int64_t getmaxrss(void)
+@@ -1289,8 +1346,49 @@ static int64_t getmaxrss(void)
  #endif
  }
  
--int main(int argc, char **argv)
++#ifdef FFMPEG_WASM
 +/* init_globals initializes global variables to enable multiple
 + * calls of ffmpeg().
 + *
@@ -173,9 +207,6 @@ index c819d30ca5..516a6a57f5 100644
 + * main() function.
 + */
 +void init_globals() {
-+  nb_frames_dup = 0;
-+  dup_warning = 1000;
-+  nb_frames_drop = 0;
 +  nb_output_dumped = 0;
 +
 +  progress_avio = NULL;
@@ -193,7 +224,6 @@ index c819d30ca5..516a6a57f5 100644
 +  received_nb_signals = 0;
 +  transcode_init_done = ATOMIC_VAR_INIT(0);
 +  ffmpeg_exited = 0;
-+  main_return_code = 0;
 +  copy_ts_first_pts = AV_NOPTS_VALUE;
 +}
 +
@@ -205,36 +235,44 @@ index c819d30ca5..516a6a57f5 100644
 + * might be used instead of main().
 + */
 +int ffmpeg(int argc, char **argv)
-+// int main(int argc, char **argv)
- {
++{
 +    init_globals();
-+
-     int ret;
++#else
+ int main(int argc, char **argv)
+ {
++#endif
+     int ret, err_rate_exceeded;
      BenchmarkTimeStamps ti;
  
 diff --git fftools/ffplay.c fftools/ffplay.c
-index d6479aef5f..b39fae2791 100644
+index d8c69e10bc..7663bafab0 100644
 --- fftools/ffplay.c
 +++ fftools/ffplay.c
-@@ -3661,7 +3661,7 @@ void show_help_default(const char *opt, const char *arg)
+@@ -3653,7 +3653,11 @@ void show_help_default(const char *opt, const char *arg)
  }
  
  /* Called from the main */
--int main(int argc, char **argv)
++#ifdef FFMPEG_WASM
 +int ffplay(int argc, char **argv)
++#else
+ int main(int argc, char **argv)
++#endif
  {
-     int flags;
+     int flags, ret;
      VideoState *is;
 diff --git fftools/ffprobe.c fftools/ffprobe.c
-index af927cb084..8135ed96cf 100644
+index 71f6cc3a74..2bc991509f 100644
 --- fftools/ffprobe.c
 +++ fftools/ffprobe.c
-@@ -4050,7 +4050,7 @@ static inline int check_section_show_entries(int section_id)
+@@ -4142,7 +4142,11 @@ static inline int check_section_show_entries(int section_id)
              do_show_##varname = 1;                                      \
      } while (0)
  
--int main(int argc, char **argv)
++#ifdef FFMPEG_WASM
 +int ffprobe(int argc, char **argv)
++#else
+ int main(int argc, char **argv)
++#endif
  {
      const Writer *w;
      WriterContext *wctx;

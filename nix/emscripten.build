@@ -1,0 +1,32 @@
+package(default_visibility = ["//visibility:public"])
+
+filegroup(
+    name = "bin",
+    srcs = glob(["bin/*"]),
+)
+
+[
+    filegroup(
+        name = name,
+        srcs = ["bin/{}".format(name)],
+    )
+    for name in [
+        "em++",
+        "emar",
+        "emcc",
+        "emcmake",
+        "emconfigure",
+        "emmake",
+        "emranlib",
+    ]
+]
+
+filegroup(
+    name = "cmake_dir",
+    srcs = ["share/emscripten/cmake"],
+)
+
+filegroup(
+    name = "cmake_toolchain",
+    srcs = ["share/emscripten/cmake/Modules/Platform/Emscripten.cmake"],
+)

@@ -92,7 +92,7 @@ genrule(
     outs = ["webnb.css"],
     cmd = select({
         "//conditions:default": COPY_CSS,
-        "//config:opt": COPY_CSS + r"""
+        "//cond:clang_opt": COPY_CSS + r"""
 INTERM=$$(mktemp)
 mv $@ $${INTERM}
 $(execpath @npm//csso-cli/bin:csso) $${INTERM} \
@@ -100,9 +100,9 @@ $(execpath @npm//csso-cli/bin:csso) $${INTERM} \
 rm $${INTERM}
 """,
     }),
-    exec_tools = select({
+    tools = select({
         "//conditions:default": [],
-        "//config:opt": ["@npm//csso-cli/bin:csso"],
+        "//cond:clang_opt": ["@npm//csso-cli/bin:csso"],
     }),
 )
 
@@ -114,7 +114,7 @@ genrule(
         "//conditions:default": r"""
 find $< -name '*.wasm' -exec cp {} $@ \;
 """,
-        "//config:opt": r"""
+        "//cond:clang_opt": r"""
 $(execpath @emscripten_bin_linux//:bin/wasm-opt) \
   --dce \
   --directize \
@@ -129,9 +129,9 @@ $(execpath @emscripten_bin_linux//:bin/wasm-opt) \
   $$(find $< -name '*.wasm')
 """,
     }),
-    exec_tools = select({
+    tools = select({
         "//conditions:default": [],
-        "//config:opt": ["@emscripten_bin_linux//:bin/wasm-opt"],
+        "//cond:clang_opt": ["@emscripten_bin_linux//:bin/wasm-opt"],
     }),
 )
 
@@ -139,7 +139,7 @@ expand_template(
     name = "entry_point",
     out = "entry_point.js",
     substitutions = select({
-        "//config:" + mode: {"${COMPILATION_MODE}": mode}
+        "//cond:clang_" + mode: {"${COMPILATION_MODE}": mode}
         for mode in [
             "opt",
             "fastbuild",
@@ -181,5 +181,5 @@ genrule(
 echo -n webnb- > $@
 $(execpath //tools:jq) -r .version $(execpath //:package.json) >> $@
 """,
-    exec_tools = ["//tools:jq"],
+    tools = ["//tools:jq"],
 )
