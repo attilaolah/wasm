@@ -12,8 +12,8 @@ jobs:
   Bazel:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/cache@v2
+      - uses: actions/checkout@v6
+      - uses: actions/cache@v4
         with:
           path: |
             ~/.cache/bazel
@@ -29,8 +29,8 @@ jobs:
   Go:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/cache@v3
+      - uses: actions/checkout@v6
+      - uses: actions/cache@v4
         with:
           path: |
             ~/.cache/go-build
@@ -47,9 +47,9 @@ jobs:
   Node:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
-          node-version: '17'
+          node-version: '25'
           cache: 'npm'
       - run: npm install
