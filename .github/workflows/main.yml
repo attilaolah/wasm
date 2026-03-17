@@ -12,7 +12,7 @@ jobs:
   Bazel:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/cache@v2
         with:
           path: |
@@ -29,7 +29,7 @@ jobs:
   Go:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/cache@v3
         with:
           path: |
@@ -47,7 +47,7 @@ jobs:
   Node:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-node@v2
         with:
           node-version: '17'
