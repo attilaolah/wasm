@@ -1,11 +1,3 @@
-load("@rules_rust//wasm_bindgen:wasm_bindgen.bzl", "rust_wasm_bindgen")
-
-rust_wasm_bindgen(
-    name = "runtime",
-    visibility = ["//dist:__pkg__"],
-    wasm_file = "//:runtime_lib",
-)
-
 filegroup(
     name = "runtime_files",
     srcs = ["lib.rs"] + [

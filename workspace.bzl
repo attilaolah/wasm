@@ -15,6 +15,14 @@ def workspace_dependencies():
     )
 
     http_archive(
+        name = "rules_nodejs",
+        version = "5.5.3",
+        urls = ["https://github.com/bazelbuild/rules_nodejs/releases/download/{version}/rules_nodejs-core-{version}.tar.gz"],
+        sha256 = "5aef09ed3279aa01d5c928e3beb248f9ad32dde6aafe6373a8c994c3ce643064",
+        build_file_content = None,
+    )
+
+    http_archive(
         name = "io_bazel_rules_go",
         version = "0.38.1",
         urls = [
@@ -64,6 +72,15 @@ def workspace_dependencies():
         urls = ["https://github.com/protocolbuffers/protobuf/archive/v3.19.4.tar.gz"],
         sha256 = "3bd7828aa5af4b13b99c191e8b1e884ebfa9ad371b0ce264605d347f135d2568",
         strip_prefix = "protobuf-{version}",
+        build_file_content = None,
+    )
+
+    http_archive(
+        name = "rules_cc",
+        version = "0.1.1",
+        urls = ["https://github.com/bazelbuild/rules_cc/releases/download/{version}/rules_cc-{version}.tar.gz"],
+        sha256 = "712d77868b3152dd618c4d64faaddefcc5965f90f5de6e6dd1d5ddcd0be82d42",
+        strip_prefix = "rules_cc-{version}",
         build_file_content = None,
     )
 
