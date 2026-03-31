@@ -15,4 +15,5 @@ def download():
         urls = [URL],
         sha256 = SHA256,
         strip_prefix = "{name}lib-{version}",
+        patches = ["//lib/gif:gif.patch"],
     )

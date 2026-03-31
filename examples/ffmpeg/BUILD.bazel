@@ -115,12 +115,12 @@ genrule(
     name = "ffmpeg_js",
     srcs = select({
         "//conditions:default": [":ffmpeg_js_1"],
-        "//config:opt": [":ffmpeg_js_3"],
+        "//cond:em_opt": [":ffmpeg_js_3"],
     }),
     outs = ["ffmpeg.js"],
     cmd = select({
         "//conditions:default": "cp $< $@",
-        "//config:opt": r"""
+        "//cond:em_opt": r"""
 echo -n "export default " >$@
 sed --expression '
     s/\"import\.meta\.url\"/import.meta.url/g
@@ -149,7 +149,7 @@ genrule(
         "//conditions:default": r"""
 find $< -name '*.wasm' -exec cp {} $@ \;
 """,
-        "//config:opt": r"""
+        "//cond:em_opt": r"""
 $(execpath @emscripten_bin_linux//:bin/wasm-opt) \
   --dce \
   --directize \
@@ -164,9 +164,9 @@ $(execpath @emscripten_bin_linux//:bin/wasm-opt) \
   $$(find $< -name '*.wasm')
 """,
     }),
-    exec_tools = select({
+    tools = select({
         "//conditions:default": [],
-        "//config:opt": ["@emscripten_bin_linux//:bin/wasm-opt"],
+        "//cond:em_opt": ["@emscripten_bin_linux//:bin/wasm-opt"],
     }),
 )
 
