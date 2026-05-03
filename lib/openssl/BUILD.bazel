@@ -42,7 +42,7 @@ configure_make_lib(
     name = NAME,
     configure_command = "config",
     configure_options = select({
-        "//config:wasm": CONFIGURE_OPTIONS_WASM,
+        "//cond:emscripten": CONFIGURE_OPTIONS_WASM,
         "//conditions:default": CONFIGURE_OPTIONS,
     }),
     out_static_libs = STATIC_LIBS,

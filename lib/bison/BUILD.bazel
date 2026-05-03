@@ -6,7 +6,6 @@ load(":package.bzl", "NAME", "STATIC_LIBS")
 package(default_visibility = ["//:__subpackages__"])
 
 package_lib(
-    runtime_for = [NAME],
     version_regex = r'<a href="bison-([^"]+).tar.gz">',
     version_url = "https://ftp.gnu.org/gnu/bison/",
 )

@@ -1,0 +1,75 @@
+diff --git cc.nix cc.nix
+index da7f21a..fecb0a6 100644
+--- cc.nix
++++ cc.nix
+@@ -165,38 +165,11 @@ pkgs.runCommand "bazel-${cc.orignalName or cc.name}-toolchain"
+     #
+     # This is copied and adapted to bash from
+     # `@bazel_tools//tools/cpp:unix_cc_configure.bzl`.
+-    COMPILE_FLAGS=(
+-      # Security hardening requires optimization.
+-      # We need to undef it as some distributions now have it enabled by default.
+-      -U_FORTIFY_SOURCE
+-      -fstack-protector
+-      # All warnings are enabled. Maybe enable -Werror as well?
+-      -Wall
+-      $(
+-        # Enable a few more warnings that aren't part of -Wall.
+-        add_compiler_option_if_supported -Wthread-safety
+-        add_compiler_option_if_supported -Wself-assign
+-        # Disable problematic warnings.
+-        add_compiler_option_if_supported -Wunused-but-set-parameter
+-        # has false positives
+-        add_compiler_option_if_supported -Wno-free-nonheap-object
+-        # Enable coloring even if there's no attached terminal. Bazel removes the
+-        # escape sequences if --nocolor is specified.
+-        add_compiler_option_if_supported -fcolor-diagnostics
+-      )
+-      # Keep stack frames for debugging, even in opt mode.
+-      -fno-omit-frame-pointer
+-    )
++    COMPILE_FLAGS=()
+     CXX_FLAGS=(
+-      -x ${ccLang}
+-      -std=c++0x
++      -std=c++17
+     )
+     LINK_FLAGS=(
+-      $(
+-        if [[ -x ${cc}/bin/ld.gold ]]; then echo -fuse-ld=gold; fi
+-        add_linker_option_if_supported -Wl,-no-as-needed -no-as-needed
+-        add_linker_option_if_supported -Wl,-z,relro,-z,now -z
+-      )
+       ${
+         if stdenv.isDarwin
+         then "-undefined dynamic_lookup -headerpad_max_install_names"
+@@ -224,14 +197,8 @@ pkgs.runCommand "bazel-${cc.orignalName or cc.name}-toolchain"
+       # handling in Bazel.
+       -g0
+ 
+-      # Conservative choice for -O
+-      # -O3 can increase binary size and even slow down the resulting binaries.
+-      # Profile first and / or use FDO if you need better performance than this.
+-      -O2
+-
+-      # Security hardening on by default.
+-      # Conservative choice; -D_FORTIFY_SOURCE=2 may be unsafe in some cases.
+-      -D_FORTIFY_SOURCE=1
++      # Opinionated choice for -O.
++      -Oz
+ 
+       # Disable assertions
+       -DNDEBUG
+@@ -242,11 +209,7 @@ pkgs.runCommand "bazel-${cc.orignalName or cc.name}-toolchain"
+       -fdata-sections
+     )
+     OPT_LINK_FLAGS=(
+-      ${
+-        if stdenv.isDarwin
+-        then ""
+-        else "$(add_linker_option_if_supported -Wl,--gc-sections -gc-sections)"
+-      }
++      # Cannot use --relocatable and --gc-sections together.
+     )
+     UNFILTERED_COMPILE_FLAGS=(
+       $(

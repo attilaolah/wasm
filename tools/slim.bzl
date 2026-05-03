@@ -15,7 +15,7 @@ def slim_library(name, srcs, **kwargs):
         ],
         outs = [name + ".html"],
         cmd = select({
-            "//config:opt": " ".join(cmd),
+            "//cond:clang_opt": " ".join(cmd),
             "//conditions:default": " ".join(cmd + ["--pretty"]),
         }),
         **kwargs

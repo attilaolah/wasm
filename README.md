@@ -11,22 +11,31 @@ $ bazel run //cmd/write_me
 
 Scripts to compile libraries to [WebAssembly] using [Bazel].
 
-To get (somewhat) reproducible results, run the builds in a Docker container.
-To get a shell within the container, run build the image and run it:
+To get fully reproducible results, run the build inside a NixOS container:
 
 ```sh
-$ docker build -t wasm docker
-$ docker run -it -v "${PWD}:/build" wasm
+$ docker run -it -v "$PWD:/build" nixpkgs/nix:nixos-23.11
 ```
 
-Then build targets as usual. To compile WebAssembly using the Emscripten
-toolchain, pass `--cpu=wasm32`. Pass `-c opt` for an optimised build.
+Then, inside the container, run `nix-shell` to create the build environment:
+
+```sh
+$ cd /build
+$ NIX_PATH=nixpkgs=channel:nixos-unstable nix-shell
+```
+
+Once that completes, you can build as usual:
+
+```sh
+$ bazelisk build //lib/ffmpeg:wasm_bindings --config=emscripten -c opt
+```
 
 ## Libraries
 
 | Build Label | Version |
 |-------------|---------|
 [`//lib/aec`](https://github.com/attilaolah/wasm/blob/main/lib/aec/BUILD.bazel) | 1.0.6 [🔗](https://gitlab.dkrz.de/k202009/libaec/-/archive/v1.0.6/libaec-v1.0.6.tar.bz2)
+[`//lib/aom`](https://github.com/attilaolah/wasm/blob/main/lib/aom/BUILD.bazel) | 3.8.0 [🔗](https://github.com/m-ab-s/aom/archive/refs/tags/v3.8.0.tar.gz)
 [`//lib/bison`](https://github.com/attilaolah/wasm/blob/main/lib/bison/BUILD.bazel) | 3.8.2 [🔗](https://ftp.gnu.org/gnu/bison/bison-3.8.2.tar.xz)
 [`//lib/blas`](https://github.com/attilaolah/wasm/blob/main/lib/blas/BUILD.bazel) | 3.10.0 [🔗](http://www.netlib.org/blas/blas-3.10.0.tgz)
 [`//lib/boost`](https://github.com/attilaolah/wasm/blob/main/lib/boost/BUILD.bazel) | 1.80.0 [🔗](https://boostorg.jfrog.io/artifactory/main/release/1.80.0/source/boost_1_80_0.tar.bz2)
@@ -103,7 +112,7 @@ toolchain, pass `--cpu=wasm32`. Pass `-c opt` for an optimised build.
 
 | Build Label | Version |
 |-------------|---------|
-[`//tools/emscripten`](https://github.com/attilaolah/wasm/blob/main/tools/emscripten/BUILD.bazel) | 3.1.47 [🔗](https://github.com/emscripten-core/emscripten/archive/refs/tags/3.1.47.tar.gz)
+[`//tools/emscripten`](https://github.com/attilaolah/wasm/blob/main/tools/emscripten/BUILD.bazel) | 3.1.51 [🔗](https://github.com/emscripten-core/emscripten/archive/refs/tags/3.1.51.tar.gz)
 [`//tools/llvm`](https://github.com/attilaolah/wasm/blob/main/tools/llvm/BUILD.bazel) | 17.0.2 [🔗](https://github.com/llvm/llvm-project/releases/download/llvmorg-17.0.2/clang+llvm-17.0.2-x86_64-linux-gnu-ubuntu-22.04.tar.xz)
 
 ## Nix Shell
