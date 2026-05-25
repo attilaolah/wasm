@@ -56,7 +56,7 @@ cmake_lib(
     name = NAME,
     build_data = BUILD_DEPS,
     cache_entries = {
-        "//config:wasm": cache_entries(
+        "//cond:emscripten": cache_entries(
             CACHE_ENTRIES,
             # The C++ library uses exceptions, so enable them explicitly.
             cmake_cxx_flags = "-fexceptions",

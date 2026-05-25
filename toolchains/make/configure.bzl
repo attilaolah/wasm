@@ -7,51 +7,9 @@ Also contains most of the common functionality needed by Configure+Make, Make
 and CMake macros.
 """
 
-load("@bazel_skylib//lib:collections.bzl", "collections")
 load("@rules_foreign_cc//foreign_cc:configure.bzl", "configure_make")
-load("//lib:defs.bzl", "repo_name", "root_path")
 load("//tools/archive_symbols:archive_symbols.bzl", "archive_symbols")
-
-EM_ENV = {
-    # NodeJS cross-compiling emulator:
-    "CROSSCOMPILING_EMULATOR": root_path("$(execpath @nodejs_host//:node)", double_escape = True),
-
-    # Emscripten config from @emsdk:
-    "EM_CONFIG": "$(execpath @emsdk//emscripten_toolchain:emscripten_config)",
-
-    # Required (?) by the Emscripten config above:
-    "EMSCRIPTEN": root_path("external/emscripten_bin_linux/emscripten", double_escape = True),
-
-    # Directory containing node_modules:
-    "NODE_PATH": "$${EXT_BUILD_DEPS}/bin",
-
-    # Python from //lib/python:
-    "PYTHONHOME": root_path("$(execpaths //lib/python:runtime)", double_escape = True),
-
-    # Required by the Emscripten config:
-    "ROOT_DIR": "$${EXT_BUILD_ROOT}",
-}
-
-# Python from //lib/python.
-# This must come after ${PYTHONHOME}.
-EM_ENV["PYTHON"] = "$${PYTHONHOME}/bin/python3"
-
-EM_TOOLS = [
-    # keep sorted
-    "//lib/python:runtime",
-    "//tools:nodejs",
-    "@emscripten_bin_linux//:all",
-    "@emscripten_bin_linux//:emscripten/emar",
-    "@emscripten_bin_linux//:emscripten/emcc",
-    "@emscripten_bin_linux//:emscripten/emcmake",
-    "@emscripten_bin_linux//:emscripten/emconfigure",
-    "@emscripten_bin_linux//:emscripten/emmake",
-    "@emscripten_bin_linux//:emscripten/emnm",
-    "@emscripten_bin_linux//:emscripten/emranlib",
-    "@emsdk//emscripten_toolchain:emscripten_config",
-    "@nodejs_host//:node",
-    "@npm//acorn",
-]
+load(":make.bzl", "emscripten_env", _build_data = "build_data", _lib_source = "lib_source")
 
 def configure_make_lib(
         name,
@@ -87,26 +45,26 @@ def configure_make_lib(
         env = {}
     if "//conditions:default" not in env:
         env = {
-            "//config:wasm": dict(env),
+            "//cond:emscripten": dict(env),
             "//conditions:default": dict(env),
         }
-    emscripten_env(env["//config:wasm"])
+    emscripten_env(env["//cond:emscripten"])
 
     configure_make(
         name = name,
         env = select(env),
         lib_name = "{}_lib".format(name),
         lib_source = lib_source,
-        build_data = _build_data(build_data),
+        build_data = _build_data(build_data, em_tools = ["@emscripten//:emconfigure"]),
         configure_prefix = select({
-            "//config:wasm": " ".join([
+            "//cond:emscripten": " ".join([
                 "EM_PKG_CONFIG_PATH=$${PKG_CONFIG_PATH:-}",
-                "$(execpath @emscripten_bin_linux//:emscripten/emconfigure)",
+                "$(execpath @emscripten//:emconfigure)",
             ]),
             "//conditions:default": None,
         }),
         tool_prefix = select({
-            "//config:wasm": "$(execpath @emscripten_bin_linux//:emscripten/emmake)",
+            "//cond:emscripten": "$(execpath @emscripten//:emmake)",
             "//conditions:default": None,
         }),
         out_static_libs = out_static_libs,
@@ -118,39 +76,3 @@ def configure_make_lib(
         deps = kwargs.get("deps", []),
         strict = not ignore_undefined_symbols,
     )
-
-def build_data(extras = None):
-    """Extends build_data with extras.
-
-    For Emscripten, merges extras with EM_TOOLS. Otherwise it simply selects
-    extras for build_data.
-
-    Args:
-      extras: Existing build_data to extend.
-
-    Returns:
-      A select() wrapping the resulting build_data.
-    """
-    if extras == None:
-        extras = []
-
-    if type(extras) != type({}):
-        extras = {
-            "//conditions:default": extras,
-            "//config:wasm": extras,
-        }
-    extras.setdefault("//config:wasm", [])
-    extras["//config:wasm"] = collections.uniq(EM_TOOLS + extras["//config:wasm"])
-
-    return select(extras)
-
-_build_data = build_data
-
-def lib_source(lib_name):
-    return "@{}//:all".format(repo_name(lib_name))
-
-_lib_source = lib_source
-
-def emscripten_env(env):
-    """Set Emscripten environment variables."""
-    env.update(EM_ENV)

@@ -1,0 +1,11 @@
+platform(
+    name = "clang",
+    constraint_values = ["//cond:clang"],
+    parents = ["@rules_nixpkgs_core//platforms:host"],
+)
+
+platform(
+    name = "emscripten",
+    constraint_values = ["//cond:emscripten"],
+    parents = ["@rules_nixpkgs_core//platforms:host"],
+)

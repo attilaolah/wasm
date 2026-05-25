@@ -3,9 +3,25 @@
 Contains a convenience macro that wraps make() from @rules_foreign_cc.
 """
 
+load("@bazel_skylib//lib:collections.bzl", "collections")
 load("@rules_foreign_cc//foreign_cc:make.bzl", "make")
+load("//lib:defs.bzl", "repo_name")
 load("//tools/archive_symbols:archive_symbols.bzl", "archive_symbols")
-load(":configure.bzl", "build_data", "emscripten_env", _build_data = "build_data", _lib_source = "lib_source")
+
+EM_ENV = {
+    # NodeJS cross-compiling emulator. Required for some CMake builds.
+    "CROSSCOMPILING_EMULATOR": "$(execpath @nodejs//:node)",
+
+    # Emscripten: Use local cache.
+    "EM_CACHE": "$${EXT_BUILD_ROOT}/.em_cache",
+}
+
+EM_TOOLS = [
+    "@nodejs//:node",
+    "@python3//:python",
+    "@emscripten//:emmake",
+    "@emscripten//:bin",
+]
 
 def make_lib(
         name,
@@ -40,10 +56,10 @@ def make_lib(
         env = {}
     if "//conditions:default" not in env:
         env = {
-            "//config:wasm": dict(env),
+            "//cond:emscripten": dict(env),
             "//conditions:default": dict(env),
         }
-    emscripten_env(env["//config:wasm"])
+    emscripten_env(env["//cond:emscripten"])
 
     make(
         name = name,
@@ -52,9 +68,9 @@ def make_lib(
         lib_source = lib_source,
         build_data = _build_data(build_data),
         tool_prefix = select({
-            "//config:wasm": " ".join([
+            "//cond:emscripten": " ".join([
                 "EM_PKG_CONFIG_PATH=$${PKG_CONFIG_PATH:-}",
-                "$(execpath @emscripten_bin_linux//:emscripten/emmake)",
+                "$(execpath @emscripten//:emmake)",
             ]),
             "//conditions:default": None,
         }),
@@ -67,3 +83,43 @@ def make_lib(
         deps = kwargs.get("deps", []),
         strict = not ignore_undefined_symbols,
     )
+
+def emscripten_env(env):
+    """Set Emscripten environment variables."""
+    env.update(EM_ENV)
+
+def build_data(extras = None, em_tools = None):
+    """Extends build_data with extras.
+
+    For Emscripten, merges extras with EM_TOOLS. Otherwise it simply selects
+    extras for build_data.
+
+    Args:
+      extras: Existing build_data to extend.
+      em_tools: Additional tools to append for wasm builds.
+
+    Returns:
+      A select() wrapping the resulting build_data.
+    """
+    if extras == None:
+        extras = []
+
+    if em_tools == None:
+        em_tools = []
+
+    if type(extras) != type({}):
+        extras = {
+            "//conditions:default": extras,
+            "//cond:emscripten": extras,
+        }
+    extras.setdefault("//cond:emscripten", [])
+    extras["//cond:emscripten"] = collections.uniq(EM_TOOLS + extras["//cond:emscripten"] + em_tools)
+
+    return select(extras)
+
+_build_data = build_data
+
+def lib_source(lib_name):
+    return "@{}//:all".format(repo_name(lib_name))
+
+_lib_source = lib_source

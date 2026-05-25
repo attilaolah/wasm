@@ -6,7 +6,6 @@ _GH_RELEASE_REGEX = r'<include-fragment loading="lazy" src="{release_url}/expand
 _GH_TAG_REGEX = '<a href="/{owner}/{repo}/releases/tag/{prefix}([^"]+)">'
 
 def package_lib(
-        runtime_for = (),
         version_url = None,
         version_regex = None,
         github_release = None,
@@ -21,16 +20,6 @@ def package_lib(
             "//lib:http_archive",
         ],
     )
-
-    for label in runtime_for:
-        name = "runtime"
-        if len(runtime_for) > 1:
-            name = "_".join((label, name))
-        native.filegroup(
-            name = name,
-            srcs = [":{}".format(label)],
-            output_group = "gen_dir",
-        )
 
     if github_release and github_tag:
         fail("only one of github_release or github_tag can be provided")

@@ -1,0 +1,52 @@
+load("@bazel_skylib//lib:selects.bzl", "selects")
+
+constraint_setting(name = "compiler")
+
+constraint_value(
+    name = "clang",
+    constraint_setting = ":compiler",
+    visibility = ["//:__subpackages__"],
+)
+
+constraint_value(
+    name = "emscripten",
+    constraint_setting = ":compiler",
+    visibility = ["//:__subpackages__"],
+)
+
+config_setting(
+    name = "is_clang",
+    constraint_values = [":clang"],
+)
+
+config_setting(
+    name = "is_emscripten",
+    constraint_values = [":emscripten"],
+)
+
+MODES = [
+    "dbg",
+    "fastbuild",
+    "opt",
+]
+
+[config_setting(
+    name = mode,
+    values = {"compilation_mode": mode},
+) for mode in MODES]
+
+[selects.config_setting_group(
+    name = "clang_{}".format(mode),
+    match_all = [
+        ":is_clang",
+        ":{}".format(mode),
+    ],
+) for mode in MODES]
+
+[selects.config_setting_group(
+    name = "em_{}".format(mode),
+    match_all = [
+        ":is_emscripten",
+        ":{}".format(mode),
+    ],
+) for mode in MODES]

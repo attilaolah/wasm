@@ -3,28 +3,87 @@ load("@rules_foreign_cc//foreign_cc:configure.bzl", "configure_make")
 load("//lib:defs.bzl", "runtime_path")
 load("//lib:lib.bzl", "package_lib")
 load("//toolchains:utils.bzl", "no_error")
-load("//toolchains/make:configure.bzl", "EM_ENV", "EM_TOOLS", "configure_make_lib", "lib_source")
+load("//toolchains/make:configure.bzl", "configure_make_lib")
+load("//toolchains/make:make.bzl", "EM_ENV", "EM_TOOLS", "lib_source")
 load(":package.bzl", "LIBS", "NAME", "STATIC_LIBS")
 
 package(default_visibility = ["//:__subpackages__"])
 
 package_lib()
 
-BUILD_DEPS_K8 = [
-    "//lib/yasm:runtime",
+BUILD_DEPS_CLANG = [
+    "@yasm//:yasm",
 ]
 
+BUILD_DEPS_EMSCRIPTEN = [
+    "@emscripten//:emar",
+    "@emscripten//:emcc",
+    "@emscripten//:emranlib",
+]
+
+ENABLE_DECODERS = [
+    # keep sorted
+    "h264",
+    "hevc",
+    "libaom_av1",
+    "rawvideo",
+    "webp",
+]
+
+ENABLE_ENCODERS = [
+    # keep sorted
+    "libaom_av1",
+    "libvpx_vp8",
+    "libvpx_vp9",
+    "libwebp",
+    "libx264",
+    "libx265",
+    "rawvideo",
+]
+
+ENABLE_DEMUXERS = [
+    # keep sorted
+    "image2",
+    "mp4",
+    "rawvideo",
+    "wav",
+]
+
+ENABLE_MUXERS = [
+    # keep sorted
+    "image2",
+    "mp4",
+    "rawvideo",
+    "wav",
+]
+
+ENABLE_FILTERS = [
+    # keep sorted
+    "format",
+    "scale",
+    "select",
+]
+
+ENABLE_PROTOCOLS = ["file"]
+
 CONFIGURE_OPTIONS = [
-    "--host-cc=$${EXT_BUILD_ROOT}/$(CC)",
-    "--host-ld=$${EXT_BUILD_ROOT}/external/llvm/bin/lld",
     "--pkg-config-flags=--static",
     "--disable-all",
     "--disable-autodetect",
     "--disable-doc",
-    "--enable-encoders",
-    "--enable-decoders",
-    "--enable-muxers",
-    "--enable-demuxers",
+    # Use --enable-muxers to enable all.
+    "--enable-muxer={}".format(",".join(ENABLE_MUXERS)),
+    # Use --enable-demuxers to enable all.
+    "--enable-demuxer={}".format(",".join(ENABLE_DEMUXERS)),
+    # Use --enable-encoders to enable all.
+    "--enable-encoder={}".format(",".join(ENABLE_ENCODERS)),
+    # Use --enable-decoders to enable all.
+    "--enable-decoder={}".format(",".join(ENABLE_DECODERS)),
+    # Use --enable-filters to enable all.
+    "--enable-filter={}".format(",".join(ENABLE_FILTERS)),
+    # Use --enable-protocols to enable all.
+    # Note that WebAssembly builds won't support most protocols.
+    "--enable-protocol={}".format(",".join(ENABLE_PROTOCOLS)),
     "--enable-pthreads",
     "--enable-gpl",
 ] + [
@@ -35,6 +94,7 @@ CONFIGURE_OPTIONS = [
     # dependencies, keep sorted
     "--enable-bzlib",
     "--enable-iconv",
+    "--enable-libaom",
     "--enable-libvpx",
     "--enable-libwebp",
     "--enable-libx264",
@@ -43,7 +103,7 @@ CONFIGURE_OPTIONS = [
     "--enable-zlib",
 ]
 
-CONFIGURE_OPTIONS_K8 = [
+CONFIGURE_OPTIONS_CLANG = [
     # The configure script doesn't seem to pick up $CC,
     # so we pass this explicit --cc flag to set the right compiler.
     "--cc=$${EXT_BUILD_ROOT}/$(CC)",
@@ -55,10 +115,9 @@ CONFIGURE_OPTIONS_K8 = [
 CONFIGURE_OPTIONS_WASM = [
     # The configure script doesn't seem to pick up $CC,
     # so we pass this explicit --cc flag to set the right compiler.
-    "--cc=$(execpath @emscripten_bin_linux//:emscripten/emcc)",
-    "--ar=$(execpath @emscripten_bin_linux//:emscripten/emar)",
-    "--nm=$(execpath @emscripten_bin_linux//:emscripten/emnm)",
-    "--ranlib=$(execpath @emscripten_bin_linux//:emscripten/emranlib)",
+    "--cc=$(execpath @emscripten//:emcc)",
+    "--ar=$(execpath @emscripten//:emar)",
+    "--ranlib=$(execpath @emscripten//:emranlib)",
 ] + CONFIGURE_OPTIONS + [
     # Some of these are copied from:
     # github.com/ffmpegwasm/ffmpeg.wasm @ build/ffmpeg.sh
@@ -93,6 +152,8 @@ OPT_ON = [
 ]
 
 DEPS = [
+    # keep sorted
+    "//lib/aom",
     "//lib/bz2",
     "//lib/iconv",
     "//lib/lzma",
@@ -106,21 +167,17 @@ DEPS = [
 configure_make_lib(
     name = NAME,
     build_data = {
-        "//config:wasm": [],
-        "//conditions:default": BUILD_DEPS_K8,
+        "//cond:emscripten": BUILD_DEPS_EMSCRIPTEN,
+        "//conditions:default": BUILD_DEPS_CLANG,
     },
     configure_options = select({
-        "//config:k8_dbg": CONFIGURE_OPTIONS_K8,
-        "//config:k8_fastbuild": CONFIGURE_OPTIONS_K8 + DBG_OFF,
-        "//config:k8_opt": CONFIGURE_OPTIONS_K8 + DBG_OFF + OPT_ON,
-        "//config:wasm_dbg": CONFIGURE_OPTIONS_WASM,
-        "//config:wasm_fastbuild": CONFIGURE_OPTIONS_WASM + DBG_OFF,
-        "//config:wasm_opt": CONFIGURE_OPTIONS_WASM + DBG_OFF + OPT_ON,
+        "//cond:clang_dbg": CONFIGURE_OPTIONS_CLANG,
+        "//cond:clang_fastbuild": CONFIGURE_OPTIONS_CLANG + DBG_OFF,
+        "//cond:clang_opt": CONFIGURE_OPTIONS_CLANG + DBG_OFF + OPT_ON,
+        "//cond:em_dbg": CONFIGURE_OPTIONS_WASM,
+        "//cond:em_fastbuild": CONFIGURE_OPTIONS_WASM + DBG_OFF,
+        "//cond:em_opt": CONFIGURE_OPTIONS_WASM + DBG_OFF + OPT_ON,
     }),
-    env = {
-        "//config:wasm": {},
-        "//conditions:default": {"PATH": runtime_path(BUILD_DEPS_K8)},
-    },
     out_static_libs = STATIC_LIBS,
     deps = DEPS,
 )
@@ -129,41 +186,47 @@ CONFIGURE_OPTIONS_WASM_BINDINGS = CONFIGURE_OPTIONS_WASM + [
     "--enable-ffmpeg",
 ]
 
+LDFLAGS = 'LDFLAGS-ffmpeg="{}"'.format(" ".join([
+    # keep sorted
+    "--pre-js=${PRE_JS}",
+    "-liconv",
+    "-lworkerfs.js",
+    "-sEXPORTED_FUNCTIONS=${EXPORTED_FUNCTIONS}",
+    "-sEXPORTED_RUNTIME_METHODS=${EXPORTED_RUNTIME_METHODS}",
+    "-sEXPORT_ES6",
+    "-sEXPORT_NAME=createFFmpegCore",
+    "-sINITIAL_MEMORY=1024MB",
+    "-sMODULARIZE",
+    "-sPTHREAD_POOL_SIZE=32",  # OR: navigator.hardwareConcurrency
+    "-sWASM_BIGINT",
+]))
+
 # Bindings for ffmpeg.wasm.
 # Based on the build script from ffmpeg.wasm:
 # https://github.com/ffmpegwasm/ffmpeg.wasm/blob/main/build/ffmpeg-wasm.sh
 # The main difference is that we rely on the FFmpeg makefile for building the ffmpeg binary.
 configure_make(
     name = "wasm_bindings",
-    args = [
-        'LDFLAGS-ffmpeg="{}"'.format(" ".join([
-            # keep sorted
-            "--pre-js=${PRE_JS}",
-            "-liconv",
-            "-lworkerfs.js",
-            "-sEXPORTED_FUNCTIONS=${EXPORTED_FUNCTIONS}",
-            "-sEXPORTED_RUNTIME_METHODS=${EXPORTED_RUNTIME_METHODS}",
-            "-sEXPORT_NAME=createFFmpegCore",
-            "-sINITIAL_MEMORY=1024MB",
-            "-sMODULARIZE",
-            "-sPTHREAD_POOL_SIZE=32",  # OR: navigator.hardwareConcurrency
-            "-sWASM_BIGINT",
-        ])),
-    ],
-    build_data = EM_TOOLS + [
+    args = select({
+        "//cond:dbg": [LDFLAGS + " -sASSERTIONS"],
+        "//conditions:default": [LDFLAGS],
+    }),
+    build_data = EM_TOOLS + BUILD_DEPS_EMSCRIPTEN + [
+        "@emscripten//:emconfigure",
         "@ffmpeg_wasm//:bind",
         "@ffmpeg_wasm//:export",
         "@ffmpeg_wasm//:export_runtime",
     ],
     configure_options = select({
-        "//config:wasm_dbg": CONFIGURE_OPTIONS_WASM_BINDINGS,
-        "//config:wasm_fastbuild": CONFIGURE_OPTIONS_WASM_BINDINGS + DBG_OFF,
-        "//config:wasm_opt": CONFIGURE_OPTIONS_WASM_BINDINGS + DBG_OFF + OPT_ON,
+        "//cond:em_dbg": CONFIGURE_OPTIONS_WASM_BINDINGS,
+        "//cond:em_fastbuild": CONFIGURE_OPTIONS_WASM_BINDINGS + DBG_OFF,
+        "//cond:em_opt": CONFIGURE_OPTIONS_WASM_BINDINGS + DBG_OFF + OPT_ON,
     }),
     configure_prefix = " ".join([
-        "EM_PKG_CONFIG_PATH=$${PKG_CONFIG_PATH:-}",
-        "$(execpath @emscripten_bin_linux//:emscripten/emconfigure)",
+        "EM_PKG_CONFIG_PATH=$${PKG_CONFIG_PATH}",
+        "$(execpath @emscripten//:emconfigure)",
     ]),
+    copts = ["-DFFMPEG_WASM", "-mssse3"],
     env = dict(EM_ENV.items() + {
         "PRE_JS": "$(execpath @ffmpeg_wasm//:bind)",
         "EXPORTED_FUNCTIONS": "$$(node $(execpath @ffmpeg_wasm//:export))",
@@ -181,9 +244,9 @@ configure_make(
         "cp ffmpeg_g.worker.js ${INSTALLDIR}/bin/ffmpeg.worker.js",
         "rm -f ${INSTALLDIR}/bin/ffmpeg",
     ]),
-    # Build with --platforms=//config:wasm32_emscripten --cpu=wasm32.
-    target_compatible_with = ["@platforms//cpu:wasm32"],
-    tool_prefix = "$(execpath @emscripten_bin_linux//:emscripten/emmake)",
+    # Build with --platforms=//platforms:emscripten
+    target_compatible_with = ["//cond:emscripten"],
+    tool_prefix = "$(execpath @emscripten//:emmake)",
     deps = DEPS,
 )
 

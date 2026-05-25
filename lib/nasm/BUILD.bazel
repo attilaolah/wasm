@@ -4,23 +4,24 @@ load(":package.bzl", "NAME")
 
 package(default_visibility = ["//:__subpackages__"])
 
-package_lib(
-    runtime_for = [NAME],
-)
+package_lib()
 
 configure_make_lib(
     name = NAME,
     configure_in_place = True,
     configure_options = select({
-        "//config:dbg": [
+        "//cond:clang_dbg": [
             "--enable-gdb",
             "--disable-optimization",
         ],
-        "//config:fastbuild": ["--disable-optimization"],
+        "//cond:clang_fastbuild": ["--disable-optimization"],
         # TODO: Pass --enable-lto here.
         # Currently that causes $AR to disappear from the Makefile.
-        "//config:opt": [],
+        "//cond:clang_opt": [],
     }),
+    copts = [
+        r"""-D__DATE__='\"redacted\"'""",  # force quotes
+    ],
     out_binaries = [
         NAME,
         "ndisasm",
