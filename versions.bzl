@@ -8,4 +8,4 @@ GO_VERSION = "1.20.2"
 
 OS_VERSION = "ubuntu-22.04"
 
-RUBY_VERSION = "3.1.1"
+RUBY_VERSION = "3.2.2"

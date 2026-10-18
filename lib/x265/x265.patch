@@ -26,3 +26,76 @@ index 10e418884..3ba9ba33e 100644
  
  #if X265_ARCH_ARM == 0
  void PFX(cpu_neon_test)(void) {}
+diff --git source/encoder/api.cpp source/encoder/api.cpp
+--- source/encoder/api.cpp
++++ source/encoder/api.cpp
+@@ -1109,68 +1109,9 @@
+ #if LINKED_12BIT
+         if (bitDepth == 12) return x265_12bit::x265_api_get(0);
+ #endif
+-
+-        const char* libname = NULL;
+-        const char* method = "x265_api_get_" xstr(X265_BUILD);
+-        const char* multilibname = "libx265" ext;
+-
+-        if (bitDepth == 12)
+-            libname = "libx265_main12" ext;
+-        else if (bitDepth == 10)
+-            libname = "libx265_main10" ext;
+-        else if (bitDepth == 8)
+-            libname = "libx265_main" ext;
+-        else
+-            return NULL;
+-
+-        const x265_api* api = NULL;
+-        int reqDepth = 0;
+-
+-        if (g_recursion > 1)
+-            return NULL;
+-        else
+-            g_recursion++;
+-
+-#if _WIN32
+-        HMODULE h = LoadLibraryA(libname);
+-        if (!h)
+-        {
+-            h = LoadLibraryA(multilibname);
+-            reqDepth = bitDepth;
+-        }
+-        if (h)
+-        {
+-            api_get_func get = (api_get_func)GetProcAddress(h, method);
+-            if (get)
+-                api = get(reqDepth);
+-        }
+-#else
+-        void* h = dlopen(libname, RTLD_LAZY | RTLD_LOCAL);
+-        if (!h)
+-        {
+-            h = dlopen(multilibname, RTLD_LAZY | RTLD_LOCAL);
+-            reqDepth = bitDepth;
+-        }
+-        if (h)
+-        {
+-            api_get_func get = (api_get_func)dlsym(h, method);
+-            if (get)
+-                api = get(reqDepth);
+-        }
+-#endif
+-
+-        g_recursion--;
+-
+-        if (api && bitDepth != api->bit_depth)
+-        {
+-            x265_log(NULL, X265_LOG_WARNING, "%s does not support requested bitDepth %d\n", libname, bitDepth);
+-            return NULL;
+-        }
+-
+-        return api;
+     }
+ 
+-    return &libapi;
++    return NULL;
+ }
+ 
+ const x265_api* x265_api_query(int bitDepth, int apiVersion, int* err)

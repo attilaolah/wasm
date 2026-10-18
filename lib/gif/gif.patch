@@ -1,0 +1,29 @@
+--- Makefile	2023-11-15 22:27:34.263451973 +0100
++++ Makefile	2023-11-15 22:27:31.220319469 +0100
+@@ -6,10 +6,6 @@
+ # of code space in the shared library.
+ 
+ #
+-OFLAGS = -O0 -g
+-OFLAGS  = -O2
+-CFLAGS  = -std=gnu99 -fPIC -Wall -Wno-format-truncation $(OFLAGS)
+-
+ SHELL = /bin/sh
+ TAR = tar
+ INSTALL = install
+@@ -70,13 +66,13 @@
+ 	$(CC) $(CFLAGS) -shared $(LDFLAGS) -Wl,-soname -Wl,libgif.so.$(LIBMAJOR) -o libgif.so $(OBJECTS)
+ 
+ libgif.a: $(OBJECTS) $(HEADERS)
+-	$(AR) rcs libgif.a $(OBJECTS)
++	$(AR) $(ARFLAGS) libgif.a $(OBJECTS)
+ 
+ libutil.so: $(UOBJECTS) $(UHEADERS)
+ 	$(CC) $(CFLAGS) -shared $(LDFLAGS) -Wl,-soname -Wl,libutil.so.$(LIBMAJOR) -o libutil.so $(UOBJECTS)
+ 
+ libutil.a: $(UOBJECTS) $(UHEADERS)
+-	$(AR) rcs libutil.a $(UOBJECTS)
++	$(AR) $(ARFLAGS) libutil.a $(UOBJECTS)
+ 
+ clean:
+ 	rm -f $(UTILS) $(TARGET) libgetarg.a libgif.a libgif.so libutil.a libutil.so *.o

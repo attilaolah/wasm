@@ -6,8 +6,20 @@ try-import %workspace%/.bazelrc.local
 # Use modules.
 common --enable_bzlmod
 
-# Old C++ CPU/CROSSTOOL toolchain API:
-build --crosstool_top=//toolchains --@rules_rust//:extra_rustc_flag=--cfg=web_sys_unstable_apis
+# Use platforms (default from 7.0).
+# See: https://github.com/bazelbuild/bazel/issues/7260
+common --incompatible_enable_cc_toolchain_resolution
+common --action_env=BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1
+
+build --host_platform=@rules_nixpkgs_core//platforms:host
+build:clang --platforms=//platforms:clang
+build:emscripten --platforms=//platforms:emscripten
+
+# Enable SIMD by default.
+# Individual targets should enable -msse flags only.
+build:emscripten --copt="-msimd128"
+
+build --@rules_rust//:extra_rustc_flag=--cfg=web_sys_unstable_apis
 
 # Show test failures:
 test --test_output=errors

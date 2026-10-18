@@ -4,7 +4,7 @@ sass_binary(
     name = "style",
     src = "style.sass",
     output_style = select({
-        "//config:opt": "compressed",
+        "//cond:clang_opt": "compressed",
         "//conditions:default": "expanded",
     }),
     visibility = [

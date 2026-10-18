@@ -6,4 +6,13 @@ package(default_visibility = ["//:__subpackages__"])
 
 package_lib()
 
-make_lib(name = NAME)
+make_lib(
+    name = NAME,
+    copts = [
+        "-U__DATE__",
+        "-U__TIME__",
+        r"""-D__DATE__='\"redacted\"'""",
+        r"""-D__TIME__='\"redacted\"'""",
+        "-fPIC",
+    ],
+)

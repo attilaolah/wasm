@@ -133,13 +133,13 @@ configure_make_lib(
     name = NAME,
     args = select({
         # TODO: Fix the build so this would not be necessary!
-        "//config:wasm": ["|| true"],
+        "//cond:emscripten": ["|| true"],
         "//conditions:default": [],
     }),
     build_data = BUILD_DEPS,
     configure_in_place = True,
     configure_options = select({
-        "//config:wasm": CONFIGURE_OPTIONS_WASM,
+        "//cond:emscripten": CONFIGURE_OPTIONS_WASM,
         "//conditions:default": CONFIGURE_OPTIONS,
     }),
     env = {

@@ -11,16 +11,24 @@ $ bazel run //cmd/write_me
 
 Scripts to compile libraries to [WebAssembly] using [Bazel].
 
-To get (somewhat) reproducible results, run the builds in a Docker container.
-To get a shell within the container, run build the image and run it:
+To get fully reproducible results, run the build inside a NixOS container:
 
 ```sh
-$ docker build -t wasm docker
-$ docker run -it -v "${{`{PWD}`}}:/build" wasm
+$ docker run -it -v "$PWD:/build" nixpkgs/nix:nixos-23.11
 ```
 
-Then build targets as usual. To compile WebAssembly using the Emscripten
-toolchain, pass `--cpu=wasm32`. Pass `-c opt` for an optimised build.
+Then, inside the container, run `nix-shell` to create the build environment:
+
+```sh
+$ cd /build
+$ NIX_PATH=nixpkgs=channel:nixos-unstable nix-shell
+```
+
+Once that completes, you can build as usual:
+
+```sh
+$ bazelisk build //lib/ffmpeg:wasm_bindings --config=emscripten -c opt
+```
 
 ## Libraries
 

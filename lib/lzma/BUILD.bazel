@@ -20,7 +20,7 @@ configure_make_lib(
         "--disable-xzdec",
     ],
     copts = select({
-        "//config:wasm": [
+        "//cond:emscripten": [
             "-sSHARED_MEMORY",  # for -pthread support
             # Need to demote some additional errors to warnings.
             # This is because we re-compile a copy of getopt_long here, since
